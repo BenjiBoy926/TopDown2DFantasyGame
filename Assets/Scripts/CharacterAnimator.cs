@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using NaughtyAttributes;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
@@ -24,7 +25,9 @@ public class CharacterAnimator : MonoBehaviour
     [SerializeField] private bool _isRunning;
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
+    private Coroutine _oneShotRoutine;
 
+    [Button]
     public void Attack()
     {
         PlayOneShot(Actions.Attack);
@@ -39,8 +42,8 @@ public class CharacterAnimator : MonoBehaviour
 
     private void PlayOneShot(Actions action)
     {
-        StopAllCoroutines();
-        StartCoroutine(PlayOneShotRoutine(action));
+        if (_oneShotRoutine != null) return;
+        _oneShotRoutine = StartCoroutine(PlayOneShotRoutine(action));
     }
 
     private IEnumerator PlayOneShotRoutine(Actions action)
@@ -48,6 +51,7 @@ public class CharacterAnimator : MonoBehaviour
         Play(action);
         yield return new WaitForSeconds(1);
         PlayLoopingAnimation();
+        _oneShotRoutine = null;
     }
 
     private void PlayLoopingAnimation()
