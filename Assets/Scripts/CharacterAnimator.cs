@@ -22,6 +22,8 @@ public class CharacterAnimator : MonoBehaviour
     private const float OneShotEstimatedAnimationDuration = 0.35f;
     private static readonly YieldInstruction OneShotAnimationWait = new WaitForSeconds(OneShotEstimatedAnimationDuration);
 
+    public bool IsOneShotAnimationPlaying => _oneShotRoutine != null;
+
     [SerializeField] private string _name = "Swordman";
     [SerializeField] private HorizontalDirection _horizontalDirection;
     [SerializeField] private VerticalDirection _verticalDirection;
@@ -48,6 +50,27 @@ public class CharacterAnimator : MonoBehaviour
         Play(Actions.Death);
     }
 
+    public void SetHorizontalDirection(HorizontalDirection horizontalDirection)
+    {
+        if (_horizontalDirection == horizontalDirection) return;
+        _horizontalDirection = horizontalDirection;
+        RefreshLoopingAnimation();
+    }
+
+    public void SetVerticalDirection(VerticalDirection verticalDirection)
+    {
+        if (_verticalDirection == verticalDirection) return;
+        _verticalDirection = verticalDirection;
+        RefreshLoopingAnimation();
+    }
+
+    public void SetIsRunning(bool isRunning)
+    {
+        if (_isRunning == isRunning) return;
+        _isRunning = isRunning;
+        RefreshLoopingAnimation();
+    }
+
     private void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -65,8 +88,16 @@ public class CharacterAnimator : MonoBehaviour
     {
         Play(action);
         yield return OneShotAnimationWait;
-        PlayLoopingAnimation();
         _oneShotRoutine = null;
+        RefreshLoopingAnimation();
+    }
+
+    private void RefreshLoopingAnimation()
+    {
+        if (!IsOneShotAnimationPlaying)
+        {
+            PlayLoopingAnimation();
+        }
     }
 
     private void PlayLoopingAnimation()
@@ -105,6 +136,6 @@ public class CharacterAnimator : MonoBehaviour
 
     private void OnValidate()
     {
-        PlayLoopingAnimation();   
+        RefreshLoopingAnimation();
     }
 }
