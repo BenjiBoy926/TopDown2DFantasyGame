@@ -29,4 +29,9 @@ public class Player : MonoBehaviour, DefaultActions.ICharacterActions
         Vector2 move = context.ReadValue<Vector2>();
         _character.SetDirection(move);
     }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        _character.Attack();
+    }
 }

@@ -14,23 +14,44 @@ public class Character : MonoBehaviour
     public void SetDirection(Vector2 direction)
     {
         _direction = direction;
+    }
 
+    public void Attack()
+    {
+        _rigidbody.velocity = Vector2.zero;
+        _animator.Attack();
+    }
 
-        if (direction.x > DirectionChangeThreshold)
+    private void Update()
+    {
+        if (_animator.IsOneShotAnimationPlaying) return;
+
+        UpdateHorizontalDirection();
+        UpdateVerticalDirection();
+        _animator.SetIsRunning(_direction.sqrMagnitude > DirectionChangeThreshold);
+        _rigidbody.velocity = _direction * _speed;
+    }
+
+    private void UpdateHorizontalDirection()
+    {
+        if (_direction.x > DirectionChangeThreshold)
         {
             _animator.SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Right);
         }
-        else if (direction.x < -DirectionChangeThreshold)
+        else if (_direction.x < -DirectionChangeThreshold)
         {
             _animator.SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Left);
         }
+    }
 
-        bool isMovingHorizontally = Mathf.Abs(direction.x) > DirectionChangeThreshold;
-        if (direction.y > DirectionChangeThreshold)
+    private void UpdateVerticalDirection()
+    {
+        bool isMovingHorizontally = Mathf.Abs(_direction.x) > DirectionChangeThreshold;
+        if (_direction.y > DirectionChangeThreshold)
         {
             _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Up);
         }
-        else if (direction.y < -DirectionChangeThreshold)
+        else if (_direction.y < -DirectionChangeThreshold)
         {
             _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Down);
         }
@@ -38,10 +59,6 @@ public class Character : MonoBehaviour
         {
             _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Side);
         }
-
-        _animator.SetIsRunning(direction.sqrMagnitude > DirectionChangeThreshold);
-
-        _rigidbody.velocity = direction * _speed;
     }
 
     private void Awake()
