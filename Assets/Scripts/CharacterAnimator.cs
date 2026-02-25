@@ -36,6 +36,18 @@ public class CharacterAnimator : MonoBehaviour
         PlayOneShot(Actions.Attack);
     }
 
+    [Button]
+    public void Hurt()
+    {
+        PlayOneShot(Actions.Hurt);
+    }
+
+    [Button]
+    public void Die()
+    {
+        Play(Actions.Death);
+    }
+
     private void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -83,7 +95,12 @@ public class CharacterAnimator : MonoBehaviour
 
     private string GetStateName(Actions action)
     {
-        return $"{_name}_{action}_{_verticalDirection}";
+        string stateName = $"{_name}_{action}";
+        if (action != Actions.Death)
+        {
+            stateName += $"_{_verticalDirection}";
+        }
+        return stateName;
     }
 
     private void OnValidate()
