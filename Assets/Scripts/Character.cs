@@ -15,15 +15,17 @@ public class Character : MonoBehaviour
     {
         _direction = direction;
 
+
         if (direction.x > DirectionChangeThreshold)
         {
             _animator.SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Right);
         }
-        if (direction.x < -DirectionChangeThreshold)
+        else if (direction.x < -DirectionChangeThreshold)
         {
             _animator.SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Left);
         }
 
+        bool isMovingHorizontally = Mathf.Abs(direction.x) > DirectionChangeThreshold;
         if (direction.y > DirectionChangeThreshold)
         {
             _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Up);
@@ -32,7 +34,7 @@ public class Character : MonoBehaviour
         {
             _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Down);
         }
-        else
+        else if (isMovingHorizontally)
         {
             _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Side);
         }
