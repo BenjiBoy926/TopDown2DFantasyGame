@@ -120,6 +120,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: Swordman
-  _horizontalDirection: 0
-  _verticalDirection: 0
+  _horizontalDirection: 1
+  _verticalDirection: 1
   _isRunning: 0

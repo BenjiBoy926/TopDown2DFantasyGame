@@ -19,6 +19,9 @@ public class CharacterAnimator : MonoBehaviour
         Idle, Run, Attack, Hurt, Death
     }
 
+    private const float OneShotEstimatedAnimationDuration = 0.35f;
+    private static readonly YieldInstruction OneShotAnimationWait = new WaitForSeconds(OneShotEstimatedAnimationDuration);
+
     [SerializeField] private string _name = "Swordman";
     [SerializeField] private HorizontalDirection _horizontalDirection;
     [SerializeField] private VerticalDirection _verticalDirection;
@@ -49,7 +52,7 @@ public class CharacterAnimator : MonoBehaviour
     private IEnumerator PlayOneShotRoutine(Actions action)
     {
         Play(action);
-        yield return new WaitForSeconds(1);
+        yield return OneShotAnimationWait;
         PlayLoopingAnimation();
         _oneShotRoutine = null;
     }
