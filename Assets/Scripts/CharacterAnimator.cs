@@ -1,0 +1,73 @@
+using UnityEngine;
+using System.Collections;
+
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(SpriteRenderer))]
+public class CharacterAnimator : MonoBehaviour
+{
+    public enum HorizontalDirection
+    {
+        Left, Right
+    }
+    public enum VerticalDirection
+    {
+        Up, Side, Down
+    }
+    public enum Actions
+    {
+        Idle, Run, Attack, Hurt, Death
+    }
+
+    [SerializeField] private string _name = "Swordman";
+    [SerializeField] private HorizontalDirection _horizontalDirection;
+    [SerializeField] private VerticalDirection _verticalDirection;
+    [SerializeField] private bool _isRunning;
+    private Animator _animator;
+    private SpriteRenderer _spriteRenderer;
+
+    public void Attack()
+    {
+
+    }
+
+    private void Awake()
+    {
+        _animator = GetComponent<Animator>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        PlayLoopingAnimation();
+    }
+
+    private void PlayLoopingAnimation()
+    {
+        if (_spriteRenderer)
+        {
+            _spriteRenderer.flipX = _horizontalDirection == HorizontalDirection.Left;
+        }
+        if (_animator)
+        {
+            Actions action = _isRunning ? Actions.Run : Actions.Idle;
+            Play(action);
+        }
+    }
+
+    private void Play(Actions action)
+    {
+        string fullStateName = GetFullStateName(action);
+        _animator.Play(fullStateName);
+    }
+
+    private string GetFullStateName(Actions action)
+    {
+        return $"Base Layer.{GetStateName(action)}";
+    }
+
+    private string GetStateName(Actions action)
+    {
+        return $"{_name}_{action}_{_verticalDirection}";
+    }
+
+    private void OnValidate()
+    {
+        PlayLoopingAnimation();   
+    }
+}

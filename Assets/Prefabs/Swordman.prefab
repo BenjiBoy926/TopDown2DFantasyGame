@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 341371333424358373}
   - component: {fileID: 1102932785634186822}
   - component: {fileID: 6592333395147489070}
+  - component: {fileID: 3745601121891399611}
   m_Layer: 0
   m_Name: Swordman
   m_TagString: Untagged
@@ -106,3 +107,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3745601121891399611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881692635917527445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75f86deafb431ba44bcf0edd1c40b490, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Swordman
+  _horizontalDirection: 0
+  _verticalDirection: 0
+  _isRunning: 0
