@@ -27,13 +27,26 @@ public class CharacterAnimator : MonoBehaviour
 
     public void Attack()
     {
-
+        PlayOneShot(Actions.Attack);
     }
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        PlayLoopingAnimation();
+    }
+
+    private void PlayOneShot(Actions action)
+    {
+        StopAllCoroutines();
+        StartCoroutine(PlayOneShotRoutine(action));
+    }
+
+    private IEnumerator PlayOneShotRoutine(Actions action)
+    {
+        Play(action);
+        yield return new WaitForSeconds(1);
         PlayLoopingAnimation();
     }
 
