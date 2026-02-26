@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(CharacterAnimator))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class Character : MonoBehaviour
 {
@@ -8,8 +7,8 @@ public class Character : MonoBehaviour
 
     [SerializeField] private Vector2 _direction;
     [SerializeField] private float _speed = 5;
-    private CharacterAnimator _animator;
     private Rigidbody2D _rigidbody;
+    private CharacterAnimator _animator;
 
     public void SetDirection(Vector2 direction)
     {
@@ -20,6 +19,12 @@ public class Character : MonoBehaviour
     {
         _rigidbody.velocity = Vector2.zero;
         _animator.Attack();
+    }
+
+    private void Awake()
+    {
+        _rigidbody = GetComponent<Rigidbody2D>();
+        _animator = GetComponentInChildren<CharacterAnimator>();
     }
 
     private void Update()
@@ -59,11 +64,5 @@ public class Character : MonoBehaviour
         {
             _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Side);
         }
-    }
-
-    private void Awake()
-    {
-        _animator = GetComponent<CharacterAnimator>();
-        _rigidbody = GetComponent<Rigidbody2D>();
     }
 }
