@@ -4,7 +4,7 @@ using System;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Character : MonoBehaviour
 {
-    private const float DirectionChangeThreshold = 0.25f;
+    private const float AngleChangeThreshold = 15f;
 
     public Vector2 Position
     {
@@ -52,27 +52,30 @@ public class Character : MonoBehaviour
 
     private void RefreshAnimatorDirection()
     {
-        if (Mathf.Abs(_direction.y) > DirectionChangeThreshold || _direction.x > DirectionChangeThreshold)
+        float rightAngle = Vector2.Angle(_direction, Vector2.right);
+        float leftAngle = Vector2.Angle(_direction, Vector2.left);
+        float upAngle = Vector2.Angle(_direction, Vector2.up);
+        float downAngle = Vector2.Angle(_direction, Vector2.down);
+
+        if (rightAngle < AngleChangeThreshold)
         {
             _animator.SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Right);
+            _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Side);
         }
-        else
+        if (leftAngle < AngleChangeThreshold)
         {
             _animator.SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Left);
+            _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Side);
         }
-
-        bool isMovingHorizontally = Mathf.Abs(_direction.x) > DirectionChangeThreshold;
-        if (_direction.y > DirectionChangeThreshold)
+        if (upAngle < AngleChangeThreshold)
         {
+            _animator.SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Right);
             _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Up);
         }
-        else if (_direction.y < -DirectionChangeThreshold)
+        if (downAngle < AngleChangeThreshold)
         {
+            _animator.SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Right);
             _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Down);
-        }
-        else if (isMovingHorizontally)
-        {
-            _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Side);
         }
     }
 }
