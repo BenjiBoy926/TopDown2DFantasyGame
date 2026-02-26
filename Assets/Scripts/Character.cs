@@ -16,19 +16,26 @@ public class Character : MonoBehaviour
     }
 
     [SerializeField] private Vector2 _direction;
-    [SerializeField] private float _speed = 5;
     private Rigidbody2D _rigidbody;
     private CharacterAnimator _animator;
+    private float _timeToStopRunning;
 
     public void SetDirection(Vector2 direction)
     {
         _direction = direction;
+        UpdateHorizontalDirection();
+        UpdateVerticalDirection();
     }
 
     public void Attack()
     {
         _rigidbody.velocity = Vector2.zero;
         _animator.Attack();
+    }
+
+    public void RunForTime(float time)
+    {
+        _timeToStopRunning = Time.time + time;
     }
 
     private void Awake()
@@ -41,9 +48,7 @@ public class Character : MonoBehaviour
     {
         if (_animator.IsOneShotAnimationPlaying) return;
 
-        UpdateHorizontalDirection();
-        UpdateVerticalDirection();
-        _animator.SetIsRunning(_direction.sqrMagnitude > DirectionChangeThreshold);
+        _animator.SetIsRunning(Time.time < _timeToStopRunning);
     }
 
     private void UpdateHorizontalDirection()

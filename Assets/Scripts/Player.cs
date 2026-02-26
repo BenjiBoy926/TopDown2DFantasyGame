@@ -63,6 +63,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         {
             _character.Position = newPosition;
             _character.SetDirection(newPosition - oldPosition);
+            _character.RunForTime(.5f);
         }
     }
 
