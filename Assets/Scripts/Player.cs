@@ -61,7 +61,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     {
         Vector2 screenPosition = context.ReadValue<Vector2>();
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-        transform.position = _grid.SnapWorldPositionToGrid(worldPosition);
+        transform.position = worldPosition;
     }
 
     public void OnCursorDelta(InputAction.CallbackContext context)
@@ -72,7 +72,8 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     private Character GetCharacterAtCursor()
     {
         Vector2 position = transform.position;
-        int count = Physics2D.OverlapBoxNonAlloc(position, Vector2.one, 0, _overlapResults);
+        Vector2 gridPosition = _grid.SnapWorldPositionToGrid(position);
+        int count = Physics2D.OverlapBoxNonAlloc(gridPosition, Vector2.one, 0, _overlapResults);
         return count > 0 ? _overlapResults[0].GetComponentInParent<Character>() : null;
     }
 }
