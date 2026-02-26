@@ -8,6 +8,15 @@ public class Character : MonoBehaviour
 
     public static event Action<Character> Clicked = delegate { };
 
+    public Vector2 Position
+    {
+        get => _rigidbody.position;
+        set
+        {
+            _rigidbody.MovePosition(value);
+        }
+    }
+
     [SerializeField] private Vector2 _direction;
     [SerializeField] private float _speed = 5;
     private Rigidbody2D _rigidbody;

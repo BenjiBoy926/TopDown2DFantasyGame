@@ -1,19 +1,25 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Grid))]
 public class Player : MonoBehaviour, DefaultActions.ICharacterActions
 {
+    private Grid _grid;
     private Character _character;
     private DefaultActions _actions;
 
     public void SetCharacter(Character character)
     {
+        if (_character)
+        {
+            _character.Position = _grid.SnapWorldPositionToGrid(_character.Position);
+        }
         _character = character;
     }
 
     private void Awake()
     {
-        _character = GetComponent<Character>();
+        _grid = GetComponent<Grid>();
         _actions = new();
         _actions.Character.AddCallbacks(this);
     }
