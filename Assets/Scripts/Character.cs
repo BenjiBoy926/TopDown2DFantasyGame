@@ -23,8 +23,7 @@ public class Character : MonoBehaviour
     public void SetDirection(Vector2 direction)
     {
         _direction = direction;
-        UpdateHorizontalDirection();
-        UpdateVerticalDirection();
+        RefreshAnimatorDirection();
     }
 
     public void Attack()
@@ -51,20 +50,17 @@ public class Character : MonoBehaviour
         _animator.SetIsRunning(Time.time < _timeToStopRunning);
     }
 
-    private void UpdateHorizontalDirection()
+    private void RefreshAnimatorDirection()
     {
-        if (_direction.x > DirectionChangeThreshold)
+        if (Mathf.Abs(_direction.y) > DirectionChangeThreshold || _direction.x > DirectionChangeThreshold)
         {
             _animator.SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Right);
         }
-        else if (_direction.x < -DirectionChangeThreshold)
+        else
         {
             _animator.SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Left);
         }
-    }
 
-    private void UpdateVerticalDirection()
-    {
         bool isMovingHorizontally = Mathf.Abs(_direction.x) > DirectionChangeThreshold;
         if (_direction.y > DirectionChangeThreshold)
         {
