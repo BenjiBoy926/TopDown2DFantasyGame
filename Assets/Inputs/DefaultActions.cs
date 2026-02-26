@@ -111,6 +111,15 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""195412fc-bdf5-49f0-8e85-1c7026d84df8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""CursorPosition"",
                     ""type"": ""Value"",
                     ""id"": ""ad11b5f5-342c-4768-b455-7a228568cc7c"",
@@ -393,6 +402,17 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""action"": ""CursorDelta"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4166bce6-0f24-4366-831f-a37d6c263789"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -403,6 +423,7 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Act = m_Player.FindAction("Act", throwIfNotFound: true);
+        m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
         m_Player_CursorPosition = m_Player.FindAction("CursorPosition", throwIfNotFound: true);
         m_Player_CursorDelta = m_Player.FindAction("CursorDelta", throwIfNotFound: true);
     }
@@ -487,6 +508,7 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Act;
+    private readonly InputAction m_Player_Cancel;
     private readonly InputAction m_Player_CursorPosition;
     private readonly InputAction m_Player_CursorDelta;
     /// <summary>
@@ -508,6 +530,10 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Act".
         /// </summary>
         public InputAction @Act => m_Wrapper.m_Player_Act;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Cancel".
+        /// </summary>
+        public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
         /// <summary>
         /// Provides access to the underlying input action "Player/CursorPosition".
         /// </summary>
@@ -548,6 +574,9 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
             @Act.started += instance.OnAct;
             @Act.performed += instance.OnAct;
             @Act.canceled += instance.OnAct;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
             @CursorPosition.started += instance.OnCursorPosition;
             @CursorPosition.performed += instance.OnCursorPosition;
             @CursorPosition.canceled += instance.OnCursorPosition;
@@ -571,6 +600,9 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
             @Act.started -= instance.OnAct;
             @Act.performed -= instance.OnAct;
             @Act.canceled -= instance.OnAct;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
             @CursorPosition.started -= instance.OnCursorPosition;
             @CursorPosition.performed -= instance.OnCursorPosition;
             @CursorPosition.canceled -= instance.OnCursorPosition;
@@ -631,6 +663,13 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnAct(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Cancel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCancel(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "CursorPosition" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

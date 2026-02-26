@@ -53,6 +53,11 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         }
     }
 
+    public void OnCancel(InputAction.CallbackContext context)
+    {
+        // Return unit back to original position
+    }
+
     public void OnCursorPosition(InputAction.CallbackContext context)
     {
         Vector2 screenPosition = context.ReadValue<Vector2>();

@@ -25,6 +25,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "195412fc-bdf5-49f0-8e85-1c7026d84df8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "CursorPosition",
                     "type": "Value",
                     "id": "ad11b5f5-342c-4768-b455-7a228568cc7c",
@@ -307,6 +316,17 @@
                     "action": "CursorDelta",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "4166bce6-0f24-4366-831f-a37d6c263789",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
