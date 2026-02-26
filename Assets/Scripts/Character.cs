@@ -4,7 +4,7 @@ using System;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Character : MonoBehaviour
 {
-    private const float DirectionChangeThreshold = 0.001f;
+    private const float DirectionChangeThreshold = 0.25f;
 
     public Vector2 Position
     {
@@ -22,7 +22,7 @@ public class Character : MonoBehaviour
 
     public void SetDirection(Vector2 direction)
     {
-        _direction = direction;
+        _direction = direction.normalized;
         RefreshAnimatorDirection();
     }
 
