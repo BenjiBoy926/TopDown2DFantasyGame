@@ -15,15 +15,13 @@ public class Character : MonoBehaviour
         }
     }
 
-    [SerializeField] private Vector2 _direction;
     private Rigidbody2D _rigidbody;
     private CharacterAnimator _animator;
     private float _timeToStopRunning;
 
     public void SetDirection(Vector2 direction)
     {
-        _direction = direction.normalized;
-        RefreshAnimatorDirection();
+        RefreshAnimatorDirection(direction);
     }
 
     public void Attack()
@@ -50,12 +48,13 @@ public class Character : MonoBehaviour
         _animator.SetIsRunning(Time.time < _timeToStopRunning);
     }
 
-    private void RefreshAnimatorDirection()
+    private void RefreshAnimatorDirection(Vector2 direction)
     {
-        float rightAngle = Vector2.Angle(_direction, Vector2.right);
-        float leftAngle = Vector2.Angle(_direction, Vector2.left);
-        float upAngle = Vector2.Angle(_direction, Vector2.up);
-        float downAngle = Vector2.Angle(_direction, Vector2.down);
+        direction = direction.normalized;
+        float rightAngle = Vector2.Angle(direction, Vector2.right);
+        float leftAngle = Vector2.Angle(direction, Vector2.left);
+        float upAngle = Vector2.Angle(direction, Vector2.up);
+        float downAngle = Vector2.Angle(direction, Vector2.down);
 
         if (rightAngle < AngleChangeThreshold)
         {
