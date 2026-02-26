@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Character : MonoBehaviour

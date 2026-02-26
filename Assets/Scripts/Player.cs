@@ -42,6 +42,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnAct(InputAction.CallbackContext context)
     {
+        if (!context.started) return;
         if (_character)
         {
             SetCharacter(null);
