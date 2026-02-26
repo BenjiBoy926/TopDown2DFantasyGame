@@ -2,11 +2,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Grid))]
-public class Player : MonoBehaviour, DefaultActions.ICharacterActions
+public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 {
     private Grid _grid;
     private Character _character;
     private DefaultActions _actions;
+    private Collider2D[] _overlapResults = new Collider2D[1];
 
     public void SetCharacter(Character character)
     {
@@ -21,7 +22,7 @@ public class Player : MonoBehaviour, DefaultActions.ICharacterActions
     {
         _grid = GetComponent<Grid>();
         _actions = new();
-        _actions.Character.AddCallbacks(this);
+        _actions.Player.AddCallbacks(this);
     }
 
     private void OnEnable()
@@ -43,11 +44,38 @@ public class Player : MonoBehaviour, DefaultActions.ICharacterActions
         }
     }
 
-    public void OnAttack(InputAction.CallbackContext context)
+    public void OnAct(InputAction.CallbackContext context)
     {
-        if (_character)
+        // Check whether we are selecting a new character, attacking, or waiting
+        Vector2 position = transform.position;
+        int count = Physics2D.OverlapBoxNonAlloc(position, Vector2.one, 0, _overlapResults);
+        if (count > 0)
+        {
+            Character hitCharacter = _overlapResults[0].GetComponentInParent<Character>();
+            if (hitCharacter && hitCharacter != _character)
+            {
+                SetCharacter(hitCharacter);
+            }
+            else if (_character)
+            {
+                _character.Attack();
+            }
+        }
+        else
         {
             _character.Attack();
         }
+    }
+
+    public void OnCursorPosition(InputAction.CallbackContext context)
+    {
+        Vector2 screenPosition = context.ReadValue<Vector2>();
+        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+        transform.position = _grid.SnapWorldPositionToGrid(worldPosition);
+    }
+
+    public void OnCursorDelta(InputAction.CallbackContext context)
+    {
+
     }
 }
