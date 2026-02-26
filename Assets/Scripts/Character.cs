@@ -6,8 +6,6 @@ public class Character : MonoBehaviour
 {
     private const float DirectionChangeThreshold = 0.001f;
 
-    public static event Action<Character> Clicked = delegate { };
-
     public Vector2 Position
     {
         get => _rigidbody.position;
@@ -46,20 +44,6 @@ public class Character : MonoBehaviour
         UpdateHorizontalDirection();
         UpdateVerticalDirection();
         _animator.SetIsRunning(_direction.sqrMagnitude > DirectionChangeThreshold);
-    }
-
-    private void FixedUpdate()
-    {
-        if (_animator.IsOneShotAnimationPlaying) return;
-
-        Vector2 position = _rigidbody.position;
-        Vector2 delta = _speed * Time.fixedDeltaTime * _direction;
-        _rigidbody.MovePosition(position + delta);
-    }
-
-    private void OnMouseDown()
-    {
-        Clicked.Invoke(this);
     }
 
     private void UpdateHorizontalDirection()

@@ -37,11 +37,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (_character)
-        {
-            Vector2 move = context.ReadValue<Vector2>();
-            _character.SetDirection(move);
-        }
+        
     }
 
     public void OnAct(InputAction.CallbackContext context)
@@ -62,6 +58,11 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         Vector2 screenPosition = context.ReadValue<Vector2>();
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
         transform.position = worldPosition;
+
+        if (_character)
+        {
+            _character.Position = worldPosition;
+        }
     }
 
     public void OnCursorDelta(InputAction.CallbackContext context)
