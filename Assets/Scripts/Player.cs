@@ -1,11 +1,15 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Character))]
 public class Player : MonoBehaviour, DefaultActions.ICharacterActions
 {
     private Character _character;
     private DefaultActions _actions;
+
+    public void SetCharacter(Character character)
+    {
+        _character = character;
+    }
 
     private void Awake()
     {
@@ -26,12 +30,18 @@ public class Player : MonoBehaviour, DefaultActions.ICharacterActions
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        Vector2 move = context.ReadValue<Vector2>();
-        _character.SetDirection(move);
+        if (_character)
+        {
+            Vector2 move = context.ReadValue<Vector2>();
+            _character.SetDirection(move);
+        }
     }
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        _character.Attack();
+        if (_character)
+        {
+            _character.Attack();
+        }
     }
 }

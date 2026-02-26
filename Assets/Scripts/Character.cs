@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
+using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Character : MonoBehaviour
 {
     private const float DirectionChangeThreshold = 0.001f;
+
+    public static event Action<Character> Clicked = delegate { };
 
     [SerializeField] private Vector2 _direction;
     [SerializeField] private float _speed = 5;
@@ -35,6 +38,11 @@ public class Character : MonoBehaviour
         UpdateVerticalDirection();
         _animator.SetIsRunning(_direction.sqrMagnitude > DirectionChangeThreshold);
         _rigidbody.velocity = _direction * _speed;
+    }
+
+    private void OnMouseDown()
+    {
+        Clicked.Invoke(this);
     }
 
     private void UpdateHorizontalDirection()
