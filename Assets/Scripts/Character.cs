@@ -46,7 +46,15 @@ public class Character : MonoBehaviour
         UpdateHorizontalDirection();
         UpdateVerticalDirection();
         _animator.SetIsRunning(_direction.sqrMagnitude > DirectionChangeThreshold);
-        _rigidbody.velocity = _direction * _speed;
+    }
+
+    private void FixedUpdate()
+    {
+        if (_animator.IsOneShotAnimationPlaying) return;
+
+        Vector2 position = _rigidbody.position;
+        Vector2 delta = _speed * Time.fixedDeltaTime * _direction;
+        _rigidbody.MovePosition(position + delta);
     }
 
     private void OnMouseDown()
