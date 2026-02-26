@@ -55,12 +55,14 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     public void OnCursorPosition(InputAction.CallbackContext context)
     {
         Vector2 screenPosition = context.ReadValue<Vector2>();
-        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-        transform.position = worldPosition;
+        Vector2 newPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+        Vector2 oldPosition = transform.position;
+        transform.position = newPosition;
 
         if (_character)
         {
-            _character.Position = worldPosition;
+            _character.Position = newPosition;
+            _character.SetDirection(newPosition - oldPosition);
         }
     }
 
