@@ -42,14 +42,13 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnAct(InputAction.CallbackContext context)
     {
-        Character characterAtCursor = GetCharacterAtCursor();
-        if (characterAtCursor && characterAtCursor != _character)
+        if (_character)
         {
-            SetCharacter(characterAtCursor);
+            SetCharacter(null);
         }
-        else if (_character)
+        else
         {
-            _character.Attack(); 
+            CaptureNewCharacter();
         }
     }
 
@@ -68,6 +67,15 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     public void OnCursorDelta(InputAction.CallbackContext context)
     {
 
+    }
+
+    private void CaptureNewCharacter()
+    {
+        Character characterAtCursor = GetCharacterAtCursor();
+        if (characterAtCursor)
+        {
+            SetCharacter(characterAtCursor);
+        }
     }
 
     private Character GetCharacterAtCursor()
