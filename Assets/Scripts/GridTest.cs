@@ -24,7 +24,7 @@ public class GridTest : MonoBehaviour
         Vector2Control positionControl = mouse.position;
         Vector2 screenPosition = positionControl.value;
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-        _cursorGridPosition = _grid.GetGridPosition(worldPosition);
-        _cursorSnappedToGrid = _grid.SnapWorldPositionToGrid(worldPosition);
+        _cursorGridPosition = _grid.GetGridCellIndex(worldPosition);
+        _cursorSnappedToGrid = _grid.SnapToGrid(worldPosition);
     }
 }

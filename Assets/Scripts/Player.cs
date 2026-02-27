@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Grid))]
 public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 {
+    [SerializeField] private Transform _gridPosition;
     private Grid _grid;
     private Character _character;
     private DefaultActions _actions;
@@ -13,7 +14,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     {
         if (_character)
         {
-            _character.Position = _grid.SnapWorldPositionToGrid(_character.Position);
+            _character.Position = _grid.SnapToGrid(_character.Position);
         }
         _character = character;
     }
@@ -57,6 +58,9 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         Vector2 oldPosition = transform.position;
         transform.position = newPosition;
 
+        Vector2 positionOnGrid = _grid.SnapToGrid(newPosition);
+        _gridPosition.position = positionOnGrid;
+
         if (_character)
         {
             _character.Position = newPosition;
@@ -89,7 +93,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     private Character GetCharacterAtCursor()
     {
         Vector2 position = transform.position;
-        Vector2 gridPosition = _grid.SnapWorldPositionToGrid(position);
+        Vector2 gridPosition = _grid.SnapToGrid(position);
         int count = Physics2D.OverlapBoxNonAlloc(gridPosition, Vector2.one, 0, _overlapResults);
         return count > 0 ? _overlapResults[0].GetComponentInParent<Character>() : null;
     }
