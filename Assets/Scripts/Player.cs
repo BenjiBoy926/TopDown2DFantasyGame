@@ -7,7 +7,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     private Grid _grid;
     private Character _character;
     private DefaultActions _actions;
-    private Collider2D[] _overlapResults = new Collider2D[1];
+    private readonly Collider2D[] _overlapResults = new Collider2D[1];
 
     public void SetCharacter(Character character)
     {
@@ -42,15 +42,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnAct(InputAction.CallbackContext context)
     {
-        if (!context.started) return;
-        if (_character)
-        {
-            SetCharacter(null);
-        }
-        else
-        {
-            CaptureNewCharacter();
-        }
+        
     }
 
     public void OnCancel(InputAction.CallbackContext context)
@@ -73,9 +65,16 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         }
     }
 
-    public void OnCursorDelta(InputAction.CallbackContext context)
+    public void OnCursorPress(InputAction.CallbackContext context)
     {
-
+        if (context.started && !_character)
+        {
+            CaptureNewCharacter();
+        }
+        if (context.canceled && _character)
+        {
+            SetCharacter(null);
+        }
     }
 
     private void CaptureNewCharacter()

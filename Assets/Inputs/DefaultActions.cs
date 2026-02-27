@@ -129,13 +129,13 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""CursorDelta"",
-                    ""type"": ""Value"",
-                    ""id"": ""c518ca76-37f2-40f5-9f1e-6cdbd8587345"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""name"": ""CursorPress"",
+                    ""type"": ""Button"",
+                    ""id"": ""60b33438-c0ed-475e-9ad2-5ad358ad2714"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -262,17 +262,6 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""7422d179-b710-4336-afdf-40df3d790b3d"",
-                    ""path"": ""<Pointer>/press"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Act"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""f1432eee-c2dc-43a8-a0f9-862faf194735"",
                     ""path"": ""<Pointer>/position"",
                     ""interactions"": """",
@@ -284,133 +273,23 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""1d0ce114-261a-4322-baf2-e0d8a0004359"",
-                    ""path"": ""<Pointer>/delta"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CursorDelta"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""ASDW"",
-                    ""id"": ""34ff6be1-5cbb-4e23-b1ba-4dce438a6aa4"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CursorDelta"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""9981631a-768d-4867-b961-8353cd09ae94"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CursorDelta"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""26970ce5-5d62-4137-953a-c7bfc0a9dabc"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CursorDelta"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""0f673603-8fc6-444c-9d57-d9d63b058034"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CursorDelta"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""b66cbc45-c143-4d44-a5d8-e34876723860"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CursorDelta"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Arrow Keys"",
-                    ""id"": ""4bff05dd-64a8-46b5-9407-59062ec30791"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CursorDelta"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""f5824e45-93c5-4cf0-8d42-312eda729667"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CursorDelta"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""10a0a4ee-0505-4d8f-aee6-2971223d9efd"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CursorDelta"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""b485199a-ef34-4015-b969-88d14c733c76"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CursorDelta"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""1edafb3a-787c-4384-ac9c-6ba2ab1818e5"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CursorDelta"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
                     ""id"": ""4166bce6-0f24-4366-831f-a37d6c263789"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1e737633-20fa-44cb-ac25-ebc6c04504dc"",
+                    ""path"": ""<Pointer>/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CursorPress"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -425,7 +304,7 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         m_Player_Act = m_Player.FindAction("Act", throwIfNotFound: true);
         m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
         m_Player_CursorPosition = m_Player.FindAction("CursorPosition", throwIfNotFound: true);
-        m_Player_CursorDelta = m_Player.FindAction("CursorDelta", throwIfNotFound: true);
+        m_Player_CursorPress = m_Player.FindAction("CursorPress", throwIfNotFound: true);
     }
 
     ~@DefaultActions()
@@ -510,7 +389,7 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Act;
     private readonly InputAction m_Player_Cancel;
     private readonly InputAction m_Player_CursorPosition;
-    private readonly InputAction m_Player_CursorDelta;
+    private readonly InputAction m_Player_CursorPress;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -539,9 +418,9 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @CursorPosition => m_Wrapper.m_Player_CursorPosition;
         /// <summary>
-        /// Provides access to the underlying input action "Player/CursorDelta".
+        /// Provides access to the underlying input action "Player/CursorPress".
         /// </summary>
-        public InputAction @CursorDelta => m_Wrapper.m_Player_CursorDelta;
+        public InputAction @CursorPress => m_Wrapper.m_Player_CursorPress;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -580,9 +459,9 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
             @CursorPosition.started += instance.OnCursorPosition;
             @CursorPosition.performed += instance.OnCursorPosition;
             @CursorPosition.canceled += instance.OnCursorPosition;
-            @CursorDelta.started += instance.OnCursorDelta;
-            @CursorDelta.performed += instance.OnCursorDelta;
-            @CursorDelta.canceled += instance.OnCursorDelta;
+            @CursorPress.started += instance.OnCursorPress;
+            @CursorPress.performed += instance.OnCursorPress;
+            @CursorPress.canceled += instance.OnCursorPress;
         }
 
         /// <summary>
@@ -606,9 +485,9 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
             @CursorPosition.started -= instance.OnCursorPosition;
             @CursorPosition.performed -= instance.OnCursorPosition;
             @CursorPosition.canceled -= instance.OnCursorPosition;
-            @CursorDelta.started -= instance.OnCursorDelta;
-            @CursorDelta.performed -= instance.OnCursorDelta;
-            @CursorDelta.canceled -= instance.OnCursorDelta;
+            @CursorPress.started -= instance.OnCursorPress;
+            @CursorPress.performed -= instance.OnCursorPress;
+            @CursorPress.canceled -= instance.OnCursorPress;
         }
 
         /// <summary>
@@ -678,11 +557,11 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCursorPosition(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "CursorDelta" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "CursorPress" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnCursorDelta(InputAction.CallbackContext context);
+        void OnCursorPress(InputAction.CallbackContext context);
     }
 }
