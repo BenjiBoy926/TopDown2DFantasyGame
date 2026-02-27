@@ -16,7 +16,6 @@ public class Character : MonoBehaviour
 
     private Rigidbody2D _rigidbody;
     private CharacterAnimator _animator;
-    private float _timeToStopRunning;
 
     public void SetDirection(Vector2 direction)
     {
@@ -29,22 +28,15 @@ public class Character : MonoBehaviour
         _animator.Attack();
     }
 
-    public void RunForTime(float time)
+    public void SetIsRunning(bool isRunning)
     {
-        _timeToStopRunning = Time.time + time;
+        _animator.SetIsRunning(isRunning);
     }
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponentInChildren<CharacterAnimator>();
-    }
-
-    private void Update()
-    {
-        if (_animator.IsOneShotAnimationPlaying) return;
-
-        _animator.SetIsRunning(Time.time < _timeToStopRunning);
     }
 
     private void RefreshAnimatorDirection(Vector2 direction)

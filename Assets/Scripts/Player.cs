@@ -15,8 +15,13 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         if (_character)
         {
             _character.Position = _grid.SnapToGrid(_character.Position);
+            _character.SetIsRunning(false);
         }
         _character = character;
+        if (_character)
+        {
+            _character.SetIsRunning(true);
+        }
     }
 
     private void Awake()
@@ -65,7 +70,6 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         {
             _character.Position = newPosition;
             _character.SetDirection(newPosition - oldPosition);
-            _character.RunForTime(.5f);
         }
     }
 
@@ -92,8 +96,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     private Character GetCharacterAtCursor()
     {
-        Vector2 position = transform.position;
-        Vector2 gridPosition = _grid.SnapToGrid(position);
+        Vector2 gridPosition = _gridPosition.position;
         int count = Physics2D.OverlapBoxNonAlloc(gridPosition, Vector2.one, 0, _overlapResults);
         return count > 0 ? _overlapResults[0].GetComponentInParent<Character>() : null;
     }
