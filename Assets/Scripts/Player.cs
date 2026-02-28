@@ -7,7 +7,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     [SerializeField] private Transform _gridPosition;
     [SerializeField] private float _speed = 5;
 
-    private Grid _grid;
+    private Battlefield _battlefield;
     private DefaultActions _actions;
     private readonly Collider2D[] _overlapResults = new Collider2D[1];
 
@@ -17,7 +17,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     private void Awake()
     {
-        _grid = GetComponentInParent<Grid>();
+        _battlefield = GetComponentInParent<Battlefield>();
         _actions = new();
         _actions.Player.AddCallbacks(this);
     }
@@ -90,7 +90,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         transform.Translate(offset);
 
         Vector2 newPosition = transform.position;
-        _gridPosition.position = _grid.Round(newPosition);
+        _gridPosition.position = _battlefield.SnapToGrid(newPosition);
         if (_character)
         {
             _character.Position = newPosition;
@@ -107,7 +107,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
             _character.SetDirection(newPosition - oldPosition);
         }
         transform.position = newPosition;
-        _gridPosition.position = _grid.Round(newPosition);
+        _gridPosition.position = _battlefield.SnapToGrid(newPosition);
     }
 
     private void StartMove()
