@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using DG.Tweening;
 
 public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 {
     [SerializeField] private Transform _gridPosition;
     private Grid _grid;
     private Character _character;
+    private Vector2 _capturePosition;
     private DefaultActions _actions;
     private readonly Collider2D[] _overlapResults = new Collider2D[1];
 
@@ -88,8 +90,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         if (_character)
         {
             // TODO: change to coroutine that runs in character to smooth move
-            _character.Position = _gridPosition.position;
-            _character.SetIsRunning(false);
+            _character.RunTo(_gridPosition.position, Ease.OutCirc, 0.35f);
             SetCharacter(null);
         }
     }
@@ -98,8 +99,8 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     {
         if (_character)
         {
-            // TODO: move character back to starting position
-            // SetCharacter(null);
+            _character.RunTo(_capturePosition, Ease.OutBack, 0.35f);
+            SetCharacter(null);
         }
     }
 
@@ -108,6 +109,8 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         _character = character;
         if (_character)
         {
+            _capturePosition = _character.Position;
+            _character.Position = transform.position;
             _character.SetIsRunning(true);
         }
     }

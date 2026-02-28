@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections;
+using DG.Tweening;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Character : MonoBehaviour
@@ -33,10 +35,24 @@ public class Character : MonoBehaviour
         _animator.SetIsRunning(isRunning);
     }
 
+    public void RunTo(Vector2 position, Ease ease, float duration)
+    {
+        StopAllCoroutines();
+        StartCoroutine(GetRunToSequence(position, ease, duration));
+    }
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponentInChildren<CharacterAnimator>();
+    }
+
+    private IEnumerator GetRunToSequence(Vector2 target, Ease ease, float duration)
+    {
+        _rigidbody.DOMove(target, duration).SetEase(ease);
+        SetIsRunning(true);
+        yield return new WaitForSeconds(duration);
+        SetIsRunning(false);
     }
 
     private void RefreshAnimatorDirection(Vector2 direction)
