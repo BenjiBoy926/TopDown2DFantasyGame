@@ -5,6 +5,7 @@ using DG.Tweening;
 public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 {
     [SerializeField] private Transform _gridPosition;
+    [SerializeField] private float _speed = 5;
     private Grid _grid;
     private Character _character;
     private Vector2 _capturePosition;
@@ -30,12 +31,21 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        
+        Vector2 direction = context.ReadValue<Vector2>();
+        SlidePosition(direction);
     }
 
     public void OnAct(InputAction.CallbackContext context)
     {
-        
+        if (!context.started) return;
+        if (!_character)
+        {
+            StartMove();
+        }
+        else
+        {
+            FinishMove();
+        }
     }
 
     public void OnCancel(InputAction.CallbackContext context)
@@ -56,10 +66,20 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         {
             StartMove();
         }
-        if (context.canceled && _character)
+        else if (context.canceled && _character)
         {
             FinishMove();
         }
+    }
+
+    private void SlidePosition(Vector2 direction)
+    {
+        if (_character)
+        {
+            _character.SetDirection(direction);
+        }
+        transform.Translate(_speed * Time.deltaTime * direction);
+        _gridPosition.position = _grid.Round(transform.position);
     }
 
     private void SetPosition(Vector2 newPosition)
@@ -71,9 +91,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
             _character.SetDirection(newPosition - oldPosition);
         }
         transform.position = newPosition;
-
-        Vector2 positionOnGrid = _grid.Round(newPosition);
-        _gridPosition.position = positionOnGrid;
+        _gridPosition.position = _grid.Round(newPosition);
     }
 
     private void StartMove()
@@ -89,7 +107,6 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     {
         if (_character)
         {
-            // TODO: change to coroutine that runs in character to smooth move
             _character.RunTo(_gridPosition.position, Ease.OutCirc, 0.35f);
             SetCharacter(null);
         }
