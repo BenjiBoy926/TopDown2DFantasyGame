@@ -5,7 +5,7 @@ using DG.Tweening;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Character : MonoBehaviour
 {
-    private const float AngleChangeThreshold = 15f;
+    private const float AngleChangeThreshold = 45f;
 
     public Vector2 Position
     {
@@ -37,6 +37,7 @@ public class Character : MonoBehaviour
 
     public void RunTo(Vector2 position, Ease ease, float duration)
     {
+        SetDirection(position - Position);
         StopAllCoroutines();
         StartCoroutine(GetRunToSequence(position, ease, duration));
     }
