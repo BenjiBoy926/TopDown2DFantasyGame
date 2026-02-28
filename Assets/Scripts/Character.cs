@@ -5,8 +5,6 @@ using DG.Tweening;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Character : MonoBehaviour
 {
-    private const float AngleChangeThreshold = 45f;
-
     public Vector2 Position
     {
         get => _rigidbody.position;
@@ -59,27 +57,26 @@ public class Character : MonoBehaviour
     private void RefreshAnimatorDirection(Vector2 direction)
     {
         direction = direction.normalized;
-        float rightAngle = Vector2.Angle(direction, Vector2.right);
-        float leftAngle = Vector2.Angle(direction, Vector2.left);
-        float upAngle = Vector2.Angle(direction, Vector2.up);
-        float downAngle = Vector2.Angle(direction, Vector2.down);
 
-        if (rightAngle < AngleChangeThreshold)
+        bool isHorizontal = Mathf.Abs(direction.x) > Mathf.Abs(direction.y);
+        bool isVertical = !isHorizontal;
+
+        if (isHorizontal && direction.x > 0)
         {
             _animator.SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Right);
             _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Side);
         }
-        if (leftAngle < AngleChangeThreshold)
+        if (isHorizontal && direction.x < 0)
         {
             _animator.SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Left);
             _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Side);
         }
-        if (upAngle < AngleChangeThreshold)
+        if (isVertical && direction.y > 0)
         {
             _animator.SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Right);
             _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Up);
         }
-        if (downAngle < AngleChangeThreshold)
+        if (isVertical && direction.y < 0)
         {
             _animator.SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Right);
             _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Down);
