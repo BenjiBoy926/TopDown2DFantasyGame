@@ -6,11 +6,14 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 {
     [SerializeField] private Transform _gridPosition;
     [SerializeField] private float _speed = 5;
+
     private Grid _grid;
-    private Character _character;
-    private Vector2 _capturePosition;
     private DefaultActions _actions;
     private readonly Collider2D[] _overlapResults = new Collider2D[1];
+
+    private Vector2 _moveDirection;
+    private Character _character;
+    private Vector2 _capturePosition;
 
     private void Awake()
     {
@@ -29,10 +32,18 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         _actions.Disable();
     }
 
+    private void Update()
+    {
+        if (_moveDirection.sqrMagnitude > 0.01f)
+        {
+            Vector2 offsetThisFrame = _speed * Time.deltaTime * _moveDirection;
+            SlidePosition(offsetThisFrame);
+        }
+    }
+
     public void OnMove(InputAction.CallbackContext context)
     {
-        Vector2 direction = context.ReadValue<Vector2>();
-        SlidePosition(direction);
+       _moveDirection = context.ReadValue<Vector2>();
     }
 
     public void OnAct(InputAction.CallbackContext context)
@@ -72,14 +83,19 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         }
     }
 
-    private void SlidePosition(Vector2 direction)
+    // NOTE: slight repetition between SlidePosition and SetPosition
+    // to avoid expensive calls to transform.position
+    private void SlidePosition(Vector2 offset)
     {
+        transform.Translate(offset);
+
+        Vector2 newPosition = transform.position;
+        _gridPosition.position = _grid.Round(newPosition);
         if (_character)
         {
-            _character.SetDirection(direction);
+            _character.Position = newPosition;
+            _character.SetDirection(offset);
         }
-        transform.Translate(_speed * Time.deltaTime * direction);
-        _gridPosition.position = _grid.Round(transform.position);
     }
 
     private void SetPosition(Vector2 newPosition)
