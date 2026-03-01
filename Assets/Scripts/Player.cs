@@ -124,6 +124,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         if (_character)
         {
             _character.RunTo(_gridPosition.position, Ease.OutCirc, 0.35f);
+            _battlefield.RefreshOccupantCell(_character);
             SetCharacter(null);
         }
     }
