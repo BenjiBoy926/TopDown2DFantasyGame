@@ -150,8 +150,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     private Character GetCharacterAtCursor()
     {
-        Vector2 gridPosition = _gridPosition.position;
-        int count = Physics2D.OverlapBoxNonAlloc(gridPosition, Vector2.one, 0, _overlapResults);
-        return count > 0 ? _overlapResults[0].GetComponentInParent<Character>() : null;
+        Vector3Int cell = _battlefield.WorldToCellRounded(_gridPosition.position);
+        return _battlefield.GetOccupant(cell);
     }
 }
