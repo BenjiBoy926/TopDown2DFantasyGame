@@ -9,7 +9,6 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     private Battlefield _battlefield;
     private DefaultActions _actions;
-    private readonly Collider2D[] _overlapResults = new Collider2D[1];
 
     private Vector2 _moveDirection;
     private Character _character;
