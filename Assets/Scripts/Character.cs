@@ -16,6 +16,7 @@ public class Character : MonoBehaviour
 
     private Rigidbody2D _rigidbody;
     private CharacterAnimator _animator;
+    private Battlefield _battlefield;
 
     public void SetDirection(Vector2 direction)
     {
@@ -44,6 +45,23 @@ public class Character : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponentInChildren<CharacterAnimator>();
+    }
+
+    private void OnEnable()
+    {
+        _battlefield = GetComponentInParent<Battlefield>();
+        if (_battlefield)
+        {
+            _battlefield.Register(this);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (_battlefield)
+        {
+            _battlefield.Unregister(this);
+        }    
     }
 
     private IEnumerator GetRunToSequence(Vector2 target, Ease ease, float duration)
