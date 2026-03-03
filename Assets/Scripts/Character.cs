@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using DG.Tweening;
+using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Character : MonoBehaviour
 {
+    public static event Action<Character> UsedMove = delegate { };
+
     public Vector2 Position
     {
         get => _rigidbody.position;
@@ -130,6 +133,7 @@ public class Character : MonoBehaviour
         if (hasMovedThisTurn)
         {
             _sprite.DOColor(_usedMoveFadeColor, _usedMoveFadeDuration);
+            UsedMove(this);
         }
         else
         {

@@ -1,9 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 [RequireComponent(typeof(Grid))]
 public class Battlefield : MonoBehaviour
 {
+    public event Action<Character> CharacterAdded = delegate { };
+    public event Action<Character> CharacterRemoved = delegate { };
+
     public IReadOnlyCollection<Character> Characters => _characters;
 
     private Grid _grid;
@@ -18,6 +22,8 @@ public class Battlefield : MonoBehaviour
         _occupantToCell[character] = cell;
         _cellToOccupant[cell] = character;
         _characters.Add(character);
+
+        CharacterAdded(character);
     }
 
     public void Unregister(Character character)
@@ -26,6 +32,8 @@ public class Battlefield : MonoBehaviour
         _occupantToCell.Remove(character);
         _cellToOccupant.Remove(cell);
         _characters.Remove(character);
+
+        CharacterRemoved(character);
     }
 
     public Vector3 SnapToGrid(Vector3 position)
