@@ -123,7 +123,8 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         if (!_character) return;
 
         Vector3Int intendedCell = _battlefield.WorldToCellRounded(_character.Position);
-        if (_battlefield.GetOccupant(intendedCell))
+        Character occupant = _battlefield.GetOccupant(intendedCell);
+        if (occupant && occupant != _character)
         {
             ReturnCharacter();
         }
