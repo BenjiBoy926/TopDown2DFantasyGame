@@ -4,7 +4,10 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Grid))]
 public class Battlefield : MonoBehaviour
 {
+    public IReadOnlyCollection<Character> Characters => _characters;
+
     private Grid _grid;
+    private readonly HashSet<Character> _characters = new();
     private readonly Dictionary<Vector3Int, Character> _cellToOccupant = new();
     private readonly Dictionary<Character, Vector3Int> _occupantToCell = new();
 
@@ -14,6 +17,7 @@ public class Battlefield : MonoBehaviour
         Vector3Int cell = WorldToCellRounded(character.Position);
         _occupantToCell[character] = cell;
         _cellToOccupant[cell] = character;
+        _characters.Add(character);
     }
 
     public void Unregister(Character character)
@@ -21,6 +25,7 @@ public class Battlefield : MonoBehaviour
         Vector3Int cell = _occupantToCell[character];
         _occupantToCell.Remove(character);
         _cellToOccupant.Remove(cell);
+        _characters.Remove(character);
     }
 
     public Vector3 SnapToGrid(Vector3 position)

@@ -112,7 +112,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     private void StartMove()
     {
         Character characterAtCursor = GetCharacterAtCursor();
-        if (characterAtCursor)
+        if (characterAtCursor && !characterAtCursor.HasMovedThisTurn)
         {
             SetCharacter(characterAtCursor);
         }
@@ -139,6 +139,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         {
             _character.RunTo(_gridPosition.position, Ease.OutCirc, 0.35f);
             _battlefield.RefreshOccupantCell(_character);
+            _character.UseMove();
             SetCharacter(null);
         }
     }

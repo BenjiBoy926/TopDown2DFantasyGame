@@ -13,10 +13,14 @@ public class Character : MonoBehaviour
             _rigidbody.MovePosition(value);
         }
     }
+    public Faction Faction => _faction;
+    public bool HasMovedThisTurn => _hasMovedThisTurn;
 
+    [SerializeField] private Faction _faction;
     private Rigidbody2D _rigidbody;
     private CharacterAnimator _animator;
     private Battlefield _battlefield;
+    private bool _hasMovedThisTurn = false;
 
     public void SetDirection(Vector2 direction)
     {
@@ -41,6 +45,11 @@ public class Character : MonoBehaviour
         StartCoroutine(GetRunToSequence(position, ease, duration));
     }
 
+    public void UseMove()
+    {
+        _hasMovedThisTurn = true;
+    }
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
@@ -49,7 +58,6 @@ public class Character : MonoBehaviour
 
     private void OnEnable()
     {
-        _battlefield = GetComponentInParent<Battlefield>();
         if (_battlefield)
         {
             _battlefield.Register(this);
@@ -62,6 +70,15 @@ public class Character : MonoBehaviour
         {
             _battlefield.Unregister(this);
         }    
+    }
+
+    private void Start()
+    {
+        _battlefield = GetComponentInParent<Battlefield>();
+        if (_battlefield)
+        {
+            _battlefield.Register(this);
+        }
     }
 
     private IEnumerator GetRunToSequence(Vector2 target, Ease ease, float duration)
