@@ -17,8 +17,11 @@ public class Character : MonoBehaviour
     public bool HasMovedThisTurn => _hasMovedThisTurn;
 
     [SerializeField] private Faction _faction;
+    [SerializeField] private Color _usedMoveFadeColor = Color.gray;
+    [SerializeField] private float _usedMoveFadeDuration = 0.35f;
     private Rigidbody2D _rigidbody;
     private CharacterAnimator _animator;
+    private SpriteRenderer _sprite;
     private Battlefield _battlefield;
     private bool _hasMovedThisTurn = false;
 
@@ -47,13 +50,14 @@ public class Character : MonoBehaviour
 
     public void UseMove()
     {
-        _hasMovedThisTurn = true;
+        SetHasMovedThisTurn(true);
     }
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponentInChildren<CharacterAnimator>();
+        _sprite = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void OnEnable()
@@ -115,6 +119,21 @@ public class Character : MonoBehaviour
         {
             _animator.SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Right);
             _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Down);
+        }
+    }
+
+    private void SetHasMovedThisTurn(bool hasMovedThisTurn)
+    {
+        if (_hasMovedThisTurn == hasMovedThisTurn) return;
+
+        _hasMovedThisTurn = hasMovedThisTurn;
+        if (hasMovedThisTurn)
+        {
+            _sprite.DOColor(_usedMoveFadeColor, _usedMoveFadeDuration);
+        }
+        else
+        {
+            _sprite.DOColor(Color.white, _usedMoveFadeDuration);
         }
     }
 }
