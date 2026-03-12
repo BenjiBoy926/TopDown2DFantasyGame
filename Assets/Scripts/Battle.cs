@@ -7,9 +7,62 @@ public class Battle : MonoBehaviour
     private Faction CurrentFaction => _factions[_currentFactionIndex];
 
     private Battlefield _field;
+    private readonly HashSet<Character> _characters = new();
     private readonly List<Faction> _factions = new(2);
     private int _currentFactionIndex = 0;
     private readonly List<Character> _characterListScratch = new();
+
+    public void Register(Character obj)
+    {
+        _characters.Add(obj);
+        _field.Register(obj);
+
+        Faction faction = obj.Faction;
+        if (!_factions.Contains(faction))
+        {
+            _factions.Add(faction);
+        }
+    }
+
+    public void Unregister(Character obj)
+    {
+        _characters.Remove(obj);
+        _field.Unregister(obj);
+        GetCharactersInFaction(obj.Faction, _characterListScratch);
+        if (_characterListScratch.Count == 0)
+        {
+            _factions.Remove(obj.Faction);
+        }
+    }
+
+    public void StartNextTurn()
+    {
+        _currentFactionIndex = (_currentFactionIndex + 1) % _factions.Count;
+        foreach (Character character in _characters)
+        {
+            character.RestoreMove();
+        }
+    }
+
+    public Vector3 SnapToGrid(Vector3 position)
+    {
+        return _field.SnapToGrid(position);
+    }
+
+    public Vector3Int WorldToCellRounded(Vector3 position)
+    {
+        return _field.WorldToCellRounded(position);
+    }
+
+    public Character GetOccupant(Vector3Int cell)
+    {
+        return _field.GetOccupant(cell);
+    }
+
+    public void RefreshOccupantCell(Character character)
+    {
+        _field.RefreshOccupantCell(character);
+    }
 
     private void Awake()
     {
@@ -18,40 +71,12 @@ public class Battle : MonoBehaviour
 
     private void OnEnable()
     {
-        _field.CharacterAdded += OnCharacterAdded;
-        _field.CharacterRemoved += OnCharacterRemoved;
         Character.UsedMove += OnCharacterUsedMove;
-        LoadFactions();
     }
 
     private void OnDisable()
     {
-        _field.CharacterAdded -= OnCharacterAdded;
-        _field.CharacterRemoved -= OnCharacterRemoved;
         Character.UsedMove -= OnCharacterUsedMove;
-    }
-
-    private void LoadFactions()
-    {
-        _factions.Clear();
-        foreach (Character character in _field.Characters)
-        {
-            AddCharacterFaction(character);
-        }
-    }
-
-    private void OnCharacterAdded(Character obj)
-    {
-        AddCharacterFaction(obj);
-    }
-
-    private void OnCharacterRemoved(Character obj)
-    {
-        GetCharactersInFaction(obj.Faction, _characterListScratch);
-        if (_characterListScratch.Count == 0)
-        {
-            _factions.Remove(obj.Faction);
-        }
     }
 
     private void OnCharacterUsedMove(Character obj)
@@ -59,15 +84,6 @@ public class Battle : MonoBehaviour
         if (CountCharactersThatCanStillMove(CurrentFaction) == 0)
         {
             StartNextTurn();
-        }
-    }
-
-    private void StartNextTurn()
-    {
-        _currentFactionIndex = (_currentFactionIndex + 1) % _factions.Count;
-        foreach (Character character in _field.Characters)
-        {
-            character.RestoreMove();
         }
     }
 
@@ -99,7 +115,7 @@ public class Battle : MonoBehaviour
     private void GetCharactersInFaction(Faction faction, List<Character> characters)
     {
         characters.Clear();
-        foreach (Character character in _field.Characters)
+        foreach (Character character in _characters)
         {
             if (character.Faction == faction)
             {

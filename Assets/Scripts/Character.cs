@@ -25,7 +25,7 @@ public class Character : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private CharacterAnimator _animator;
     private SpriteRenderer _sprite;
-    private Battlefield _battlefield;
+    private Battle _battle;
     private bool _hasMovedThisTurn = false;
 
     public void SetDirection(Vector2 direction)
@@ -70,26 +70,26 @@ public class Character : MonoBehaviour
 
     private void OnEnable()
     {
-        if (_battlefield)
+        if (_battle)
         {
-            _battlefield.Register(this);
+            _battle.Register(this);
         }
     }
 
     private void OnDisable()
     {
-        if (_battlefield)
+        if (_battle)
         {
-            _battlefield.Unregister(this);
+            _battle.Unregister(this);
         }    
     }
 
     private void Start()
     {
-        _battlefield = GetComponentInParent<Battlefield>();
-        if (_battlefield)
+        _battle = GetComponentInParent<Battle>();
+        if (_battle)
         {
-            _battlefield.Register(this);
+            _battle.Register(this);
         }
     }
 

@@ -7,7 +7,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     [SerializeField] private Transform _gridPosition;
     [SerializeField] private float _speed = 5;
 
-    private Battlefield _battlefield;
+    private Battle _battle;
     private DefaultActions _actions;
 
     private Vector2 _moveDirection;
@@ -16,7 +16,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     private void Awake()
     {
-        _battlefield = GetComponentInParent<Battlefield>();
+        _battle = GetComponentInParent<Battle>();
         _actions = new();
         _actions.Player.AddCallbacks(this);
     }
@@ -89,7 +89,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         transform.Translate(offset);
 
         Vector2 newPosition = transform.position;
-        _gridPosition.position = _battlefield.SnapToGrid(newPosition);
+        _gridPosition.position = _battle.SnapToGrid(newPosition);
         if (_character)
         {
             _character.Position = newPosition;
@@ -106,7 +106,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
             _character.SetDirection(newPosition - oldPosition);
         }
         transform.position = newPosition;
-        _gridPosition.position = _battlefield.SnapToGrid(newPosition);
+        _gridPosition.position = _battle.SnapToGrid(newPosition);
     }
 
     private void StartMove()
@@ -122,8 +122,8 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     {
         if (!_character) return;
 
-        Vector3Int intendedCell = _battlefield.WorldToCellRounded(_character.Position);
-        Character occupant = _battlefield.GetOccupant(intendedCell);
+        Vector3Int intendedCell = _battle.WorldToCellRounded(_character.Position);
+        Character occupant = _battle.GetOccupant(intendedCell);
         if (occupant && occupant != _character)
         {
             ReturnCharacter();
@@ -139,7 +139,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         if (_character)
         {
             _character.RunTo(_gridPosition.position, Ease.OutCirc, 0.35f);
-            _battlefield.RefreshOccupantCell(_character);
+            _battle.RefreshOccupantCell(_character);
             _character.UseMove();
             SetCharacter(null);
         }
@@ -167,7 +167,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     private Character GetCharacterAtCursor()
     {
-        Vector3Int cell = _battlefield.WorldToCellRounded(_gridPosition.position);
-        return _battlefield.GetOccupant(cell);
+        Vector3Int cell = _battle.WorldToCellRounded(_gridPosition.position);
+        return _battle.GetOccupant(cell);
     }
 }
