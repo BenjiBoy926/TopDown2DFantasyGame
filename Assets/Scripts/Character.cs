@@ -56,6 +56,11 @@ public class Character : MonoBehaviour
         SetHasMovedThisTurn(true);
     }
 
+    public void RestoreMove()
+    {
+        SetHasMovedThisTurn(false);
+    }
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
