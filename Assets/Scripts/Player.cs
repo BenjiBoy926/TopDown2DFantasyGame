@@ -60,7 +60,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnCancel(InputAction.CallbackContext context)
     {
-        ReturnCharacter();
+        CancelMove();
     }
 
     public void OnCursorPosition(InputAction.CallbackContext context)
@@ -126,26 +126,24 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         Character occupant = _battle.GetOccupant(intendedCell);
         if (occupant && occupant != _character)
         {
-            ReturnCharacter();
+            CancelMove();
         }
         else
         {
-            PlaceCharacter();
+            ConfirmMove();
         }
     }
 
-    private void PlaceCharacter()
+    private void ConfirmMove()
     {
         if (_character)
         {
-            _character.RunTo(_gridPosition.position, Ease.OutCirc, 0.35f);
-            _battle.RefreshOccupantCell(_character);
-            _character.UseMove();
+            _character.Wait();
             SetCharacter(null);
         }
     }
 
-    private void ReturnCharacter()
+    private void CancelMove()
     {
         if (_character)
         {

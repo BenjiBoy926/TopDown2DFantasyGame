@@ -46,9 +46,14 @@ public class Character : MonoBehaviour
 
     public void RunTo(Vector2 position, Ease ease, float duration)
     {
-        SetDirection(position - Position);
         StopAllCoroutines();
         StartCoroutine(GetRunToSequence(position, ease, duration));
+    }
+
+    public void Wait()
+    {
+        StopAllCoroutines();
+        StartCoroutine(GetWaitSequence());
     }
 
     public void UseMove()
@@ -93,11 +98,19 @@ public class Character : MonoBehaviour
         }
     }
 
+    private IEnumerator GetWaitSequence()
+    {
+        Vector2 gridPosition = _battle.SnapToGrid(Position);
+        _battle.RefreshOccupantCell(this);
+        yield return GetRunToSequence(gridPosition, Ease.OutCirc, 0.35f);
+        UseMove();
+    }
+
     private IEnumerator GetRunToSequence(Vector2 target, Ease ease, float duration)
     {
-        _rigidbody.DOMove(target, duration).SetEase(ease);
+        SetDirection(target - Position);
         SetIsRunning(true);
-        yield return new WaitForSeconds(duration);
+        yield return _rigidbody.DOMove(target, duration).SetEase(ease);
         SetIsRunning(false);
     }
 
