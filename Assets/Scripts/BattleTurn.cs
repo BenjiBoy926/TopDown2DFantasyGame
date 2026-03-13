@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BattleTurn : MonoBehaviour
 {
-    private Faction CurrentFaction => _factions[_currentFactionIndex];
+    public Faction CurrentFaction => _factions[_currentFactionIndex];
+    public bool IsAnimationPlaying => _animation && _animation.IsPlaying;
 
+    [SerializeField] private BattleTurnChangeAnimation _animation;
     private readonly HashSet<Character> _characters = new();
     private readonly List<Faction> _factions = new(2);
     private int _currentFactionIndex = 0;
@@ -38,6 +41,7 @@ public class BattleTurn : MonoBehaviour
         {
             character.RestoreMove();
         }
+        _animation.Play(CurrentFaction);
     }
 
     private void OnEnable()

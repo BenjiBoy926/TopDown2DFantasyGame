@@ -4,6 +4,8 @@
 [RequireComponent(typeof(BattleTurn))]
 public class Battle : MonoBehaviour
 {
+    public bool IsTurnChangeAnimationPlaying => _turn.IsAnimationPlaying;
+
     private Battlefield _field;
     private BattleTurn _turn;
 

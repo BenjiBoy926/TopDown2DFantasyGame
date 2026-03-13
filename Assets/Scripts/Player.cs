@@ -4,6 +4,8 @@ using DG.Tweening;
 
 public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 {
+    private bool IsInputAllowed => !_battle.IsTurnChangeAnimationPlaying;
+
     [SerializeField] private Transform _gridPosition;
     [SerializeField] private float _speed = 5;
 
@@ -111,6 +113,8 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     private void StartMove()
     {
+        if (!IsInputAllowed) return;
+
         Character characterAtCursor = GetCharacterAtCursor();
         if (characterAtCursor && !characterAtCursor.HasMovedThisTurn)
         {
