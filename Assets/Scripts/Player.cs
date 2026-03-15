@@ -13,7 +13,8 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     private DefaultActions _actions;
 
     private Vector2 _moveDirection;
-    private Character _character;
+    private Character _activeCharacter;
+    private Character _hoveredCharacter;
     private Vector2 _capturePosition;
 
     private void Awake()
@@ -50,7 +51,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     public void OnAct(InputAction.CallbackContext context)
     {
         if (!context.started) return;
-        if (!_character)
+        if (!_activeCharacter)
         {
             StartMove();
         }
@@ -74,11 +75,11 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnCursorPress(InputAction.CallbackContext context)
     {
-        if (context.started && !_character)
+        if (context.started && !_activeCharacter)
         {
             StartMove();
         }
-        else if (context.canceled && _character)
+        else if (context.canceled && _activeCharacter)
         {
             FinishMove();
         }
@@ -92,23 +93,45 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
         Vector2 newPosition = transform.position;
         _gridPosition.position = _battle.SnapToGrid(newPosition);
-        if (_character)
+        if (_activeCharacter)
         {
-            _character.Position = newPosition;
-            _character.SetDirection(offset);
+            _activeCharacter.Position = newPosition;
+            _activeCharacter.SetDirection(offset);
         }
+        UpdateHoveredCharacter();
     }
 
     private void SetPosition(Vector2 newPosition)
     {
-        if (_character)
+        if (_activeCharacter)
         {
             Vector2 oldPosition = transform.position;
-            _character.Position = newPosition;
-            _character.SetDirection(newPosition - oldPosition);
+            _activeCharacter.Position = newPosition;
+            _activeCharacter.SetDirection(newPosition - oldPosition);
         }
         transform.position = newPosition;
         _gridPosition.position = _battle.SnapToGrid(newPosition);
+        UpdateHoveredCharacter();
+    }
+
+    private void UpdateHoveredCharacter()
+    {
+        SetHoveredCharacter(GetCharacterAtCursor());
+    }
+
+    private void SetHoveredCharacter(Character hoveredCharacter)
+    {
+        if (hoveredCharacter == _hoveredCharacter) return;
+    
+        if (_hoveredCharacter)
+        {
+            _hoveredCharacter.HideRange();
+        }
+        _hoveredCharacter = hoveredCharacter;
+        if (_hoveredCharacter)
+        {
+            _hoveredCharacter.ShowRange();
+        }
     }
 
     private void StartMove()
@@ -124,11 +147,11 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     private void FinishMove()
     {
-        if (!_character) return;
+        if (!_activeCharacter) return;
 
-        Vector3Int intendedCell = _battle.WorldToCellRounded(_character.Position);
+        Vector3Int intendedCell = _battle.WorldToCellRounded(_activeCharacter.Position);
         Character occupant = _battle.GetOccupant(intendedCell);
-        if (occupant && occupant != _character)
+        if (occupant && occupant != _activeCharacter)
         {
             CancelMove();
         }
@@ -140,30 +163,30 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     private void ConfirmMove()
     {
-        if (_character)
+        if (_activeCharacter)
         {
-            _character.Wait();
+            _activeCharacter.Wait();
             SetCharacter(null);
         }
     }
 
     private void CancelMove()
     {
-        if (_character)
+        if (_activeCharacter)
         {
-            _character.RunTo(_capturePosition, Ease.OutBack, 0.35f);
+            _activeCharacter.RunTo(_capturePosition, Ease.OutBack, 0.35f);
             SetCharacter(null);
         }
     }
 
     private void SetCharacter(Character character)
     {
-        _character = character;
-        if (_character)
+        _activeCharacter = character;
+        if (_activeCharacter)
         {
-            _capturePosition = _character.Position;
-            _character.Position = transform.position;
-            _character.SetIsRunning(true);
+            _capturePosition = _activeCharacter.Position;
+            _activeCharacter.Position = transform.position;
+            _activeCharacter.SetIsRunning(true);
         }
     }
 
