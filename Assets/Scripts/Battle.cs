@@ -41,6 +41,11 @@ public class Battle : MonoBehaviour
         return _field.GetOccupant(cell);
     }
 
+    public Vector3Int GetCell(Character character)
+    {
+        return _field.GetCell(character);
+    }
+
     public void RefreshOccupantCell(Character character)
     {
         _field.RefreshOccupantCell(character);

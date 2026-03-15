@@ -66,6 +66,11 @@ public class Character : MonoBehaviour
         SetHasMovedThisTurn(false);
     }
 
+    public Vector3Int GetCell()
+    {
+        return _battle.GetCell(this);
+    }
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();

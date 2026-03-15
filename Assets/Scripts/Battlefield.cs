@@ -44,6 +44,11 @@ public class Battlefield : MonoBehaviour
         return _cellToOccupant.TryGetValue(cell, out Character character) ? character : null;
     }
 
+    public Vector3Int GetCell(Character character)
+    {
+        return _occupantToCell[character];
+    }
+
     public void RefreshOccupantCell(Character character)
     {
         Vector3Int oldCell = _occupantToCell[character];

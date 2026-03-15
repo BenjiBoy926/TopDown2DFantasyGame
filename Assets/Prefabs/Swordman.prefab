@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 341371333424358373}
   - component: {fileID: 1236221981335212772}
   - component: {fileID: 4700560474708384779}
+  - component: {fileID: 1842308150095877901}
   m_Layer: 0
   m_Name: Swordman
   m_TagString: Untagged
@@ -152,6 +153,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _faction: {fileID: 11400000, guid: 1f60f3d9c8dbcb04cb0f0112ee02ca2e, type: 2}
+  _usedMoveFadeColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  _usedMoveFadeDuration: 0.35
+--- !u!114 &1842308150095877901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881692635917527445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a8f94e1823089b4db12244ab4ddec6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _range: 4
 --- !u!1 &8274708557482635198
 GameObject:
   m_ObjectHideFlags: 0
