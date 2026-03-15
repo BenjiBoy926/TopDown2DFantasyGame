@@ -4,6 +4,7 @@ using DG.Tweening;
 using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(CharacterTraversal))]
 public class Character : MonoBehaviour
 {
     public static event Action<Character> UsedMove = delegate { };
@@ -25,7 +26,9 @@ public class Character : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private CharacterAnimator _animator;
     private SpriteRenderer _sprite;
+    private CharacterTraversal _traversal;
     private Battle _battle;
+    
     private bool _hasMovedThisTurn = false;
 
     public void SetDirection(Vector2 direction)
@@ -69,6 +72,11 @@ public class Character : MonoBehaviour
     public Vector3Int GetCell()
     {
         return _battle.GetCell(this);
+    }
+
+    public void RecalculateTraversibleTiles()
+    {
+        _traversal.RecalculateTraversibleTiles();
     }
 
     private void Awake()
