@@ -173,6 +173,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         if (_activeCharacter)
         {
             _activeCharacter.Wait();
+            SetHoveredCharacter(null);
             SetCharacter(null);
         }
     }
@@ -182,6 +183,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         if (_activeCharacter)
         {
             _activeCharacter.RunTo(_capturePosition, Ease.OutBack, 0.35f);
+            SetHoveredCharacter(null);
             SetCharacter(null);
         }
     }
