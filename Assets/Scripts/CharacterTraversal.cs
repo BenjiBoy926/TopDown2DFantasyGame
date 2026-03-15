@@ -1,20 +1,18 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Character))]
 public class CharacterTraversal : MonoBehaviour
 {
     public IReadOnlyCollection<Vector3Int> TraversibleTiles => _traversibleTiles;
 
     [SerializeField] private int _range = 4;
-    private Character _character;
     private readonly HashSet<Vector3Int> _traversibleTiles = new();
 
-    public void RecalculateTraversibleTiles()
+    public void RecalculateTraversibleTiles(Character character)
     {
         _traversibleTiles.Clear();
 
-        Vector3Int homeCell = _character.GetCell();
+        Vector3Int homeCell = character.GetCell();
         _traversibleTiles.Add(homeCell);
 
         for (int x = -_range; x <= _range; x++)
@@ -26,10 +24,5 @@ public class CharacterTraversal : MonoBehaviour
                 _traversibleTiles.Add(newCell);
             }
         }
-    }
-
-    private void Awake()
-    {
-        _character = GetComponent<Character>();
     }
 }

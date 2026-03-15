@@ -1,14 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CharacterTraversal))]
+[RequireComponent(typeof(CharacterRangeDisplay))]
 public class Character : MonoBehaviour
 {
     public static event Action<Character> UsedMove = delegate { };
 
+    public IReadOnlyCollection<Vector3Int> TraversibleTiles => _traversal.TraversibleTiles;
     public Vector2 Position
     {
         get => _rigidbody.position;
@@ -27,6 +30,7 @@ public class Character : MonoBehaviour
     private CharacterAnimator _animator;
     private SpriteRenderer _sprite;
     private CharacterTraversal _traversal;
+    private CharacterRangeDisplay _rangeDisplay;
     private Battle _battle;
     
     private bool _hasMovedThisTurn = false;
@@ -76,7 +80,17 @@ public class Character : MonoBehaviour
 
     public void RecalculateTraversibleTiles()
     {
-        _traversal.RecalculateTraversibleTiles();
+        _traversal.RecalculateTraversibleTiles(this);
+    }
+
+    public void ShowRange()
+    {
+        _rangeDisplay.Show(this);
+    }
+
+    public void HideRange()
+    {
+        _rangeDisplay.Hide();
     }
 
     private void Awake()
@@ -84,6 +98,8 @@ public class Character : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponentInChildren<CharacterAnimator>();
         _sprite = GetComponentInChildren<SpriteRenderer>();
+        _traversal = GetComponent<CharacterTraversal>();
+        _rangeDisplay = GetComponent<CharacterRangeDisplay>();
     }
 
     private void OnEnable()
