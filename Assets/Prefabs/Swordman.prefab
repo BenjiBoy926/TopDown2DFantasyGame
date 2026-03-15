@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb103f9a0b120eb478c0fb9a02e635a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tilePrefab: {fileID: 0}
+  _tilePrefab: {fileID: 3475537624974153195, guid: 93b7b2b8d61b9824cabff424a66716e7, type: 3}
 --- !u!1 &8274708557482635198
 GameObject:
   m_ObjectHideFlags: 0

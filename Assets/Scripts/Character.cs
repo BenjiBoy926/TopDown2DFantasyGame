@@ -85,12 +85,27 @@ public class Character : MonoBehaviour
 
     public void ShowRange()
     {
+        if (_rangeDisplay.IsShown) return;
+
+        RecalculateTraversibleTiles();
         _rangeDisplay.Show(this);
     }
 
     public void HideRange()
     {
+        if (!_rangeDisplay.IsShown) return;
+
         _rangeDisplay.Hide();
+    }
+
+    public Vector2 SnapToGrid(Vector3Int cell)
+    {
+        return _battle.SnapToGrid(cell);
+    }
+
+    public Vector3 CellToWorld(Vector3Int cell)
+    {
+        return _battle.CellToWorld(cell);
     }
 
     private void Awake()

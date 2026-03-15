@@ -3,21 +3,30 @@ using UnityEngine;
 
 public class CharacterRangeDisplay : MonoBehaviour
 {
+    public bool IsShown => _isShown;
+
     [SerializeField] private GameObject _tilePrefab;
-    private readonly List<GameObject> _tiles = new();
+    private readonly HashSet<GameObject> _tiles = new();
     private bool _isShown;
 
     public void Show(Character character)
     {
-        if (_isShown) return;
-        Debug.Log($"Show range for {name}", this);
+        foreach (Vector3Int tile in character.TraversibleTiles)
+        {
+            Vector3 position = character.CellToWorld(tile);
+            GameObject tileObj = Instantiate(_tilePrefab, position, Quaternion.identity);
+            _tiles.Add(tileObj);
+        }
         _isShown = true;
     }
 
     public void Hide()
     {
-        if (!_isShown) return;
-        Debug.Log($"Hide range for {name}", this);
+        foreach (GameObject tile in _tiles)
+        {
+            Destroy(tile);
+        }
+        _tiles.Clear();
         _isShown = false;
     }
 }

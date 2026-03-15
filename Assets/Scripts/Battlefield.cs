@@ -27,6 +27,11 @@ public class Battlefield : MonoBehaviour
     public Vector3 SnapToGrid(Vector3 position)
     {
         Vector3Int cell = WorldToCellRounded(position);
+        return CellToWorld(cell);
+    }
+
+    public Vector3 CellToWorld(Vector3Int cell)
+    {
         return _grid.CellToWorld(cell);
     }
 

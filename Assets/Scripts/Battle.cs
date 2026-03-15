@@ -31,6 +31,11 @@ public class Battle : MonoBehaviour
         return _field.SnapToGrid(position);
     }
 
+    public Vector3 CellToWorld(Vector3Int cell)
+    {
+        return _field.CellToWorld(cell);
+    }
+
     public Vector3Int WorldToCellRounded(Vector3 position)
     {
         return _field.WorldToCellRounded(position);
