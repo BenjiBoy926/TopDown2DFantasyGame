@@ -116,7 +116,14 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     private void UpdateHoveredCharacter()
     {
-        SetHoveredCharacter(GetCharacterAtCursor());
+        if (_activeCharacter)
+        {
+            SetHoveredCharacter(_activeCharacter);
+        }
+        else
+        {
+            SetHoveredCharacter(GetCharacterAtCursor());
+        }
     }
 
     private void SetHoveredCharacter(Character hoveredCharacter)
