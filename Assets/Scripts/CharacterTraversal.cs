@@ -60,7 +60,7 @@ public class CharacterTraversal : MonoBehaviour
         if (_traversibleTiles.Contains(currentCell)) return;
 
         Vector3Int closestTraversibleCell = ClosestTraversibleCell(currentCell);
-        // do it!
+        Debug.Log($"Closest traversible cell is: {closestTraversibleCell}");
     }
 
     private void VisitNeighbors(Vector3Int cell)
@@ -99,7 +99,12 @@ public class CharacterTraversal : MonoBehaviour
         int closestDistance = int.MaxValue;
         foreach (Vector3Int cell in _traversibleTiles)
         {
-
+            int currentDistance = Battlefield.RectangularDistance(cell, input);
+            if (currentDistance < closestDistance)
+            {
+                closestCell = cell;
+                closestDistance = currentDistance;
+            }
         }
         return closestCell;
     }
