@@ -56,7 +56,11 @@ public class CharacterTraversal : MonoBehaviour
 
     public void ClampToTraversibleTiles()
     {
+        Vector3Int currentCell = _character.CurrentCell;
+        if (_traversibleTiles.Contains(currentCell)) return;
 
+        Vector3Int closestTraversibleCell = ClosestTraversibleCell(currentCell);
+        // do it!
     }
 
     private void VisitNeighbors(Vector3Int cell)
@@ -85,5 +89,18 @@ public class CharacterTraversal : MonoBehaviour
     {
         _traversibleTiles.Add(cell);
         _searchQueue.Enqueue(cell);
+    }
+
+    private Vector3Int ClosestTraversibleCell(Vector3Int input)
+    {
+        if (_traversibleTiles.Count == 0) return input;
+
+        Vector3Int closestCell = input;
+        int closestDistance = int.MaxValue;
+        foreach (Vector3Int cell in _traversibleTiles)
+        {
+
+        }
+        return closestCell;
     }
 }

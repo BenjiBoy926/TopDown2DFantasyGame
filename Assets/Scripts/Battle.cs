@@ -36,9 +36,9 @@ public class Battle : MonoBehaviour
         return _field.CellToWorld(cell);
     }
 
-    public Vector3Int WorldToCellRounded(Vector3 position)
+    public Vector3Int WorldToCell(Vector3 position)
     {
-        return _field.WorldToCellRounded(position);
+        return _field.WorldToCell(position);
     }
 
     public Character GetOccupant(Vector3Int cell)

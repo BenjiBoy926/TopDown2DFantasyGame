@@ -21,6 +21,7 @@ public class Character : MonoBehaviour
         }
     }
     public Vector3Int HomeCell => _battle.GetCell(this);
+    public Vector3Int CurrentCell => _battle.WorldToCell(Position);
     public Faction Faction => _faction;
     public bool HasMovedThisTurn => _hasMovedThisTurn;
 
@@ -105,11 +106,14 @@ public class Character : MonoBehaviour
         return _battle.CellToWorld(cell);
     }
 
+    public void ClampToTraversibleTiles()
+    {
+        _traversal.ClampToTraversibleTiles();
+    }
+
     public bool IsTraversible(Vector3Int cell)
     {
-        Vector3Int offset = cell - HomeCell;
-        Vector3Int absoluteOffset = new(Mathf.Abs(offset.x), Mathf.Abs(offset.y));
-        return (absoluteOffset.x + absoluteOffset.y) <= _traversalRange;
+        return Battlefield.RectangularDistance(HomeCell, cell) <= _traversalRange;
     }
 
     private void Awake()
