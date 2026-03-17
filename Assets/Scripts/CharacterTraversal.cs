@@ -60,7 +60,7 @@ public class CharacterTraversal : MonoBehaviour
         if (_traversibleTiles.Contains(currentCell)) return;
 
         Vector3Int closestTraversibleCell = ClosestTraversibleCell(currentCell);
-        Debug.Log($"Closest traversible cell is: {closestTraversibleCell}");
+        _character.Position = _character.CellToWorld(closestTraversibleCell);
     }
 
     private void VisitNeighbors(Vector3Int cell)
