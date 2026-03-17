@@ -20,12 +20,14 @@ public class Character : MonoBehaviour
             _rigidbody.MovePosition(value);
         }
     }
+    public Vector3Int HomeCell => _battle.GetCell(this);
     public Faction Faction => _faction;
     public bool HasMovedThisTurn => _hasMovedThisTurn;
 
     [SerializeField] private Faction _faction;
     [SerializeField] private Color _usedMoveFadeColor = Color.gray;
     [SerializeField] private float _usedMoveFadeDuration = 0.35f;
+    [SerializeField] private int _traversalRange = 3;
     private Rigidbody2D _rigidbody;
     private CharacterAnimator _animator;
     private SpriteRenderer _sprite;
@@ -73,11 +75,6 @@ public class Character : MonoBehaviour
         SetHasMovedThisTurn(false);
     }
 
-    public Vector3Int GetCell()
-    {
-        return _battle.GetCell(this);
-    }
-
     public void RecalculateTraversibleTiles()
     {
         _traversal.RecalculateTraversibleTiles(this);
@@ -106,6 +103,13 @@ public class Character : MonoBehaviour
     public Vector3 CellToWorld(Vector3Int cell)
     {
         return _battle.CellToWorld(cell);
+    }
+
+    public bool IsTraversible(Vector3Int cell)
+    {
+        Vector3Int offset = cell - HomeCell;
+        Vector3Int absoluteOffset = new(Mathf.Abs(offset.x), Mathf.Abs(offset.y));
+        return (absoluteOffset.x + absoluteOffset.y) <= _traversalRange;
     }
 
     private void Awake()
