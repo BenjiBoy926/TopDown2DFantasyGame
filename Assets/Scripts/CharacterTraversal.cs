@@ -96,10 +96,10 @@ public class CharacterTraversal : MonoBehaviour
         if (_traversibleTiles.Count == 0) return input;
 
         Vector3Int closestCell = input;
-        int closestDistance = int.MaxValue;
+        float closestDistance = float.MaxValue;
         foreach (Vector3Int cell in _traversibleTiles)
         {
-            int currentDistance = Battlefield.RectangularDistance(cell, input);
+            float currentDistance = Vector3Int.Distance(cell, input);
             if (currentDistance < closestDistance)
             {
                 closestCell = cell;
