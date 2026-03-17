@@ -1,19 +1,26 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Character))]
 public class CharacterRangeDisplay : MonoBehaviour
 {
     public bool IsShown => _isShown;
 
     [SerializeField] private GameObject _tilePrefab;
+    private Character _character;
     private readonly HashSet<GameObject> _tiles = new();
     private bool _isShown;
 
-    public void Show(Character character)
+    private void Awake()
     {
-        foreach (Vector3Int tile in character.TraversibleTiles)
+        _character = GetComponent<Character>();
+    }
+
+    public void Show()
+    {
+        foreach (Vector3Int tile in _character.TraversibleTiles)
         {
-            Vector3 position = character.CellToWorld(tile);
+            Vector3 position = _character.CellToWorld(tile);
             GameObject tileObj = Instantiate(_tilePrefab, position, Quaternion.identity);
             _tiles.Add(tileObj);
         }

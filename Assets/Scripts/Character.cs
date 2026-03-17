@@ -77,7 +77,7 @@ public class Character : MonoBehaviour
 
     public void RecalculateTraversibleTiles()
     {
-        _traversal.RecalculateTraversibleTiles(this);
+        _traversal.RecalculateTraversibleTiles();
     }
 
     public void ShowRange()
@@ -85,7 +85,7 @@ public class Character : MonoBehaviour
         if (_rangeDisplay.IsShown) return;
 
         RecalculateTraversibleTiles();
-        _rangeDisplay.Show(this);
+        _rangeDisplay.Show();
     }
 
     public void HideRange()

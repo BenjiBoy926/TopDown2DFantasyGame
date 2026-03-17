@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Character))]
 public class CharacterTraversal : MonoBehaviour
 {
     private struct Neighbors
@@ -21,10 +22,16 @@ public class CharacterTraversal : MonoBehaviour
 
     public IReadOnlyCollection<Vector3Int> TraversibleTiles => _traversibleTiles;
 
+    private Character _character;
     private readonly HashSet<Vector3Int> _traversibleTiles = new();
     private static readonly Queue<Vector3Int> _searchQueue = new();
 
-    public void RecalculateTraversibleTiles(Character character)
+    private void Awake()
+    {
+        _character = GetComponent<Character>();
+    }
+
+    public void RecalculateTraversibleTiles()
     {
         _traversibleTiles.Clear();
         _searchQueue.Clear();
@@ -32,11 +39,11 @@ public class CharacterTraversal : MonoBehaviour
         const int MaxIterations = 100;
         int iterations = 0;
 
-        Add(character.HomeCell);
+        Add(_character.HomeCell);
         while (_searchQueue.Count > 0)
         {
             Vector3Int nextCell = _searchQueue.Dequeue();
-            VisitNeighbors(character, nextCell);
+            VisitNeighbors(nextCell);
 
             iterations++;
             if (iterations > MaxIterations)
@@ -47,26 +54,31 @@ public class CharacterTraversal : MonoBehaviour
         }
     }
 
-    private void VisitNeighbors(Character character, Vector3Int cell)
+    public void ClampToTraversibleTiles()
     {
-        Neighbors neighbors = Neighbors.Get(cell);
-        Visit(character, neighbors.Left);
-        Visit(character, neighbors.Right);
-        Visit(character, neighbors.Up);
-        Visit(character, neighbors.Down);
+
     }
 
-    private void Visit(Character character, Vector3Int cell)
+    private void VisitNeighbors(Vector3Int cell)
     {
-        if (ShouldAddCell(character, cell))
+        Neighbors neighbors = Neighbors.Get(cell);
+        Visit(neighbors.Left);
+        Visit(neighbors.Right);
+        Visit(neighbors.Up);
+        Visit(neighbors.Down);
+    }
+
+    private void Visit(Vector3Int cell)
+    {
+        if (ShouldAddCell(cell))
         {
             Add(cell);
         }
     }
 
-    private bool ShouldAddCell(Character character, Vector3Int cell)
+    private bool ShouldAddCell(Vector3Int cell)
     {
-        return !_traversibleTiles.Contains(cell) && character.IsTraversible(cell);
+        return !_traversibleTiles.Contains(cell) && _character.IsTraversible(cell);
     }
 
     private void Add(Vector3Int cell)
