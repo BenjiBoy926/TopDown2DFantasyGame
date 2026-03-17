@@ -99,7 +99,8 @@ public class CharacterTraversal : MonoBehaviour
         float closestDistance = float.MaxValue;
         foreach (Vector3Int cell in _traversibleTiles)
         {
-            float currentDistance = Vector3Int.Distance(cell, input);
+            Vector3Int offset = cell - input;
+            float currentDistance = offset.sqrMagnitude;
             if (currentDistance < closestDistance)
             {
                 closestCell = cell;
