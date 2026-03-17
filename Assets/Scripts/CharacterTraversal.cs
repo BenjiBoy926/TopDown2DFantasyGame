@@ -54,13 +54,13 @@ public class CharacterTraversal : MonoBehaviour
         }
     }
 
-    public void ClampToTraversibleTiles()
+    public Vector2 ClampToTraversibleTiles(Vector2 position)
     {
-        Vector3Int currentCell = _character.CurrentCell;
-        if (_traversibleTiles.Contains(currentCell)) return;
+        Vector3Int currentCell = _character.WorldToCell(position);
+        if (_traversibleTiles.Contains(currentCell)) return position;
 
         Vector3Int closestTraversibleCell = ClosestTraversibleCell(currentCell);
-        _character.Position = _character.CellToWorld(closestTraversibleCell);
+        return _character.CellToWorld(closestTraversibleCell);
     }
 
     private void VisitNeighbors(Vector3Int cell)

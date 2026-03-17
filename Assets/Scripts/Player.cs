@@ -116,8 +116,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     private void SetActiveCharacterPosition(Vector2 newPosition)
     {
-        _activeCharacter.Position = newPosition;
-        _activeCharacter.ClampToTraversibleTiles();
+        _activeCharacter.Position = _activeCharacter.ClampToTraversibleTiles(newPosition);
     }
 
     private void UpdateHoveredCharacter()

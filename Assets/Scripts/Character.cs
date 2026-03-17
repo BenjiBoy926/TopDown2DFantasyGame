@@ -106,9 +106,14 @@ public class Character : MonoBehaviour
         return _battle.CellToWorld(cell);
     }
 
-    public void ClampToTraversibleTiles()
+    public Vector3Int WorldToCell(Vector3 position)
     {
-        _traversal.ClampToTraversibleTiles();
+        return _battle.WorldToCell(position);
+    }
+
+    public Vector2 ClampToTraversibleTiles(Vector2 position)
+    {
+        return _traversal.ClampToTraversibleTiles(position);
     }
 
     public bool IsTraversible(Vector3Int cell)
