@@ -59,7 +59,7 @@ public class CharacterTraversal : MonoBehaviour
         Vector3Int currentCell = _character.WorldToCell(position);
         if (_traversibleTiles.Contains(currentCell)) return position;
 
-        Vector3Int closestTraversibleCell = ClosestTraversibleCell(currentCell);
+        Vector3Int closestTraversibleCell = ClosestTraversibleCell(position);
         Vector2 cellPosition = _character.CellToWorld(closestTraversibleCell);
         
         float xExtent = _character.CellWidth / 2;
@@ -100,15 +100,17 @@ public class CharacterTraversal : MonoBehaviour
         _searchQueue.Enqueue(cell);
     }
 
-    private Vector3Int ClosestTraversibleCell(Vector3Int input)
+    private Vector3Int ClosestTraversibleCell(Vector2 input)
     {
-        if (_traversibleTiles.Count == 0) return input;
+        Vector3Int inputCell = _character.WorldToCell(input);
+        if (_traversibleTiles.Count == 0) return inputCell;
 
-        Vector3Int closestCell = input;
+        Vector3Int closestCell = Vector3Int.zero;
         float closestDistance = float.MaxValue;
         foreach (Vector3Int cell in _traversibleTiles)
         {
-            Vector3Int offset = cell - input;
+            Vector2 cellPosition = _character.CellToWorld(cell);
+            Vector2 offset = input - cellPosition;
             float currentDistance = offset.sqrMagnitude;
             if (currentDistance < closestDistance)
             {
