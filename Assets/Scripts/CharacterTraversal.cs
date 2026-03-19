@@ -60,7 +60,16 @@ public class CharacterTraversal : MonoBehaviour
         if (_traversibleTiles.Contains(currentCell)) return position;
 
         Vector3Int closestTraversibleCell = ClosestTraversibleCell(currentCell);
-        return _character.CellToWorld(closestTraversibleCell);
+        Vector2 cellPosition = _character.CellToWorld(closestTraversibleCell);
+        
+        float xExtent = _character.CellWidth / 2;
+        float yExtent = _character.CellHeight / 2;
+        Rect range = Rect.MinMaxRect(cellPosition.x - xExtent, cellPosition.y - yExtent, cellPosition.x + xExtent, cellPosition.y + yExtent);
+        
+        float x = Mathf.Clamp(position.x, range.xMin, range.xMax);
+        float y = Mathf.Clamp(position.y, range.yMin, range.yMax);
+        
+        return new(x, y);
     }
 
     private void VisitNeighbors(Vector3Int cell)

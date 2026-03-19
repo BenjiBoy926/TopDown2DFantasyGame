@@ -5,6 +5,9 @@ using System;
 [RequireComponent(typeof(Grid))]
 public class Battlefield : MonoBehaviour
 {
+    public float CellWidth => _grid.cellSize.x;
+    public float CellHeight => _grid.cellSize.y;
+
     private Grid _grid;
     private readonly Dictionary<Vector3Int, Character> _cellToOccupant = new();
     private readonly Dictionary<Character, Vector3Int> _occupantToCell = new();

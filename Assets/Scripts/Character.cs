@@ -24,6 +24,8 @@ public class Character : MonoBehaviour
     public Vector3Int CurrentCell => _battle.WorldToCell(Position);
     public Faction Faction => _faction;
     public bool HasMovedThisTurn => _hasMovedThisTurn;
+    public float CellWidth => _battle.CellWidth;
+    public float CellHeight => _battle.CellHeight;
 
     [SerializeField] private Faction _faction;
     [SerializeField] private Color _usedMoveFadeColor = Color.gray;

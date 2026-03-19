@@ -85,27 +85,17 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         }
     }
 
-    // NOTE: slight repetition between SlidePosition and SetPosition
-    // to avoid expensive calls to transform.position
     private void SlidePosition(Vector2 offset)
     {
-        transform.Translate(offset);
-
-        Vector2 newPosition = transform.position;
-        _gridPosition.position = _battle.SnapToGrid(newPosition);
-        if (_activeCharacter)
-        {
-            SetActiveCharacterPosition(newPosition);
-            _activeCharacter.SetDirection(offset);
-        }
-        UpdateHoveredCharacter();
+        Vector2 position = transform.position;
+        SetPosition(position + offset);
     }
 
     private void SetPosition(Vector2 newPosition)
     {
         if (_activeCharacter)
         {
-            Vector2 oldPosition = transform.position;
+            Vector2 oldPosition = _activeCharacter.Position;
             SetActiveCharacterPosition(newPosition);
             _activeCharacter.SetDirection(newPosition - oldPosition);
         }

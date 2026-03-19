@@ -4,6 +4,8 @@
 [RequireComponent(typeof(BattleTurn))]
 public class Battle : MonoBehaviour
 {
+    public float CellWidth => _field.CellWidth;
+    public float CellHeight => _field.CellHeight;
     public bool IsTurnChangeAnimationPlaying => _turn.IsAnimationPlaying;
 
     private Battlefield _field;
