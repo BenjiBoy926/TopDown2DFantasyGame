@@ -5,7 +5,7 @@ using DG.Tweening;
 using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(CharacterTraversal))]
+[RequireComponent(typeof(CharacterRange))]
 [RequireComponent(typeof(CharacterRangeDisplay))]
 public class Character : MonoBehaviour
 {
@@ -34,7 +34,7 @@ public class Character : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private CharacterAnimator _animator;
     private SpriteRenderer _sprite;
-    private CharacterTraversal _traversal;
+    private CharacterRange _traversal;
     private CharacterRangeDisplay _rangeDisplay;
     private Battle _battle;
     
@@ -128,7 +128,7 @@ public class Character : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponentInChildren<CharacterAnimator>();
         _sprite = GetComponentInChildren<SpriteRenderer>();
-        _traversal = GetComponent<CharacterTraversal>();
+        _traversal = GetComponent<CharacterRange>();
         _rangeDisplay = GetComponent<CharacterRangeDisplay>();
     }
 

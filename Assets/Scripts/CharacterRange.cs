@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Character))]
-public class CharacterTraversal : MonoBehaviour
+public class CharacterRange : MonoBehaviour
 {
     private struct Neighbors
     {
