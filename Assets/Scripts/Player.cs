@@ -174,7 +174,8 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     {
         if (_activeCharacter)
         {
-            _activeCharacter.Wait();
+            Vector3Int cell = _battle.WorldToCell(_gridPosition.position);
+            _activeCharacter.Wait(cell);
             SetHoveredCharacter(null);
             SetCharacter(null);
         }

@@ -62,10 +62,10 @@ public class Character : MonoBehaviour
         StartCoroutine(GetRunToSequence(position, ease, duration));
     }
 
-    public void Wait()
+    public void Wait(Vector3Int cell)
     {
         StopAllCoroutines();
-        StartCoroutine(GetWaitSequence());
+        StartCoroutine(GetWaitSequence(cell));
     }
 
     public void UseMove()
@@ -162,9 +162,9 @@ public class Character : MonoBehaviour
         }
     }
 
-    private IEnumerator GetWaitSequence()
+    private IEnumerator GetWaitSequence(Vector3Int cell)
     {
-        Vector2 gridPosition = _battle.SnapToGrid(Position);
+        Vector2 gridPosition = _battle.CellToWorld(cell);
         _battle.RefreshOccupantCell(this);
         yield return GetRunToSequence(gridPosition, Ease.OutCirc, 0.35f);
         UseMove();
