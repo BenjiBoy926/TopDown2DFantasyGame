@@ -11,7 +11,7 @@ public class Character : MonoBehaviour
 {
     public static event Action<Character> UsedMove = delegate { };
 
-    public IReadOnlyCollection<Vector3Int> TraversibleTiles => _traversal.TraversibleTiles;
+    public IReadOnlyCollection<Vector3Int> TraversibleTiles => _range.TraversibleTiles;
     public Vector2 Position
     {
         get => _rigidbody.position;
@@ -34,7 +34,7 @@ public class Character : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private CharacterAnimator _animator;
     private SpriteRenderer _sprite;
-    private CharacterRange _traversal;
+    private CharacterRange _range;
     private CharacterRangeDisplay _rangeDisplay;
     private Battle _battle;
     
@@ -78,16 +78,21 @@ public class Character : MonoBehaviour
         SetHasMovedThisTurn(false);
     }
 
-    public void RecalculateTraversibleTiles()
+    public void RefreshRange()
     {
-        _traversal.Refresh();
+        _range.Refresh();
+    }
+
+    public Vector3Int ClosestTraversibleCell(Vector2 input)
+    {
+        return _range.ClosestTraversibleCell(input);
     }
 
     public void ShowRange()
     {
         if (_rangeDisplay.IsShown) return;
 
-        RecalculateTraversibleTiles();
+        RefreshRange();
         _rangeDisplay.Show();
     }
 
@@ -115,7 +120,7 @@ public class Character : MonoBehaviour
 
     public Vector2 ClampToTraversibleTiles(Vector2 position)
     {
-        return _traversal.ClampToTraversibleTiles(position);
+        return _range.ClampToTraversibleTiles(position);
     }
 
     public bool IsTraversible(Vector3Int cell)
@@ -128,7 +133,7 @@ public class Character : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponentInChildren<CharacterAnimator>();
         _sprite = GetComponentInChildren<SpriteRenderer>();
-        _traversal = GetComponent<CharacterRange>();
+        _range = GetComponent<CharacterRange>();
         _rangeDisplay = GetComponent<CharacterRangeDisplay>();
     }
 

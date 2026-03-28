@@ -120,7 +120,7 @@ public class CharacterRange : MonoBehaviour
         _searchQueue.Enqueue(cell);
     }
 
-    private Vector3Int ClosestTraversibleCell(Vector2 input)
+    public Vector3Int ClosestTraversibleCell(Vector2 input)
     {
         Vector3Int inputCell = _character.WorldToCell(input);
         if (_traversibleTiles.Count == 0) return inputCell;
