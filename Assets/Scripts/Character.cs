@@ -80,7 +80,7 @@ public class Character : MonoBehaviour
 
     public void RecalculateTraversibleTiles()
     {
-        _traversal.RecalculateTraversibleTiles();
+        _traversal.Refresh();
     }
 
     public void ShowRange()

@@ -24,6 +24,8 @@ public class CharacterRange : MonoBehaviour
 
     private Character _character;
     private readonly HashSet<Vector3Int> _traversibleTiles = new();
+    private readonly HashSet<Vector3Int> _attackableEdgeTiles = new();
+
     private static readonly Queue<Vector3Int> _searchQueue = new();
 
     private void Awake()
@@ -31,7 +33,13 @@ public class CharacterRange : MonoBehaviour
         _character = GetComponent<Character>();
     }
 
-    public void RecalculateTraversibleTiles()
+    public void Refresh()
+    {
+        RecalculateTraversibleTiles();
+        RecalculateAttackableEdgeTiles();
+    }
+
+    private void RecalculateTraversibleTiles()
     {
         _traversibleTiles.Clear();
         _searchQueue.Clear();
@@ -49,8 +57,20 @@ public class CharacterRange : MonoBehaviour
             if (iterations > MaxIterations)
             {
                 Debug.LogError("Max iterations reached!");
-                return;
+                break;
             }
+        }
+    }
+
+    private void RecalculateAttackableEdgeTiles()
+    {
+        foreach (var traversibleTile in _traversibleTiles)
+        {
+            Neighbors neighbors = Neighbors.Get(traversibleTile);
+            CheckAttackableEdgeTile(neighbors.Left);
+            CheckAttackableEdgeTile(neighbors.Right);
+            CheckAttackableEdgeTile(neighbors.Up);
+            CheckAttackableEdgeTile(neighbors.Down);
         }
     }
 
@@ -119,5 +139,13 @@ public class CharacterRange : MonoBehaviour
             }
         }
         return closestCell;
+    }
+
+    private void CheckAttackableEdgeTile(Vector3Int cell)
+    {
+        if (!_traversibleTiles.Contains(cell))
+        {
+            _attackableEdgeTiles.Add(cell);
+        }
     }
 }
