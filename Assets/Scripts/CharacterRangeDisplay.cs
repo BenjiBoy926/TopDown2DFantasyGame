@@ -19,13 +19,13 @@ public class CharacterRangeDisplay : MonoBehaviour
 
     public void Show()
     {
-        foreach (Vector3Int tile in _character.TraversibleTiles)
+        foreach (Vector3Int cell in _character.TraversibleCells)
         {
-            AddTile(_traversibleTilePrefab, tile);
+            AddTile(_traversibleTilePrefab, cell);
         }
-        foreach (Vector3Int tile in _character.AttackableEdgeTiles)
+        foreach (Vector3Int cell in _character.AttackableEdgeCells)
         {
-            AddTile(_attackableTilePrefab, tile);
+            AddTile(_attackableTilePrefab, cell);
         }
         _isShown = true;
     }
@@ -40,9 +40,9 @@ public class CharacterRangeDisplay : MonoBehaviour
         _isShown = false;
     }
 
-    private void AddTile(GameObject prefab, Vector3Int tile)
+    private void AddTile(GameObject prefab, Vector3Int cell)
     {
-        Vector3 position = _character.CellToWorld(tile);
+        Vector3 position = _character.CellToWorld(cell);
         GameObject tileObj = Instantiate(prefab, position, Quaternion.identity);
         _tiles.Add(tileObj);
     }

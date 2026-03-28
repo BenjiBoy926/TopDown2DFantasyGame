@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Character))]
 public class CharacterRange : MonoBehaviour
@@ -20,12 +21,13 @@ public class CharacterRange : MonoBehaviour
         }
     }
 
-    public IReadOnlyCollection<Vector3Int> TraversibleTiles => _traversibleTiles;
-    public IReadOnlyCollection<Vector3Int> AttackableEdgeTiles => _attackableEdgeTiles;
+    public IReadOnlyCollection<Vector3Int> TraversibleCells => _traversibleCells;
+    public IReadOnlyCollection<Vector3Int> AttackableEdgeCells => _attackableEdgeCells;
 
     private Character _character;
-    private readonly HashSet<Vector3Int> _traversibleTiles = new();
-    private readonly HashSet<Vector3Int> _attackableEdgeTiles = new();
+    private readonly HashSet<Vector3Int> _traversibleCells = new();
+    private readonly HashSet<Vector3Int> _attackableEdgeCells = new();
+    private readonly HashSet<Vector3Int> _reachableCells = new();
 
     private static readonly Queue<Vector3Int> _searchQueue = new();
 
@@ -36,13 +38,17 @@ public class CharacterRange : MonoBehaviour
 
     public void Refresh()
     {
-        RecalculateTraversibleTiles();
-        RecalculateAttackableEdgeTiles();
+        RecalculateTraversibleCells();
+        RecalculateAttackableEdgeCells();
+
+        _reachableCells.Clear();
+        _reachableCells.UnionWith(_traversibleCells);
+        _reachableCells.UnionWith(_attackableEdgeCells);
     }
 
-    private void RecalculateTraversibleTiles()
+    private void RecalculateTraversibleCells()
     {
-        _traversibleTiles.Clear();
+        _traversibleCells.Clear();
         _searchQueue.Clear();
 
         const int MaxIterations = 100;
@@ -63,35 +69,27 @@ public class CharacterRange : MonoBehaviour
         }
     }
 
-    private void RecalculateAttackableEdgeTiles()
+    private void RecalculateAttackableEdgeCells()
     {
-        _attackableEdgeTiles.Clear();
-        foreach (var traversibleTile in _traversibleTiles)
+        _attackableEdgeCells.Clear();
+        foreach (var traversibleTile in _traversibleCells)
         {
             Neighbors neighbors = Neighbors.Get(traversibleTile);
-            CheckAttackableEdgeTile(neighbors.Left);
-            CheckAttackableEdgeTile(neighbors.Right);
-            CheckAttackableEdgeTile(neighbors.Up);
-            CheckAttackableEdgeTile(neighbors.Down);
+            CheckAttackableEdgeCell(neighbors.Left);
+            CheckAttackableEdgeCell(neighbors.Right);
+            CheckAttackableEdgeCell(neighbors.Up);
+            CheckAttackableEdgeCell(neighbors.Down);
         }
     }
 
-    public Vector2 ClampToTraversibleTiles(Vector2 position)
+    public Vector2 ClampToTraversibleCells(Vector2 position)
     {
-        Vector3Int currentCell = _character.WorldToCell(position);
-        if (_traversibleTiles.Contains(currentCell)) return position;
+        return ClampToCells(position, _traversibleCells);
+    }
 
-        Vector3Int closestTraversibleCell = ClosestTraversibleCell(position);
-        Vector2 cellPosition = _character.CellToWorld(closestTraversibleCell);
-        
-        float xExtent = _character.CellWidth / 2;
-        float yExtent = _character.CellHeight / 2;
-        Rect range = Rect.MinMaxRect(cellPosition.x - xExtent, cellPosition.y - yExtent, cellPosition.x + xExtent, cellPosition.y + yExtent);
-        
-        float x = Mathf.Clamp(position.x, range.xMin, range.xMax);
-        float y = Mathf.Clamp(position.y, range.yMin, range.yMax);
-        
-        return new(x, y);
+    public Vector2 ClampToReachableCells(Vector2 position)
+    {
+        return ClampToCells(position, _reachableCells);
     }
 
     private void VisitNeighbors(Vector3Int cell)
@@ -113,23 +111,54 @@ public class CharacterRange : MonoBehaviour
 
     private bool ShouldAddCell(Vector3Int cell)
     {
-        return !_traversibleTiles.Contains(cell) && _character.IsTraversible(cell);
+        return !_traversibleCells.Contains(cell) && _character.IsTraversible(cell);
     }
 
     private void Add(Vector3Int cell)
     {
-        _traversibleTiles.Add(cell);
+        _traversibleCells.Add(cell);
         _searchQueue.Enqueue(cell);
     }
 
     public Vector3Int ClosestTraversibleCell(Vector2 input)
     {
+        return ClosestCell(input, _traversibleCells);
+    }
+
+    private void CheckAttackableEdgeCell(Vector3Int cell)
+    {
+        if (!_traversibleCells.Contains(cell))
+        {
+            _attackableEdgeCells.Add(cell);
+        }
+    }
+
+    private Vector2 ClampToCells(Vector2 position, HashSet<Vector3Int> cells)
+    {
+        Vector3Int currentCell = _character.WorldToCell(position);
+        if (cells.Contains(currentCell)) return position;
+
+        Vector3Int closestTraversibleCell = ClosestCell(position, cells);
+        Vector2 cellPosition = _character.CellToWorld(closestTraversibleCell);
+
+        float xExtent = _character.CellWidth / 2;
+        float yExtent = _character.CellHeight / 2;
+        Rect range = Rect.MinMaxRect(cellPosition.x - xExtent, cellPosition.y - yExtent, cellPosition.x + xExtent, cellPosition.y + yExtent);
+
+        float x = Mathf.Clamp(position.x, range.xMin, range.xMax);
+        float y = Mathf.Clamp(position.y, range.yMin, range.yMax);
+
+        return new(x, y);
+    }
+
+    private Vector3Int ClosestCell(Vector2 input, HashSet<Vector3Int> tiles)
+    {
         Vector3Int inputCell = _character.WorldToCell(input);
-        if (_traversibleTiles.Count == 0) return inputCell;
+        if (tiles.Count == 0) return inputCell;
 
         Vector3Int closestCell = Vector3Int.zero;
         float closestDistance = float.MaxValue;
-        foreach (Vector3Int cell in _traversibleTiles)
+        foreach (Vector3Int cell in tiles)
         {
             Vector2 cellPosition = _character.CellToWorld(cell);
             Vector2 offset = input - cellPosition;
@@ -141,13 +170,5 @@ public class CharacterRange : MonoBehaviour
             }
         }
         return closestCell;
-    }
-
-    private void CheckAttackableEdgeTile(Vector3Int cell)
-    {
-        if (!_traversibleTiles.Contains(cell))
-        {
-            _attackableEdgeTiles.Add(cell);
-        }
     }
 }

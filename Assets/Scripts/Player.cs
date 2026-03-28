@@ -93,27 +93,22 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     private void SetPosition(Vector2 newPosition)
     {
-        transform.position = newPosition;
-
         if (_activeCharacter)
         {
             Vector2 oldPosition = _activeCharacter.Position;
-            SetActiveCharacterPosition(newPosition);
+            _activeCharacter.Position = _activeCharacter.ClampToTraversibleTiles(newPosition);
             _activeCharacter.SetDirection(newPosition - oldPosition);
 
             Vector3Int closestTile = _activeCharacter.ClosestTraversibleCell(newPosition);
+            transform.position = _activeCharacter.ClampToReachableCells(newPosition);
             _gridPosition.position = _battle.CellToWorld(closestTile);
         }
         else
         {
+            transform.position = newPosition;
             _gridPosition.position = _battle.SnapToGrid(newPosition);
         }
         UpdateHoveredCharacter();
-    }
-
-    private void SetActiveCharacterPosition(Vector2 newPosition)
-    {
-        _activeCharacter.Position = _activeCharacter.ClampToTraversibleTiles(newPosition);
     }
 
     private void UpdateHoveredCharacter()

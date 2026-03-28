@@ -11,8 +11,8 @@ public class Character : MonoBehaviour
 {
     public static event Action<Character> UsedMove = delegate { };
 
-    public IReadOnlyCollection<Vector3Int> TraversibleTiles => _range.TraversibleTiles;
-    public IReadOnlyCollection<Vector3Int> AttackableEdgeTiles => _range.AttackableEdgeTiles;
+    public IReadOnlyCollection<Vector3Int> TraversibleCells => _range.TraversibleCells;
+    public IReadOnlyCollection<Vector3Int> AttackableEdgeCells => _range.AttackableEdgeCells;
     public Vector2 Position
     {
         get => _rigidbody.position;
@@ -89,6 +89,11 @@ public class Character : MonoBehaviour
         return _range.ClosestTraversibleCell(input);
     }
 
+    public Vector2 ClampToReachableCells(Vector2 input)
+    {
+        return _range.ClampToReachableCells(input);
+    }
+
     public void ShowRange()
     {
         if (_rangeDisplay.IsShown) return;
@@ -121,7 +126,7 @@ public class Character : MonoBehaviour
 
     public Vector2 ClampToTraversibleTiles(Vector2 position)
     {
-        return _range.ClampToTraversibleTiles(position);
+        return _range.ClampToTraversibleCells(position);
     }
 
     public bool IsTraversible(Vector3Int cell)
