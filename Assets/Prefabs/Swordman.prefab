@@ -181,7 +181,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb103f9a0b120eb478c0fb9a02e635a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tilePrefab: {fileID: 3475537624974153195, guid: 93b7b2b8d61b9824cabff424a66716e7, type: 3}
+  _traversibleTilePrefab: {fileID: 3475537624974153195, guid: 93b7b2b8d61b9824cabff424a66716e7, type: 3}
+  _attackableTilePrefab: {fileID: 6459076917322233730, guid: e06bfa1b619b3b841baf8700ebe81560, type: 3}
 --- !u!1 &8274708557482635198
 GameObject:
   m_ObjectHideFlags: 0

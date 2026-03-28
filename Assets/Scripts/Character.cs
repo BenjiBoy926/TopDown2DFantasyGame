@@ -12,6 +12,7 @@ public class Character : MonoBehaviour
     public static event Action<Character> UsedMove = delegate { };
 
     public IReadOnlyCollection<Vector3Int> TraversibleTiles => _range.TraversibleTiles;
+    public IReadOnlyCollection<Vector3Int> AttackableEdgeTiles => _range.AttackableEdgeTiles;
     public Vector2 Position
     {
         get => _rigidbody.position;

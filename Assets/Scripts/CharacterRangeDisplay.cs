@@ -6,7 +6,8 @@ public class CharacterRangeDisplay : MonoBehaviour
 {
     public bool IsShown => _isShown;
 
-    [SerializeField] private GameObject _tilePrefab;
+    [SerializeField] private GameObject _traversibleTilePrefab;
+    [SerializeField] private GameObject _attackableTilePrefab;
     private Character _character;
     private readonly HashSet<GameObject> _tiles = new();
     private bool _isShown;
@@ -20,9 +21,11 @@ public class CharacterRangeDisplay : MonoBehaviour
     {
         foreach (Vector3Int tile in _character.TraversibleTiles)
         {
-            Vector3 position = _character.CellToWorld(tile);
-            GameObject tileObj = Instantiate(_tilePrefab, position, Quaternion.identity);
-            _tiles.Add(tileObj);
+            AddTile(_traversibleTilePrefab, tile);
+        }
+        foreach (Vector3Int tile in _character.AttackableEdgeTiles)
+        {
+            AddTile(_attackableTilePrefab, tile);
         }
         _isShown = true;
     }
@@ -35,5 +38,12 @@ public class CharacterRangeDisplay : MonoBehaviour
         }
         _tiles.Clear();
         _isShown = false;
+    }
+
+    private void AddTile(GameObject prefab, Vector3Int tile)
+    {
+        Vector3 position = _character.CellToWorld(tile);
+        GameObject tileObj = Instantiate(prefab, position, Quaternion.identity);
+        _tiles.Add(tileObj);
     }
 }

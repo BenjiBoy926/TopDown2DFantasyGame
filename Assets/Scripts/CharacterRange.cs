@@ -21,6 +21,7 @@ public class CharacterRange : MonoBehaviour
     }
 
     public IReadOnlyCollection<Vector3Int> TraversibleTiles => _traversibleTiles;
+    public IReadOnlyCollection<Vector3Int> AttackableEdgeTiles => _attackableEdgeTiles;
 
     private Character _character;
     private readonly HashSet<Vector3Int> _traversibleTiles = new();
@@ -64,6 +65,7 @@ public class CharacterRange : MonoBehaviour
 
     private void RecalculateAttackableEdgeTiles()
     {
+        _attackableEdgeTiles.Clear();
         foreach (var traversibleTile in _traversibleTiles)
         {
             Neighbors neighbors = Neighbors.Get(traversibleTile);
