@@ -93,6 +93,8 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     private void SetPosition(Vector2 newPosition)
     {
+        transform.position = newPosition;
+
         if (_activeCharacter)
         {
             Vector2 oldPosition = _activeCharacter.Position;
@@ -106,7 +108,6 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         {
             _gridPosition.position = _battle.SnapToGrid(newPosition);
         }
-        transform.position = newPosition;
         UpdateHoveredCharacter();
     }
 
