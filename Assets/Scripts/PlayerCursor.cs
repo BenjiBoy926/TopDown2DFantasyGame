@@ -1,18 +1,14 @@
-using UnityEngine;
-using UnityEngine.InputSystem;
 using DG.Tweening;
+using UnityEngine;
 
-public class Player : MonoBehaviour, DefaultActions.IPlayerActions
+public class PlayerCursor : MonoBehaviour
 {
-    private bool IsInputAllowed => !_battle.IsTurnChangeAnimationPlaying;
+    public bool IsTurnChangeAnimationPlaying => _battle.IsTurnChangeAnimationPlaying;
+    public Character ActiveCharacter => _activeCharacter;
 
     [SerializeField] private Transform _gridPosition;
-    [SerializeField] private float _speed = 5;
 
     private Battle _battle;
-    private DefaultActions _actions;
-
-    private Vector2 _moveDirection;
     private Character _activeCharacter;
     private Character _hoveredCharacter;
     private Vector2 _capturePosition;
@@ -20,78 +16,15 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     private void Awake()
     {
         _battle = GetComponentInParent<Battle>();
-        _actions = new();
-        _actions.Player.AddCallbacks(this);
     }
 
-    private void OnEnable()
-    {
-        _actions.Enable();   
-    }
-
-    private void OnDisable()
-    {
-        _actions.Disable();
-    }
-
-    private void Update()
-    {
-        if (_moveDirection.sqrMagnitude > 0.01f)
-        {
-            Vector2 offsetThisFrame = _speed * Time.deltaTime * _moveDirection;
-            SlidePosition(offsetThisFrame);
-        }
-    }
-
-    public void OnMove(InputAction.CallbackContext context)
-    {
-       _moveDirection = context.ReadValue<Vector2>();
-    }
-
-    public void OnAct(InputAction.CallbackContext context)
-    {
-        if (!context.started) return;
-        if (!_activeCharacter)
-        {
-            StartMove();
-        }
-        else
-        {
-            FinishMove();
-        }
-    }
-
-    public void OnCancel(InputAction.CallbackContext context)
-    {
-        CancelMove();
-    }
-
-    public void OnCursorPosition(InputAction.CallbackContext context)
-    {
-        Vector2 screenPosition = context.ReadValue<Vector2>();
-        Vector2 newPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-        SetPosition(newPosition);
-    }
-
-    public void OnCursorPress(InputAction.CallbackContext context)
-    {
-        if (context.started && !_activeCharacter)
-        {
-            StartMove();
-        }
-        else if (context.canceled && _activeCharacter)
-        {
-            FinishMove();
-        }
-    }
-
-    private void SlidePosition(Vector2 offset)
+    public void SlidePosition(Vector2 offset)
     {
         Vector2 position = transform.position;
         SetPosition(position + offset);
     }
 
-    private void SetPosition(Vector2 newPosition)
+    public void SetPosition(Vector2 newPosition)
     {
         if (_activeCharacter)
         {
@@ -126,7 +59,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     private void SetHoveredCharacter(Character hoveredCharacter)
     {
         if (hoveredCharacter == _hoveredCharacter) return;
-    
+
         if (_hoveredCharacter)
         {
             _hoveredCharacter.HideRange();
@@ -138,10 +71,8 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         }
     }
 
-    private void StartMove()
+    public void StartMove()
     {
-        if (!IsInputAllowed) return;
-
         Character characterAtCursor = GetCharacterAtCursor();
         if (characterAtCursor && !characterAtCursor.HasMovedThisTurn)
         {
@@ -149,7 +80,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         }
     }
 
-    private void FinishMove()
+    public void FinishMove()
     {
         if (!_activeCharacter) return;
 
@@ -176,7 +107,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         }
     }
 
-    private void CancelMove()
+    public void CancelMove()
     {
         if (_activeCharacter)
         {
