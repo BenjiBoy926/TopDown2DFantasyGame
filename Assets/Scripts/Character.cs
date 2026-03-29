@@ -11,8 +11,8 @@ public class Character : MonoBehaviour
 {
     public static event Action<Character> UsedMove = delegate { };
 
-    public IReadOnlyCollection<Vector3Int> TraversibleCells => _range.TraversibleCells;
-    public IReadOnlyCollection<Vector3Int> AttackableEdgeCells => _range.AttackableEdgeCells;
+    public IReadOnlyCollection<Vector2Int> TraversibleCells => _range.TraversibleCells;
+    public IReadOnlyCollection<Vector2Int> AttackableEdgeCells => _range.AttackableEdgeCells;
     public Vector2 Position
     {
         get => _rigidbody.position;
@@ -21,8 +21,8 @@ public class Character : MonoBehaviour
             _rigidbody.MovePosition(value);
         }
     }
-    public Vector3Int HomeCell => _battle.GetCell(this);
-    public Vector3Int CurrentCell => _battle.WorldToCell(Position);
+    public Vector2Int HomeCell => _battle.GetCell(this);
+    public Vector2Int CurrentCell => _battle.WorldToCell(Position);
     public Faction Faction => _faction;
     public bool HasMovedThisTurn => _hasMovedThisTurn;
     public float CellWidth => _battle.CellWidth;
@@ -63,7 +63,7 @@ public class Character : MonoBehaviour
         StartCoroutine(GetRunToSequence(position, ease, duration));
     }
 
-    public void Wait(Vector3Int cell)
+    public void Wait(Vector2Int cell)
     {
         StopAllCoroutines();
         StartCoroutine(GetWaitSequence(cell));
@@ -84,7 +84,7 @@ public class Character : MonoBehaviour
         _range.Refresh();
     }
 
-    public Vector3Int ClosestTraversibleCell(Vector2 input)
+    public Vector2Int ClosestTraversibleCell(Vector2 input)
     {
         return _range.ClosestTraversibleCell(input);
     }
@@ -109,27 +109,27 @@ public class Character : MonoBehaviour
         _rangeDisplay.Hide();
     }
 
-    public Vector2 SnapToGrid(Vector3Int cell)
+    public Vector2 SnapToGrid(Vector2Int cell)
     {
         return _battle.SnapToGrid(cell);
     }
 
-    public Vector3 CellToWorld(Vector3Int cell)
+    public Vector2 CellToWorld(Vector2Int cell)
     {
         return _battle.CellToWorld(cell);
     }
 
-    public Vector3Int WorldToCell(Vector3 position)
+    public Vector2Int WorldToCell(Vector2 position)
     {
         return _battle.WorldToCell(position);
     }
 
-    public Vector2 ClampToTraversibleTiles(Vector2 position)
+    public Vector2 ClampToTraversibleCells(Vector2 position)
     {
         return _range.ClampToTraversibleCells(position);
     }
 
-    public bool IsTraversible(Vector3Int cell)
+    public bool IsTraversible(Vector2Int cell)
     {
         return Battlefield.RectangularDistance(HomeCell, cell) <= _traversalRange;
     }
@@ -168,7 +168,7 @@ public class Character : MonoBehaviour
         }
     }
 
-    private IEnumerator GetWaitSequence(Vector3Int cell)
+    private IEnumerator GetWaitSequence(Vector2Int cell)
     {
         Vector2 gridPosition = _battle.CellToWorld(cell);
         _battle.RefreshOccupantCell(this);

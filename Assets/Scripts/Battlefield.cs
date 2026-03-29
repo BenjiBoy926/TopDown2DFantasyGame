@@ -9,65 +9,65 @@ public class Battlefield : MonoBehaviour
     public float CellHeight => _grid.cellSize.y;
 
     private Grid _grid;
-    private readonly Dictionary<Vector3Int, Character> _cellToOccupant = new();
-    private readonly Dictionary<Character, Vector3Int> _occupantToCell = new();
+    private readonly Dictionary<Vector2Int, Character> _cellToOccupant = new();
+    private readonly Dictionary<Character, Vector2Int> _occupantToCell = new();
 
-    public static int RectangularDistance(Vector3Int a, Vector3Int b)
+    public static int RectangularDistance(Vector2Int a, Vector2Int b)
     {
-        Vector3Int offset = b - a;
-        Vector3Int absoluteOffset = new(Mathf.Abs(offset.x), Mathf.Abs(offset.y));
+        Vector2Int offset = b - a;
+        Vector2Int absoluteOffset = new(Mathf.Abs(offset.x), Mathf.Abs(offset.y));
         return absoluteOffset.x + absoluteOffset.y;
     }
 
     public void Register(Character character)
     {
         character.Position = SnapToGrid(character.Position);
-        Vector3Int cell = WorldToCell(character.Position);
+        Vector2Int cell = WorldToCell(character.Position);
         _occupantToCell[character] = cell;
         _cellToOccupant[cell] = character;
     }
 
     public void Unregister(Character character)
     {
-        Vector3Int cell = _occupantToCell[character];
+        Vector2Int cell = _occupantToCell[character];
         _occupantToCell.Remove(character);
         _cellToOccupant.Remove(cell);
     }
 
-    public Vector3 SnapToGrid(Vector3 position)
+    public Vector2 SnapToGrid(Vector2 position)
     {
-        Vector3Int cell = WorldToCell(position);
+        Vector2Int cell = WorldToCell(position);
         return CellToWorld(cell);
     }
 
-    public Vector3 CellToWorld(Vector3Int cell)
+    public Vector2 CellToWorld(Vector2Int cell)
     {
-        return _grid.CellToWorld(cell);
+        return _grid.CellToWorld((Vector3Int)cell);
     }
 
-    public Vector3Int WorldToCell(Vector3 position)
+    public Vector2Int WorldToCell(Vector2 position)
     {
         // NOTE: WorldToCell uses FloorToInt, not RoundToInt,
         // but if we offset the original position we can get the same result as Round
         // without breaking non-rectangular cell shapes (maybe? haven't tested it)
-        position += _grid.cellSize * .5f;
-        return _grid.WorldToCell(position);
+        position += (Vector2)_grid.cellSize * .5f;
+        return (Vector2Int)_grid.WorldToCell(position);
     }
 
-    public Character GetOccupant(Vector3Int cell)
+    public Character GetOccupant(Vector2Int cell)
     {
         return _cellToOccupant.TryGetValue(cell, out Character character) ? character : null;
     }
 
-    public Vector3Int GetCell(Character character)
+    public Vector2Int GetCell(Character character)
     {
         return _occupantToCell[character];
     }
 
     public void RefreshOccupantCell(Character character)
     {
-        Vector3Int oldCell = _occupantToCell[character];
-        Vector3Int newCell = WorldToCell(character.Position);
+        Vector2Int oldCell = _occupantToCell[character];
+        Vector2Int newCell = WorldToCell(character.Position);
 
         _cellToOccupant.Remove(oldCell);
         _cellToOccupant[newCell] = character;

@@ -28,27 +28,27 @@ public class Battle : MonoBehaviour
         _turn.StartNextTurn();
     }
 
-    public Vector3 SnapToGrid(Vector3 position)
+    public Vector2 SnapToGrid(Vector2 position)
     {
         return _field.SnapToGrid(position);
     }
 
-    public Vector3 CellToWorld(Vector3Int cell)
+    public Vector2 CellToWorld(Vector2Int cell)
     {
         return _field.CellToWorld(cell);
     }
 
-    public Vector3Int WorldToCell(Vector3 position)
+    public Vector2Int WorldToCell(Vector2 position)
     {
         return _field.WorldToCell(position);
     }
 
-    public Character GetOccupant(Vector3Int cell)
+    public Character GetOccupant(Vector2Int cell)
     {
         return _field.GetOccupant(cell);
     }
 
-    public Vector3Int GetCell(Character character)
+    public Vector2Int GetCell(Character character)
     {
         return _field.GetCell(character);
     }

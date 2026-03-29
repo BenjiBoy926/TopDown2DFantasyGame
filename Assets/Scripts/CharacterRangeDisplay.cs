@@ -6,10 +6,10 @@ public class CharacterRangeDisplay : MonoBehaviour
 {
     public bool IsShown => _isShown;
 
-    [SerializeField] private GameObject _traversibleTilePrefab;
-    [SerializeField] private GameObject _attackableTilePrefab;
+    [SerializeField] private GameObject _traversibleCellPrefab;
+    [SerializeField] private GameObject _attackableCellPrefab;
     private Character _character;
-    private readonly HashSet<GameObject> _tiles = new();
+    private readonly HashSet<GameObject> _cells = new();
     private bool _isShown;
 
     private void Awake()
@@ -19,31 +19,31 @@ public class CharacterRangeDisplay : MonoBehaviour
 
     public void Show()
     {
-        foreach (Vector3Int cell in _character.TraversibleCells)
+        foreach (Vector2Int cell in _character.TraversibleCells)
         {
-            AddTile(_traversibleTilePrefab, cell);
+            AddCell(_traversibleCellPrefab, cell);
         }
-        foreach (Vector3Int cell in _character.AttackableEdgeCells)
+        foreach (Vector2Int cell in _character.AttackableEdgeCells)
         {
-            AddTile(_attackableTilePrefab, cell);
+            AddCell(_attackableCellPrefab, cell);
         }
         _isShown = true;
     }
 
     public void Hide()
     {
-        foreach (GameObject tile in _tiles)
+        foreach (GameObject cell in _cells)
         {
-            Destroy(tile);
+            Destroy(cell);
         }
-        _tiles.Clear();
+        _cells.Clear();
         _isShown = false;
     }
 
-    private void AddTile(GameObject prefab, Vector3Int cell)
+    private void AddCell(GameObject prefab, Vector2Int cell)
     {
-        Vector3 position = _character.CellToWorld(cell);
-        GameObject tileObj = Instantiate(prefab, position, Quaternion.identity);
-        _tiles.Add(tileObj);
+        Vector2 position = _character.CellToWorld(cell);
+        GameObject cellObj = Instantiate(prefab, position, Quaternion.identity);
+        _cells.Add(cellObj);
     }
 }

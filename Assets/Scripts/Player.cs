@@ -96,12 +96,12 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
         if (_activeCharacter)
         {
             Vector2 oldPosition = _activeCharacter.Position;
-            _activeCharacter.Position = _activeCharacter.ClampToTraversibleTiles(newPosition);
+            _activeCharacter.Position = _activeCharacter.ClampToTraversibleCells(newPosition);
             _activeCharacter.SetDirection(newPosition - oldPosition);
 
-            Vector3Int closestTile = _activeCharacter.ClosestTraversibleCell(newPosition);
+            Vector2Int closestCell = _activeCharacter.ClosestTraversibleCell(newPosition);
             transform.position = _activeCharacter.ClampToReachableCells(newPosition);
-            _gridPosition.position = _battle.CellToWorld(closestTile);
+            _gridPosition.position = _battle.CellToWorld(closestCell);
         }
         else
         {
@@ -153,7 +153,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     {
         if (!_activeCharacter) return;
 
-        Vector3Int intendedCell = _battle.WorldToCell(_activeCharacter.Position);
+        Vector2Int intendedCell = _battle.WorldToCell(_activeCharacter.Position);
         Character occupant = _battle.GetOccupant(intendedCell);
         if (occupant && occupant != _activeCharacter)
         {
@@ -169,7 +169,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
     {
         if (_activeCharacter)
         {
-            Vector3Int cell = _battle.WorldToCell(_gridPosition.position);
+            Vector2Int cell = _battle.WorldToCell(_gridPosition.position);
             _activeCharacter.Wait(cell);
             SetHoveredCharacter(null);
             SetCharacter(null);
@@ -199,7 +199,7 @@ public class Player : MonoBehaviour, DefaultActions.IPlayerActions
 
     private Character GetCharacterAtCursor()
     {
-        Vector3Int cell = _battle.WorldToCell(_gridPosition.position);
+        Vector2Int cell = _battle.WorldToCell(_gridPosition.position);
         return _battle.GetOccupant(cell);
     }
 }

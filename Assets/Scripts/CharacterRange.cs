@@ -7,29 +7,29 @@ public class CharacterRange : MonoBehaviour
 {
     private struct Neighbors
     {
-        public Vector3Int Left, Right, Up, Down;
+        public Vector2Int Left, Right, Up, Down;
 
-        public static Neighbors Get(Vector3Int center)
+        public static Neighbors Get(Vector2Int center)
         {
             return new Neighbors
             {
-                Left = center + Vector3Int.left,
-                Right = center + Vector3Int.right,
-                Up = center + Vector3Int.up,
-                Down = center + Vector3Int.down
+                Left = center + Vector2Int.left,
+                Right = center + Vector2Int.right,
+                Up = center + Vector2Int.up,
+                Down = center + Vector2Int.down
             };
         }
     }
 
-    public IReadOnlyCollection<Vector3Int> TraversibleCells => _traversibleCells;
-    public IReadOnlyCollection<Vector3Int> AttackableEdgeCells => _attackableEdgeCells;
+    public IReadOnlyCollection<Vector2Int> TraversibleCells => _traversibleCells;
+    public IReadOnlyCollection<Vector2Int> AttackableEdgeCells => _attackableEdgeCells;
 
     private Character _character;
-    private readonly HashSet<Vector3Int> _traversibleCells = new();
-    private readonly HashSet<Vector3Int> _attackableEdgeCells = new();
-    private readonly HashSet<Vector3Int> _reachableCells = new();
+    private readonly HashSet<Vector2Int> _traversibleCells = new();
+    private readonly HashSet<Vector2Int> _attackableEdgeCells = new();
+    private readonly HashSet<Vector2Int> _reachableCells = new();
 
-    private static readonly Queue<Vector3Int> _searchQueue = new();
+    private static readonly Queue<Vector2Int> _searchQueue = new();
 
     private void Awake()
     {
@@ -57,7 +57,7 @@ public class CharacterRange : MonoBehaviour
         Add(_character.HomeCell);
         while (_searchQueue.Count > 0)
         {
-            Vector3Int nextCell = _searchQueue.Dequeue();
+            Vector2Int nextCell = _searchQueue.Dequeue();
             VisitNeighbors(nextCell);
 
             iterations++;
@@ -72,9 +72,9 @@ public class CharacterRange : MonoBehaviour
     private void RecalculateAttackableEdgeCells()
     {
         _attackableEdgeCells.Clear();
-        foreach (var traversibleTile in _traversibleCells)
+        foreach (var traversibleCell in _traversibleCells)
         {
-            Neighbors neighbors = Neighbors.Get(traversibleTile);
+            Neighbors neighbors = Neighbors.Get(traversibleCell);
             CheckAttackableEdgeCell(neighbors.Left);
             CheckAttackableEdgeCell(neighbors.Right);
             CheckAttackableEdgeCell(neighbors.Up);
@@ -92,7 +92,7 @@ public class CharacterRange : MonoBehaviour
         return ClampToCells(position, _reachableCells);
     }
 
-    private void VisitNeighbors(Vector3Int cell)
+    private void VisitNeighbors(Vector2Int cell)
     {
         Neighbors neighbors = Neighbors.Get(cell);
         Visit(neighbors.Left);
@@ -101,7 +101,7 @@ public class CharacterRange : MonoBehaviour
         Visit(neighbors.Down);
     }
 
-    private void Visit(Vector3Int cell)
+    private void Visit(Vector2Int cell)
     {
         if (ShouldAddCell(cell))
         {
@@ -109,23 +109,23 @@ public class CharacterRange : MonoBehaviour
         }
     }
 
-    private bool ShouldAddCell(Vector3Int cell)
+    private bool ShouldAddCell(Vector2Int cell)
     {
         return !_traversibleCells.Contains(cell) && _character.IsTraversible(cell);
     }
 
-    private void Add(Vector3Int cell)
+    private void Add(Vector2Int cell)
     {
         _traversibleCells.Add(cell);
         _searchQueue.Enqueue(cell);
     }
 
-    public Vector3Int ClosestTraversibleCell(Vector2 input)
+    public Vector2Int ClosestTraversibleCell(Vector2 input)
     {
         return ClosestCell(input, _traversibleCells);
     }
 
-    private void CheckAttackableEdgeCell(Vector3Int cell)
+    private void CheckAttackableEdgeCell(Vector2Int cell)
     {
         if (!_traversibleCells.Contains(cell))
         {
@@ -133,12 +133,12 @@ public class CharacterRange : MonoBehaviour
         }
     }
 
-    private Vector2 ClampToCells(Vector2 position, HashSet<Vector3Int> cells)
+    private Vector2 ClampToCells(Vector2 position, HashSet<Vector2Int> cells)
     {
-        Vector3Int currentCell = _character.WorldToCell(position);
+        Vector2Int currentCell = _character.WorldToCell(position);
         if (cells.Contains(currentCell)) return position;
 
-        Vector3Int closestTraversibleCell = ClosestCell(position, cells);
+        Vector2Int closestTraversibleCell = ClosestCell(position, cells);
         Vector2 cellPosition = _character.CellToWorld(closestTraversibleCell);
 
         float xExtent = _character.CellWidth / 2;
@@ -151,14 +151,14 @@ public class CharacterRange : MonoBehaviour
         return new(x, y);
     }
 
-    private Vector3Int ClosestCell(Vector2 input, HashSet<Vector3Int> tiles)
+    private Vector2Int ClosestCell(Vector2 input, HashSet<Vector2Int> cells)
     {
-        Vector3Int inputCell = _character.WorldToCell(input);
-        if (tiles.Count == 0) return inputCell;
+        Vector2Int inputCell = _character.WorldToCell(input);
+        if (cells.Count == 0) return inputCell;
 
-        Vector3Int closestCell = Vector3Int.zero;
+        Vector2Int closestCell = Vector2Int.zero;
         float closestDistance = float.MaxValue;
-        foreach (Vector3Int cell in tiles)
+        foreach (Vector2Int cell in cells)
         {
             Vector2 cellPosition = _character.CellToWorld(cell);
             Vector2 offset = input - cellPosition;
