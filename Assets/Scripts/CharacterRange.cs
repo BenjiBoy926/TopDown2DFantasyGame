@@ -5,6 +5,8 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(Character))]
 public class CharacterRange : MonoBehaviour
 {
+    private const float ClampMargin = 0.2f;
+
     private struct Neighbors
     {
         public Vector2Int Left, Right, Up, Down;
@@ -141,8 +143,8 @@ public class CharacterRange : MonoBehaviour
         Vector2Int closestTraversibleCell = ClosestCell(position, cells);
         Vector2 cellPosition = _character.CellToWorld(closestTraversibleCell);
 
-        float xExtent = _character.CellWidth / 2;
-        float yExtent = _character.CellHeight / 2;
+        float xExtent = _character.CellWidth / 2 - (ClampMargin * 2);
+        float yExtent = _character.CellHeight / 2 - (ClampMargin * 2);
         Rect range = Rect.MinMaxRect(cellPosition.x - xExtent, cellPosition.y - yExtent, cellPosition.x + xExtent, cellPosition.y + yExtent);
 
         float x = Mathf.Clamp(position.x, range.xMin, range.xMax);
