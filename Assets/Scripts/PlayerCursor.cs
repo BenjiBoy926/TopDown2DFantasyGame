@@ -32,9 +32,8 @@ public class PlayerCursor : MonoBehaviour
             _activeCharacter.Position = _activeCharacter.ClampToTraversibleCells(newPosition);
             _activeCharacter.SetDirection(newPosition - oldPosition);
 
-            Vector2Int closestCell = _activeCharacter.ClosestTraversibleCell(newPosition);
             transform.position = _activeCharacter.ClampToReachableCells(newPosition);
-            _gridPosition.position = _battle.CellToWorld(closestCell);
+            _gridPosition.position = _battle.CellToWorld(_activeCharacter.CurrentCell);
         }
         else
         {
@@ -84,8 +83,7 @@ public class PlayerCursor : MonoBehaviour
     {
         if (!_activeCharacter) return;
 
-        Vector2Int intendedCell = _battle.WorldToCell(_gridPosition.position);
-        Character occupant = _battle.GetOccupant(intendedCell);
+        Character occupant = _battle.GetOccupant(_activeCharacter.CurrentCell);
         if (occupant && occupant != _activeCharacter)
         {
             CancelMove();
@@ -100,8 +98,7 @@ public class PlayerCursor : MonoBehaviour
     {
         if (_activeCharacter)
         {
-            Vector2Int cell = _battle.WorldToCell(_gridPosition.position);
-            _activeCharacter.Wait(cell);
+            _activeCharacter.Wait();
             SetHoveredCharacter(null);
             SetCharacter(null);
         }
