@@ -131,7 +131,9 @@ public class Character : MonoBehaviour
 
     public bool IsTraversible(Vector2Int cell)
     {
-        return Battlefield.RectangularDistance(HomeCell, cell) <= _traversalRange;
+        Character occupant = _battle.GetOccupant(cell);
+        bool canMoveThroughOccupant = !occupant || occupant.Faction == _faction;
+        return canMoveThroughOccupant && Battlefield.RectangularDistance(HomeCell, cell) <= _traversalRange;
     }
 
     public bool CanStayInCell(Vector2Int cell)
