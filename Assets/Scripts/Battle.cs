@@ -8,6 +8,7 @@ public class Battle : MonoBehaviour
     public float CellWidth => _field.CellWidth;
     public float CellHeight => _field.CellHeight;
     public bool IsTurnChangeAnimationPlaying => _turn.IsAnimationPlaying;
+    public Faction CurrentFactionTurn => _turn.CurrentFaction;
 
     [SerializeField] private float _startDelay = .5f;
     private Battlefield _field;

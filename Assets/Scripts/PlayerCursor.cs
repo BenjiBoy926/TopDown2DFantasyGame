@@ -11,7 +11,6 @@ public class PlayerCursor : MonoBehaviour
     private Battle _battle;
     private Character _activeCharacter;
     private Character _hoveredCharacter;
-    private Vector2 _capturePosition;
 
     private void Awake()
     {
@@ -73,7 +72,7 @@ public class PlayerCursor : MonoBehaviour
     public void StartMove()
     {
         Character characterAtCursor = GetCharacterAtCursor();
-        if (characterAtCursor && !characterAtCursor.HasMovedThisTurn)
+        if (CanMoveCharacter(characterAtCursor))
         {
             SetCharacter(characterAtCursor);
         }
@@ -83,14 +82,13 @@ public class PlayerCursor : MonoBehaviour
     {
         if (!_activeCharacter) return;
 
-        Character occupant = _battle.GetOccupant(_activeCharacter.CurrentCell);
-        if (occupant && occupant != _activeCharacter)
+        if (_activeCharacter.CanStayInCell(_activeCharacter.CurrentCell))
         {
-            CancelMove();
+            ConfirmMove();
         }
         else
         {
-            ConfirmMove();
+            CancelMove();
         }
     }
 
@@ -108,7 +106,8 @@ public class PlayerCursor : MonoBehaviour
     {
         if (_activeCharacter)
         {
-            _activeCharacter.RunTo(_capturePosition, Ease.OutBack, 0.35f);
+            Vector2 homePosition = _battle.CellToWorld(_activeCharacter.HomeCell);
+            _activeCharacter.RunTo(homePosition, Ease.OutBack, 0.35f);
             SetHoveredCharacter(null);
             SetCharacter(null);
         }
@@ -119,7 +118,6 @@ public class PlayerCursor : MonoBehaviour
         _activeCharacter = character;
         if (_activeCharacter)
         {
-            _capturePosition = _activeCharacter.Position;
             _activeCharacter.Position = transform.position;
             _activeCharacter.SetIsRunning(true);
         }
@@ -129,5 +127,10 @@ public class PlayerCursor : MonoBehaviour
     {
         Vector2Int cell = _battle.WorldToCell(_gridPosition.position);
         return _battle.GetOccupant(cell);
+    }
+
+    private bool CanMoveCharacter(Character character)
+    {
+        return character && !character.HasMovedThisTurn && character.Faction == _battle.CurrentFactionTurn;
     }
 }

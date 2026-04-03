@@ -134,6 +134,12 @@ public class Character : MonoBehaviour
         return Battlefield.RectangularDistance(HomeCell, cell) <= _traversalRange;
     }
 
+    public bool CanStayInCell(Vector2Int cell)
+    {
+        Character occupant = _battle.GetOccupant(cell);
+        return !occupant || occupant == this;
+    }
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
