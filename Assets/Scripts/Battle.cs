@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 [RequireComponent(typeof(Battlefield))]
 [RequireComponent(typeof(BattleTurn))]
@@ -8,6 +9,7 @@ public class Battle : MonoBehaviour
     public float CellHeight => _field.CellHeight;
     public bool IsTurnChangeAnimationPlaying => _turn.IsAnimationPlaying;
 
+    [SerializeField] private float _startDelay = .5f;
     private Battlefield _field;
     private BattleTurn _turn;
 
@@ -62,5 +64,11 @@ public class Battle : MonoBehaviour
     {
         _field = GetComponent<Battlefield>();
         _turn = GetComponent<BattleTurn>();
+    }
+
+    private IEnumerator Start()
+    {
+        yield return new WaitForSeconds(_startDelay);
+        _turn.StartFirstTurn();
     }
 }

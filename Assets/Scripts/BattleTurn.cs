@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class BattleTurn : MonoBehaviour
 {
-    public Faction CurrentFaction => _factions[_currentFactionIndex];
+    public Faction CurrentFaction => _currentFactionIndex >= 0 ? _factions[_currentFactionIndex] : null;
     public bool IsAnimationPlaying => _animation && _animation.IsPlaying;
 
     [SerializeField] private BattleTurnChangeAnimation _animation;
+    [SerializeField] private Faction _startingFaction;
     private readonly HashSet<Character> _characters = new();
     private readonly List<Faction> _factions = new(2);
-    private int _currentFactionIndex = 0;
+    private int _currentFactionIndex = -1;
     private readonly List<Character> _characterListScratch = new();
 
     public void Register(Character obj)
@@ -33,9 +34,25 @@ public class BattleTurn : MonoBehaviour
         }
     }
 
+    public void StartFirstTurn()
+    {
+        StartTurn(_startingFaction);
+    }
+
     public void StartNextTurn()
     {
-        _currentFactionIndex = (_currentFactionIndex + 1) % _factions.Count;
+        StartTurn(_currentFactionIndex + 1);
+    }
+
+    private void StartTurn(Faction faction)
+    {
+        int index = _factions.IndexOf(faction);
+        StartTurn(index);
+    }
+
+    private void StartTurn(int factionIndex)
+    {
+        _currentFactionIndex = factionIndex % _factions.Count;
         foreach (Character character in _characters)
         {
             character.RestoreMove();
@@ -63,7 +80,7 @@ public class BattleTurn : MonoBehaviour
 
     private int CountCharactersThatCanStillMove(Faction faction)
     {
-        GetCharactersInFaction(CurrentFaction, _characterListScratch);
+        GetCharactersInFaction(faction, _characterListScratch);
 
         int canStillMove = 0;
         for (int i = 0; i < _characterListScratch.Count; i++)
