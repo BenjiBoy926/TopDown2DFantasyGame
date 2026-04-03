@@ -49,6 +49,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1881692635917527445, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
+    - target: {fileID: 1881692635917527445, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
       propertyPath: m_Name
       value: Goblin_Thief
       objectReference: {fileID: 0}
@@ -68,6 +72,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 2fcfacf0ffac53f478c47990df9b8a83, type: 2}
+    - target: {fileID: 5960221780606168465, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.44
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
