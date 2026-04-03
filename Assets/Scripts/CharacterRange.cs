@@ -7,22 +7,6 @@ public class CharacterRange : MonoBehaviour
 {
     private const float ClampMargin = 0.2f;
 
-    private struct Neighbors
-    {
-        public Vector2Int Left, Right, Up, Down;
-
-        public static Neighbors Get(Vector2Int center)
-        {
-            return new Neighbors
-            {
-                Left = center + Vector2Int.left,
-                Right = center + Vector2Int.right,
-                Up = center + Vector2Int.up,
-                Down = center + Vector2Int.down
-            };
-        }
-    }
-
     public IReadOnlyCollection<Vector2Int> TraversibleCells => _traversibleCells;
     public IReadOnlyCollection<Vector2Int> AttackableEdgeCells => _attackableEdgeCells;
 
@@ -31,7 +15,7 @@ public class CharacterRange : MonoBehaviour
     private readonly HashSet<Vector2Int> _attackableEdgeCells = new();
     private readonly HashSet<Vector2Int> _reachableCells = new();
 
-    private static readonly Queue<Vector2Int> _searchQueue = new();
+    private static readonly Queue<CellCost> _searchQueue = new();
 
     private void Awake()
     {
@@ -56,10 +40,12 @@ public class CharacterRange : MonoBehaviour
         const int MaxIterations = 100;
         int iterations = 0;
 
-        Add(_character.HomeCell);
+        CellCost homeCell = new(_character.HomeCell, 0);
+        Add(homeCell);
+
         while (_searchQueue.Count > 0)
         {
-            Vector2Int nextCell = _searchQueue.Dequeue();
+            CellCost nextCell = _searchQueue.Dequeue();
             VisitNeighbors(nextCell);
 
             iterations++;
@@ -76,7 +62,7 @@ public class CharacterRange : MonoBehaviour
         _attackableEdgeCells.Clear();
         foreach (var traversibleCell in _traversibleCells)
         {
-            Neighbors neighbors = Neighbors.Get(traversibleCell);
+            CellNeighbors neighbors = CellNeighbors.Get(traversibleCell);
             CheckAttackableEdgeCell(neighbors.Left);
             CheckAttackableEdgeCell(neighbors.Right);
             CheckAttackableEdgeCell(neighbors.Up);
@@ -94,16 +80,16 @@ public class CharacterRange : MonoBehaviour
         return ClampToCells(position, _reachableCells);
     }
 
-    private void VisitNeighbors(Vector2Int cell)
+    private void VisitNeighbors(CellCost cell)
     {
-        Neighbors neighbors = Neighbors.Get(cell);
+        CellCostNeighbors neighbors = CellCostNeighbors.Get(cell);
         Visit(neighbors.Left);
         Visit(neighbors.Right);
         Visit(neighbors.Up);
         Visit(neighbors.Down);
     }
 
-    private void Visit(Vector2Int cell)
+    private void Visit(CellCost cell)
     {
         if (ShouldAddCell(cell))
         {
@@ -111,14 +97,14 @@ public class CharacterRange : MonoBehaviour
         }
     }
 
-    private bool ShouldAddCell(Vector2Int cell)
+    private bool ShouldAddCell(CellCost cell)
     {
-        return !_traversibleCells.Contains(cell) && _character.IsTraversible(cell);
+        return !_traversibleCells.Contains(cell.Cell) && _character.IsTraversible(cell);
     }
 
-    private void Add(Vector2Int cell)
+    private void Add(CellCost cell)
     {
-        _traversibleCells.Add(cell);
+        _traversibleCells.Add(cell.Cell);
         _searchQueue.Enqueue(cell);
     }
 

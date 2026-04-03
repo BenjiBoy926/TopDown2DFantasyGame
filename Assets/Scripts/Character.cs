@@ -129,11 +129,11 @@ public class Character : MonoBehaviour
         return _range.ClampToTraversibleCells(position);
     }
 
-    public bool IsTraversible(Vector2Int cell)
+    public bool IsTraversible(CellCost cell)
     {
-        Character occupant = _battle.GetOccupant(cell);
+        Character occupant = _battle.GetOccupant(cell.Cell);
         bool canMoveThroughOccupant = !occupant || occupant.Faction == _faction;
-        return canMoveThroughOccupant && Battlefield.RectangularDistance(HomeCell, cell) <= _traversalRange;
+        return canMoveThroughOccupant && cell.CostToArrive <= _traversalRange;
     }
 
     public bool CanStayInCell(Vector2Int cell)
