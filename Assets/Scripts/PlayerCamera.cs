@@ -9,7 +9,7 @@ public class PlayerCamera : MonoBehaviour
 
     public void Slide(Vector2 delta)
     {
-        _rigidbody.position += delta;
+        _rigidbody.position += delta * .01f;
     }
 
     private void Awake()
