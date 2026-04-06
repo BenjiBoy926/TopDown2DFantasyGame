@@ -7,14 +7,9 @@ public class PlayerCamera : MonoBehaviour
     private Camera _camera;
     private Rigidbody2D _rigidbody;
 
-    public void Grab(Transform source)
+    public void Slide(Vector2 delta)
     {
-        Debug.Log("Camera grabbed");
-    }
-
-    public void Release()
-    {
-        Debug.Log("Camera released");
+        _rigidbody.position += delta;
     }
 
     private void Awake()

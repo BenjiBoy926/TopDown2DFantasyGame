@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerCursor : MonoBehaviour
 {
     public bool IsTurnChangeAnimationPlaying => _battle.IsTurnChangeAnimationPlaying;
+    public bool IsCameraGrabbed => _isCameraGrabbed;
     public Character ActiveCharacter => _activeCharacter;
 
     [SerializeField] private Transform _gridPosition;
@@ -12,10 +13,16 @@ public class PlayerCursor : MonoBehaviour
     private Battle _battle;
     private Character _activeCharacter;
     private Character _hoveredCharacter;
+    private bool _isCameraGrabbed;
 
     private void Awake()
     {
         _battle = GetComponentInParent<Battle>();
+    }
+
+    public void SlideCamera(Vector2 delta)
+    {
+        _camera.Slide(delta);
     }
 
     public void SlidePosition(Vector2 offset)
@@ -52,7 +59,7 @@ public class PlayerCursor : MonoBehaviour
         }
         else
         {
-            _camera.Grab(transform);
+            _isCameraGrabbed = true;
         }
     }
 
@@ -64,7 +71,7 @@ public class PlayerCursor : MonoBehaviour
         }
         else
         {
-            _camera.Release();
+            _isCameraGrabbed = false;
         }
     }
 

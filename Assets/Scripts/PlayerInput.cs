@@ -81,4 +81,13 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
             _cursor.Release();
         }
     }
+
+    public void OnCursorDelta(InputAction.CallbackContext context)
+    {
+        if (_cursor.IsCameraGrabbed)
+        {
+            Vector2 offset = context.ReadValue<Vector2>();
+            _cursor.SlideCamera(offset);
+        }
+    }
 }
