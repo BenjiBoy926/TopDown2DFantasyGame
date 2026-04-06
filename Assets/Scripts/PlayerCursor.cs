@@ -7,6 +7,7 @@ public class PlayerCursor : MonoBehaviour
     public Character ActiveCharacter => _activeCharacter;
 
     [SerializeField] private Transform _gridPosition;
+    [SerializeField] private PlayerCamera _camera;
 
     private Battle _battle;
     private Character _activeCharacter;
@@ -51,7 +52,7 @@ public class PlayerCursor : MonoBehaviour
         }
         else
         {
-            // grab camera for panning
+            _camera.Grab(transform);
         }
     }
 
@@ -63,7 +64,7 @@ public class PlayerCursor : MonoBehaviour
         }
         else
         {
-            // release camera panning
+            _camera.Release();
         }
     }
 
