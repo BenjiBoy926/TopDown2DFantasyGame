@@ -20,11 +20,6 @@ public class PlayerCursor : MonoBehaviour
         _battle = GetComponentInParent<Battle>();
     }
 
-    public void SlideCamera(Vector2 delta)
-    {
-        _camera.Slide(delta);
-    }
-
     public void SlidePosition(Vector2 offset)
     {
         Vector2 position = transform.position;
@@ -33,8 +28,15 @@ public class PlayerCursor : MonoBehaviour
 
     public void SetScreenPosition(Vector2 screenPosition)
     {
-        Vector2 worldPosition = _camera.ScreenToWorld(screenPosition);
-        SetPosition(worldPosition);
+        if (_isCameraGrabbed)
+        {
+            _camera.UpdateFromScreenPosition(screenPosition);
+        }
+        else
+        {
+            Vector2 worldPosition = _camera.ScreenToWorld(screenPosition);
+            SetPosition(worldPosition);
+        }
     }
 
     public void SetPosition(Vector2 newPosition)
@@ -66,6 +68,7 @@ public class PlayerCursor : MonoBehaviour
         else
         {
             _isCameraGrabbed = true;
+            _camera.Grab(transform.position);
         }
     }
 
