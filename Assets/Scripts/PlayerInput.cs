@@ -72,13 +72,13 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
     public void OnCursorPress(InputAction.CallbackContext context)
     {
         if (!IsInputAllowed) return;
-        if (context.started && !_cursor.ActiveCharacter)
+        if (context.started)
         {
-            _cursor.StartMove();
+            _cursor.Grab();
         }
-        else if (context.canceled && _cursor.ActiveCharacter)
+        else if (context.canceled)
         {
-            _cursor.FinishMove();
+            _cursor.Release();
         }
     }
 }

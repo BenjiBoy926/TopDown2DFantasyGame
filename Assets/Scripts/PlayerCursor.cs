@@ -42,6 +42,75 @@ public class PlayerCursor : MonoBehaviour
         UpdateHoveredCharacter();
     }
 
+    public void Grab()
+    {
+        Character characterAtCursor = GetCharacterAtCursor();
+        if (characterAtCursor)
+        {
+            StartMove();
+        }
+        else
+        {
+            // grab camera for panning
+        }
+    }
+
+    public void Release()
+    {
+        if (_activeCharacter)
+        {
+            FinishMove();
+        }
+        else
+        {
+            // release camera panning
+        }
+    }
+
+    public void StartMove()
+    {
+        Character characterAtCursor = GetCharacterAtCursor();
+        if (CanMoveCharacter(characterAtCursor))
+        {
+            SetActiveCharacter(characterAtCursor);
+        }
+    }
+
+    public void FinishMove()
+    {
+        if (!_activeCharacter) return;
+
+        if (_activeCharacter.CanStayInCell(_activeCharacter.CurrentCell))
+        {
+            ConfirmMove();
+        }
+        else
+        {
+            CancelMove();
+        }
+    }
+
+    private void ConfirmMove()
+    {
+        if (_activeCharacter)
+        {
+            _activeCharacter.Wait();
+            SetHoveredCharacter(null);
+            SetActiveCharacter(null);
+        }
+    }
+
+    public void CancelMove()
+    {
+        if (_activeCharacter)
+        {
+            Vector2 homePosition = _battle.CellToWorld(_activeCharacter.HomeCell);
+            _activeCharacter.RunTo(homePosition, Ease.OutBack, 0.35f);
+            SetHoveredCharacter(null);
+            SetActiveCharacter(null);
+        }
+    }
+
     private void UpdateHoveredCharacter()
     {
         if (_activeCharacter)
@@ -69,51 +138,7 @@ public class PlayerCursor : MonoBehaviour
         }
     }
 
-    public void StartMove()
-    {
-        Character characterAtCursor = GetCharacterAtCursor();
-        if (CanMoveCharacter(characterAtCursor))
-        {
-            SetCharacter(characterAtCursor);
-        }
-    }
-
-    public void FinishMove()
-    {
-        if (!_activeCharacter) return;
-
-        if (_activeCharacter.CanStayInCell(_activeCharacter.CurrentCell))
-        {
-            ConfirmMove();
-        }
-        else
-        {
-            CancelMove();
-        }
-    }
-
-    private void ConfirmMove()
-    {
-        if (_activeCharacter)
-        {
-            _activeCharacter.Wait();
-            SetHoveredCharacter(null);
-            SetCharacter(null);
-        }
-    }
-
-    public void CancelMove()
-    {
-        if (_activeCharacter)
-        {
-            Vector2 homePosition = _battle.CellToWorld(_activeCharacter.HomeCell);
-            _activeCharacter.RunTo(homePosition, Ease.OutBack, 0.35f);
-            SetHoveredCharacter(null);
-            SetCharacter(null);
-        }
-    }
-
-    private void SetCharacter(Character character)
+    private void SetActiveCharacter(Character character)
     {
         _activeCharacter = character;
         if (_activeCharacter)
