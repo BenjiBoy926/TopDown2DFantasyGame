@@ -31,6 +31,12 @@ public class PlayerCursor : MonoBehaviour
         SetPosition(position + offset);
     }
 
+    public void SetScreenPosition(Vector2 screenPosition)
+    {
+        Vector2 worldPosition = _camera.ScreenToWorld(screenPosition);
+        SetPosition(worldPosition);
+    }
+
     public void SetPosition(Vector2 newPosition)
     {
         if (_activeCharacter)

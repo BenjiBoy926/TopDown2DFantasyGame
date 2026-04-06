@@ -12,6 +12,11 @@ public class PlayerCamera : MonoBehaviour
         _rigidbody.position += delta * .01f;
     }
 
+    public Vector2 ScreenToWorld(Vector2 screen)
+    {
+        return _camera.ScreenToWorldPoint(screen);
+    }
+
     private void Awake()
     {
         _camera = GetComponent<Camera>();

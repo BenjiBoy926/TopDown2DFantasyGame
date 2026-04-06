@@ -65,8 +65,7 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
     public void OnCursorPosition(InputAction.CallbackContext context)
     {
         Vector2 screenPosition = context.ReadValue<Vector2>();
-        Vector2 newPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-        _cursor.SetPosition(newPosition);
+        _cursor.SetScreenPosition(screenPosition);
     }
 
     public void OnCursorPress(InputAction.CallbackContext context)
