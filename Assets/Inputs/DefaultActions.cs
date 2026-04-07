@@ -136,15 +136,6 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""CursorDelta"",
-                    ""type"": ""Value"",
-                    ""id"": ""6af6124e-c787-499e-9f8e-7087d2d6ea13"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -356,17 +347,6 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""action"": ""CursorPress"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c5e7409c-6ea5-4f1c-94f3-8936fce3245a"",
-                    ""path"": ""<Pointer>/delta"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CursorDelta"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -380,7 +360,6 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
         m_Player_CursorPosition = m_Player.FindAction("CursorPosition", throwIfNotFound: true);
         m_Player_CursorPress = m_Player.FindAction("CursorPress", throwIfNotFound: true);
-        m_Player_CursorDelta = m_Player.FindAction("CursorDelta", throwIfNotFound: true);
     }
 
     ~@DefaultActions()
@@ -466,7 +445,6 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Cancel;
     private readonly InputAction m_Player_CursorPosition;
     private readonly InputAction m_Player_CursorPress;
-    private readonly InputAction m_Player_CursorDelta;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -498,10 +476,6 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/CursorPress".
         /// </summary>
         public InputAction @CursorPress => m_Wrapper.m_Player_CursorPress;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/CursorDelta".
-        /// </summary>
-        public InputAction @CursorDelta => m_Wrapper.m_Player_CursorDelta;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -543,9 +517,6 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
             @CursorPress.started += instance.OnCursorPress;
             @CursorPress.performed += instance.OnCursorPress;
             @CursorPress.canceled += instance.OnCursorPress;
-            @CursorDelta.started += instance.OnCursorDelta;
-            @CursorDelta.performed += instance.OnCursorDelta;
-            @CursorDelta.canceled += instance.OnCursorDelta;
         }
 
         /// <summary>
@@ -572,9 +543,6 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
             @CursorPress.started -= instance.OnCursorPress;
             @CursorPress.performed -= instance.OnCursorPress;
             @CursorPress.canceled -= instance.OnCursorPress;
-            @CursorDelta.started -= instance.OnCursorDelta;
-            @CursorDelta.performed -= instance.OnCursorDelta;
-            @CursorDelta.canceled -= instance.OnCursorDelta;
         }
 
         /// <summary>
@@ -650,12 +618,5 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCursorPress(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "CursorDelta" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnCursorDelta(InputAction.CallbackContext context);
     }
 }

@@ -19,6 +19,12 @@ public class PlayerCursor : MonoBehaviour
         _battle = GetComponentInParent<Battle>();
     }
 
+    public void IncludeCellInView()
+    {
+        Vector2Int cell = _battle.WorldToCell(_gridPosition.position);
+        _camera.IncludeCellInView(cell);
+    }
+
     public void SlidePosition(Vector2 offset)
     {
         Vector2 position = transform.position;

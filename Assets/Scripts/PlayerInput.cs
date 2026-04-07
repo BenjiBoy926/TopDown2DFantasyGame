@@ -35,6 +35,7 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
         {
             Vector2 offsetThisFrame = _speed * Time.deltaTime * _moveDirection;
             _cursor.SlidePosition(offsetThisFrame);
+            _cursor.IncludeCellInView();
         }
     }
 
@@ -66,6 +67,11 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
     {
         Vector2 screenPosition = context.ReadValue<Vector2>();
         _cursor.SetScreenPosition(screenPosition);
+        // TODO: this might spaz the position since it depends on the camera position
+        if (_cursor.ActiveCharacter)
+        {
+            _cursor.IncludeCellInView();
+        }
     }
 
     public void OnCursorPress(InputAction.CallbackContext context)
@@ -79,10 +85,5 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
         {
             _cursor.Release();
         }
-    }
-
-    public void OnCursorDelta(InputAction.CallbackContext context)
-    {
-        
     }
 }
