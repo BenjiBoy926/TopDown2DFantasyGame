@@ -136,6 +136,15 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Zoom"",
+                    ""type"": ""Value"",
+                    ""id"": ""fbdc5ce2-3656-4e45-9bfe-7c3e325f6735"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -347,6 +356,39 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""action"": ""CursorPress"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Scroll"",
+                    ""id"": ""05a40675-fedf-4fa8-8d90-2fa6214d29f7"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""878ee804-f0a4-4589-be65-817a32c691d9"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""c98a0c02-570e-4a3a-adfd-7ca3a7219c39"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -360,6 +402,7 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
         m_Player_CursorPosition = m_Player.FindAction("CursorPosition", throwIfNotFound: true);
         m_Player_CursorPress = m_Player.FindAction("CursorPress", throwIfNotFound: true);
+        m_Player_Zoom = m_Player.FindAction("Zoom", throwIfNotFound: true);
     }
 
     ~@DefaultActions()
@@ -445,6 +488,7 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Cancel;
     private readonly InputAction m_Player_CursorPosition;
     private readonly InputAction m_Player_CursorPress;
+    private readonly InputAction m_Player_Zoom;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -476,6 +520,10 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/CursorPress".
         /// </summary>
         public InputAction @CursorPress => m_Wrapper.m_Player_CursorPress;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Zoom".
+        /// </summary>
+        public InputAction @Zoom => m_Wrapper.m_Player_Zoom;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -517,6 +565,9 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
             @CursorPress.started += instance.OnCursorPress;
             @CursorPress.performed += instance.OnCursorPress;
             @CursorPress.canceled += instance.OnCursorPress;
+            @Zoom.started += instance.OnZoom;
+            @Zoom.performed += instance.OnZoom;
+            @Zoom.canceled += instance.OnZoom;
         }
 
         /// <summary>
@@ -543,6 +594,9 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
             @CursorPress.started -= instance.OnCursorPress;
             @CursorPress.performed -= instance.OnCursorPress;
             @CursorPress.canceled -= instance.OnCursorPress;
+            @Zoom.started -= instance.OnZoom;
+            @Zoom.performed -= instance.OnZoom;
+            @Zoom.canceled -= instance.OnZoom;
         }
 
         /// <summary>
@@ -618,5 +672,12 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCursorPress(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Zoom" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnZoom(InputAction.CallbackContext context);
     }
 }

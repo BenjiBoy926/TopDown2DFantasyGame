@@ -25,6 +25,16 @@ public class PlayerCursor : MonoBehaviour
         _camera.IncludeInView(_exactPosition.position);
     }
 
+    public void IncreaseViewSize()
+    {
+        _camera.IncreaseViewSize();
+    }
+
+    public void DecreaseViewSize()
+    {
+        _camera.DecreaseViewSize();
+    }
+
     public void SlidePosition(Vector2 offset)
     {
         Vector2 position = _exactPosition.position;

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,6 +13,11 @@ public class PlayerCamera : MonoBehaviour
     private Vector2 WorldExtents => WorldSize / 2f;
 
     [SerializeField] private float _viewMargin = 1;
+    [SerializeField] private Vector2 _orthographicSizeRange = new(5, 15);
+    [SerializeField] private float _orthographicSizeJump = 3;
+    [SerializeField] private float _zoomIncrementDuration = 0.35f;
+    [SerializeField] private Ease _zoomIncrementEase = Ease.OutQuint;
+
     private Camera _camera;
     private Rigidbody2D _rigidbody;
 
@@ -81,6 +87,28 @@ public class PlayerCamera : MonoBehaviour
         Rect rect = GetWorldRect(_viewMargin);
         Vector2 offset = OffsetFromEdge(rect, position);
         _rigidbody.position += offset;
+    }
+
+    public void IncreaseViewSize()
+    {
+        AnimateOrthoSize(_camera.orthographicSize +  _orthographicSizeJump);
+    }
+
+    public void DecreaseViewSize()
+    {
+        AnimateOrthoSize(_camera.orthographicSize - _orthographicSizeJump);
+    }
+
+    private void AnimateOrthoSize(float newOrthoSize)
+    {
+        newOrthoSize = Mathf.Clamp(newOrthoSize, _orthographicSizeRange.x, _orthographicSizeRange.y);
+        if (Mathf.Approximately(_camera.orthographicSize, newOrthoSize))
+        {
+            return;
+        }
+
+        _camera.DOKill();
+        _camera.DOOrthoSize(newOrthoSize, _zoomIncrementDuration).SetEase(_zoomIncrementEase);
     }
 
     private Rect GetWorldRect(float margins)

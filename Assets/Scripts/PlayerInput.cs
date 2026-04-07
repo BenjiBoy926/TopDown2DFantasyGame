@@ -67,7 +67,6 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
     {
         Vector2 screenPosition = context.ReadValue<Vector2>();
         _cursor.SetScreenPosition(screenPosition);
-        // TODO: this might spaz the position since it depends on the camera position
         if (_cursor.ActiveCharacter)
         {
             _cursor.IncludeInView();
@@ -84,6 +83,19 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
         else if (context.canceled)
         {
             _cursor.Release();
+        }
+    }
+
+    public void OnZoom(InputAction.CallbackContext context)
+    {
+        float direction = context.ReadValue<float>();
+        if (direction < 0)
+        {
+            _cursor.IncreaseViewSize();
+        }
+        else if (direction > 0)
+        {
+            _cursor.DecreaseViewSize();
         }
     }
 }
