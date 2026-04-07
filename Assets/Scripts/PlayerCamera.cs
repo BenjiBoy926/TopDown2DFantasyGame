@@ -10,22 +10,28 @@ public class PlayerCamera : MonoBehaviour
     private Rigidbody2D _rigidbody;
 
     private Vector2 _grabScreenPosition;
-    private Vector2 _grabCameraPosition;
-    private Vector2 _previousCameraPosition;
-    private float _timeOfLastCameraUpdate;
+    private Vector2 _grabWorldPosition;
+    private Vector2 _previousWorldPosition;
+    private float _previousUpdateTime;
+    private Vector2 _currentWorldPosition;
+    private float _currentUpdateTime;
     private bool _isGrabbed;
 
     public void Grab(Vector2 worldPosition)
     {
         Vector2 screenPosition = _camera.WorldToScreenPoint(worldPosition);
         _grabScreenPosition = screenPosition;
-        _grabCameraPosition = _rigidbody.position;
-        _previousCameraPosition = _rigidbody.position;
-        _timeOfLastCameraUpdate = Time.time;
+        _grabWorldPosition = _rigidbody.position;
+        _previousWorldPosition = _grabWorldPosition;
+        _previousUpdateTime = Time.time;
+        _currentWorldPosition = _grabWorldPosition;
+        _currentUpdateTime = Time.time;
         _isGrabbed = true;
+
+        _rigidbody.velocity = Vector2.zero;
     }
 
-    public void UpdateFromScreenPosition(Vector2 screenPosition)
+    public void GrabUpdate(Vector2 screenPosition)
     {
         Vector2 screenOffset = screenPosition - _grabScreenPosition;
         Vector2 screenSize = new(Screen.width, Screen.height);
@@ -36,9 +42,14 @@ public class PlayerCamera : MonoBehaviour
         Vector2 cameraWorldSize = new(cameraWorldWidth, cameraWorldHeight);
 
         Vector2 worldOffset = normalizedOffset * cameraWorldSize;
-        _previousCameraPosition = _rigidbody.position;
-        _timeOfLastCameraUpdate = Time.time;
-        _rigidbody.position = _grabCameraPosition + worldOffset;
+
+        _previousWorldPosition = _currentWorldPosition;
+        _previousUpdateTime = _currentUpdateTime;
+
+        _currentWorldPosition = _grabWorldPosition + worldOffset;
+        _currentUpdateTime = Time.time;
+
+        _rigidbody.position = _currentWorldPosition;
     }
 
     public void Release()
@@ -46,7 +57,13 @@ public class PlayerCamera : MonoBehaviour
         if (!_isGrabbed) return;
 
         _isGrabbed = false;
-        Debug.Log("Set velocity from updates");
+
+        Vector2 dx = _currentWorldPosition - _previousWorldPosition;
+        float dt = _currentUpdateTime - _previousUpdateTime;
+        if (dt > 0)
+        {
+            _rigidbody.velocity = dx / dt;
+        }
     }
 
     public Vector2 ScreenToWorld(Vector2 screen)

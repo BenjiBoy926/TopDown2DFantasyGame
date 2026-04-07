@@ -29,7 +29,7 @@ public class PlayerCursor : MonoBehaviour
     {
         if (IsCameraGrabbed)
         {
-            _camera.UpdateFromScreenPosition(screenPosition);
+            _camera.GrabUpdate(screenPosition);
         }
         else
         {
