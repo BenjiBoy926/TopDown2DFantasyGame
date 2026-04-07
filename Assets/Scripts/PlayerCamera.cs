@@ -18,10 +18,16 @@ public class PlayerCamera : MonoBehaviour
 
     public void UpdateFromScreenPosition(Vector2 screenPosition)
     {
-        Vector2 offset = screenPosition - _grabScreenPosition;
-        Matrix4x4 projection = _camera.projectionMatrix;
-        Debug.Log($"Screen offset: {offset}");
-        // have to convert that screen offset to a world offset using... the projection matrix?  The ortho size?
+        Vector2 screenOffset = screenPosition - _grabScreenPosition;
+        Vector2 screenSize = new(Screen.width, Screen.height);
+        Vector2 normalizedOffset = -(screenOffset / screenSize);
+
+        float cameraWorldHeight = _camera.orthographicSize * 2;
+        float cameraWorldWidth = cameraWorldHeight * _camera.aspect;
+        Vector2 cameraWorldSize = new(cameraWorldWidth, cameraWorldHeight);
+
+        Vector2 worldOffset = normalizedOffset * cameraWorldSize;
+        _rigidbody.position = _grabCameraPosition + worldOffset;
     }
 
     public Vector2 ScreenToWorld(Vector2 screen)
