@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Camera))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -8,7 +9,7 @@ public class PlayerCamera : MonoBehaviour
     private float WorldHeight => _camera.orthographicSize * 2;
     private float WorldWidth => WorldHeight * _camera.aspect;
     private Vector2 WorldSize => new(WorldWidth, WorldHeight);
-    private Vector2 WorldExtent => WorldSize / 2f;
+    private Vector2 WorldExtents => WorldSize / 2f;
 
     [SerializeField] private float _viewMargin = 1;
     private Camera _camera;
@@ -77,37 +78,39 @@ public class PlayerCamera : MonoBehaviour
 
     public void IncludeInView(Vector2 position)
     {
-        Vector2 marginVector = new(_viewMargin, _viewMargin);
-        Vector2 extent = WorldExtent - (marginVector * 2);
+        Rect rect = GetWorldRect(_viewMargin);
+        Vector2 offset = OffsetFromEdge(rect, position);
+        _rigidbody.position += offset;
+    }
+
+    private Rect GetWorldRect(float margins)
+    {
+        Vector2 marginVector = new(margins, margins);
+        Vector2 extents = WorldExtents - (marginVector * 2);
         Vector2 center = _rigidbody.position;
-        Vector2 min = center - extent;
-        Vector2 max = center + extent;
-        Rect rect = Rect.MinMaxRect(min.x, min.y, max.x, max.y);
-        if (rect.Contains(position))
-        {
-            return;
-        }
+        Vector2 min = center - extents;
+        Vector2 max = center + extents;
+        return Rect.MinMaxRect(min.x, min.y, max.x, max.y);
+    }
 
-        Vector2 shift = Vector2.zero;
-        if (position.x < min.x)
-        {
-            shift.x = position.x - min.x;
-        }
-        else if (position.x > max.x)
-        {
-            shift.x = position.x - max.x;
-        }
+    private static Vector2 OffsetFromEdge(Rect rect, Vector2 point)
+    {
+        float xOffset = OffsetOutsideRange(point.x, rect.xMin, rect.xMax);
+        float yOffset = OffsetOutsideRange(point.y, rect.yMin, rect.yMax);
+        return new(xOffset, yOffset);
+    }
 
-        if (position.y < min.y)
+    private static float OffsetOutsideRange(float value, float min, float max)
+    {
+        if (value < min)
         {
-            shift.y = position.y - min.y;
+            return value - min;
         }
-        else if (position.y > max.y)
+        else if (value > max)
         {
-            shift.y = position.y - max.y;
+            return value - max;
         }
-
-        _rigidbody.position += shift;
+        return 0;
     }
 
     private void Awake()
