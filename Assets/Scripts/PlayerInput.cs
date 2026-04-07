@@ -86,7 +86,7 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
         }
     }
 
-    public void OnZoom(InputAction.CallbackContext context)
+    public void OnZoomJump(InputAction.CallbackContext context)
     {
         float direction = context.ReadValue<float>();
         if (direction < 0)

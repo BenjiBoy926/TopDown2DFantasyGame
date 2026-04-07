@@ -684,6 +684,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _viewMargin: 1
   _orthographicSizeRange: {x: 5, y: 15}
+  _orthographicSizeJump: 1
+  _zoomIncrementDuration: 0.35
+  _zoomIncrementEase: 15
 --- !u!50 &519420034
 Rigidbody2D:
   serializedVersion: 4
