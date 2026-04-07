@@ -35,7 +35,7 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
         {
             Vector2 offsetThisFrame = _speed * Time.deltaTime * _moveDirection;
             _cursor.SlidePosition(offsetThisFrame);
-            _cursor.IncludeCellInView();
+            _cursor.IncludeInView();
         }
     }
 
@@ -70,7 +70,7 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
         // TODO: this might spaz the position since it depends on the camera position
         if (_cursor.ActiveCharacter)
         {
-            _cursor.IncludeCellInView();
+            _cursor.IncludeInView();
         }
     }
 

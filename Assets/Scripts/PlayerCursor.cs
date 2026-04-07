@@ -7,6 +7,7 @@ public class PlayerCursor : MonoBehaviour
     public bool IsCameraGrabbed => _camera.IsGrabbed;
     public Character ActiveCharacter => _activeCharacter;
 
+    [SerializeField] private Transform _exactPosition;
     [SerializeField] private Transform _gridPosition;
     [SerializeField] private PlayerCamera _camera;
 
@@ -19,15 +20,14 @@ public class PlayerCursor : MonoBehaviour
         _battle = GetComponentInParent<Battle>();
     }
 
-    public void IncludeCellInView()
+    public void IncludeInView()
     {
-        Vector2Int cell = _battle.WorldToCell(_gridPosition.position);
-        _camera.IncludeCellInView(cell);
+        _camera.IncludeInView(_exactPosition.position);
     }
 
     public void SlidePosition(Vector2 offset)
     {
-        Vector2 position = transform.position;
+        Vector2 position = _exactPosition.position;
         SetPosition(position + offset);
     }
 
@@ -52,12 +52,12 @@ public class PlayerCursor : MonoBehaviour
             _activeCharacter.Position = _activeCharacter.ClampToTraversibleCells(newPosition);
             _activeCharacter.SetDirection(newPosition - oldPosition);
 
-            transform.position = _activeCharacter.ClampToReachableCells(newPosition);
+            _exactPosition.position = _activeCharacter.ClampToReachableCells(newPosition);
             _gridPosition.position = _battle.CellToWorld(_activeCharacter.CurrentCell);
         }
         else
         {
-            transform.position = newPosition;
+            _exactPosition.position = newPosition;
             _gridPosition.position = _battle.SnapToGrid(newPosition);
         }
         UpdateHoveredCharacter();
@@ -72,7 +72,7 @@ public class PlayerCursor : MonoBehaviour
         }
         else
         {
-            _camera.Grab(transform.position);
+            _camera.Grab(_exactPosition.position);
         }
     }
 
@@ -164,7 +164,7 @@ public class PlayerCursor : MonoBehaviour
         _activeCharacter = character;
         if (_activeCharacter)
         {
-            _activeCharacter.Position = transform.position;
+            _activeCharacter.Position = _exactPosition.position;
             _activeCharacter.SetIsRunning(true);
         }
     }

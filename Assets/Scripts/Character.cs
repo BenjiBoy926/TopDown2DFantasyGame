@@ -79,16 +79,6 @@ public class Character : MonoBehaviour
         SetHasMovedThisTurn(false);
     }
 
-    public void RefreshRange()
-    {
-        _range.Refresh();
-    }
-
-    public Vector2Int ClosestTraversibleCell(Vector2 input)
-    {
-        return _range.ClosestTraversibleCell(input);
-    }
-
     public Vector2 ClampToReachableCells(Vector2 input)
     {
         return _range.ClampToReachableCells(input);
@@ -98,7 +88,7 @@ public class Character : MonoBehaviour
     {
         if (_rangeDisplay.IsShown) return;
 
-        RefreshRange();
+        _range.Refresh();
         _rangeDisplay.Show();
     }
 
@@ -131,9 +121,13 @@ public class Character : MonoBehaviour
 
     public bool IsTraversible(CellCost cell)
     {
+        if (cell.CostToArrive > _traversalRange)
+        {
+            return false;
+        }
         Character occupant = _battle.GetOccupant(cell.Cell);
         bool canMoveThroughOccupant = !occupant || occupant.Faction == _faction;
-        return canMoveThroughOccupant && cell.CostToArrive <= _traversalRange;
+        return canMoveThroughOccupant;
     }
 
     public bool CanStayInCell(Vector2Int cell)

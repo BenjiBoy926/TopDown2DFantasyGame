@@ -397,7 +397,6 @@ Transform:
   - {fileID: 1169000395}
   - {fileID: 579689916}
   - {fileID: 1576188936}
-  - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 569914770}
   m_Father: {fileID: 0}
@@ -669,7 +668,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 390487296}
+  m_Father: {fileID: 1595625520}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &519420033
 MonoBehaviour:
@@ -1224,6 +1223,7 @@ Transform:
   m_Children:
   - {fileID: 977668711}
   - {fileID: 357620973}
+  - {fileID: 519420032}
   m_Father: {fileID: 390487296}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1595625522
@@ -1251,6 +1251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c16ac80f1228c64aa0482d9f366b316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _exactPosition: {fileID: 977668711}
   _gridPosition: {fileID: 357620973}
   _camera: {fileID: 519420033}
 --- !u!1001 &1613011808

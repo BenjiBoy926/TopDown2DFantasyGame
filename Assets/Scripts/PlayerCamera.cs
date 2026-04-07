@@ -15,7 +15,6 @@ public class PlayerCamera : MonoBehaviour
 
     private Camera _camera;
     private Rigidbody2D _rigidbody;
-    private Battle _battle;
 
     private Vector2 _grabScreenPosition;
     private Vector2 _grabWorldPosition;
@@ -78,22 +77,14 @@ public class PlayerCamera : MonoBehaviour
         return _camera.ScreenToWorldPoint(screen);
     }
 
-    public void IncludeCellInView(Vector2Int cell)
+    public void IncludeInView(Vector2 position)
     {
-        Vector2 cellPosition = _battle.CellToWorld(cell);
-        Rect worldRect = WorldRect;
-        if (worldRect.Contains(cellPosition))
-        {
-            Debug.Log("Cell is already in view");
-            return;
-        }
-        Debug.Log("Cell is not in view, must move to include it in view");
+        
     }
 
     private void Awake()
     {
         _camera = GetComponent<Camera>();
         _rigidbody = GetComponent<Rigidbody2D>();
-        _battle = GetComponentInParent<Battle>();
     }
 }
