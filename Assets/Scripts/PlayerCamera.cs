@@ -4,14 +4,13 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerCamera : MonoBehaviour
 {
-    private const float ViewMargin = 2;
-
     public bool IsGrabbed => _isGrabbed;
     private float WorldHeight => _camera.orthographicSize * 2;
     private float WorldWidth => WorldHeight * _camera.aspect;
     private Vector2 WorldSize => new(WorldWidth, WorldHeight);
     private Vector2 WorldExtent => WorldSize / 2f;
 
+    [SerializeField] private float _viewMargin = 1;
     private Camera _camera;
     private Rigidbody2D _rigidbody;
 
@@ -78,7 +77,7 @@ public class PlayerCamera : MonoBehaviour
 
     public void IncludeInView(Vector2 position)
     {
-        Vector2 marginVector = new(ViewMargin, ViewMargin);
+        Vector2 marginVector = new(_viewMargin, _viewMargin);
         Vector2 extent = WorldExtent - (marginVector * 2);
         Vector2 center = _rigidbody.position;
         Vector2 min = center - extent;
