@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerCursor : MonoBehaviour
 {
     public bool IsTurnChangeAnimationPlaying => _battle.IsTurnChangeAnimationPlaying;
-    public bool IsCameraGrabbed => _isCameraGrabbed;
+    public bool IsCameraGrabbed => _camera.IsGrabbed;
     public Character ActiveCharacter => _activeCharacter;
 
     [SerializeField] private Transform _gridPosition;
@@ -13,7 +13,6 @@ public class PlayerCursor : MonoBehaviour
     private Battle _battle;
     private Character _activeCharacter;
     private Character _hoveredCharacter;
-    private bool _isCameraGrabbed;
 
     private void Awake()
     {
@@ -28,7 +27,7 @@ public class PlayerCursor : MonoBehaviour
 
     public void SetScreenPosition(Vector2 screenPosition)
     {
-        if (_isCameraGrabbed)
+        if (IsCameraGrabbed)
         {
             _camera.UpdateFromScreenPosition(screenPosition);
         }
@@ -67,7 +66,6 @@ public class PlayerCursor : MonoBehaviour
         }
         else
         {
-            _isCameraGrabbed = true;
             _camera.Grab(transform.position);
         }
     }
@@ -80,7 +78,7 @@ public class PlayerCursor : MonoBehaviour
         }
         else
         {
-            _isCameraGrabbed = false;
+            _camera.Release();
         }
     }
 
