@@ -4,14 +4,13 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerCamera : MonoBehaviour
 {
+    private const float ViewMargin = 2;
+
     public bool IsGrabbed => _isGrabbed;
     private float WorldHeight => _camera.orthographicSize * 2;
     private float WorldWidth => WorldHeight * _camera.aspect;
     private Vector2 WorldSize => new(WorldWidth, WorldHeight);
     private Vector2 WorldExtent => WorldSize / 2f;
-    private Vector2 WorldMin => _rigidbody.position - WorldExtent;
-    private Vector2 WorldMax => _rigidbody.position + WorldExtent;
-    private Rect WorldRect => Rect.MinMaxRect(WorldMin.x, WorldMin.y, WorldMax.x, WorldMax.y);
 
     private Camera _camera;
     private Rigidbody2D _rigidbody;
@@ -79,7 +78,37 @@ public class PlayerCamera : MonoBehaviour
 
     public void IncludeInView(Vector2 position)
     {
-        
+        Vector2 marginVector = new(ViewMargin, ViewMargin);
+        Vector2 extent = WorldExtent - (marginVector * 2);
+        Vector2 center = _rigidbody.position;
+        Vector2 min = center - extent;
+        Vector2 max = center + extent;
+        Rect rect = Rect.MinMaxRect(min.x, min.y, max.x, max.y);
+        if (rect.Contains(position))
+        {
+            return;
+        }
+
+        Vector2 shift = Vector2.zero;
+        if (position.x < min.x)
+        {
+            shift.x = position.x - min.x;
+        }
+        else if (position.x > max.x)
+        {
+            shift.x = position.x - max.x;
+        }
+
+        if (position.y < min.y)
+        {
+            shift.y = position.y - min.y;
+        }
+        else if (position.y > max.y)
+        {
+            shift.y = position.y - max.y;
+        }
+
+        _rigidbody.position += shift;
     }
 
     private void Awake()
