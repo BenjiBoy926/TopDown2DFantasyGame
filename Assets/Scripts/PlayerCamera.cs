@@ -85,7 +85,7 @@ public class PlayerCamera : MonoBehaviour
     public void IncludeInView(Vector2 position)
     {
         Rect rect = GetWorldRect(_viewMargin);
-        Vector2 offset = OffsetFromEdge(rect, position);
+        Vector2 offset = OffsetOutsideEdge(rect, position);
         _rigidbody.position += offset;
     }
 
@@ -127,7 +127,7 @@ public class PlayerCamera : MonoBehaviour
         return Rect.MinMaxRect(min.x, min.y, max.x, max.y);
     }
 
-    private static Vector2 OffsetFromEdge(Rect rect, Vector2 point)
+    private static Vector2 OffsetOutsideEdge(Rect rect, Vector2 point)
     {
         float xOffset = OffsetOutsideRange(point.x, rect.xMin, rect.xMax);
         float yOffset = OffsetOutsideRange(point.y, rect.yMin, rect.yMax);
