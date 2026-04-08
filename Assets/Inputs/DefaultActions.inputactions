@@ -25,6 +25,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "ZoomMove",
+                    "type": "Value",
+                    "id": "df8bf33b-8ef9-4301-82a6-340382387b34",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Cancel",
                     "type": "Button",
                     "id": "195412fc-bdf5-49f0-8e85-1c7026d84df8",
@@ -301,6 +310,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "ZoomJump",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "QE",
+                    "id": "7280893d-62cf-417e-8e32-6c9397bd2ab9",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ZoomMove",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "63e83df7-0f08-4e3a-97aa-7ee41aa41eae",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ZoomMove",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "0fd63859-6a50-4639-acd8-a14517a9d7d1",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ZoomMove",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

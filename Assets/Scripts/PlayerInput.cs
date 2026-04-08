@@ -11,6 +11,7 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
     private PlayerCursor _cursor;
     private DefaultActions _actions;
     private Vector2 _moveDirection;
+    private float _zoomDirection;
 
     private void Awake()
     {
@@ -37,6 +38,7 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
             _cursor.SlidePosition(offsetThisFrame);
             _cursor.IncludeInView();
         }
+        // Change the zoom level based on the zoom direction input
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -56,6 +58,11 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
         {
             _cursor.FinishMove();
         }
+    }
+
+    public void OnZoomMove(InputAction.CallbackContext context)
+    {
+        _zoomDirection = context.ReadValue<float>();
     }
 
     public void OnCancel(InputAction.CallbackContext context)

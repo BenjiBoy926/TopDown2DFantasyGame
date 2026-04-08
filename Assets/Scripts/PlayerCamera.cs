@@ -89,6 +89,17 @@ public class PlayerCamera : MonoBehaviour
         _rigidbody.position += offset;
     }
 
+    public void ChangeViewSize(float sizeDelta) 
+    { 
+        SetViewSize(_camera.orthographicSize + sizeDelta);
+    }
+
+    public void SetViewSize(float orthoSize)
+    {
+        orthoSize = Mathf.Clamp(orthoSize, _viewSizeRange.x, _viewSizeRange.y);
+        _camera.orthographicSize = orthoSize;
+    }
+
     public void IncreaseViewSize()
     {
         AnimateOrthoSize(_camera.orthographicSize + _viewSizeJump);

@@ -25,6 +25,11 @@ public class PlayerCursor : MonoBehaviour
         _camera.IncludeInView(_exactPosition.position);
     }
 
+    public void ChangeViewSize(float delta)
+    {
+        _camera.ChangeViewSize(delta);
+    }
+
     public void IncreaseViewSize()
     {
         _camera.IncreaseViewSize();

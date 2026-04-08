@@ -111,6 +111,15 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""ZoomMove"",
+                    ""type"": ""Value"",
+                    ""id"": ""df8bf33b-8ef9-4301-82a6-340382387b34"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Cancel"",
                     ""type"": ""Button"",
                     ""id"": ""195412fc-bdf5-49f0-8e85-1c7026d84df8"",
@@ -389,6 +398,39 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""action"": ""ZoomJump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""QE"",
+                    ""id"": ""7280893d-62cf-417e-8e32-6c9397bd2ab9"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ZoomMove"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""63e83df7-0f08-4e3a-97aa-7ee41aa41eae"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ZoomMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""0fd63859-6a50-4639-acd8-a14517a9d7d1"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ZoomMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -399,6 +441,7 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Act = m_Player.FindAction("Act", throwIfNotFound: true);
+        m_Player_ZoomMove = m_Player.FindAction("ZoomMove", throwIfNotFound: true);
         m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
         m_Player_CursorPosition = m_Player.FindAction("CursorPosition", throwIfNotFound: true);
         m_Player_CursorPress = m_Player.FindAction("CursorPress", throwIfNotFound: true);
@@ -485,6 +528,7 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Act;
+    private readonly InputAction m_Player_ZoomMove;
     private readonly InputAction m_Player_Cancel;
     private readonly InputAction m_Player_CursorPosition;
     private readonly InputAction m_Player_CursorPress;
@@ -508,6 +552,10 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Act".
         /// </summary>
         public InputAction @Act => m_Wrapper.m_Player_Act;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/ZoomMove".
+        /// </summary>
+        public InputAction @ZoomMove => m_Wrapper.m_Player_ZoomMove;
         /// <summary>
         /// Provides access to the underlying input action "Player/Cancel".
         /// </summary>
@@ -556,6 +604,9 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
             @Act.started += instance.OnAct;
             @Act.performed += instance.OnAct;
             @Act.canceled += instance.OnAct;
+            @ZoomMove.started += instance.OnZoomMove;
+            @ZoomMove.performed += instance.OnZoomMove;
+            @ZoomMove.canceled += instance.OnZoomMove;
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
@@ -585,6 +636,9 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
             @Act.started -= instance.OnAct;
             @Act.performed -= instance.OnAct;
             @Act.canceled -= instance.OnAct;
+            @ZoomMove.started -= instance.OnZoomMove;
+            @ZoomMove.performed -= instance.OnZoomMove;
+            @ZoomMove.canceled -= instance.OnZoomMove;
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
@@ -651,6 +705,13 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnAct(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ZoomMove" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnZoomMove(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Cancel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
