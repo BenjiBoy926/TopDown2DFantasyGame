@@ -177,9 +177,11 @@ public class Character : MonoBehaviour
 
     private IEnumerator GetWaitSequence()
     {
-        Vector2 gridPosition = _battle.CellToWorld(CurrentCell);
         _battle.RefreshOccupantCell(this);
+        Vector2 gridPosition = _battle.CellToWorld(CurrentCell);
         yield return GetRunToSequence(gridPosition, Ease.OutCirc, 0.35f);
+
+        // TODO: decouple the bool turning false from the visual showing that the character can or cannot move
         UseMove();
     }
 
