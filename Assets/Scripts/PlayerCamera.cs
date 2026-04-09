@@ -1,6 +1,5 @@
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Camera))]
 [RequireComponent(typeof(Rigidbody2D))]
