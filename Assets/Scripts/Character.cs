@@ -38,7 +38,6 @@ public class Character : MonoBehaviour
     private CharacterRange _range;
     private CharacterRangeDisplay _rangeDisplay;
     private Battle _battle;
-    
     private bool _hasMovedThisTurn = false;
 
     public void SetDirection(Vector2 direction)
@@ -61,6 +60,12 @@ public class Character : MonoBehaviour
     {
         StopAllCoroutines();
         StartCoroutine(GetRunToSequence(position, ease, duration));
+    }
+
+    public void Attack(Character other)
+    {
+        Debug.Log($"{this} attacks {other}!");
+        Wait();
     }
 
     public void Wait()

@@ -128,13 +128,23 @@ public class PlayerCursor : MonoBehaviour
 
     private void ConfirmMove()
     {
-        if (_activeCharacter)
+        if (!_activeCharacter)
+            return;
+
+        Vector2Int targettingCell = _battle.WorldToCell(_exactPosition.position);
+        Character target = _battle.GetOccupant(targettingCell);
+        if (target && target.Faction != _activeCharacter.Faction)
+        {
+            _activeCharacter.Attack(target);
+        }
+        else
         {
             _activeCharacter.Wait();
-            SetHoveredCharacter(null);
-            SetActiveCharacter(null);
         }
+
+        Deselect();
     }
+
 
     public void CancelMove()
     {
@@ -142,8 +152,7 @@ public class PlayerCursor : MonoBehaviour
         {
             Vector2 homePosition = _battle.CellToWorld(_activeCharacter.HomeCell);
             _activeCharacter.RunTo(homePosition, Ease.OutBack, 0.35f);
-            SetHoveredCharacter(null);
-            SetActiveCharacter(null);
+            Deselect();
         }
     }
 
@@ -157,6 +166,12 @@ public class PlayerCursor : MonoBehaviour
         {
             SetHoveredCharacter(GetCharacterAtCursor());
         }
+    }
+
+    private void Deselect()
+    {
+        SetHoveredCharacter(null);
+        SetActiveCharacter(null);
     }
 
     private void SetHoveredCharacter(Character hoveredCharacter)
