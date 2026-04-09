@@ -684,9 +684,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _viewMargin: 1
   _viewSizeRange: {x: 5, y: 15}
-  _viewSizeJump: 3
-  _viewSizeChangeDuration: 0.35
-  _viewSizeChangeEase: 15
+  _zoomJump: 0.3
+  _zoomJumpDuration: 0.35
+  _zoomJumpEase: 15
 --- !u!50 &519420034
 Rigidbody2D:
   serializedVersion: 4
@@ -1244,7 +1244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 10
-  _viewSizeChangeSpeed: 10
+  _zoomChangeSpeed: 2
 --- !u!114 &1595625523
 MonoBehaviour:
   m_ObjectHideFlags: 0

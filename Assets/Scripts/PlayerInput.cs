@@ -7,12 +7,12 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
     private bool IsInputAllowed => !_cursor.IsTurnChangeAnimationPlaying;
 
     [SerializeField] private float _speed = 5;
-    [SerializeField] private float _viewSizeChangeSpeed = 5;
+    [SerializeField] private float _zoomChangeSpeed = 5;
 
     private PlayerCursor _cursor;
     private DefaultActions _actions;
     private Vector2 _moveDirection;
-    private float _viewSizeDirection;
+    private float _zoomDirection;
 
     private void Awake()
     {
@@ -39,8 +39,8 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
             _cursor.SlidePosition(offsetThisFrame);
             _cursor.IncludeInView();
         }
-        float viewSizeChangeThisFrame = _viewSizeChangeSpeed * Time.deltaTime * _viewSizeDirection;
-        _cursor.ChangeViewSize(viewSizeChangeThisFrame);
+        float zoomChangeThisFrame = _zoomChangeSpeed * Time.deltaTime * _zoomDirection;
+        _cursor.ChangeZoom(zoomChangeThisFrame);
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -64,7 +64,7 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnZoomMove(InputAction.CallbackContext context)
     {
-        _viewSizeDirection = -context.ReadValue<float>();
+        _zoomDirection = context.ReadValue<float>();
     }
 
     public void OnCancel(InputAction.CallbackContext context)
@@ -100,11 +100,11 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
         float direction = context.ReadValue<float>();
         if (direction < 0)
         {
-            _cursor.IncreaseViewSize();
+            _cursor.ZoomOut();
         }
         else if (direction > 0)
         {
-            _cursor.DecreaseViewSize();
+            _cursor.ZoomIn();
         }
     }
 }

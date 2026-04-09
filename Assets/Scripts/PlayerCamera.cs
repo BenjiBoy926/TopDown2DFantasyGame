@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
@@ -10,12 +11,15 @@ public class PlayerCamera : MonoBehaviour
     private float WorldWidth => WorldHeight * _camera.aspect;
     private Vector2 WorldSize => new(WorldWidth, WorldHeight);
     private Vector2 WorldExtents => WorldSize / 2f;
+    private float CurrentZoom => OrthoSizeToZoom(_camera.orthographicSize);
 
     [SerializeField] private float _viewMargin = 1;
     [SerializeField] private Vector2 _viewSizeRange = new(5, 15);
-    [SerializeField] private float _viewSizeJump = 3;
-    [SerializeField] private float _viewSizeChangeDuration = 0.35f;
-    [SerializeField] private Ease _viewSizeChangeEase = Ease.OutQuint;
+
+    [Space]
+    [SerializeField] private float _zoomJump = 0.3f;
+    [SerializeField] private float _zoomJumpDuration = 0.35f;
+    [SerializeField] private Ease _zoomJumpEase = Ease.OutQuint;
 
     private Camera _camera;
     private Rigidbody2D _rigidbody;
@@ -88,25 +92,24 @@ public class PlayerCamera : MonoBehaviour
         _rigidbody.position += offset;
     }
 
-    public void ChangeViewSize(float sizeDelta) 
+    public void ChangeZoom(float zoomDelta) 
     { 
-        SetViewSize(_camera.orthographicSize + sizeDelta);
+        SetZoom(CurrentZoom + zoomDelta);
     }
 
-    public void SetViewSize(float orthoSize)
+    public void SetZoom(float zoom)
     {
-        orthoSize = Mathf.Clamp(orthoSize, _viewSizeRange.x, _viewSizeRange.y);
-        _camera.orthographicSize = orthoSize;
+        _camera.orthographicSize = ZoomToOrthoSize(zoom);
     }
 
-    public void IncreaseViewSize()
+    public void ZoomIn()
     {
-        AnimateOrthoSize(_camera.orthographicSize + _viewSizeJump);
+        ZoomJump(+_zoomJump);
     }
 
-    public void DecreaseViewSize()
+    public void ZoomOut()
     {
-        AnimateOrthoSize(_camera.orthographicSize - _viewSizeJump);
+        ZoomJump(-_zoomJump);
     }
 
     private void Awake()
@@ -115,16 +118,21 @@ public class PlayerCamera : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    private void AnimateOrthoSize(float newOrthoSize)
+    private void ZoomJump(float jumpAmount)
     {
-        newOrthoSize = Mathf.Clamp(newOrthoSize, _viewSizeRange.x, _viewSizeRange.y);
+        float newZoom = CurrentZoom + jumpAmount;
+        float newOrthoSize = ZoomToOrthoSize(newZoom);
+        OrthoSizeJump(newOrthoSize);
+    }
+
+    private void OrthoSizeJump(float newOrthoSize)
+    {
         if (Mathf.Approximately(_camera.orthographicSize, newOrthoSize))
         {
             return;
         }
-
         _camera.DOKill();
-        _camera.DOOrthoSize(newOrthoSize, _viewSizeChangeDuration).SetEase(_viewSizeChangeEase);
+        _camera.DOOrthoSize(newOrthoSize, _zoomJumpDuration).SetEase(_zoomJumpEase);
     }
 
     private Rect GetWorldRect(float margins)
@@ -155,5 +163,17 @@ public class PlayerCamera : MonoBehaviour
             return value - max;
         }
         return 0;
+    }
+
+    private float OrthoSizeToZoom(float orthoSize)
+    {
+        float invZoom = Mathf.InverseLerp(_viewSizeRange.x, _viewSizeRange.y, orthoSize);
+        return 1 - invZoom;
+    }
+
+    private float ZoomToOrthoSize(float zoom)
+    {
+        float t = 1 - zoom;
+        return Mathf.Lerp(_viewSizeRange.x, _viewSizeRange.y, t);
     }
 }

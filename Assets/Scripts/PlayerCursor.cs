@@ -25,19 +25,19 @@ public class PlayerCursor : MonoBehaviour
         _camera.IncludeInView(_exactPosition.position);
     }
 
-    public void ChangeViewSize(float delta)
+    public void ChangeZoom(float zoom)
     {
-        _camera.ChangeViewSize(delta);
+        _camera.ChangeZoom(zoom);
     }
 
-    public void IncreaseViewSize()
+    public void ZoomIn()
     {
-        _camera.IncreaseViewSize();
+        _camera.ZoomIn();
     }
 
-    public void DecreaseViewSize()
+    public void ZoomOut()
     {
-        _camera.DecreaseViewSize();
+        _camera.ZoomOut();
     }
 
     public void SlidePosition(Vector2 offset)
