@@ -190,7 +190,7 @@ public class Character : MonoBehaviour
     {
         SetDirection(target - Position);
         SetIsRunning(true);
-        yield return _rigidbody.DOMove(target, duration).SetEase(ease);
+        yield return _rigidbody.DOMove(target, duration).SetEase(ease).WaitForCompletion();
         SetIsRunning(false);
     }
 
@@ -228,16 +228,16 @@ public class Character : MonoBehaviour
         _hasMovedThisTurn = hasMovedThisTurn;
     }
 
-    private Tween AnimateHasMovedThisTurn()
+    private YieldInstruction AnimateHasMovedThisTurn()
     {
         _sprite.DOKill();
         if (_hasMovedThisTurn)
         {
-            return _sprite.DOColor(_usedMoveFadeColor, _usedMoveFadeDuration);
+            return _sprite.DOColor(_usedMoveFadeColor, _usedMoveFadeDuration).WaitForCompletion();
         }
         else
         {
-            return _sprite.DOColor(Color.white, _usedMoveFadeDuration);
+            return _sprite.DOColor(Color.white, _usedMoveFadeDuration).WaitForCompletion();
         }
     }
 }

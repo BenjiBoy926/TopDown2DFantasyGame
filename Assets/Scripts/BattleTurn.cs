@@ -42,6 +42,7 @@ public class BattleTurn : MonoBehaviour
     public void StartNextTurn()
     {
         StartTurn(_currentFactionIndex + 1);
+        Debug.Log($"Starting turn for {CurrentFaction}");
     }
 
     private void StartTurn(Faction faction)
