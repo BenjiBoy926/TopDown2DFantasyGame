@@ -9,7 +9,7 @@ using System;
 [RequireComponent(typeof(CharacterRangeDisplay))]
 public class Character : MonoBehaviour
 {
-    public static event Action<Character> UsedMove = delegate { };
+    public static event Action<Character> MoveFinished = delegate { };
 
     public IReadOnlyCollection<Vector2Int> TraversibleCells => _range.TraversibleCells;
     public IReadOnlyCollection<Vector2Int> AttackableEdgeCells => _range.AttackableEdgeCells;
@@ -65,13 +65,13 @@ public class Character : MonoBehaviour
     public void Attack(Character other)
     {
         Debug.Log($"{this} attacks {other}!");
-        Wait();
+        Defend();
     }
 
-    public void Wait()
+    public void Defend()
     {
         StopAllCoroutines();
-        StartCoroutine(GetWaitSequence());
+        StartCoroutine(GetDefendSequence());
     }
 
     public void UseMove()
@@ -82,6 +82,7 @@ public class Character : MonoBehaviour
     public void RestoreMove()
     {
         SetHasMovedThisTurn(false);
+        AnimateHasMovedThisTurn();
     }
 
     public Vector2 ClampToReachableCells(Vector2 input)
@@ -175,14 +176,14 @@ public class Character : MonoBehaviour
         }
     }
 
-    private IEnumerator GetWaitSequence()
+    private IEnumerator GetDefendSequence()
     {
+        UseMove();
         _battle.RefreshOccupantCell(this);
         Vector2 gridPosition = _battle.CellToWorld(CurrentCell);
         yield return GetRunToSequence(gridPosition, Ease.OutCirc, 0.35f);
-
-        // TODO: decouple the bool turning false from the visual showing that the character can or cannot move
-        UseMove();
+        yield return AnimateHasMovedThisTurn();
+        MoveFinished.Invoke(this);
     }
 
     private IEnumerator GetRunToSequence(Vector2 target, Ease ease, float duration)
@@ -224,17 +225,19 @@ public class Character : MonoBehaviour
 
     private void SetHasMovedThisTurn(bool hasMovedThisTurn)
     {
-        if (_hasMovedThisTurn == hasMovedThisTurn) return;
-
         _hasMovedThisTurn = hasMovedThisTurn;
-        if (hasMovedThisTurn)
+    }
+
+    private Tween AnimateHasMovedThisTurn()
+    {
+        _sprite.DOKill();
+        if (_hasMovedThisTurn)
         {
-            _sprite.DOColor(_usedMoveFadeColor, _usedMoveFadeDuration);
-            UsedMove(this);
+            return _sprite.DOColor(_usedMoveFadeColor, _usedMoveFadeDuration);
         }
         else
         {
-            _sprite.DOColor(Color.white, _usedMoveFadeDuration);
+            return _sprite.DOColor(Color.white, _usedMoveFadeDuration);
         }
     }
 }

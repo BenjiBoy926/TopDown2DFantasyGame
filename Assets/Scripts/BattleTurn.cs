@@ -62,15 +62,15 @@ public class BattleTurn : MonoBehaviour
 
     private void OnEnable()
     {
-        Character.UsedMove += OnCharacterUsedMove;
+        Character.MoveFinished += OnCharacterMoveFinished;
     }
 
     private void OnDisable()
     {
-        Character.UsedMove -= OnCharacterUsedMove;
+        Character.MoveFinished -= OnCharacterMoveFinished;
     }
 
-    private void OnCharacterUsedMove(Character obj)
+    private void OnCharacterMoveFinished(Character obj)
     {
         if (CountCharactersThatCanStillMove(CurrentFaction) == 0)
         {

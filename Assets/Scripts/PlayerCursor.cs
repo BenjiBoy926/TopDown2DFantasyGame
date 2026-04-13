@@ -139,7 +139,7 @@ public class PlayerCursor : MonoBehaviour
         }
         else
         {
-            _activeCharacter.Wait();
+            _activeCharacter.Defend();
         }
 
         Deselect();
