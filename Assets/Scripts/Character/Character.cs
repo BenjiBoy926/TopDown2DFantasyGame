@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CharacterRange))]
@@ -71,15 +72,21 @@ public class Character : MonoBehaviour
     public void Defend()
     {
         SecureCurrentCell();
+
+        Vector2 targetPosition = _battle.CellToWorld(CurrentCell);
+        SetDirection(targetPosition - Position);
+
         StopAllCoroutines();
         StartCoroutine(WaitInCurrentCell());
     }
 
     public void Cancel()
     {
-        Vector2 position = _battle.CellToWorld(HomeCell);
+        Vector2 targetPosition = _battle.CellToWorld(HomeCell);
+        SetDirection(targetPosition - Position);
+
         StopAllCoroutines();
-        StartCoroutine(GetRunToSequence(position));
+        StartCoroutine(GetRunToSequence(targetPosition));
     }
 
     public void UseMove()
@@ -195,7 +202,6 @@ public class Character : MonoBehaviour
 
     private IEnumerator GetRunToSequence(Vector2 target)
     {
-        SetDirection(target - Position);
         SetIsRunning(true);
         yield return _rigidbody.DOMove(target, _runDuration).SetEase(_runEase).WaitForCompletion();
         SetIsRunning(false);
