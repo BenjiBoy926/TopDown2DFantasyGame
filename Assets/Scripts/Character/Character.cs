@@ -9,6 +9,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterRangeDisplay))]
 [RequireComponent(typeof(CharacterAttackBehaviour))]
 [RequireComponent(typeof(CharacterDefendBehaviour))]
+[RequireComponent(typeof(CharacterCancelBehaviour))]
 public class Character : MonoBehaviour
 {
     public static event Action<Character> MoveFinished = delegate { };
@@ -43,8 +44,15 @@ public class Character : MonoBehaviour
     private CharacterRangeDisplay _rangeDisplay;
     private CharacterAttackBehaviour _attackBehaviour;
     private CharacterDefendBehaviour _defendBehaviour;
+    private CharacterCancelBehaviour _cancelBehaviour;
     private Battle _battle;
     private bool _hasMovedThisTurn = false;
+
+    public void LookAt(Vector2 position)
+    {
+        Vector2 direction = position - Position;
+        SetDirection(direction);
+    }
 
     public void SetDirection(Vector2 direction)
     {
@@ -75,12 +83,9 @@ public class Character : MonoBehaviour
     }
 
     public void Cancel()
-    {
-        Vector2 targetPosition = _battle.CellToWorld(HomeCell);
-        SetDirection(targetPosition - Position);
-
+    { 
         StopAllCoroutines();
-        StartCoroutine(GetRunToSequence(targetPosition));
+        StartCoroutine(_cancelBehaviour.GetSequence());
     }
 
     public void SecureCurrentCell()
@@ -161,6 +166,7 @@ public class Character : MonoBehaviour
         _rangeDisplay = GetComponent<CharacterRangeDisplay>();
         _attackBehaviour = GetComponent<CharacterAttackBehaviour>();
         _defendBehaviour = GetComponent<CharacterDefendBehaviour>();
+        _cancelBehaviour = GetComponent<CharacterCancelBehaviour>();
     }
 
     private void OnEnable()

@@ -63,9 +63,8 @@ public class Player : MonoBehaviour
     {
         if (_activeCharacter)
         {
-            Vector2 oldPosition = _activeCharacter.Position;
+            _activeCharacter.LookAt(newPosition);
             _activeCharacter.Position = _activeCharacter.ClampToTraversibleCells(newPosition);
-            _activeCharacter.SetDirection(newPosition - oldPosition);
 
             _exactPosition.position = _activeCharacter.ClampToReachableCells(newPosition);
             _gridPosition.position = _battle.CellToWorld(_activeCharacter.CurrentCell);

@@ -3,18 +3,15 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Character))]
-public class CharacterDefendBehaviour : MonoBehaviour
+public class CharacterCancelBehaviour : MonoBehaviour
 {
     private Character _character;
 
     public IEnumerator GetSequence()
     {
-        _character.SecureCurrentCell();
-
-        Vector2 targetPosition = _character.CellToWorld(_character.CurrentCell);
+        Vector2 targetPosition = _character.CellToWorld(_character.HomeCell);
         _character.LookAt(targetPosition);
-        
-        yield return _character.WaitInCurrentCell();
+        yield return _character.GetRunToSequence(targetPosition);
     }
 
     private void Awake()
