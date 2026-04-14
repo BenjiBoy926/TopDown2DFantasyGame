@@ -107,11 +107,6 @@ public class CharacterRange : MonoBehaviour
         _searchQueue.Enqueue(cell);
     }
 
-    public Vector2Int ClosestTraversibleCell(Vector2 input)
-    {
-        return ClosestCell(input, _traversibleCells);
-    }
-
     private void CheckAttackableEdgeCell(Vector2Int cell)
     {
         if (!_traversibleCells.Contains(cell))
