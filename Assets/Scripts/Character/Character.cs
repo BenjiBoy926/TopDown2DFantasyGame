@@ -7,6 +7,7 @@ using System;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CharacterRange))]
 [RequireComponent(typeof(CharacterRangeDisplay))]
+[RequireComponent(typeof(CharacterAttackBehaviour))]
 public class Character : MonoBehaviour
 {
     public static event Action<Character> MoveFinished = delegate { };
@@ -37,6 +38,7 @@ public class Character : MonoBehaviour
     private SpriteRenderer _sprite;
     private CharacterRange _range;
     private CharacterRangeDisplay _rangeDisplay;
+    private CharacterAttackBehaviour _attackBehaviour;
     private Battle _battle;
     private bool _hasMovedThisTurn = false;
 
@@ -45,9 +47,8 @@ public class Character : MonoBehaviour
         RefreshAnimatorDirection(direction);
     }
 
-    public void Attack()
+    public void PlayAttackAnimation()
     {
-        _rigidbody.velocity = Vector2.zero;
         _animator.Attack();
     }
 
@@ -64,12 +65,13 @@ public class Character : MonoBehaviour
 
     public void Attack(Character other)
     {
-        Debug.Log($"{this} attacks {other}!");
-        Defend();
+        SecureCurrentCell();
+        _attackBehaviour.Attack(other);
     }
 
     public void Defend()
     {
+        SecureCurrentCell();
         StopAllCoroutines();
         StartCoroutine(GetDefendSequence());
     }
@@ -82,7 +84,7 @@ public class Character : MonoBehaviour
     public void RestoreMove()
     {
         SetHasMovedThisTurn(false);
-        AnimateHasMovedThisTurn();
+        PerformSpriteFade();
     }
 
     public Vector2 ClampToReachableCells(Vector2 input)
@@ -149,6 +151,7 @@ public class Character : MonoBehaviour
         _sprite = GetComponentInChildren<SpriteRenderer>();
         _range = GetComponent<CharacterRange>();
         _rangeDisplay = GetComponent<CharacterRangeDisplay>();
+        _attackBehaviour = GetComponent<CharacterAttackBehaviour>();
     }
 
     private void OnEnable()
@@ -178,11 +181,9 @@ public class Character : MonoBehaviour
 
     private IEnumerator GetDefendSequence()
     {
-        UseMove();
-        _battle.RefreshOccupantCell(this);
         Vector2 gridPosition = _battle.CellToWorld(CurrentCell);
         yield return GetRunToSequence(gridPosition, Ease.OutCirc, 0.35f);
-        yield return AnimateHasMovedThisTurn();
+        yield return PerformSpriteFade();
         MoveFinished.Invoke(this);
     }
 
@@ -222,13 +223,19 @@ public class Character : MonoBehaviour
             _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Down);
         }
     }
+    
+    private void SecureCurrentCell()
+    {
+        UseMove();
+        _battle.RefreshOccupantCell(this);
+    }
 
     private void SetHasMovedThisTurn(bool hasMovedThisTurn)
     {
         _hasMovedThisTurn = hasMovedThisTurn;
     }
 
-    private YieldInstruction AnimateHasMovedThisTurn()
+    private YieldInstruction PerformSpriteFade()
     {
         _sprite.DOKill();
         if (_hasMovedThisTurn)
