@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
-using System;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CharacterRange))]
@@ -30,9 +31,11 @@ public class Character : MonoBehaviour
     public float CellHeight => _battle.CellHeight;
 
     [SerializeField] private Faction _faction;
+    [SerializeField] private int _traversalRange = 3;
     [SerializeField] private Color _usedMoveFadeColor = Color.gray;
     [SerializeField] private float _usedMoveFadeDuration = 0.35f;
-    [SerializeField] private int _traversalRange = 3;
+    [SerializeField] private Ease _runEase = Ease.OutCirc;
+    [SerializeField] private float _runDuration = 0.35f;
     private Rigidbody2D _rigidbody;
     private CharacterAnimator _animator;
     private SpriteRenderer _sprite;
@@ -57,12 +60,6 @@ public class Character : MonoBehaviour
         _animator.SetIsRunning(isRunning);
     }
 
-    public void RunTo(Vector2 position, Ease ease, float duration)
-    {
-        StopAllCoroutines();
-        StartCoroutine(GetRunToSequence(position, ease, duration));
-    }
-
     public void Attack(Character other)
     {
         SecureCurrentCell();
@@ -74,6 +71,13 @@ public class Character : MonoBehaviour
         SecureCurrentCell();
         StopAllCoroutines();
         StartCoroutine(GetDefendSequence());
+    }
+
+    public void Cancel()
+    {
+        Vector2 position = _battle.CellToWorld(HomeCell);
+        StopAllCoroutines();
+        StartCoroutine(GetRunToSequence(position));
     }
 
     public void UseMove()
@@ -182,16 +186,16 @@ public class Character : MonoBehaviour
     private IEnumerator GetDefendSequence()
     {
         Vector2 gridPosition = _battle.CellToWorld(CurrentCell);
-        yield return GetRunToSequence(gridPosition, Ease.OutCirc, 0.35f);
+        yield return GetRunToSequence(gridPosition);
         yield return PerformSpriteFade();
         MoveFinished.Invoke(this);
     }
 
-    private IEnumerator GetRunToSequence(Vector2 target, Ease ease, float duration)
+    private IEnumerator GetRunToSequence(Vector2 target)
     {
         SetDirection(target - Position);
         SetIsRunning(true);
-        yield return _rigidbody.DOMove(target, duration).SetEase(ease).WaitForCompletion();
+        yield return _rigidbody.DOMove(target, _runDuration).SetEase(_runEase).WaitForCompletion();
         SetIsRunning(false);
     }
 

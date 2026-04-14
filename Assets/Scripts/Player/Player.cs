@@ -150,8 +150,7 @@ public class Player : MonoBehaviour
     {
         if (_activeCharacter)
         {
-            Vector2 homePosition = _battle.CellToWorld(_activeCharacter.HomeCell);
-            _activeCharacter.RunTo(homePosition, Ease.OutBack, 0.35f);
+            _activeCharacter.Cancel();
             Deselect();
         }
     }
