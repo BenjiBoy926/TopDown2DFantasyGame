@@ -4,13 +4,20 @@ using UnityEngine;
 [RequireComponent(typeof(Character))]
 public class CharacterAttackBehaviour : MonoBehaviour
 {
+    private static WaitForSeconds _dealDamageWait = new WaitForSeconds(.1f);
     private Character _character;
 
     public IEnumerator GetSequence(Character other)
     {
         _character.SecureCurrentCell();
         _character.LookAt(other.Position);
-        yield return _character.PlayAttackAnimation();
+
+        Coroutine attackAnimation = _character.PlayAttackAnimation();
+
+        yield return _dealDamageWait;
+        other.TakeDamageFrom(_character);
+        
+        yield return attackAnimation;
         yield return _character.WaitInCurrentCell();
     }
 

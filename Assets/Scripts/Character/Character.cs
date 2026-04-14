@@ -10,6 +10,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterAttackBehaviour))]
 [RequireComponent(typeof(CharacterDefendBehaviour))]
 [RequireComponent(typeof(CharacterCancelBehaviour))]
+[RequireComponent(typeof(CharacterStats))]
 public class Character : MonoBehaviour
 {
     public static event Action<Character> MoveFinished = delegate { };
@@ -30,6 +31,7 @@ public class Character : MonoBehaviour
     public bool HasMovedThisTurn => _hasMovedThisTurn;
     public float CellWidth => _battle.CellWidth;
     public float CellHeight => _battle.CellHeight;
+    public int Power => _stats.Power;
 
     [SerializeField] private Faction _faction;
     [SerializeField] private int _traversalRange = 3;
@@ -45,6 +47,7 @@ public class Character : MonoBehaviour
     private CharacterAttackBehaviour _attackBehaviour;
     private CharacterDefendBehaviour _defendBehaviour;
     private CharacterCancelBehaviour _cancelBehaviour;
+    private CharacterStats _stats;
     private Battle _battle;
     private bool _hasMovedThisTurn = false;
 
@@ -59,10 +62,9 @@ public class Character : MonoBehaviour
         RefreshAnimatorDirection(direction);
     }
 
-    public YieldInstruction PlayAttackAnimation()
+    public Coroutine PlayAttackAnimation()
     {
-        _animator.Attack();
-        return new WaitForSeconds(0.4f);
+        return _animator.Attack();
     }
 
     public void SetIsRunning(bool isRunning)
@@ -157,6 +159,26 @@ public class Character : MonoBehaviour
         return !occupant || occupant == this;
     }
 
+    public IEnumerator WaitInCurrentCell()
+    {
+        Vector2 gridPosition = _battle.CellToWorld(CurrentCell);
+        yield return GetRunToSequence(gridPosition);
+        yield return PerformSpriteFade();
+        MoveFinished.Invoke(this);
+    }
+
+    public IEnumerator GetRunToSequence(Vector2 target)
+    {
+        SetIsRunning(true);
+        yield return _rigidbody.DOMove(target, _runDuration).SetEase(_runEase).WaitForCompletion();
+        SetIsRunning(false);
+    }
+
+    public void TakeDamageFrom(Character other)
+    {
+        _stats.TakeDamageFrom(other);
+    }
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
@@ -167,6 +189,7 @@ public class Character : MonoBehaviour
         _attackBehaviour = GetComponent<CharacterAttackBehaviour>();
         _defendBehaviour = GetComponent<CharacterDefendBehaviour>();
         _cancelBehaviour = GetComponent<CharacterCancelBehaviour>();
+        _stats = GetComponent<CharacterStats>();
     }
 
     private void OnEnable()
@@ -192,21 +215,6 @@ public class Character : MonoBehaviour
         {
             _battle.Register(this);
         }
-    }
-
-    public IEnumerator WaitInCurrentCell()
-    {
-        Vector2 gridPosition = _battle.CellToWorld(CurrentCell);
-        yield return GetRunToSequence(gridPosition);
-        yield return PerformSpriteFade();
-        MoveFinished.Invoke(this);
-    }
-
-    public IEnumerator GetRunToSequence(Vector2 target)
-    {
-        SetIsRunning(true);
-        yield return _rigidbody.DOMove(target, _runDuration).SetEase(_runEase).WaitForCompletion();
-        SetIsRunning(false);
     }
 
     private void RefreshAnimatorDirection(Vector2 direction)

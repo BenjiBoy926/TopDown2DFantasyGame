@@ -33,9 +33,9 @@ public class CharacterAnimator : MonoBehaviour
     private Coroutine _oneShotRoutine;
 
     [Button]
-    public void Attack()
+    public Coroutine Attack()
     {
-        PlayOneShot(Actions.Attack);
+        return PlayOneShot(Actions.Attack);
     }
 
     [Button]
@@ -78,10 +78,14 @@ public class CharacterAnimator : MonoBehaviour
         PlayLoopingAnimation();
     }
 
-    private void PlayOneShot(Actions action)
+    private Coroutine PlayOneShot(Actions action)
     {
-        if (_oneShotRoutine != null) return;
+        if (_oneShotRoutine != null)
+        {
+            StopCoroutine(_oneShotRoutine);
+        }
         _oneShotRoutine = StartCoroutine(PlayOneShotRoutine(action));
+        return _oneShotRoutine;
     }
 
     private IEnumerator PlayOneShotRoutine(Actions action)
