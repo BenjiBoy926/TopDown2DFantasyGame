@@ -3,13 +3,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CharacterRange))]
 [RequireComponent(typeof(CharacterRangeDisplay))]
 [RequireComponent(typeof(CharacterAttackBehaviour))]
+[RequireComponent(typeof(CharacterDefendBehaviour))]
 public class Character : MonoBehaviour
 {
     public static event Action<Character> MoveFinished = delegate { };
@@ -43,6 +42,7 @@ public class Character : MonoBehaviour
     private CharacterRange _range;
     private CharacterRangeDisplay _rangeDisplay;
     private CharacterAttackBehaviour _attackBehaviour;
+    private CharacterDefendBehaviour _defendBehaviour;
     private Battle _battle;
     private bool _hasMovedThisTurn = false;
 
@@ -64,20 +64,14 @@ public class Character : MonoBehaviour
 
     public void Attack(Character other)
     {
-        SecureCurrentCell();
         StopAllCoroutines();
         StartCoroutine(_attackBehaviour.GetSequence(other));
     }
 
     public void Defend()
     {
-        SecureCurrentCell();
-
-        Vector2 targetPosition = _battle.CellToWorld(CurrentCell);
-        SetDirection(targetPosition - Position);
-
         StopAllCoroutines();
-        StartCoroutine(WaitInCurrentCell());
+        StartCoroutine(_defendBehaviour.GetSequence());
     }
 
     public void Cancel()
@@ -87,6 +81,12 @@ public class Character : MonoBehaviour
 
         StopAllCoroutines();
         StartCoroutine(GetRunToSequence(targetPosition));
+    }
+
+    public void SecureCurrentCell()
+    {
+        UseMove();
+        _battle.RefreshOccupantCell(this);
     }
 
     public void UseMove()
@@ -118,11 +118,6 @@ public class Character : MonoBehaviour
         if (!_rangeDisplay.IsShown) return;
 
         _rangeDisplay.Hide();
-    }
-
-    public Vector2 SnapToGrid(Vector2Int cell)
-    {
-        return _battle.SnapToGrid(cell);
     }
 
     public Vector2 CellToWorld(Vector2Int cell)
@@ -165,6 +160,7 @@ public class Character : MonoBehaviour
         _range = GetComponent<CharacterRange>();
         _rangeDisplay = GetComponent<CharacterRangeDisplay>();
         _attackBehaviour = GetComponent<CharacterAttackBehaviour>();
+        _defendBehaviour = GetComponent<CharacterDefendBehaviour>();
     }
 
     private void OnEnable()
@@ -200,7 +196,7 @@ public class Character : MonoBehaviour
         MoveFinished.Invoke(this);
     }
 
-    private IEnumerator GetRunToSequence(Vector2 target)
+    public IEnumerator GetRunToSequence(Vector2 target)
     {
         SetIsRunning(true);
         yield return _rigidbody.DOMove(target, _runDuration).SetEase(_runEase).WaitForCompletion();
@@ -236,12 +232,6 @@ public class Character : MonoBehaviour
         }
     }
     
-    private void SecureCurrentCell()
-    {
-        UseMove();
-        _battle.RefreshOccupantCell(this);
-    }
-
     private void SetHasMovedThisTurn(bool hasMovedThisTurn)
     {
         _hasMovedThisTurn = hasMovedThisTurn;
