@@ -1,17 +1,18 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Character))]
 public class CharacterAttackBehaviour : MonoBehaviour
 {
-    [SerializeField] private float _animationFrameDuration = 0.1f;
     private Character _character;
 
-    public void Attack(Character other)
+    public IEnumerator GetSequence(Character other)
     {
         Vector2 thisPosition = _character.CellToWorld(_character.CurrentCell);
         Vector2 otherPosition = other.Position;
         _character.SetDirection(otherPosition - thisPosition);
-        _character.PlayAttackAnimation();
+        yield return _character.PlayAttackAnimation();
+        yield return _character.WaitInCurrentCell();
     }
 
     private void Awake()

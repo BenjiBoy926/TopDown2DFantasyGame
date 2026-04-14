@@ -50,9 +50,10 @@ public class Character : MonoBehaviour
         RefreshAnimatorDirection(direction);
     }
 
-    public void PlayAttackAnimation()
+    public YieldInstruction PlayAttackAnimation()
     {
         _animator.Attack();
+        return new WaitForSeconds(0.4f);
     }
 
     public void SetIsRunning(bool isRunning)
@@ -63,14 +64,15 @@ public class Character : MonoBehaviour
     public void Attack(Character other)
     {
         SecureCurrentCell();
-        _attackBehaviour.Attack(other);
+        StopAllCoroutines();
+        StartCoroutine(_attackBehaviour.GetSequence(other));
     }
 
     public void Defend()
     {
         SecureCurrentCell();
         StopAllCoroutines();
-        StartCoroutine(GetDefendSequence());
+        StartCoroutine(WaitInCurrentCell());
     }
 
     public void Cancel()
@@ -183,7 +185,7 @@ public class Character : MonoBehaviour
         }
     }
 
-    private IEnumerator GetDefendSequence()
+    public IEnumerator WaitInCurrentCell()
     {
         Vector2 gridPosition = _battle.CellToWorld(CurrentCell);
         yield return GetRunToSequence(gridPosition);
