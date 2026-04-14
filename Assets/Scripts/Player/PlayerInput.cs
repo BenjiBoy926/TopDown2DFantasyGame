@@ -1,22 +1,22 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(PlayerCursor))]
+[RequireComponent(typeof(Player))]
 public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 {
-    private bool IsInputAllowed => !_cursor.IsTurnChangeAnimationPlaying;
+    private bool IsInputAllowed => !_player.IsTurnChangeAnimationPlaying;
 
     [SerializeField] private float _speed = 5;
     [SerializeField] private float _zoomChangeSpeed = 5;
 
-    private PlayerCursor _cursor;
+    private Player _player;
     private DefaultActions _actions;
     private Vector2 _moveDirection;
     private float _zoomDirection;
 
     private void Awake()
     {
-        _cursor = GetComponent<PlayerCursor>();
+        _player = GetComponent<Player>();
         _actions = new();
         _actions.Player.AddCallbacks(this);
     }
@@ -36,11 +36,11 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
         if (_moveDirection.sqrMagnitude > 0.01f)
         {
             Vector2 offsetThisFrame = _speed * Time.deltaTime * _moveDirection;
-            _cursor.SlidePosition(offsetThisFrame);
-            _cursor.IncludeInView();
+            _player.SlidePosition(offsetThisFrame);
+            _player.IncludeInView();
         }
         float zoomChangeThisFrame = _zoomChangeSpeed * Time.deltaTime * _zoomDirection;
-        _cursor.ChangeZoom(zoomChangeThisFrame);
+        _player.ChangeZoom(zoomChangeThisFrame);
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -52,13 +52,13 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
     {
         if (!IsInputAllowed) return;
         if (!context.started) return;
-        if (!_cursor.ActiveCharacter)
+        if (!_player.ActiveCharacter)
         {
-            _cursor.StartMove();
+            _player.StartMove();
         }
         else
         {
-            _cursor.FinishMove();
+            _player.FinishMove();
         }
     }
 
@@ -69,16 +69,16 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnCancel(InputAction.CallbackContext context)
     {
-        _cursor.CancelMove();
+        _player.CancelMove();
     }
 
     public void OnCursorPosition(InputAction.CallbackContext context)
     {
         Vector2 screenPosition = context.ReadValue<Vector2>();
-        _cursor.SetScreenPosition(screenPosition);
-        if (_cursor.ActiveCharacter)
+        _player.SetScreenPosition(screenPosition);
+        if (_player.ActiveCharacter)
         {
-            _cursor.IncludeInView();
+            _player.IncludeInView();
         }
     }
 
@@ -87,11 +87,11 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
         if (!IsInputAllowed) return;
         if (context.started)
         {
-            _cursor.Grab();
+            _player.Grab();
         }
         else if (context.canceled)
         {
-            _cursor.Release();
+            _player.Release();
         }
     }
 
@@ -100,11 +100,11 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
         float direction = context.ReadValue<float>();
         if (direction < 0)
         {
-            _cursor.ZoomOut();
+            _player.ZoomOut();
         }
         else if (direction > 0)
         {
-            _cursor.ZoomIn();
+            _player.ZoomIn();
         }
     }
 }

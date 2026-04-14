@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class PlayerCursor : MonoBehaviour
+public class Player : MonoBehaviour
 {
     public bool IsTurnChangeAnimationPlaying => _battle.IsTurnChangeAnimationPlaying;
     public bool IsCameraGrabbed => _camera.IsGrabbed;
