@@ -16,6 +16,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
 
         yield return _dealDamageWait;
         other.TakeDamageFrom(_character);
+        other.PlayHurtAnimation();
         
         yield return attackAnimation;
         yield return _character.WaitInCurrentCell();

@@ -67,6 +67,11 @@ public class Character : MonoBehaviour
         return _animator.Attack();
     }
 
+    public Coroutine PlayHurtAnimation()
+    {
+        return _animator.Hurt();
+    }
+
     public void SetIsRunning(bool isRunning)
     {
         _animator.SetIsRunning(isRunning);

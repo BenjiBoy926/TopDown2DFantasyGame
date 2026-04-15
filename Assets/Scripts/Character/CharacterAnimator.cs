@@ -39,9 +39,9 @@ public class CharacterAnimator : MonoBehaviour
     }
 
     [Button]
-    public void Hurt()
+    public Coroutine Hurt()
     {
-        PlayOneShot(Actions.Hurt);
+        return PlayOneShot(Actions.Hurt);
     }
 
     [Button]
