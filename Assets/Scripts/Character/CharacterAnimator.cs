@@ -24,7 +24,6 @@ public class CharacterAnimator : MonoBehaviour
 
     public bool IsOneShotAnimationPlaying => _oneShotRoutine != null;
 
-    [SerializeField] private string _name = "Swordman";
     [SerializeField] private HorizontalDirection _horizontalDirection;
     [SerializeField] private VerticalDirection _verticalDirection;
     [SerializeField] private bool _isRunning;
@@ -130,7 +129,7 @@ public class CharacterAnimator : MonoBehaviour
 
     private string GetStateName(Actions action)
     {
-        string stateName = $"{_name}_{action}";
+        string stateName = $"{action}";
         if (action != Actions.Death)
         {
             stateName += $"_{_verticalDirection}";
