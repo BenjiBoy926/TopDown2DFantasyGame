@@ -72,6 +72,12 @@ public class Character : MonoBehaviour
         return _animator.Hurt();
     }
 
+    public void PlayIdleAnimation()
+    {
+        SetIsRunning(false);
+        _animator.PlayLoopingAnimation();
+    }
+
     public void SetIsRunning(bool isRunning)
     {
         _animator.SetIsRunning(isRunning);

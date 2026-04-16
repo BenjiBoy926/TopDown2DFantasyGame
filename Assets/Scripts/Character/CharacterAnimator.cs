@@ -44,9 +44,9 @@ public class CharacterAnimator : MonoBehaviour
     }
 
     [Button]
-    public void Die()
+    public Coroutine Die()
     {
-        Play(Actions.Death);
+        return PlayOneShot(Actions.Death);
     }
 
     public void SetHorizontalDirection(HorizontalDirection horizontalDirection)
@@ -68,6 +68,19 @@ public class CharacterAnimator : MonoBehaviour
         if (_isRunning == isRunning) return;
         _isRunning = isRunning;
         RefreshLoopingAnimation();
+    }
+
+    public void PlayLoopingAnimation()
+    {
+        if (_spriteRenderer)
+        {
+            _spriteRenderer.flipX = _horizontalDirection == HorizontalDirection.Left;
+        }
+        if (_animator)
+        {
+            Actions action = _isRunning ? Actions.Run : Actions.Idle;
+            Play(action);
+        }
     }
 
     private void Awake()
@@ -92,7 +105,6 @@ public class CharacterAnimator : MonoBehaviour
         Play(action);
         yield return OneShotAnimationWait;
         _oneShotRoutine = null;
-        RefreshLoopingAnimation();
     }
 
     private void RefreshLoopingAnimation()
@@ -100,19 +112,6 @@ public class CharacterAnimator : MonoBehaviour
         if (!IsOneShotAnimationPlaying)
         {
             PlayLoopingAnimation();
-        }
-    }
-
-    private void PlayLoopingAnimation()
-    {
-        if (_spriteRenderer)
-        {
-            _spriteRenderer.flipX = _horizontalDirection == HorizontalDirection.Left;
-        }
-        if (_animator)
-        {
-            Actions action = _isRunning ? Actions.Run : Actions.Idle;
-            Play(action);
         }
     }
 
