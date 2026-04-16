@@ -32,6 +32,7 @@ public class Character : MonoBehaviour
     public float CellWidth => _battle.CellWidth;
     public float CellHeight => _battle.CellHeight;
     public int Power => _stats.Power;
+    public bool IsDead => _stats.IsDead;
 
     [SerializeField] private Faction _faction;
     [SerializeField] private int _traversalRange = 3;
@@ -70,6 +71,11 @@ public class Character : MonoBehaviour
     public Coroutine PlayHurtAnimation()
     {
         return _animator.Hurt();
+    }
+
+    public Coroutine PlayDieAnimation()
+    {
+        return _animator.Die(); 
     }
 
     public void PlayIdleAnimation()

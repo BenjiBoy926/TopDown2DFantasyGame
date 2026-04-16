@@ -11,17 +11,28 @@ public class CharacterAttackBehaviour : MonoBehaviour
     {
         _character.SecureCurrentCell();
         _character.LookAt(other.Position);
-        other.LookAt(_character.Position);
 
-        Coroutine attackAnimation = _character.PlayAttackAnimation();
+        Coroutine attackRoutine = _character.PlayAttackAnimation();
+        yield return OtherFlinchSequence(other);
+        yield return attackRoutine;
+        yield return _character.WaitInCurrentCell();
+    }
+
+    private IEnumerator OtherFlinchSequence(Character other)
+    {
+        other.LookAt(_character.Position);
         yield return _dealDamageWait;
-        
+
         other.TakeDamageFrom(_character);
         yield return other.PlayHurtAnimation();
-        other.PlayIdleAnimation();
-
-        yield return attackAnimation;
-        yield return _character.WaitInCurrentCell();
+        if (other.IsDead)
+        {
+            yield return other.PlayDieAnimation();
+        }
+        else
+        {
+            other.PlayIdleAnimation();
+        }
     }
 
     private void Awake()

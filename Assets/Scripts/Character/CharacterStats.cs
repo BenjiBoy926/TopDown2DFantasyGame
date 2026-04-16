@@ -4,6 +4,7 @@ public class CharacterStats : MonoBehaviour
 {
     // Note: this might be affected by multiple factors like buffs, debuffs, equipment, etc. For now, we just return the base values.
     public int Power => _basePower;
+    public bool IsDead => _currentHealth <= 0;
 
     [SerializeField] private int _baseHealth = 10;
     [SerializeField] private int _basePower = 3;
