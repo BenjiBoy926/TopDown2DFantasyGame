@@ -62,14 +62,14 @@ public class Character : MonoBehaviour
         RefreshAnimatorDirection(direction);
     }
 
-    public Coroutine PlayAttackAnimation()
+    public void PlayAttackAnimation()
     {
-        return _animator.Attack();
+        _animator.Attack();
     }
 
-    public Coroutine PlayHurtAnimation()
+    public void PlayHurtAnimation()
     {
-        return _animator.Hurt();
+        _animator.Hurt();
     }
 
     public void SetIsRunning(bool isRunning)

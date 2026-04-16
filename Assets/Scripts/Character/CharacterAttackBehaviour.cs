@@ -4,7 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(Character))]
 public class CharacterAttackBehaviour : MonoBehaviour
 {
-    private static WaitForSeconds _dealDamageWait = new WaitForSeconds(.1f);
+    private static readonly WaitForSeconds _dealDamageWait = new(.1f);
+    private static readonly WaitForSeconds _remainingAttackWait = new(.3f);
     private Character _character;
 
     public IEnumerator GetSequence(Character other)
@@ -12,13 +13,13 @@ public class CharacterAttackBehaviour : MonoBehaviour
         _character.SecureCurrentCell();
         _character.LookAt(other.Position);
 
-        Coroutine attackAnimation = _character.PlayAttackAnimation();
+        _character.PlayAttackAnimation();
 
         yield return _dealDamageWait;
         other.TakeDamageFrom(_character);
         other.PlayHurtAnimation();
         
-        yield return attackAnimation;
+        yield return _remainingAttackWait;
         yield return _character.WaitInCurrentCell();
     }
 
