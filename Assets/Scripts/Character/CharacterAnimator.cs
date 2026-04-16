@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using NaughtyAttributes;
 
 [RequireComponent(typeof(Animator))]
@@ -18,22 +19,28 @@ public class CharacterAnimator : MonoBehaviour
         Idle, Run, Attack, Hurt, Death
     }
 
+    private const float OneShotEstimatedAnimationDuration = 0.35f;
+    private static readonly YieldInstruction OneShotAnimationWait = new WaitForSeconds(OneShotEstimatedAnimationDuration);
+
+    public bool IsOneShotAnimationPlaying => _oneShotRoutine != null;
+
     [SerializeField] private HorizontalDirection _horizontalDirection;
     [SerializeField] private VerticalDirection _verticalDirection;
     [SerializeField] private bool _isRunning;
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
+    private Coroutine _oneShotRoutine;
 
     [Button]
-    public void Attack()
+    public Coroutine Attack()
     {
-        Play(Actions.Attack);
+        return PlayOneShot(Actions.Attack);
     }
 
     [Button]
-    public void Hurt()
+    public Coroutine Hurt()
     {
-        Play(Actions.Hurt);
+        return PlayOneShot(Actions.Hurt);
     }
 
     [Button]
@@ -70,9 +77,30 @@ public class CharacterAnimator : MonoBehaviour
         PlayLoopingAnimation();
     }
 
+    private Coroutine PlayOneShot(Actions action)
+    {
+        if (_oneShotRoutine != null)
+        {
+            StopCoroutine(_oneShotRoutine);
+        }
+        _oneShotRoutine = StartCoroutine(PlayOneShotRoutine(action));
+        return _oneShotRoutine;
+    }
+
+    private IEnumerator PlayOneShotRoutine(Actions action)
+    {
+        Play(action);
+        yield return OneShotAnimationWait;
+        _oneShotRoutine = null;
+        RefreshLoopingAnimation();
+    }
+
     private void RefreshLoopingAnimation()
     {
-        PlayLoopingAnimation();
+        if (!IsOneShotAnimationPlaying)
+        {
+            PlayLoopingAnimation();
+        }
     }
 
     private void PlayLoopingAnimation()
