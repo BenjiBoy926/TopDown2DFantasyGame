@@ -1,9 +1,10 @@
-using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     public bool IsTurnChangeAnimationPlaying => _battle.IsTurnChangeAnimationPlaying;
+    public bool IsWaitingForCharacterAction => _waitForCharacterRoutine != null;
     public bool IsCameraGrabbed => _camera.IsGrabbed;
     public Character ActiveCharacter => _activeCharacter;
 
@@ -14,6 +15,7 @@ public class Player : MonoBehaviour
     private Battle _battle;
     private Character _activeCharacter;
     private Character _hoveredCharacter;
+    private Coroutine _waitForCharacterRoutine;
 
     private void Awake()
     {
@@ -113,9 +115,11 @@ public class Player : MonoBehaviour
 
     public void FinishMove()
     {
-        if (!_activeCharacter) return;
+        if (!_activeCharacter) 
+            return;
 
-        if (_activeCharacter.CanStayInCell(_activeCharacter.CurrentCell))
+        bool shouldConfirm = _activeCharacter.CanStayInCell(_activeCharacter.CurrentCell);
+        if (shouldConfirm)
         {
             ConfirmMove();
         }
@@ -132,26 +136,23 @@ public class Player : MonoBehaviour
 
         Vector2Int targettingCell = _battle.WorldToCell(_exactPosition.position);
         Character target = _battle.GetOccupant(targettingCell);
-        if (target && target.Faction != _activeCharacter.Faction)
-        {
-            _activeCharacter.Attack(target);
-        }
-        else
-        {
+        bool shouldAttack = target && target.Faction != _activeCharacter.Faction;
+        Coroutine action = shouldAttack ? 
+            _activeCharacter.Attack(target) : 
             _activeCharacter.Defend();
-        }
 
+        SuspendInputsDuringCharacterAction(action);
         Deselect();
     }
 
-
     public void CancelMove()
     {
-        if (_activeCharacter)
-        {
-            _activeCharacter.Cancel();
-            Deselect();
-        }
+        if (!_activeCharacter)
+            return;
+
+        Coroutine action = _activeCharacter.Cancel();
+        SuspendInputsDuringCharacterAction(action);
+        Deselect();
     }
 
     private void UpdateHoveredCharacter()
@@ -206,5 +207,17 @@ public class Player : MonoBehaviour
     private bool CanMoveCharacter(Character character)
     {
         return character && character.IsAbleToMove && character.Faction == _battle.CurrentFactionTurn;
+    }
+
+    private void SuspendInputsDuringCharacterAction(Coroutine actionRoutine)
+    {
+        StopAllCoroutines();
+        _waitForCharacterRoutine = StartCoroutine(WaitForCharacterRoutine(actionRoutine));
+    }
+
+    private IEnumerator WaitForCharacterRoutine(Coroutine actionRoutine)
+    {
+        yield return actionRoutine;
+        _waitForCharacterRoutine = null;
     }
 }

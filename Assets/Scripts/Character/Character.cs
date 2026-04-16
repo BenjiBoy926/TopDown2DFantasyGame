@@ -90,22 +90,25 @@ public class Character : MonoBehaviour
         _animator.SetIsRunning(isRunning);
     }
 
-    public void Attack(Character other)
+    public Coroutine Attack(Character other)
     {
         StopAllCoroutines();
-        StartCoroutine(_attackBehaviour.GetSequence(other));
+        IEnumerator sequence = _attackBehaviour.GetSequence(other);
+        return StartCoroutine(sequence);
     }
 
-    public void Defend()
+    public Coroutine Defend()
     {
         StopAllCoroutines();
-        StartCoroutine(_defendBehaviour.GetSequence());
+        IEnumerator sequence = _defendBehaviour.GetSequence();
+        return StartCoroutine(sequence);
     }
 
-    public void Cancel()
+    public Coroutine Cancel()
     { 
         StopAllCoroutines();
-        StartCoroutine(_cancelBehaviour.GetSequence());
+        IEnumerator sequence = _cancelBehaviour.GetSequence();
+        return StartCoroutine(sequence);
     }
 
     public void SecureCurrentCell()

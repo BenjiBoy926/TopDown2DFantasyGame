@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Player))]
 public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 {
-    private bool IsInputAllowed => !_player.IsTurnChangeAnimationPlaying;
+    private bool IsInputAllowed => !_player.IsTurnChangeAnimationPlaying && !_player.IsWaitingForCharacterAction;
 
     [SerializeField] private float _speed = 5;
     [SerializeField] private float _zoomChangeSpeed = 5;
