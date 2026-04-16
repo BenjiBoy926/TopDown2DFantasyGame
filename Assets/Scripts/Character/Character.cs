@@ -28,6 +28,7 @@ public class Character : MonoBehaviour
     public Vector2Int HomeCell => _battle.GetCell(this);
     public Vector2Int CurrentCell => _battle.WorldToCell(Position);
     public Faction Faction => _faction;
+    public bool IsAbleToMove => !IsDead && !_hasMovedThisTurn;
     public bool HasMovedThisTurn => _hasMovedThisTurn;
     public float CellWidth => _battle.CellWidth;
     public float CellHeight => _battle.CellHeight;

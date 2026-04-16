@@ -205,6 +205,6 @@ public class Player : MonoBehaviour
 
     private bool CanMoveCharacter(Character character)
     {
-        return character && !character.HasMovedThisTurn && character.Faction == _battle.CurrentFactionTurn;
+        return character && character.IsAbleToMove && character.Faction == _battle.CurrentFactionTurn;
     }
 }

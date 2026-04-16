@@ -28,6 +28,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
         if (other.IsDead)
         {
             yield return other.PlayDieAnimation();
+            other.gameObject.SetActive(false);
         }
         else
         {
