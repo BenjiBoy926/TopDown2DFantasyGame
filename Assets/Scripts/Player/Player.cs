@@ -4,7 +4,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public bool IsTurnChangeAnimationPlaying => _battle.IsTurnChangeAnimationPlaying;
-    public bool IsWaitingForCharacterAction => _waitForCharacterRoutine != null;
+    public bool IsCharacterActionRunning => _characterActionRoutine != null;
     public bool IsCameraGrabbed => _camera.IsGrabbed;
     public Character ActiveCharacter => _activeCharacter;
 
@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     private Battle _battle;
     private Character _activeCharacter;
     private Character _hoveredCharacter;
-    private Coroutine _waitForCharacterRoutine;
+    private Coroutine _characterActionRoutine;
 
     private void Awake()
     {
@@ -141,7 +141,7 @@ public class Player : MonoBehaviour
             _activeCharacter.Attack(target) : 
             _activeCharacter.Defend();
 
-        SuspendInputsDuringCharacterAction(action);
+        SetCharacterActionRoutine(action);
         Deselect();
     }
 
@@ -151,7 +151,7 @@ public class Player : MonoBehaviour
             return;
 
         Coroutine action = _activeCharacter.Cancel();
-        SuspendInputsDuringCharacterAction(action);
+        SetCharacterActionRoutine(action);
         Deselect();
     }
 
@@ -209,15 +209,15 @@ public class Player : MonoBehaviour
         return character && character.IsAbleToMove && character.Faction == _battle.CurrentFactionTurn;
     }
 
-    private void SuspendInputsDuringCharacterAction(Coroutine actionRoutine)
+    private void SetCharacterActionRoutine(Coroutine actionRoutine)
     {
         StopAllCoroutines();
-        _waitForCharacterRoutine = StartCoroutine(WaitForCharacterRoutine(actionRoutine));
+        _characterActionRoutine = StartCoroutine(WaitForCharacterRoutine(actionRoutine));
     }
 
     private IEnumerator WaitForCharacterRoutine(Coroutine actionRoutine)
     {
         yield return actionRoutine;
-        _waitForCharacterRoutine = null;
+        _characterActionRoutine = null;
     }
 }
