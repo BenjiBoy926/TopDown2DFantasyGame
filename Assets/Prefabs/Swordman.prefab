@@ -123,6 +123,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 918d99679130ccd4c99b7a6a2a1257ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _moveToCellCenterDuration: 0.05
+  _moveToCellCenterEase: 1
+  _chargeDuration: 0.15
+  _chargeEase: 26
+  _attackConnectPause: 1
+  _fallbackDuration: 0.2
+  _fallbackEase: 27
 --- !u!114 &7638847843088813906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,8 +166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95d14f2e0db09154ea7e22878c8cb2d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 10
-  _power: 3
+  _baseHealth: 10
+  _basePower: 3
 --- !u!1 &8274708557482635198
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,7 +287,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75f86deafb431ba44bcf0edd1c40b490, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: Swordman
   _horizontalDirection: 1
   _verticalDirection: 1
   _isRunning: 0

@@ -27,7 +27,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
 
         Vector2 cellPosition = _character.CellToWorld(_character.CurrentCell);
         Vector2 towardsTarget = (other.Position - cellPosition).normalized;
-        Vector2 chargeOffset = towardsTarget * _character.CellSize * 0.7f;
+        Vector2 chargeOffset = towardsTarget * _character.CellSize * 0.49f;
         Vector2 chargePosition = cellPosition + chargeOffset;
 
         _character.PlayAttackAnimation();
