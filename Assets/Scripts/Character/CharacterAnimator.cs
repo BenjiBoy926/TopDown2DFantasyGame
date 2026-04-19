@@ -31,6 +31,16 @@ public class CharacterAnimator : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private Coroutine _oneShotRoutine;
 
+    public void Pause()
+    {
+        _animator.speed = 0;
+    }
+
+    public void Resume()
+    {
+        _animator.speed = 1;
+    }
+
     [Button]
     public Coroutine Attack()
     {

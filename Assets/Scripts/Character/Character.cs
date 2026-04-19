@@ -34,6 +34,7 @@ public class Character : MonoBehaviour
     public float CellHeight => _battle.CellHeight;
     public int Power => _stats.Power;
     public bool IsDead => _stats.IsDead;
+    public Vector2 CellSize => new(_battle.CellWidth, _battle.CellHeight);
 
     [SerializeField] private Faction _faction;
     [SerializeField] private int _traversalRange = 3;
@@ -62,6 +63,16 @@ public class Character : MonoBehaviour
     public void SetDirection(Vector2 direction)
     {
         RefreshAnimatorDirection(direction);
+    }
+
+    public void PauseAnimation()
+    {
+        _animator.Pause();
+    }
+
+    public void ResumeAnimation()
+    {
+        _animator.Resume();
     }
 
     public Coroutine PlayAttackAnimation()
@@ -184,6 +195,11 @@ public class Character : MonoBehaviour
     {
         Vector2 gridPosition = _battle.CellToWorld(CurrentCell);
         yield return GetRunToSequence(gridPosition);
+        yield return MoveFadeOut();
+    }
+
+    public IEnumerator MoveFadeOut()
+    {
         yield return PerformSpriteFade();
         MoveFinished.Invoke(this);
     }
