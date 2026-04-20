@@ -27,17 +27,10 @@ public class CharacterAttackBehaviour : MonoBehaviour
         _character.LookAt(other.Position);
         other.LookAt(_character.Position);
 
-        Vector2 cellPosition = _character.CellToWorld(_character.CurrentCell);
-
-        _character.PlayAttackAnimation();
+        Coroutine attackAnimation = _character.PlayAttackAnimation();
         yield return CharacterChargeSequence(other);
         yield return AttackConnectSequence(other);
-
-        Coroutine otherFlinchRoutine = StartCoroutine(OtherFlinchSequence(other));
-        yield return _character.transform.DOMove(cellPosition, _fallbackDuration)
-            .SetEase(_fallbackEase)
-            .WaitForCompletion();
-        yield return otherFlinchRoutine;
+        yield return FallbackSequence(other, attackAnimation);
         yield return _character.MoveFadeOut();
     }
 
@@ -61,6 +54,20 @@ public class CharacterAttackBehaviour : MonoBehaviour
         _character.PauseAnimation();
         yield return other.transform.DOShakePosition(_attackConnectPause).WaitForCompletion();
         _character.ResumeAnimation();
+    }
+
+    private IEnumerator FallbackSequence(Character other, Coroutine attackAnimation)
+    {
+        Coroutine otherFlinchRoutine = StartCoroutine(OtherFlinchSequence(other));
+
+        Vector2 cellPosition = _character.CellToWorld(_character.CurrentCell);
+        yield return _character.transform.DOMove(cellPosition, _fallbackDuration)
+            .SetEase(_fallbackEase)
+            .WaitForCompletion();
+        yield return attackAnimation;
+        _character.PlayIdleAnimation();
+
+        yield return otherFlinchRoutine;
     }
 
     private IEnumerator OtherFlinchSequence(Character other)

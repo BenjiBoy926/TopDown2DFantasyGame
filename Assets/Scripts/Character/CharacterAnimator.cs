@@ -19,8 +19,8 @@ public class CharacterAnimator : MonoBehaviour
         Idle, Run, Attack, Hurt, Death
     }
 
-    private const float OneShotEstimatedAnimationDuration = 0.35f;
-    private static readonly YieldInstruction OneShotAnimationWait = new WaitForSeconds(OneShotEstimatedAnimationDuration);
+    private const float OneShotProgressCheckInterval = 0.05f;
+    private static readonly YieldInstruction OneShotProgressCheckWait = new WaitForSeconds(OneShotProgressCheckInterval);
 
     public bool IsOneShotAnimationPlaying => _oneShotRoutine != null;
 
@@ -113,7 +113,12 @@ public class CharacterAnimator : MonoBehaviour
     private IEnumerator PlayOneShotRoutine(Actions action)
     {
         Play(action);
-        yield return OneShotAnimationWait;
+        AnimatorStateInfo currentState = _animator.GetCurrentAnimatorStateInfo(0);
+        while (currentState.normalizedTime < .99f)
+        {
+            yield return OneShotProgressCheckWait;
+            currentState = _animator.GetCurrentAnimatorStateInfo(0);
+        }
         _oneShotRoutine = null;
     }
 

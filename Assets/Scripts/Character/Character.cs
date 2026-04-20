@@ -200,7 +200,6 @@ public class Character : MonoBehaviour
 
     public IEnumerator MoveFadeOut()
     {
-        PlayIdleAnimation();
         yield return PerformSpriteFade();
         MoveFinished.Invoke(this);
     }
