@@ -290,3 +290,4 @@ MonoBehaviour:
   _horizontalDirection: 1
   _verticalDirection: 1
   _isRunning: 0
+  _hurtAnimationDuration: 0.75

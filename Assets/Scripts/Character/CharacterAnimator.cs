@@ -20,9 +20,6 @@ public class CharacterAnimator : MonoBehaviour
         Idle, Run, Attack, Hurt, Death
     }
 
-    private const float HurtAnimationTime = 1;
-    private static readonly WaitForSeconds HurtAnimationWait = new(HurtAnimationTime);
-
     private const float OneShotProgressCheckInterval = 0.05f;
     private static readonly WaitForSeconds OneShotProgressCheckWait = new(OneShotProgressCheckInterval);
 
@@ -31,9 +28,11 @@ public class CharacterAnimator : MonoBehaviour
     [SerializeField] private HorizontalDirection _horizontalDirection;
     [SerializeField] private VerticalDirection _verticalDirection;
     [SerializeField] private bool _isRunning;
+    [SerializeField] private float _hurtAnimationDuration = 0.5f;
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
     private Coroutine _oneShotRoutine;
+    private WaitForSeconds _hurtAnimationWait;
 
     public void Pause()
     {
@@ -101,6 +100,7 @@ public class CharacterAnimator : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _hurtAnimationWait = new WaitForSeconds(_hurtAnimationDuration);
         PlayLoopingAnimation();
     }
 
@@ -119,7 +119,7 @@ public class CharacterAnimator : MonoBehaviour
         Play(action);
         if (action == Actions.Hurt)
         {
-            yield return HurtAnimationWait;
+            yield return _hurtAnimationWait;
         }
         else
         {
