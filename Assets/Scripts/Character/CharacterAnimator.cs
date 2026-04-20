@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using NaughtyAttributes;
+using Unity.VisualScripting.Dependencies.Sqlite;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
@@ -19,8 +20,11 @@ public class CharacterAnimator : MonoBehaviour
         Idle, Run, Attack, Hurt, Death
     }
 
+    private const float HurtAnimationTime = 1;
+    private static readonly WaitForSeconds HurtAnimationWait = new(HurtAnimationTime);
+
     private const float OneShotProgressCheckInterval = 0.05f;
-    private static readonly YieldInstruction OneShotProgressCheckWait = new WaitForSeconds(OneShotProgressCheckInterval);
+    private static readonly WaitForSeconds OneShotProgressCheckWait = new(OneShotProgressCheckInterval);
 
     public bool IsOneShotAnimationPlaying => _oneShotRoutine != null;
 
@@ -113,13 +117,26 @@ public class CharacterAnimator : MonoBehaviour
     private IEnumerator PlayOneShotRoutine(Actions action)
     {
         Play(action);
+        if (action == Actions.Hurt)
+        {
+            yield return HurtAnimationWait;
+        }
+        else
+        {
+            yield return WaitForAnimationEnd(action);
+        }
+        _oneShotRoutine = null;
+    }
+
+    private IEnumerator WaitForAnimationEnd(Actions action)
+    {
         AnimatorStateInfo currentState = _animator.GetCurrentAnimatorStateInfo(0);
-        while (currentState.normalizedTime < .99f)
+        int nameHash = GetStateHash(action);
+        while (currentState.shortNameHash != nameHash || currentState.normalizedTime < .99f)
         {
             yield return OneShotProgressCheckWait;
             currentState = _animator.GetCurrentAnimatorStateInfo(0);
         }
-        _oneShotRoutine = null;
     }
 
     private void RefreshLoopingAnimation()
@@ -139,6 +156,11 @@ public class CharacterAnimator : MonoBehaviour
     private string GetFullStateName(Actions action)
     {
         return $"Base Layer.{GetStateName(action)}";
+    }
+
+    private int GetStateHash(Actions action)
+    {
+        return Animator.StringToHash(GetStateName(action));
     }
 
     private string GetStateName(Actions action)
