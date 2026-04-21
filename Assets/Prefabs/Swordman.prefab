@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6972252028341952044}
   - component: {fileID: 7638847843088813906}
   - component: {fileID: 8912661773358370159}
+  - component: {fileID: 9138772102123916440}
   - component: {fileID: 8511498810787689882}
   m_Layer: 0
   m_Name: Swordman
@@ -127,12 +128,6 @@ MonoBehaviour:
   _moveToCellCenterEase: 1
   _chargeDuration: 0.15
   _chargeEase: 26
-  _attackConnectPause: 0.3
-  _attackConnectShakeStrength: 0.5
-  _attackConnectShakeVibrato: 100
-  _attackConnectShakeRandomness: 90
-  _attackConnectShakeFadeOut: 0
-  _attackConnectShakeRandomnessMode: 0
   _fallbackDuration: 0.2
   _fallbackEase: 27
 --- !u!114 &7638847843088813906
@@ -159,6 +154,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2774438aed71cae4baf95183066664f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &9138772102123916440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881692635917527445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb39d258829fff74a9b6186ea862c752, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackConnectPause: 1
+  _attackConnectShakeStrength: 0.5
+  _attackConnectShakeVibrato: 100
+  _attackConnectShakeRandomness: 90
+  _attackConnectShakeFadeOut: 0
+  _attackConnectShakeRandomnessMode: 0
 --- !u!114 &8511498810787689882
 MonoBehaviour:
   m_ObjectHideFlags: 0

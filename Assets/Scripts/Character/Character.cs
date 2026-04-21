@@ -8,6 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterRange))]
 [RequireComponent(typeof(CharacterRangeDisplay))]
 [RequireComponent(typeof(CharacterAttackBehaviour))]
+[RequireComponent(typeof(CharacterHurtBehaviour))]
 [RequireComponent(typeof(CharacterDefendBehaviour))]
 [RequireComponent(typeof(CharacterCancelBehaviour))]
 [RequireComponent(typeof(CharacterStats))]
@@ -48,6 +49,7 @@ public class Character : MonoBehaviour
     private CharacterRange _range;
     private CharacterRangeDisplay _rangeDisplay;
     private CharacterAttackBehaviour _attackBehaviour;
+    private CharacterHurtBehaviour _hurtBehaviour;
     private CharacterDefendBehaviour _defendBehaviour;
     private CharacterCancelBehaviour _cancelBehaviour;
     private CharacterStats _stats;
@@ -90,6 +92,11 @@ public class Character : MonoBehaviour
         return _animator.Die(); 
     }
 
+    public YieldInstruction PlayAttackConnectShake()
+    {
+        return _hurtBehaviour.PlayAttackConnectShake();
+    }
+
     public void PlayIdleAnimation()
     {
         SetIsRunning(false);
@@ -104,7 +111,14 @@ public class Character : MonoBehaviour
     public Coroutine Attack(Character other)
     {
         StopAllCoroutines();
-        IEnumerator sequence = _attackBehaviour.GetSequence(other);
+        IEnumerator sequence = _attackBehaviour.GetAttackSequence(other);
+        return StartCoroutine(sequence);
+    }
+
+    public Coroutine Hurt(Character other)
+    {
+        StopAllCoroutines();
+        IEnumerator sequence = _hurtBehaviour.GetHurtSequence(other);
         return StartCoroutine(sequence);
     }
 
@@ -224,6 +238,7 @@ public class Character : MonoBehaviour
         _range = GetComponent<CharacterRange>();
         _rangeDisplay = GetComponent<CharacterRangeDisplay>();
         _attackBehaviour = GetComponent<CharacterAttackBehaviour>();
+        _hurtBehaviour = GetComponent<CharacterHurtBehaviour>();
         _defendBehaviour = GetComponent<CharacterDefendBehaviour>();
         _cancelBehaviour = GetComponent<CharacterCancelBehaviour>();
         _stats = GetComponent<CharacterStats>();
