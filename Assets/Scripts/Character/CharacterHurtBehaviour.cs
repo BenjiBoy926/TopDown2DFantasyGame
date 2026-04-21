@@ -63,7 +63,8 @@ public class CharacterHurtBehaviour : MonoBehaviour
             .SetEase(_recoilInEase)
             .WaitForCompletion();
 
-        // To guarantee accuracy of the character's position after the recoil, in case of any floating point errors during the tweening.
+        // To guarantee accuracy of the character's position after the recoil,
+        // in case of any floating point errors during the tweening.
         _character.Position = _character.CellToWorld(_character.CurrentCell);
     }
 
