@@ -19,6 +19,8 @@ public class CharacterHurtBehaviour : MonoBehaviour
 
     [Space]
     [SerializeField] private float _afterDeathWaitDuration = 1;
+    [SerializeField] private float _floatAwayDuration = 0.5f;
+    [SerializeField] private Ease _floatAwayEase = Ease.OutQuint;
 
     private Character _character;
     private WaitForSeconds _afterDeathWait;
@@ -76,6 +78,13 @@ public class CharacterHurtBehaviour : MonoBehaviour
     {
         yield return _character.PlayDieAnimation();
         yield return _afterDeathWait;
+
+        // TODO: add a sprite fade out too
+        float floatOffset = _character.CellHeight * .49f;
+        yield return transform.DOMoveY(floatOffset, _floatAwayDuration)
+            .SetRelative()
+            .SetEase(_floatAwayEase)
+            .WaitForCompletion();
     }
 
     private void Awake()
