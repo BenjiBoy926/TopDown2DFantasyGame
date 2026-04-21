@@ -14,7 +14,6 @@ public class CharacterStats : MonoBehaviour
     {
         int newHealth = CalculateHealthAfterHitFrom(other);
         SetHealth(newHealth);
-        Debug.Log($"{name} takes damage from {other.name}. Current health: {_currentHealth}");
     }
 
     private void Awake()
@@ -35,9 +34,5 @@ public class CharacterStats : MonoBehaviour
     private void SetHealth(int health)
     {
         _currentHealth = health;
-        if (_currentHealth <= 0)
-        {
-            // ya dead!
-        }
     }
 }

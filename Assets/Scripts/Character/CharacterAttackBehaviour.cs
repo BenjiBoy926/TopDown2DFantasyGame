@@ -27,7 +27,14 @@ public class CharacterAttackBehaviour : MonoBehaviour
         Coroutine attackAnimation = _character.PlayAttackAnimation();
         yield return ChargeSequence(other);
         yield return AttackConnectSequence(other);
-        yield return FallbackSequence(other, attackAnimation);
+
+        Coroutine otherHurtRoutine = other.Hurt(_character);
+
+        PlayFallbackTween();
+        yield return attackAnimation;
+        _character.PlayIdleAnimation();
+
+        yield return otherHurtRoutine;
         yield return _character.MoveFadeOut();
     }
 
@@ -53,18 +60,10 @@ public class CharacterAttackBehaviour : MonoBehaviour
         _character.ResumeAnimation();
     }
 
-    private IEnumerator FallbackSequence(Character other, Coroutine attackAnimation)
+    private void PlayFallbackTween()
     {
-        Coroutine otherHurtRoutine = other.Hurt(_character);
-
         Vector2 cellPosition = _character.CellToWorld(_character.CurrentCell);
-        yield return transform.DOMove(cellPosition, _fallbackDuration)
-            .SetEase(_fallbackEase)
-            .WaitForCompletion();
-        yield return attackAnimation;
-        _character.PlayIdleAnimation();
-
-        yield return otherHurtRoutine;
+        transform.DOMove(cellPosition, _fallbackDuration).SetEase(_fallbackEase);
     }
 
     private void Awake()

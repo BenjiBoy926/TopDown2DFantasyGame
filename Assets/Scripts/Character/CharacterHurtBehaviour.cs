@@ -17,7 +17,11 @@ public class CharacterHurtBehaviour : MonoBehaviour
     [SerializeField] private Ease _recoilOutEase = Ease.OutQuad;
     [SerializeField] private Ease _recoilInEase = Ease.InQuad;
 
+    [Space]
+    [SerializeField] private float _afterDeathWaitDuration = 1;
+
     private Character _character;
+    private WaitForSeconds _afterDeathWait;
 
     public YieldInstruction PlayAttackConnectShake()
     {
@@ -41,7 +45,7 @@ public class CharacterHurtBehaviour : MonoBehaviour
 
         if (_character.IsDead)
         {
-            yield return _character.PlayDieAnimation();
+            yield return GetDeathSequence();
             gameObject.SetActive(false);
         }
         else
@@ -68,8 +72,15 @@ public class CharacterHurtBehaviour : MonoBehaviour
         _character.Position = _character.CellToWorld(_character.CurrentCell);
     }
 
+    private IEnumerator GetDeathSequence()
+    {
+        yield return _character.PlayDieAnimation();
+        yield return _afterDeathWait;
+    }
+
     private void Awake()
     {
         _character = GetComponent<Character>();
+        _afterDeathWait = new(_afterDeathWaitDuration);
     }
 }
