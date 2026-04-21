@@ -127,7 +127,12 @@ MonoBehaviour:
   _moveToCellCenterEase: 1
   _chargeDuration: 0.15
   _chargeEase: 26
-  _attackConnectPause: 1
+  _attackConnectPause: 0.3
+  _attackConnectShakeStrength: 0.5
+  _attackConnectShakeVibrato: 100
+  _attackConnectShakeRandomness: 90
+  _attackConnectShakeFadeOut: 0
+  _attackConnectShakeRandomnessMode: 0
   _fallbackDuration: 0.2
   _fallbackEase: 27
 --- !u!114 &7638847843088813906

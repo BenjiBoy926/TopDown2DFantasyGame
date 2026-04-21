@@ -14,6 +14,11 @@ public class CharacterAttackBehaviour : MonoBehaviour
 
     [Space]
     [SerializeField] private float _attackConnectPause = 1;
+    [SerializeField] private float _attackConnectShakeStrength = 0.1f;
+    [SerializeField] private int _attackConnectShakeVibrato = 10;
+    [SerializeField] private float _attackConnectShakeRandomness = 90;
+    [SerializeField] private bool _attackConnectShakeFadeOut = true;
+    [SerializeField] private ShakeRandomnessMode _attackConnectShakeRandomnessMode = ShakeRandomnessMode.Full;
 
     [Space]
     [SerializeField] private float _fallbackDuration = .2f;
@@ -28,13 +33,13 @@ public class CharacterAttackBehaviour : MonoBehaviour
         other.LookAt(_character.Position);
 
         Coroutine attackAnimation = _character.PlayAttackAnimation();
-        yield return CharacterChargeSequence(other);
+        yield return ChargeSequence(other);
         yield return AttackConnectSequence(other);
         yield return FallbackSequence(other, attackAnimation);
         yield return _character.MoveFadeOut();
     }
 
-    private IEnumerator CharacterChargeSequence(Character other)
+    private IEnumerator ChargeSequence(Character other)
     {
         Vector2 cellPosition = _character.CellToWorld(_character.CurrentCell);
         Vector2 towardsTarget = (other.Position - cellPosition).normalized;
@@ -52,7 +57,14 @@ public class CharacterAttackBehaviour : MonoBehaviour
     private IEnumerator AttackConnectSequence(Character other)
     {
         _character.PauseAnimation();
-        yield return other.transform.DOShakePosition(_attackConnectPause).WaitForCompletion();
+        yield return other.transform.DOShakePosition(
+            _attackConnectPause, 
+            _attackConnectShakeStrength, 
+            _attackConnectShakeVibrato, 
+            _attackConnectShakeRandomness, 
+            false, 
+            _attackConnectShakeFadeOut, 
+            _attackConnectShakeRandomnessMode).WaitForCompletion();
         _character.ResumeAnimation();
     }
 
