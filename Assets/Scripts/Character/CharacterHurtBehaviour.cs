@@ -12,6 +12,11 @@ public class CharacterHurtBehaviour : MonoBehaviour
     [SerializeField] private bool _shakeFadeOut = false;
     [SerializeField] private ShakeRandomnessMode _shakeRandomnessMode = ShakeRandomnessMode.Full;
 
+    [Space]
+    [SerializeField] private float _recoilDuration = 0.1f;
+    [SerializeField] private Ease _recoilOutEase = Ease.OutQuad;
+    [SerializeField] private Ease _recoilInEase = Ease.InQuad;
+
     private Character _character;
 
     public YieldInstruction PlayAttackConnectShake()
@@ -29,8 +34,11 @@ public class CharacterHurtBehaviour : MonoBehaviour
     public IEnumerator GetHurtSequence(Character attacker)
     {
         _character.TakeDamageFrom(attacker);
-        // TODO: recoil away with a tween
-        yield return _character.PlayHurtAnimation();
+
+        Coroutine hurtAnimation = _character.PlayHurtAnimation();
+        yield return GetRecoilSequence(attacker);
+        yield return hurtAnimation;
+
         if (_character.IsDead)
         {
             yield return _character.PlayDieAnimation();
@@ -40,6 +48,23 @@ public class CharacterHurtBehaviour : MonoBehaviour
         {
             _character.PlayIdleAnimation();
         }
+    }
+
+    private IEnumerator GetRecoilSequence(Character attacker)
+    {
+        Vector2 recoilDirection = (_character.Position - attacker.Position).normalized;
+        Vector2 recoilOffset = recoilDirection * _character.CellSize * 0.49f;
+        yield return transform.DOMove(recoilOffset, _recoilDuration)
+            .SetRelative()
+            .SetEase(_recoilOutEase)
+            .WaitForCompletion();
+        yield return transform.DOMove(-recoilOffset, _recoilDuration)
+            .SetRelative()
+            .SetEase(_recoilInEase)
+            .WaitForCompletion();
+
+        // To guarantee accuracy of the character's position after the recoil, in case of any floating point errors during the tweening.
+        _character.Position = _character.CellToWorld(_character.CurrentCell);
     }
 
     private void Awake()
