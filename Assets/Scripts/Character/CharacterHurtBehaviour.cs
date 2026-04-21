@@ -20,7 +20,7 @@ public class CharacterHurtBehaviour : MonoBehaviour
     [Space]
     [SerializeField] private float _afterDeathWaitDuration = 1;
     [SerializeField] private float _floatAwayDuration = 0.5f;
-    [SerializeField] private Ease _floatAwayEase = Ease.OutQuint;
+    [SerializeField] private Ease _floatAwayEase = Ease.OutQuad;
 
     private Character _character;
     private WaitForSeconds _afterDeathWait;

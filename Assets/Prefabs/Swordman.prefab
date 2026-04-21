@@ -166,12 +166,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb39d258829fff74a9b6186ea862c752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackConnectPause: 1
-  _attackConnectShakeStrength: 0.5
-  _attackConnectShakeVibrato: 100
-  _attackConnectShakeRandomness: 90
-  _attackConnectShakeFadeOut: 0
-  _attackConnectShakeRandomnessMode: 0
+  _shakeDuration: 0.3
+  _shakeStrength: 0.5
+  _shakeVibrato: 100
+  _shakeRandomness: 90
+  _shakeFadeOut: 0
+  _shakeRandomnessMode: 0
+  _recoilDuration: 0.1
+  _recoilOutEase: 6
+  _recoilInEase: 5
+  _afterDeathWaitDuration: 0.3
+  _floatAwayDuration: 0.3
+  _floatAwayEase: 6
 --- !u!114 &8511498810787689882
 MonoBehaviour:
   m_ObjectHideFlags: 0
