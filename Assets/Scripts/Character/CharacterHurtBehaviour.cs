@@ -79,7 +79,7 @@ public class CharacterHurtBehaviour : MonoBehaviour
         yield return _character.PlayDieAnimation();
         yield return _afterDeathWait;
 
-        // TODO: add a sprite fade out too
+        _character.FadeAlpha(0, _floatAwayDuration, _floatAwayEase);
         float floatOffset = _character.CellHeight * .49f;
         yield return transform.DOMoveY(floatOffset, _floatAwayDuration)
             .SetRelative()

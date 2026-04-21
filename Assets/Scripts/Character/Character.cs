@@ -103,6 +103,11 @@ public class Character : MonoBehaviour
         _animator.PlayLoopingAnimation();
     }
 
+    public void FadeAlpha(float alpha, float duration, Ease ease)
+    {
+        _sprite.DOFade(alpha, duration).SetEase(ease);
+    }
+
     public void SetIsRunning(bool isRunning)
     {
         _animator.SetIsRunning(isRunning);
