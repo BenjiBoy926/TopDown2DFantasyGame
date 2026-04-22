@@ -24,6 +24,7 @@ public class CharacterStats : MonoBehaviour
         _currentHealth = _baseHealth;
         _ui = GetComponentInChildren<CharacterStatsUI>();
         _ui.ShowHealth(_currentHealth, _baseHealth);
+        _ui.ShowPower(Power);
     }
 
     private int CalculateHealthAfterHitFrom(Character other)

@@ -16,12 +16,12 @@ public class CharacterHealthUI : MonoBehaviour
     [SerializeField] private bool _shakeFadeOut = false;
     [SerializeField] private ShakeRandomnessMode _shakeRandomnessMode = ShakeRandomnessMode.Full;
 
-    private TMP_Text _healthText;
+    private TMP_Text _label;
     private SpriteRenderer _renderer;
 
     public void ShowHealth(int currentHealth, int baseHealth)
     {
-        _healthText.text = currentHealth.ToString();
+        _label.text = currentHealth.ToString();
         if (currentHealth == baseHealth)
         {
             _renderer.sprite = _healthFullSprite;
@@ -50,7 +50,7 @@ public class CharacterHealthUI : MonoBehaviour
 
     private void Awake()
     {
-        _healthText = GetComponentInChildren<TMP_Text>();
+        _label = GetComponentInChildren<TMP_Text>();
         _renderer = GetComponentInChildren<SpriteRenderer>();
     }
 }
