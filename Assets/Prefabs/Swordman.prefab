@@ -587,7 +587,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4289107822002269541}
-  - component: {fileID: 4654606133379403491}
+  - component: {fileID: 7262143527035057789}
   m_Layer: 0
   m_Name: HealthIndicator
   m_TagString: Untagged
@@ -612,7 +612,7 @@ Transform:
   - {fileID: 3302243292288460426}
   m_Father: {fileID: 1475799574654562418}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4654606133379403491
+--- !u!114 &7262143527035057789
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -621,12 +621,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 4858656571757346260}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d14f0e239bf323428d03057e99bd6d9, type: 3}
+  m_Script: {fileID: 11500000, guid: 802ef3d848c906f4b9b8fea82b7f42de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _healthFullSprite: {fileID: 21300000, guid: 6e7d122d6ac1b23498b9e167949965d3, type: 3}
   _healthDamagedSprite: {fileID: 21300000, guid: 0cfadd3fb79603249b3c0a016fb9acbb, type: 3}
   _healthDepletedSprite: {fileID: 21300000, guid: d1960d2e7c1e7c1458c8d0d3947538a4, type: 3}
+  _shakeDuration: 0.3
+  _shakeStrength: 0.25
+  _shakeVibrato: 100
+  _shakeRandomness: 90
+  _shakeFadeOut: 0
+  _shakeRandomnessMode: 0
 --- !u!1 &8274708557482635198
 GameObject:
   m_ObjectHideFlags: 0
@@ -946,6 +952,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1475799574654562418}
   - component: {fileID: 2030913017749027197}
+  - component: {fileID: 6728952323253490082}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -982,3 +989,15 @@ SortingGroup:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_SortAtRoot: 0
+--- !u!114 &6728952323253490082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8824524866655695547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d14f0e239bf323428d03057e99bd6d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

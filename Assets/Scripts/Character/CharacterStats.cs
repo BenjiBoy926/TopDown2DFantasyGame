@@ -16,7 +16,7 @@ public class CharacterStats : MonoBehaviour
     {
         int newHealth = CalculateHealthAfterHitFrom(other);
         SetHealth(newHealth);
-        // Shake the health ui
+        _ui.ShakeHealthUI();
     }
 
     private void Awake()
@@ -38,7 +38,7 @@ public class CharacterStats : MonoBehaviour
 
     private void SetHealth(int health)
     {
-        _currentHealth = health;
-        _ui.ShowHealth(health, _baseHealth);
+        _currentHealth = Mathf.Max(health, 0);
+        _ui.ShowHealth(_currentHealth, _baseHealth);
     }
 }
