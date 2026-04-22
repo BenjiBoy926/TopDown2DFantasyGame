@@ -587,6 +587,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4289107822002269541}
+  - component: {fileID: 4654606133379403491}
   m_Layer: 0
   m_Name: HealthIndicator
   m_TagString: Untagged
@@ -611,6 +612,23 @@ Transform:
   - {fileID: 3302243292288460426}
   m_Father: {fileID: 1475799574654562418}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4654606133379403491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4858656571757346260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d14f0e239bf323428d03057e99bd6d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthText: {fileID: 5078939128290773769}
+  _renderer: {fileID: 1615160008128715439}
+  _healthFullSprite: {fileID: 21300000, guid: 6e7d122d6ac1b23498b9e167949965d3, type: 3}
+  _healthDamagedSprite: {fileID: 21300000, guid: 0cfadd3fb79603249b3c0a016fb9acbb, type: 3}
+  _healthDepletedSprite: {fileID: 21300000, guid: d1960d2e7c1e7c1458c8d0d3947538a4, type: 3}
 --- !u!1 &8274708557482635198
 GameObject:
   m_ObjectHideFlags: 0

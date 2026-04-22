@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CharacterRange))]
 [RequireComponent(typeof(CharacterRangeDisplay))]
 [RequireComponent(typeof(CharacterAttackBehaviour))]
@@ -20,10 +19,10 @@ public class Character : MonoBehaviour
     public IReadOnlyCollection<Vector2Int> AttackableEdgeCells => _range.AttackableEdgeCells;
     public Vector2 Position
     {
-        get => _rigidbody.position;
+        get => transform.position;
         set
         {
-            _rigidbody.MovePosition(value);
+            transform.position = value;
         }
     }
     public Vector2Int HomeCell => _battle.GetCell(this);
@@ -43,7 +42,6 @@ public class Character : MonoBehaviour
     [SerializeField] private float _usedMoveFadeDuration = 0.35f;
     [SerializeField] private Ease _runEase = Ease.OutCirc;
     [SerializeField] private float _runDuration = 0.35f;
-    private Rigidbody2D _rigidbody;
     private CharacterAnimator _animator;
     private SpriteRenderer _sprite;
     private CharacterRange _range;
@@ -226,7 +224,7 @@ public class Character : MonoBehaviour
     public IEnumerator GetRunToSequence(Vector2 target)
     {
         SetIsRunning(true);
-        yield return _rigidbody.DOMove(target, _runDuration).SetEase(_runEase).WaitForCompletion();
+        yield return transform.DOMove(target, _runDuration).SetEase(_runEase).WaitForCompletion();
         SetIsRunning(false);
     }
 
@@ -237,7 +235,6 @@ public class Character : MonoBehaviour
 
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponentInChildren<CharacterAnimator>();
         _sprite = GetComponentInChildren<SpriteRenderer>();
         _range = GetComponent<CharacterRange>();
