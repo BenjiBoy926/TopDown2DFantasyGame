@@ -20,6 +20,16 @@ public class CharacterStatsUI : MonoBehaviour
         _healthUI.Shake();
     }
 
+    public void FadeOut()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void FadeIn()
+    {
+        gameObject.SetActive(true);
+    }
+
     private void Awake()
     {
         _healthUI = GetComponentInChildren<CharacterHealthUI>();

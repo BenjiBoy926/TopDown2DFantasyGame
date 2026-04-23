@@ -19,6 +19,16 @@ public class CharacterStats : MonoBehaviour
         _ui.ShakeHealthUI();
     }
 
+    public void FadeInUI()
+    {
+        _ui.FadeIn();
+    }
+
+    public void FadeOutUI()
+    {
+        _ui.FadeOut();
+    }
+
     private void Awake()
     {
         _currentHealth = _baseHealth;

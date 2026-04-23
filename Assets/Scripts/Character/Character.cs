@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro.EditorUtilities;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterRange))]
@@ -137,6 +138,16 @@ public class Character : MonoBehaviour
         StopAllCoroutines();
         IEnumerator sequence = _cancelBehaviour.GetSequence();
         return StartCoroutine(sequence);
+    }
+
+    public void FadeOutUI()
+    {
+        _stats.FadeOutUI();
+    }
+
+    public void FadeInUI()
+    {
+        _stats.FadeInUI();
     }
 
     public void SecureCurrentCell()
