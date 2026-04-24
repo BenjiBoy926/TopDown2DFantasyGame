@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro.EditorUtilities;
 using UnityEngine;
 
+[RequireComponent(typeof(Obstacle))]
 [RequireComponent(typeof(CharacterRange))]
 [RequireComponent(typeof(CharacterRangeDisplay))]
 [RequireComponent(typeof(CharacterAttackBehaviour))]
@@ -21,12 +22,9 @@ public class Character : MonoBehaviour
     public Vector2 Position
     {
         get => transform.position;
-        set
-        {
-            transform.position = value;
-        }
+        set => transform.position = value;
     }
-    public Vector2Int HomeCell => _battle.GetCell(this);
+    public Vector2Int HomeCell => _battle.GetCell(_obstacle);
     public Vector2Int CurrentCell => _battle.WorldToCell(Position);
     public Faction Faction => _faction;
     public bool IsAbleToMove => !IsDead && !_hasMovedThisTurn;
@@ -45,6 +43,7 @@ public class Character : MonoBehaviour
     [SerializeField] private float _runDuration = 0.35f;
     private CharacterAnimator _animator;
     private SpriteRenderer _sprite;
+    private Obstacle _obstacle;
     private CharacterRange _range;
     private CharacterRangeDisplay _rangeDisplay;
     private CharacterAttackBehaviour _attackBehaviour;
@@ -153,7 +152,7 @@ public class Character : MonoBehaviour
     public void SecureCurrentCell()
     {
         UseMove();
-        _battle.RefreshOccupantCell(this);
+        _battle.RefreshCell(_obstacle);
     }
 
     public void UseMove()
@@ -208,15 +207,15 @@ public class Character : MonoBehaviour
         {
             return false;
         }
-        Character occupant = _battle.GetOccupant(cell.Cell);
-        bool canMoveThroughOccupant = !occupant || occupant.Faction == _faction;
+        Obstacle obstacle = _battle.GetObstacle(cell.Cell);
+        bool canMoveThroughOccupant = !obstacle || obstacle.Faction == _faction;
         return canMoveThroughOccupant;
     }
 
     public bool CanStayInCell(Vector2Int cell)
     {
-        Character occupant = _battle.GetOccupant(cell);
-        return !occupant || occupant == this;
+        Obstacle obstacle = _battle.GetObstacle(cell);
+        return !obstacle || obstacle == _obstacle;
     }
 
     public IEnumerator WaitInCurrentCell()
@@ -248,6 +247,7 @@ public class Character : MonoBehaviour
     {
         _animator = GetComponentInChildren<CharacterAnimator>();
         _sprite = GetComponentInChildren<SpriteRenderer>();
+        _obstacle = GetComponent<Obstacle>();
         _range = GetComponent<CharacterRange>();
         _rangeDisplay = GetComponent<CharacterRangeDisplay>();
         _attackBehaviour = GetComponent<CharacterAttackBehaviour>();
@@ -261,7 +261,7 @@ public class Character : MonoBehaviour
     {
         if (_battle)
         {
-            _battle.Register(this);
+            _battle.Register(_obstacle);
         }
     }
 
@@ -269,7 +269,7 @@ public class Character : MonoBehaviour
     {
         if (_battle)
         {
-            _battle.Unregister(this);
+            _battle.Unregister(_obstacle);
         }    
     }
 
@@ -278,7 +278,7 @@ public class Character : MonoBehaviour
         _battle = GetComponentInParent<Battle>();
         if (_battle)
         {
-            _battle.Register(this);
+            _battle.Register(_obstacle);
         }
     }
 

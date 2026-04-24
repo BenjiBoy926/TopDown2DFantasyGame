@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System;
 
 [RequireComponent(typeof(Grid))]
 public class Battlefield : MonoBehaviour
@@ -9,29 +8,22 @@ public class Battlefield : MonoBehaviour
     public float CellHeight => _grid.cellSize.y;
 
     private Grid _grid;
-    private readonly Dictionary<Vector2Int, Character> _cellToOccupant = new();
-    private readonly Dictionary<Character, Vector2Int> _occupantToCell = new();
+    private readonly Dictionary<Vector2Int, Obstacle> _cellToObstacle = new();
+    private readonly Dictionary<Obstacle, Vector2Int> _obstacleToCell = new();
 
-    public static int RectangularDistance(Vector2Int a, Vector2Int b)
+    public void Register(Obstacle obstacle)
     {
-        Vector2Int offset = b - a;
-        Vector2Int absoluteOffset = new(Mathf.Abs(offset.x), Mathf.Abs(offset.y));
-        return absoluteOffset.x + absoluteOffset.y;
+        obstacle.Position = SnapToGrid(obstacle.Position);
+        Vector2Int cell = WorldToCell(obstacle.Position);
+        _obstacleToCell[obstacle] = cell;
+        _cellToObstacle[cell] = obstacle;
     }
 
-    public void Register(Character character)
+    public void Unregister(Obstacle obstacle)
     {
-        character.Position = SnapToGrid(character.Position);
-        Vector2Int cell = WorldToCell(character.Position);
-        _occupantToCell[character] = cell;
-        _cellToOccupant[cell] = character;
-    }
-
-    public void Unregister(Character character)
-    {
-        Vector2Int cell = _occupantToCell[character];
-        _occupantToCell.Remove(character);
-        _cellToOccupant.Remove(cell);
+        Vector2Int cell = _obstacleToCell[obstacle];
+        _obstacleToCell.Remove(obstacle);
+        _cellToObstacle.Remove(cell);
     }
 
     public Vector2 SnapToGrid(Vector2 position)
@@ -54,24 +46,24 @@ public class Battlefield : MonoBehaviour
         return (Vector2Int)_grid.WorldToCell(position);
     }
 
-    public Character GetOccupant(Vector2Int cell)
+    public Obstacle GetObstacle(Vector2Int cell)
     {
-        return _cellToOccupant.TryGetValue(cell, out Character character) ? character : null;
+        return _cellToObstacle.TryGetValue(cell, out Obstacle obstacle) ? obstacle : null;
     }
 
-    public Vector2Int GetCell(Character character)
+    public Vector2Int GetCell(Obstacle obstacle)
     {
-        return _occupantToCell[character];
+        return _obstacleToCell[obstacle];
     }
 
-    public void RefreshOccupantCell(Character character)
+    public void RefreshCell(Obstacle obstacle)
     {
-        Vector2Int oldCell = _occupantToCell[character];
-        Vector2Int newCell = WorldToCell(character.Position);
+        Vector2Int oldCell = _obstacleToCell[obstacle];
+        Vector2Int newCell = WorldToCell(obstacle.Position);
 
-        _cellToOccupant.Remove(oldCell);
-        _cellToOccupant[newCell] = character;
-        _occupantToCell[character] = newCell;
+        _cellToObstacle.Remove(oldCell);
+        _cellToObstacle[newCell] = obstacle;
+        _obstacleToCell[obstacle] = newCell;
     }
 
     private void Awake()
