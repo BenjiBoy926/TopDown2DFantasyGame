@@ -5,7 +5,32 @@ using UnityEngine;
 
 public class CharacterUI : MonoBehaviour
 {
+    private struct LabelAlphaTween
+    {
+        public TMP_Text _label;
+
+        public LabelAlphaTween(TMP_Text label, float alpha, float duration)
+        {
+            _label = label;
+            label.DOKill();
+            DOTween.To(Get, Set, alpha, duration).SetTarget(label);
+        }
+
+        public readonly float Get()
+        {
+            return _label.color.a;
+        }
+
+        public readonly void Set(float value)
+        {
+            Color color = _label.color;
+            color.a = value;
+            _label.color = color;
+        }
+    }
+
     private static readonly HashSet<CharacterUI> _instances = new();
+    private const float FadeDuration = .1f;
 
     [SerializeField] private float _hideAlpha = .1f;
     private CharacterHealthUI _healthUI;
@@ -46,19 +71,31 @@ public class CharacterUI : MonoBehaviour
 
     public void Hide()
     {
-        foreach (var renderer in _renderers)
+        for (int i = 0; i < _renderers.Length; i++)
         {
+            SpriteRenderer renderer = _renderers[i];
             renderer.DOKill();
-            renderer.DOFade(_hideAlpha, 0.1f);
+            renderer.DOFade(_hideAlpha, FadeDuration);
+        }
+        for (int i = 0; i < _labels.Length; i++)
+        {
+            TMP_Text label = _labels[i];
+            new LabelAlphaTween(label, _hideAlpha, FadeDuration);
         }
     }
 
     public void Show()
     {
-        foreach (var renderer in _renderers)
+        for (int i = 0; i < _renderers.Length; i++)
         {
+            SpriteRenderer renderer = _renderers[i];
             renderer.DOKill();
-            renderer.DOFade(1, 0.1f);
+            renderer.DOFade(1, .1f);
+        }
+        for (int i = 0; i < _labels.Length; i++)
+        {
+            TMP_Text label = _labels[i];
+            new LabelAlphaTween(label, 1, FadeDuration);
         }
     }
 
@@ -75,4 +112,6 @@ public class CharacterUI : MonoBehaviour
     {
         _instances.Remove(this);
     }
+
+    
 }
