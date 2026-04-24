@@ -20,13 +20,11 @@ public class CharacterAttackBehaviour : MonoBehaviour
 
     public IEnumerator GetAttackSequence(Character other)
     {
-        _character.SecureCurrentCell();
+        CharacterUI.HideAll();
 
+        _character.SecureCurrentCell();
         _character.LookAt(other.Position);
-        _character.FadeOutUI();
-        
         other.LookAt(_character.Position);
-        other.FadeOutUI();
 
         Coroutine attackAnimation = _character.PlayAttackAnimation();
         yield return ChargeSequence(other);
@@ -39,9 +37,9 @@ public class CharacterAttackBehaviour : MonoBehaviour
         _character.PlayIdleAnimation();
         yield return otherHurtRoutine;
 
-        _character.FadeInUI();
-        other.FadeInUI();
         yield return _character.MoveFadeOut();
+
+        CharacterUI.ShowAll();
     }
 
     private IEnumerator ChargeSequence(Character other)

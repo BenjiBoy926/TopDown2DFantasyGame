@@ -139,16 +139,6 @@ public class Character : MonoBehaviour
         return StartCoroutine(sequence);
     }
 
-    public void FadeOutUI()
-    {
-        _stats.FadeOutUI();
-    }
-
-    public void FadeInUI()
-    {
-        _stats.FadeInUI();
-    }
-
     public void SecureCurrentCell()
     {
         UseMove();

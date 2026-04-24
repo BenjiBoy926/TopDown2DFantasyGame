@@ -1,9 +1,28 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterStatsUI : MonoBehaviour
+public class CharacterUI : MonoBehaviour
 {
+    private static readonly HashSet<CharacterUI> _instances = new();
+
     private CharacterHealthUI _healthUI;
     private CharacterPowerUI _powerUI;
+
+    public static void HideAll()
+    {
+        foreach (var instance in _instances)
+        {
+            instance.Hide();
+        }
+    }
+
+    public static void ShowAll()
+    {
+        foreach (var instance in _instances)
+        {
+            instance.Show();
+        }
+    }
 
     public void ShowHealth(int currentHealth, int baseHealth)
     {
@@ -20,12 +39,12 @@ public class CharacterStatsUI : MonoBehaviour
         _healthUI.Shake();
     }
 
-    public void FadeOut()
+    public void Hide()
     {
         gameObject.SetActive(false);
     }
 
-    public void FadeIn()
+    public void Show()
     {
         gameObject.SetActive(true);
     }
@@ -34,5 +53,11 @@ public class CharacterStatsUI : MonoBehaviour
     {
         _healthUI = GetComponentInChildren<CharacterHealthUI>();
         _powerUI = GetComponentInChildren<CharacterPowerUI>();
+        _instances.Add(this);
+    }
+
+    private void OnDestroy()
+    {
+        _instances.Remove(this);
     }
 }

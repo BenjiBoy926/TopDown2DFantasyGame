@@ -10,7 +10,7 @@ public class CharacterStats : MonoBehaviour
     [SerializeField] private int _baseHealth = 10;
     [SerializeField] private int _basePower = 3;
     private int _currentHealth;
-    private CharacterStatsUI _ui;
+    private CharacterUI _ui;
 
     public void TakeDamageFrom(Character other)
     {
@@ -21,18 +21,18 @@ public class CharacterStats : MonoBehaviour
 
     public void FadeInUI()
     {
-        _ui.FadeIn();
+        _ui.Show();
     }
 
     public void FadeOutUI()
     {
-        _ui.FadeOut();
+        _ui.Hide();
     }
 
     private void Awake()
     {
         _currentHealth = _baseHealth;
-        _ui = GetComponentInChildren<CharacterStatsUI>();
+        _ui = GetComponentInChildren<CharacterUI>();
         _ui.ShowHealth(_currentHealth, _baseHealth);
         _ui.ShowPower(Power);
     }
