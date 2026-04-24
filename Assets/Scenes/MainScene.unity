@@ -601,6 +601,7 @@ GameObject:
   - component: {fileID: 369313202}
   - component: {fileID: 369313201}
   - component: {fileID: 369313200}
+  - component: {fileID: 369313203}
   m_Layer: 0
   m_Name: Tilemap
   m_TagString: Untagged
@@ -2134,6 +2135,18 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
+--- !u!210 &369313203
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369313198}
+  m_Enabled: 1
+  m_SortingLayerID: 82241977
+  m_SortingLayer: -1
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &373313574
 GameObject:
   m_ObjectHideFlags: 0
@@ -2890,7 +2903,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 00000000b9e9e604
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
