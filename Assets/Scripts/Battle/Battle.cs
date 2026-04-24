@@ -14,16 +14,24 @@ public class Battle : MonoBehaviour
     private Battlefield _field;
     private BattleTurn _turn;
 
+    public void Register(Character character)
+    {
+        _turn.Register(character);
+    }
+
+    public void Unregister(Character character)
+    {
+        _turn.Unregister(character);
+    }
+
     public void Register(Obstacle obstacle)
     {
         _field.Register(obstacle);
-        _turn.Register(obstacle.Character);
     }
 
     public void Unregister(Obstacle obstacle)
     {
         _field.Unregister(obstacle);
-        _turn.Unregister(obstacle.Character);
     }
 
     public void StartNextTurn()

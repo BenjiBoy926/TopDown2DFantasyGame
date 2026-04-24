@@ -15,8 +15,6 @@ public class BattleTurn : MonoBehaviour
 
     public void Register(Character obj)
     {
-        if (!obj) return;
-
         Faction faction = obj.Faction;
         if (!_factions.Contains(faction))
         {

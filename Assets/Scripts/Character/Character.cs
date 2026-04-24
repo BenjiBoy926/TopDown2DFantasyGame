@@ -261,7 +261,7 @@ public class Character : MonoBehaviour
     {
         if (_battle)
         {
-            _battle.Register(_obstacle);
+            _battle.Register(this);
         }
     }
 
@@ -269,7 +269,7 @@ public class Character : MonoBehaviour
     {
         if (_battle)
         {
-            _battle.Unregister(_obstacle);
+            _battle.Unregister(this);
         }    
     }
 
@@ -278,7 +278,7 @@ public class Character : MonoBehaviour
         _battle = GetComponentInParent<Battle>();
         if (_battle)
         {
-            _battle.Register(_obstacle);
+            _battle.Register(this);
         }
     }
 
