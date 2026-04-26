@@ -65,7 +65,7 @@ public class Battle : MonoBehaviour
         return _field.GetCell(obstacle);
     }
 
-    public TileBase GetTile(Vector2Int cell)
+    public Tile GetTile(Vector2Int cell)
     {
         return _field.GetTile(cell);
     }

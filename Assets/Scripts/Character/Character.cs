@@ -185,7 +185,7 @@ public class Character : MonoBehaviour
         return _battle.WorldToCell(position);
     }
 
-    public TileBase GetTile(Vector2Int cell)
+    public Tile GetTile(Vector2Int cell)
     {
         return _battle.GetTile(cell);
     }
