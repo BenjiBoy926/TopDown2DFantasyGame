@@ -112,6 +112,4 @@ public class CharacterUI : MonoBehaviour
     {
         _instances.Remove(this);
     }
-
-    
 }
