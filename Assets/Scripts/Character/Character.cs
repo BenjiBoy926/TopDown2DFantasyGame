@@ -2,8 +2,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro.EditorUtilities;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Obstacle))]
 [RequireComponent(typeof(CharacterRange))]
@@ -28,15 +28,14 @@ public class Character : MonoBehaviour
     public Vector2Int CurrentCell => _battle.WorldToCell(Position);
     public Faction Faction => _faction;
     public bool IsAbleToMove => !IsDead && !_hasMovedThisTurn;
-    public bool HasMovedThisTurn => _hasMovedThisTurn;
     public float CellWidth => _battle.CellWidth;
     public float CellHeight => _battle.CellHeight;
     public int Power => _stats.Power;
     public bool IsDead => _stats.IsDead;
     public Vector2 CellSize => new(_battle.CellWidth, _battle.CellHeight);
+    public int TraversalRange => _stats.TraversalRange;
 
     [SerializeField] private Faction _faction;
-    [SerializeField] private int _traversalRange = 3;
     [SerializeField] private Color _usedMoveFadeColor = Color.gray;
     [SerializeField] private float _usedMoveFadeDuration = 0.35f;
     [SerializeField] private Ease _runEase = Ease.OutCirc;
@@ -186,25 +185,24 @@ public class Character : MonoBehaviour
         return _battle.WorldToCell(position);
     }
 
+    public TileBase GetTile(Vector2Int cell)
+    {
+        return _battle.GetTile(cell);
+    }
+
+    public Obstacle GetObstacle(Vector2Int cell)
+    {
+        return _battle.GetObstacle(cell);
+    }
+
     public Vector2 ClampToTraversibleCells(Vector2 position)
     {
         return _range.ClampToTraversibleCells(position);
     }
 
-    public bool IsTraversible(CellCost cell)
-    {
-        if (cell.CostToArrive > _traversalRange)
-        {
-            return false;
-        }
-        Obstacle obstacle = _battle.GetObstacle(cell.Cell);
-        bool canMoveThroughOccupant = !obstacle || obstacle.Faction == _faction;
-        return canMoveThroughOccupant;
-    }
-
     public bool CanStayInCell(Vector2Int cell)
     {
-        Obstacle obstacle = _battle.GetObstacle(cell);
+        Obstacle obstacle = GetObstacle(cell);
         return !obstacle || obstacle == _obstacle;
     }
 

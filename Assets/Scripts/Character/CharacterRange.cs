@@ -98,7 +98,18 @@ public class CharacterRange : MonoBehaviour
 
     private bool ShouldAddCell(CellCost cell)
     {
-        return !_traversibleCells.Contains(cell.Cell) && _character.IsTraversible(cell);
+        return !_traversibleCells.Contains(cell.Cell) && IsTraversible(cell);
+    }
+
+    private bool IsTraversible(CellCost cell)
+    {
+        if (cell.CostToArrive > _character.TraversalRange)
+        {
+            return false;
+        }
+        Obstacle obstacle = _character.GetObstacle(cell.Cell);
+        bool canMoveThroughOccupant = !obstacle || obstacle.Faction == _character.Faction;
+        return canMoveThroughOccupant;
     }
 
     private void Add(CellCost cell)
