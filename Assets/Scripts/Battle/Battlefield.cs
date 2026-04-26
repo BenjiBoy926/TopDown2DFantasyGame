@@ -1,13 +1,14 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(Grid))]
+[RequireComponent(typeof(Tilemap))]
 public class Battlefield : MonoBehaviour
 {
-    public float CellWidth => _grid.cellSize.x;
-    public float CellHeight => _grid.cellSize.y;
+    public float CellWidth => _tilemap.cellSize.x;
+    public float CellHeight => _tilemap.cellSize.y;
 
-    private Grid _grid;
+    private Tilemap _tilemap;
     private readonly Dictionary<Vector2Int, Obstacle> _cellToObstacle = new();
     private readonly Dictionary<Obstacle, Vector2Int> _obstacleToCell = new();
 
@@ -34,7 +35,7 @@ public class Battlefield : MonoBehaviour
 
     public Vector2 CellToWorld(Vector2Int cell)
     {
-        return _grid.CellToWorld((Vector3Int)cell);
+        return _tilemap.CellToWorld((Vector3Int)cell);
     }
 
     public Vector2Int WorldToCell(Vector2 position)
@@ -42,8 +43,8 @@ public class Battlefield : MonoBehaviour
         // NOTE: WorldToCell uses FloorToInt, not RoundToInt,
         // but if we offset the original position we can get the same result as Round
         // without breaking non-rectangular cell shapes (maybe? haven't tested it)
-        position += (Vector2)_grid.cellSize * .5f;
-        return (Vector2Int)_grid.WorldToCell(position);
+        position += (Vector2)_tilemap.cellSize * .5f;
+        return (Vector2Int)_tilemap.WorldToCell(position);
     }
 
     public Obstacle GetObstacle(Vector2Int cell)
@@ -66,8 +67,13 @@ public class Battlefield : MonoBehaviour
         _obstacleToCell[obstacle] = newCell;
     }
 
+    public TileBase GetTile(Vector2Int cell)
+    {
+        return _tilemap.GetTile((Vector3Int)cell);
+    }
+
     private void Awake()
     {
-        _grid = GetComponent<Grid>();
+        _tilemap = GetComponent<Tilemap>();
     }
 }

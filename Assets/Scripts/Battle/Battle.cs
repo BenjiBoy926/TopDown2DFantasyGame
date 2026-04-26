@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Battlefield))]
 [RequireComponent(typeof(BattleTurn))]
@@ -62,6 +63,11 @@ public class Battle : MonoBehaviour
     public Vector2Int GetCell(Obstacle obstacle)
     {
         return _field.GetCell(obstacle);
+    }
+
+    public TileBase GetTile(Vector2Int cell)
+    {
+        return _field.GetTile(cell);
     }
 
     public void RefreshCell(Obstacle obstacle)
