@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Character))]
 public class CharacterRange : MonoBehaviour
@@ -9,6 +10,7 @@ public class CharacterRange : MonoBehaviour
     public IReadOnlyCollection<Vector2Int> TraversibleCells => _traversibleCells;
     public IReadOnlyCollection<Vector2Int> AttackableEdgeCells => _attackableEdgeCells;
 
+    [SerializeField] private List<TileBase> _wallTiles = new();
     private Character _character;
     private readonly HashSet<Vector2Int> _traversibleCells = new();
     private readonly HashSet<Vector2Int> _attackableEdgeCells = new();
@@ -107,6 +109,13 @@ public class CharacterRange : MonoBehaviour
         {
             return false;
         }
+        
+        TileBase tile = _character.GetTile(cell.Cell);
+        if (_wallTiles.Contains(tile))
+        {
+            return false;
+        }
+
         Obstacle obstacle = _character.GetObstacle(cell.Cell);
         bool canMoveThroughOccupant = !obstacle || obstacle.Faction == _character.Faction;
         return canMoveThroughOccupant;
