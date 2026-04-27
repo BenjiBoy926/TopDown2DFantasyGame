@@ -38,8 +38,6 @@ public class Character : MonoBehaviour
     [SerializeField] private Faction _faction;
     [SerializeField] private Color _usedMoveFadeColor = Color.gray;
     [SerializeField] private float _usedMoveFadeDuration = 0.35f;
-    [SerializeField] private Ease _runEase = Ease.OutCirc;
-    [SerializeField] private float _runDuration = 0.35f;
     private CharacterAnimator _animator;
     private SpriteRenderer _sprite;
     private Obstacle _obstacle;
@@ -206,24 +204,10 @@ public class Character : MonoBehaviour
         return !obstacle || obstacle == _obstacle;
     }
 
-    public IEnumerator WaitInCurrentCell()
-    {
-        Vector2 gridPosition = _battle.CellToWorld(CurrentCell);
-        yield return GetRunToSequence(gridPosition);
-        yield return MoveFadeOut();
-    }
-
     public IEnumerator MoveFadeOut()
     {
         yield return PerformSpriteFade();
         MoveFinished.Invoke(this);
-    }
-
-    public IEnumerator GetRunToSequence(Vector2 target)
-    {
-        SetIsRunning(true);
-        yield return transform.DOMove(target, _runDuration).SetEase(_runEase).WaitForCompletion();
-        SetIsRunning(false);
     }
 
     public void TakeDamageFrom(Character other)
