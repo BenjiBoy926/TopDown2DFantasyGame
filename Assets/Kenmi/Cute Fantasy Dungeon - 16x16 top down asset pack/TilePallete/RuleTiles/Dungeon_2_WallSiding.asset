@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
   m_Name: Dungeon_2_WallSiding
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: -465290247, guid: 4d627694e1c87de4ba96915006713bf5, type: 3}
+  m_DefaultSprite: {fileID: -1140726591, guid: 4d627694e1c87de4ba96915006713bf5, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules:

@@ -67,9 +67,9 @@ public class Battlefield : MonoBehaviour
         _obstacleToCell[obstacle] = newCell;
     }
 
-    public Tile GetTile(Vector2Int cell)
+    public TileBase GetTile(Vector2Int cell)
     {
-        return _tilemap.GetTile<Tile>((Vector3Int)cell);
+        return _tilemap.GetTile((Vector3Int)cell);
     }
 
     private void Awake()
