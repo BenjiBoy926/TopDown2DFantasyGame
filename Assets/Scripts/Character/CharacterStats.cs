@@ -34,6 +34,10 @@ public class CharacterStats : MonoBehaviour
     {
         _currentHealth = _baseHealth;
         _ui = GetComponentInChildren<CharacterUI>();
+    }
+
+    private void Start()
+    {
         _ui.ShowHealth(_currentHealth, _baseHealth);
         _ui.ShowPower(Power);
     }
