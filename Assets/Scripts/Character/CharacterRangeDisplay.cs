@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Character))]
 public class CharacterRangeDisplay : MonoBehaviour
 {
     public bool IsShown => _isShown;
@@ -14,11 +13,13 @@ public class CharacterRangeDisplay : MonoBehaviour
 
     private void Awake()
     {
-        _character = GetComponent<Character>();
+        _character = GetComponentInParent<Character>();
     }
 
     public void Show()
     {
+        if (_isShown) return;
+
         foreach (Vector2Int cell in _character.TraversibleCells)
         {
             AddCell(_traversibleCellPrefab, cell);
@@ -32,6 +33,8 @@ public class CharacterRangeDisplay : MonoBehaviour
 
     public void Hide()
     {
+        if (!_isShown) return;
+
         foreach (GameObject cell in _cells)
         {
             Destroy(cell);

@@ -7,7 +7,6 @@ using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Obstacle))]
 [RequireComponent(typeof(CharacterRange))]
-[RequireComponent(typeof(CharacterRangeDisplay))]
 [RequireComponent(typeof(CharacterAttackBehaviour))]
 [RequireComponent(typeof(CharacterHurtBehaviour))]
 [RequireComponent(typeof(CharacterDefendBehaviour))]
@@ -42,7 +41,6 @@ public class Character : MonoBehaviour
     private SpriteRenderer _sprite;
     private Obstacle _obstacle;
     private CharacterRange _range;
-    private CharacterRangeDisplay _rangeDisplay;
     private CharacterAttackBehaviour _attackBehaviour;
     private CharacterHurtBehaviour _hurtBehaviour;
     private CharacterDefendBehaviour _defendBehaviour;
@@ -160,17 +158,12 @@ public class Character : MonoBehaviour
 
     public void ShowRange()
     {
-        if (_rangeDisplay.IsShown) return;
-
-        _range.Refresh();
-        _rangeDisplay.Show();
+        _range.ShowTransparentRange();
     }
 
     public void HideRange()
     {
-        if (!_rangeDisplay.IsShown) return;
-
-        _rangeDisplay.Hide();
+        _range.Hide();
     }
 
     public Vector2 CellToWorld(Vector2Int cell)
@@ -221,7 +214,6 @@ public class Character : MonoBehaviour
         _sprite = GetComponentInChildren<SpriteRenderer>();
         _obstacle = GetComponent<Obstacle>();
         _range = GetComponent<CharacterRange>();
-        _rangeDisplay = GetComponent<CharacterRangeDisplay>();
         _attackBehaviour = GetComponent<CharacterAttackBehaviour>();
         _hurtBehaviour = GetComponent<CharacterHurtBehaviour>();
         _defendBehaviour = GetComponent<CharacterDefendBehaviour>();

@@ -10,6 +10,8 @@ public class CharacterRange : MonoBehaviour
     public IReadOnlyCollection<Vector2Int> TraversibleCells => _traversibleCells;
     public IReadOnlyCollection<Vector2Int> AttackableEdgeCells => _attackableEdgeCells;
 
+    [SerializeField] private CharacterRangeDisplay _transparentDisplay;
+    [SerializeField] private CharacterRangeDisplay _opaqueDisplay;
     [SerializeField] private List<TileBase> _wallTiles = new();
     private Character _character;
     private readonly HashSet<Vector2Int> _traversibleCells = new();
@@ -21,6 +23,26 @@ public class CharacterRange : MonoBehaviour
     private void Awake()
     {
         _character = GetComponent<Character>();
+    }
+
+    public void ShowTransparentRange()
+    {
+        Hide();
+        Refresh();
+        _transparentDisplay.Show();
+    }
+
+    public void ShowOpaqueRange()
+    {
+        Hide();
+        Refresh();
+        _opaqueDisplay.Show();
+    }
+
+    public void Hide()
+    {
+        _transparentDisplay.Hide();
+        _opaqueDisplay.Hide();
     }
 
     public void Refresh()
