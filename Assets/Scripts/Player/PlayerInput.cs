@@ -4,8 +4,6 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Player))]
 public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 {
-    private bool IsInputAllowed => !_player.IsTurnChangeAnimationPlaying && !_player.IsCharacterActionRunning;
-
     [SerializeField] private float _speed = 5;
     [SerializeField] private float _zoomChangeSpeed = 5;
 
@@ -50,7 +48,6 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnAct(InputAction.CallbackContext context)
     {
-        if (!IsInputAllowed) return;
         if (!context.started) return;
         if (!_player.ActiveCharacter)
         {
@@ -84,7 +81,6 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnCursorPress(InputAction.CallbackContext context)
     {
-        if (!IsInputAllowed) return;
         if (context.started)
         {
             _player.Grab();

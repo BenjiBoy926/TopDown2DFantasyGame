@@ -1,10 +1,10 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Player : MonoBehaviour
 {
-    public bool IsTurnChangeAnimationPlaying => _battle.IsTurnChangeAnimationPlaying;
-    public bool IsCharacterActionRunning => _characterActionRoutine != null;
+    private bool IsInputAllowed => !_battle.IsTurnChangeAnimationPlaying && _characterActionRoutine == null;
     public bool IsCameraGrabbed => _camera.IsGrabbed;
     public Character ActiveCharacter => _activeCharacter;
 
@@ -20,6 +20,17 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         _battle = GetComponentInParent<Battle>();
+    }
+
+    private void Update()
+    {
+        bool isInputAllowed = IsInputAllowed;
+        _exactPosition.gameObject.SetActive(isInputAllowed);
+        _gridPosition.gameObject.SetActive(isInputAllowed);
+        if (!isInputAllowed)
+        {
+            Deselect();
+        }
     }
 
     public void IncludeInView()
@@ -172,11 +183,13 @@ public class Player : MonoBehaviour
     private void SetHoveredCharacter(Character hoveredCharacter)
     {
         if (hoveredCharacter == _hoveredCharacter) return;
-
         if (_hoveredCharacter)
         {
             _hoveredCharacter.HideRange();
         }
+
+        if (hoveredCharacter && !IsInputAllowed) return;
+
         _hoveredCharacter = hoveredCharacter;
         if (_hoveredCharacter)
         {
@@ -187,11 +200,13 @@ public class Player : MonoBehaviour
     private void SetActiveCharacter(Character activeCharacter)
     {
         if (activeCharacter == _activeCharacter) return;
-
         if (_activeCharacter)
         {
             _activeCharacter.HideRange();
         }
+
+        if (activeCharacter && !IsInputAllowed) return;
+        
         _activeCharacter = activeCharacter;
         if (_activeCharacter)
         {
