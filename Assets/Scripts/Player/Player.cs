@@ -157,11 +157,7 @@ public class Player : MonoBehaviour
 
     private void UpdateHoveredCharacter()
     {
-        if (_activeCharacter)
-        {
-            SetHoveredCharacter(_activeCharacter);
-        }
-        else
+        if (!_activeCharacter)
         {
             SetHoveredCharacter(GetCharacterAtCursor());
         }
@@ -184,17 +180,25 @@ public class Player : MonoBehaviour
         _hoveredCharacter = hoveredCharacter;
         if (_hoveredCharacter)
         {
-            _hoveredCharacter.ShowRange();
+            _hoveredCharacter.ShowTransparentRange();
         }
     }
 
-    private void SetActiveCharacter(Character character)
+    private void SetActiveCharacter(Character activeCharacter)
     {
-        _activeCharacter = character;
+        if (activeCharacter == _activeCharacter) return;
+
         if (_activeCharacter)
         {
+            _activeCharacter.HideRange();
+        }
+        _activeCharacter = activeCharacter;
+        if (_activeCharacter)
+        {
+            SetHoveredCharacter(null);
             _activeCharacter.Position = _exactPosition.position;
             _activeCharacter.SetIsRunning(true);
+            _activeCharacter.ShowOpaqueRange();
         }
     }
 

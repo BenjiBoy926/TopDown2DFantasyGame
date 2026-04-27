@@ -156,9 +156,14 @@ public class Character : MonoBehaviour
         return _range.ClampToReachableCells(input);
     }
 
-    public void ShowRange()
+    public void ShowTransparentRange()
     {
         _range.ShowTransparentRange();
+    }
+
+    public void ShowOpaqueRange()
+    {
+        _range.ShowOpaqueRange();
     }
 
     public void HideRange()
