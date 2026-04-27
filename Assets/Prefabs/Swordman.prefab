@@ -1000,7 +1000,7 @@ MonoBehaviour:
   _horizontalDirection: 1
   _verticalDirection: 1
   _isRunning: 0
-  _hurtAnimationDuration: 0.75
+  _hurtAnimationLoopCount: 4
 --- !u!1 &8824524866655695547
 GameObject:
   m_ObjectHideFlags: 0

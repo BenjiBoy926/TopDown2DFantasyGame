@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using NaughtyAttributes;
-using Unity.VisualScripting.Dependencies.Sqlite;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
@@ -28,11 +27,10 @@ public class CharacterAnimator : MonoBehaviour
     [SerializeField] private HorizontalDirection _horizontalDirection;
     [SerializeField] private VerticalDirection _verticalDirection;
     [SerializeField] private bool _isRunning;
-    [SerializeField] private float _hurtAnimationDuration = 0.5f;
+    [SerializeField] private int _hurtAnimationLoopCount = 5;
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
     private Coroutine _oneShotRoutine;
-    private WaitForSeconds _hurtAnimationWait;
 
     public void Pause()
     {
@@ -100,7 +98,6 @@ public class CharacterAnimator : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _hurtAnimationWait = new WaitForSeconds(_hurtAnimationDuration);
         PlayLoopingAnimation();
     }
 
@@ -117,22 +114,16 @@ public class CharacterAnimator : MonoBehaviour
     private IEnumerator PlayOneShotRoutine(Actions action)
     {
         Play(action);
-        if (action == Actions.Hurt)
-        {
-            yield return _hurtAnimationWait;
-        }
-        else
-        {
-            yield return WaitForAnimationEnd(action);
-        }
+        int loopCount = action == Actions.Hurt ? _hurtAnimationLoopCount : 1;
+        yield return WaitForAnimationLoopCount(action, loopCount);
         _oneShotRoutine = null;
     }
 
-    private IEnumerator WaitForAnimationEnd(Actions action)
+    private IEnumerator WaitForAnimationLoopCount(Actions action, int loops)
     {
         AnimatorStateInfo currentState = _animator.GetCurrentAnimatorStateInfo(0);
         int nameHash = GetStateHash(action);
-        while (currentState.shortNameHash != nameHash || currentState.normalizedTime < .99f)
+        while (currentState.shortNameHash != nameHash || currentState.normalizedTime < loops)
         {
             yield return OneShotProgressCheckWait;
             currentState = _animator.GetCurrentAnimatorStateInfo(0);

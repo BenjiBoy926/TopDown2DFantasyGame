@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: _name
       value: Swordman
       objectReference: {fileID: 0}
+    - target: {fileID: 4112215730828138586, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
+      propertyPath: _hurtAnimationLoopCount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4700560474708384779, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
       propertyPath: _faction
       value: 
