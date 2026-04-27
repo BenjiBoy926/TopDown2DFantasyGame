@@ -140,8 +140,8 @@ public class CharacterRange : MonoBehaviour
         Vector2Int currentCell = _character.WorldToCell(position);
         if (cells.Contains(currentCell)) return position;
 
-        Vector2Int closestTraversibleCell = ClosestCell(position, cells);
-        Vector2 cellPosition = _character.CellToWorld(closestTraversibleCell);
+        Vector2Int closestCell = ClosestCell(position, cells);
+        Vector2 cellPosition = _character.CellToWorld(closestCell);
 
         float xExtent = _character.CellWidth / 2 - (ClampMargin * 2);
         float yExtent = _character.CellHeight / 2 - (ClampMargin * 2);
