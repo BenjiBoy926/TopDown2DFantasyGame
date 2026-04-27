@@ -60,6 +60,35 @@ public class CharacterAnimator : MonoBehaviour
         return PlayOneShot(Actions.Death);
     }
 
+    public void SetDirection(Vector2 direction)
+    {
+        direction = direction.normalized;
+
+        bool isHorizontal = Mathf.Abs(direction.x) > Mathf.Abs(direction.y);
+        bool isVertical = !isHorizontal;
+
+        if (isHorizontal && direction.x > 0)
+        {
+            SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Right);
+            SetVerticalDirection(CharacterAnimator.VerticalDirection.Side);
+        }
+        if (isHorizontal && direction.x < 0)
+        {
+            SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Left);
+            SetVerticalDirection(CharacterAnimator.VerticalDirection.Side);
+        }
+        if (isVertical && direction.y > 0)
+        {
+            SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Right);
+            SetVerticalDirection(CharacterAnimator.VerticalDirection.Up);
+        }
+        if (isVertical && direction.y < 0)
+        {
+            SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Right);
+            SetVerticalDirection(CharacterAnimator.VerticalDirection.Down);
+        }
+    }
+
     public void SetHorizontalDirection(HorizontalDirection horizontalDirection)
     {
         if (_horizontalDirection == horizontalDirection) return;

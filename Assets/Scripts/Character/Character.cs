@@ -61,7 +61,7 @@ public class Character : MonoBehaviour
 
     public void SetDirection(Vector2 direction)
     {
-        RefreshAnimatorDirection(direction);
+        _animator.SetDirection(direction);
     }
 
     public void PauseAnimation()
@@ -267,35 +267,6 @@ public class Character : MonoBehaviour
         if (_battle)
         {
             _battle.Register(this);
-        }
-    }
-
-    private void RefreshAnimatorDirection(Vector2 direction)
-    {
-        direction = direction.normalized;
-
-        bool isHorizontal = Mathf.Abs(direction.x) > Mathf.Abs(direction.y);
-        bool isVertical = !isHorizontal;
-
-        if (isHorizontal && direction.x > 0)
-        {
-            _animator.SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Right);
-            _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Side);
-        }
-        if (isHorizontal && direction.x < 0)
-        {
-            _animator.SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Left);
-            _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Side);
-        }
-        if (isVertical && direction.y > 0)
-        {
-            _animator.SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Right);
-            _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Up);
-        }
-        if (isVertical && direction.y < 0)
-        {
-            _animator.SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Right);
-            _animator.SetVerticalDirection(CharacterAnimator.VerticalDirection.Down);
         }
     }
     
