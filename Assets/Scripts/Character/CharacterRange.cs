@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(Character))]
 public class CharacterRange : MonoBehaviour
 {
-    private const float ClampMargin = 0.2f;
+    private const float ClampMargin = 0.1f;
 
     public IReadOnlyCollection<Vector2Int> TraversibleCells => _traversibleCells;
     public IReadOnlyCollection<Vector2Int> AttackableEdgeCells => _attackableEdgeCells;
