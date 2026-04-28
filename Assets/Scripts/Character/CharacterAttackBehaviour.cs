@@ -31,6 +31,8 @@ public class CharacterAttackBehaviour : MonoBehaviour
         _character.LookAt(other.Position);
         other.LookAt(_character.Position);
 
+        yield return MoveToCellCenter();
+
         Coroutine attackAnimation = _character.PlayAttackAnimation();
         yield return ChargeSequence(other);
         yield return AttackConnectSequence(other);
@@ -47,16 +49,20 @@ public class CharacterAttackBehaviour : MonoBehaviour
         CharacterUI.ShowAll();
     }
 
+    private IEnumerator MoveToCellCenter()
+    {
+        Vector2 cellPosition = _character.CellToWorld(_character.CurrentCell);
+        yield return transform.DOMove(cellPosition, _moveToCellCenterDuration)
+            .SetEase(_moveToCellCenterEase)
+            .WaitForCompletion();
+    }
+
     private IEnumerator ChargeSequence(Character other)
     {
         Vector2 cellPosition = _character.CellToWorld(_character.CurrentCell);
         Vector2 towardsTarget = (other.Position - cellPosition).normalized;
         Vector2 chargeOffset = towardsTarget * _character.CellSize * 0.49f;
         Vector2 chargePosition = cellPosition + chargeOffset;
-
-        yield return transform.DOMove(cellPosition, _moveToCellCenterDuration)
-            .SetEase(_moveToCellCenterEase)
-            .WaitForCompletion();
 
         EazySoundManager.PlaySound(_windUpClip);
         yield return transform.DOMove(chargePosition, _chargeDuration)
