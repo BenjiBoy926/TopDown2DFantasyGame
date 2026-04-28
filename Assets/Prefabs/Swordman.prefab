@@ -400,6 +400,7 @@ MonoBehaviour:
   _chargeEase: 26
   _fallbackDuration: 0.2
   _fallbackEase: 27
+  _attackConnectClip: {fileID: 8300000, guid: 88b1cbe3caa3fee4b8b103b5edd7aba9, type: 3}
 --- !u!114 &7638847843088813906
 MonoBehaviour:
   m_ObjectHideFlags: 0

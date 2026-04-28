@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Hellmade.Sound;
 using System.Collections;
 using UnityEngine;
 
@@ -15,6 +16,9 @@ public class CharacterAttackBehaviour : MonoBehaviour
     [Space]
     [SerializeField] private float _fallbackDuration = .2f;
     [SerializeField] private Ease _fallbackEase = Ease.OutBack;
+
+    [Space]
+    [SerializeField] private AudioClip _attackConnectClip;
 
     private Character _character;
 
@@ -59,6 +63,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
 
     private IEnumerator AttackConnectSequence(Character other)
     {
+        EazySoundManager.PlaySound(_attackConnectClip);
         _character.PauseAnimation();
         yield return other.PlayAttackConnectShake();
         _character.ResumeAnimation();
