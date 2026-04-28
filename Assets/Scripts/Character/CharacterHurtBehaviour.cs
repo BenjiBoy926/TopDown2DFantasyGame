@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Hellmade.Sound;
 using System.Collections;
 using UnityEngine;
 
@@ -22,6 +23,9 @@ public class CharacterHurtBehaviour : MonoBehaviour
     [SerializeField] private float _floatAwayDuration = 0.5f;
     [SerializeField] private Ease _floatAwayEase = Ease.OutQuad;
 
+    [Space]
+    [SerializeField] private AudioClip _hurtClip;
+
     private Character _character;
     private WaitForSeconds _afterDeathWait;
 
@@ -40,6 +44,7 @@ public class CharacterHurtBehaviour : MonoBehaviour
     public IEnumerator GetHurtSequence(Character attacker)
     {
         _character.TakeDamageFrom(attacker);
+        EazySoundManager.PlaySound(_hurtClip);
 
         Coroutine hurtAnimation = _character.PlayHurtAnimation();
         yield return GetRecoilSequence(attacker);
