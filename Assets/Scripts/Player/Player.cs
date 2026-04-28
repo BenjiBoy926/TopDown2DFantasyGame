@@ -1,3 +1,4 @@
+using Hellmade.Sound;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -11,6 +12,11 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform _exactPosition;
     [SerializeField] private Transform _gridPosition;
     [SerializeField] private PlayerCamera _camera;
+
+    [Space]
+    [SerializeField] private AudioClip _moveStartClip;
+    [SerializeField] private AudioClip _moveConfirmClip;
+    [SerializeField] private AudioClip _moveCancelClip;
 
     private Battle _battle;
     private Character _activeCharacter;
@@ -121,6 +127,7 @@ public class Player : MonoBehaviour
         if (CanMoveCharacter(characterAtCursor))
         {
             SetActiveCharacter(characterAtCursor);
+            EazySoundManager.PlaySound(_moveStartClip);
         }
     }
 
@@ -154,6 +161,7 @@ public class Player : MonoBehaviour
 
         SetCharacterActionRoutine(action);
         Deselect();
+        EazySoundManager.PlaySound(_moveConfirmClip);
     }
 
     public void CancelMove()
@@ -164,6 +172,7 @@ public class Player : MonoBehaviour
         Coroutine action = _activeCharacter.Cancel();
         SetCharacterActionRoutine(action);
         Deselect();
+        EazySoundManager.PlaySound(_moveCancelClip);
     }
 
     private void UpdateHoveredCharacter()
