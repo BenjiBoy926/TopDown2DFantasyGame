@@ -18,6 +18,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
     [SerializeField] private Ease _fallbackEase = Ease.OutBack;
 
     [Space]
+    [SerializeField] private AudioClip _windUpClip;
     [SerializeField] private AudioClip _attackConnectClip;
 
     private Character _character;
@@ -56,6 +57,8 @@ public class CharacterAttackBehaviour : MonoBehaviour
         yield return transform.DOMove(cellPosition, _moveToCellCenterDuration)
             .SetEase(_moveToCellCenterEase)
             .WaitForCompletion();
+
+        EazySoundManager.PlaySound(_windUpClip);
         yield return transform.DOMove(chargePosition, _chargeDuration)
             .SetEase(_chargeEase)
             .WaitForCompletion();

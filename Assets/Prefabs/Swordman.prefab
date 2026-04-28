@@ -400,6 +400,7 @@ MonoBehaviour:
   _chargeEase: 26
   _fallbackDuration: 0.2
   _fallbackEase: 27
+  _windUpClip: {fileID: 8300000, guid: 323e15cfe809e114ab92c9f4b25e8bc2, type: 3}
   _attackConnectClip: {fileID: 8300000, guid: 88b1cbe3caa3fee4b8b103b5edd7aba9, type: 3}
 --- !u!114 &7638847843088813906
 MonoBehaviour:
