@@ -14,6 +14,10 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerCamera _camera;
 
     [Space]
+    [SerializeField] private AudioClip _cellHoverClip;
+    [SerializeField] private float _cellHoverVolume = .1f;
+
+    [Space]
     [SerializeField] private AudioClip _moveStartClip;
     [SerializeField] private AudioClip _moveConfirmClip;
     [SerializeField] private AudioClip _moveCancelClip;
@@ -22,6 +26,7 @@ public class Player : MonoBehaviour
     private Character _activeCharacter;
     private Character _hoveredCharacter;
     private Coroutine _characterActionRoutine;
+    private Vector2Int _currentCell;
 
     private void Awake()
     {
@@ -84,15 +89,13 @@ public class Player : MonoBehaviour
         {
             _activeCharacter.LookAt(newPosition);
             _activeCharacter.Position = _activeCharacter.ClampToTraversibleCells(newPosition);
-
             _exactPosition.position = _activeCharacter.ClampToReachableCells(newPosition);
-            _gridPosition.position = _battle.CellToWorld(_activeCharacter.CurrentCell);
         }
         else
         {
             _exactPosition.position = newPosition;
-            _gridPosition.position = _battle.SnapToGrid(newPosition);
         }
+        RefreshCurrentCell();
         UpdateHoveredCharacter();
     }
 
@@ -228,9 +231,23 @@ public class Player : MonoBehaviour
 
     private Character GetCharacterAtCursor()
     {
-        Vector2Int cell = _battle.WorldToCell(_gridPosition.position);
-        Obstacle obstacle = _battle.GetObstacle(cell);
+        Obstacle obstacle = _battle.GetObstacle(_currentCell);
         return obstacle ? obstacle.Character : null;
+    }
+
+    private void RefreshCurrentCell()
+    {
+        Vector2Int cell = _battle.WorldToCell(_exactPosition.position);
+        SetCurrentCell(cell);
+    }
+
+    private void SetCurrentCell(Vector2Int cell)
+    {
+        if (_currentCell == cell) return;
+
+        _currentCell = cell;
+        _gridPosition.position = _battle.CellToWorld(_currentCell);
+        EazySoundManager.PlaySound(_cellHoverClip, _cellHoverVolume);
     }
 
     private bool CanMoveCharacter(Character character)
