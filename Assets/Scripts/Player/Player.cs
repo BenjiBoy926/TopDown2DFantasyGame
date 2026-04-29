@@ -247,7 +247,10 @@ public class Player : MonoBehaviour
 
         _currentCell = cell;
         _gridPosition.position = _battle.CellToWorld(_currentCell);
-        EazySoundManager.PlaySound(_cellHoverClip, _cellHoverVolume);
+        if (IsInputAllowed)
+        {
+            EazySoundManager.PlaySound(_cellHoverClip, _cellHoverVolume);
+        }
     }
 
     private bool CanMoveCharacter(Character character)
