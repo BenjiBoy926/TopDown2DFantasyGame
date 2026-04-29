@@ -455,6 +455,8 @@ MonoBehaviour:
   _floatAwayDuration: 0.3
   _floatAwayEase: 6
   _hurtClip: {fileID: 8300000, guid: 2b21ef916f6943c439b71a7c74568878, type: 3}
+  _deathClip: {fileID: 8300000, guid: 566d2ea6240b489479a6e9fd608c2621, type: 3}
+  _floatAwayClip: {fileID: 8300000, guid: ba39bf8baf6d13046889b2d64822381a, type: 3}
 --- !u!114 &8511498810787689882
 MonoBehaviour:
   m_ObjectHideFlags: 0

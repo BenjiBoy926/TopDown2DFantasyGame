@@ -20,11 +20,12 @@ public class CharacterHurtBehaviour : MonoBehaviour
 
     [Space]
     [SerializeField] private float _afterDeathWaitDuration = 1;
-    [SerializeField] private float _floatAwayDuration = 0.5f;
-    [SerializeField] private Ease _floatAwayEase = Ease.OutQuad;
+    [SerializeField] private float _fadeAwayDuration = 0.5f;
+    [SerializeField] private Ease _fadeAwayEase = Ease.OutQuad;
 
     [Space]
     [SerializeField] private AudioClip _hurtClip;
+    [SerializeField] private AudioClip _deathClip;
 
     private Character _character;
     private WaitForSeconds _afterDeathWait;
@@ -81,15 +82,10 @@ public class CharacterHurtBehaviour : MonoBehaviour
 
     private IEnumerator GetDeathSequence()
     {
+        EazySoundManager.PlaySound(_deathClip);
         yield return _character.PlayDieAnimation();
         yield return _afterDeathWait;
-
-        _character.FadeAlpha(0, _floatAwayDuration, _floatAwayEase);
-        float floatOffset = _character.CellHeight * .49f;
-        yield return transform.DOMoveY(floatOffset, _floatAwayDuration)
-            .SetRelative()
-            .SetEase(_floatAwayEase)
-            .WaitForCompletion();
+        yield return _character.FadeAlpha(0, _fadeAwayDuration, _fadeAwayEase);
     }
 
     private void Awake()

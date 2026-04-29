@@ -96,9 +96,9 @@ public class Character : MonoBehaviour
         _animator.PlayLoopingAnimation();
     }
 
-    public void FadeAlpha(float alpha, float duration, Ease ease)
+    public YieldInstruction FadeAlpha(float alpha, float duration, Ease ease)
     {
-        _sprite.DOFade(alpha, duration).SetEase(ease);
+        return _sprite.DOFade(alpha, duration).SetEase(ease).WaitForCompletion();
     }
 
     public void SetIsRunning(bool isRunning)
