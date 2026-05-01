@@ -193,7 +193,7 @@ public class Character : MonoBehaviour
 
     public Vector2 ClampToTraversibleCells(Vector2 position)
     {
-        return _range.ClampToTraversibleCells(position);
+        return _range.ClampToStayableCells(position);
     }
 
     public bool CanStayInCell(Vector2Int cell)

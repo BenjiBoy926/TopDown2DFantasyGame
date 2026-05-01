@@ -107,9 +107,9 @@ public class CharacterRange : MonoBehaviour
         }
     }
 
-    public Vector2 ClampToTraversibleCells(Vector2 position)
+    public Vector2 ClampToStayableCells(Vector2 position)
     {
-        return ClampToCells(position, _traversibleCells);
+        return ClampToCells(position, _stayableCells);
     }
 
     public Vector2 ClampToReachableCells(Vector2 position)
