@@ -1,7 +1,6 @@
 using Hellmade.Sound;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 public class Player : MonoBehaviour
 {
@@ -26,7 +25,6 @@ public class Player : MonoBehaviour
     private Character _hoveredCharacter;
     private Coroutine _characterActionRoutine;
     private Vector2Int _currentCell;
-    private int _audioID = -1;
 
     private void Awake()
     {
@@ -96,7 +94,6 @@ public class Player : MonoBehaviour
             _exactPosition.position = newPosition;
         }
         RefreshCurrentCell();
-        UpdateHoveredCharacter();
     }
 
     public void Grab()
@@ -178,14 +175,6 @@ public class Player : MonoBehaviour
         EazySoundManager.PlaySound(_moveCancelClip);
     }
 
-    private void UpdateHoveredCharacter()
-    {
-        if (!_activeCharacter)
-        {
-            SetHoveredCharacter(GetCharacterAtCursor());
-        }
-    }
-
     private void Deselect()
     {
         SetHoveredCharacter(null);
@@ -250,6 +239,15 @@ public class Player : MonoBehaviour
         if (IsInputAllowed)
         {
             _cellHoverAudio.Play();
+        }
+        RefreshHoveredCharacter();
+    }
+
+    private void RefreshHoveredCharacter()
+    {
+        if (!_activeCharacter)
+        {
+            SetHoveredCharacter(GetCharacterAtCursor());
         }
     }
 
