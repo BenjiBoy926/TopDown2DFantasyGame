@@ -16,8 +16,8 @@ public class Character : MonoBehaviour
 {
     public static event Action<Character> MoveFinished = delegate { };
 
-    public IReadOnlyCollection<Vector2Int> TraversibleCells => _range.StayableCells;
-    public IReadOnlyCollection<Vector2Int> AttackableEdgeCells => _range.InteractableEdgeCells;
+    public IReadOnlyCollection<Vector2Int> StayableCells => _range.StayableCells;
+    public IReadOnlyCollection<Vector2Int> InteractableEdgeCells => _range.InteractableEdgeCells;
     public Vector2 Position
     {
         get => transform.position;
@@ -26,6 +26,7 @@ public class Character : MonoBehaviour
     public Vector2Int HomeCell => _battle.GetCell(_obstacle);
     public Vector2Int CurrentCell => _battle.WorldToCell(Position);
     public Faction Faction => _faction;
+    public Obstacle Obstacle => _obstacle;
     public bool IsAbleToMove => !IsDead && !_hasMovedThisTurn;
     public float CellWidth => _battle.CellWidth;
     public float CellHeight => _battle.CellHeight;
