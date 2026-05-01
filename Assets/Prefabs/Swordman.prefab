@@ -286,6 +286,7 @@ GameObject:
   - component: {fileID: 8912661773358370159}
   - component: {fileID: 9138772102123916440}
   - component: {fileID: 8511498810787689882}
+  - component: {fileID: 1418184813022317413}
   m_Layer: 0
   m_Name: Swordman
   m_TagString: Untagged
@@ -377,8 +378,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a8f94e1823089b4db12244ab4ddec6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _transparentDisplay: {fileID: 1079159004131335048}
-  _opaqueDisplay: {fileID: 3637688844569409695}
   _wallTiles:
   - {fileID: 11400000, guid: e1ed986a581a3e945a49172b95f52ab1, type: 2}
   - {fileID: 11400000, guid: 9cc11badaa9aa1343a14fdc1f6cef8c0, type: 2}
@@ -452,11 +451,10 @@ MonoBehaviour:
   _recoilOutEase: 6
   _recoilInEase: 5
   _afterDeathWaitDuration: 0.3
-  _floatAwayDuration: 0.3
-  _floatAwayEase: 6
+  _fadeAwayDuration: 0.5
+  _fadeAwayEase: 6
   _hurtClip: {fileID: 8300000, guid: 2b21ef916f6943c439b71a7c74568878, type: 3}
   _deathClip: {fileID: 8300000, guid: 566d2ea6240b489479a6e9fd608c2621, type: 3}
-  _floatAwayClip: {fileID: 8300000, guid: ba39bf8baf6d13046889b2d64822381a, type: 3}
 --- !u!114 &8511498810787689882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -472,6 +470,24 @@ MonoBehaviour:
   _baseHealth: 7
   _basePower: 3
   _traversalRange: 3
+--- !u!114 &1418184813022317413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881692635917527445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb103f9a0b120eb478c0fb9a02e635a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cellPrefab: {fileID: 3139986383999355374, guid: 93b7b2b8d61b9824cabff424a66716e7, type: 3}
+  _stayableCellColor: {r: 0, g: 0, b: 1, a: 1}
+  _attackableCellColor: {r: 1, g: 0, b: 0, a: 1}
+  _allyInteractionCellColor: {r: 0, g: 1, b: 0, a: 1}
+  _transparentAlpha: 0.2
+  _opaqueAlpha: 0.5
 --- !u!1 &2357623730971306283
 GameObject:
   m_ObjectHideFlags: 0
@@ -646,8 +662,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb103f9a0b120eb478c0fb9a02e635a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _traversibleCellPrefab: {fileID: 3475537624974153195, guid: 93b7b2b8d61b9824cabff424a66716e7, type: 3}
-  _attackableCellPrefab: {fileID: 6459076917322233730, guid: e06bfa1b619b3b841baf8700ebe81560, type: 3}
+  _cellPrefab: {fileID: 0}
+  _stayableCellColor: {r: 0, g: 0, b: 1, a: 1}
+  _attackableCellColor: {r: 1, g: 0, b: 0, a: 1}
+  _allyInteractionCellColor: {r: 0, g: 1, b: 0, a: 1}
+  _transparentAlpha: 0.2
+  _opaqueAlpha: 0.5
 --- !u!1 &4275367599875259225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1147,5 +1167,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb103f9a0b120eb478c0fb9a02e635a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _traversibleCellPrefab: {fileID: 7628430162455858023, guid: 18fb9ab5078b43b459fbbec44f52329e, type: 3}
-  _attackableCellPrefab: {fileID: 7213578300295465701, guid: 76ebfd5802f09fb468b7dd2a94aacf1f, type: 3}
+  _cellPrefab: {fileID: 0}
+  _stayableCellColor: {r: 0, g: 0, b: 1, a: 1}
+  _attackableCellColor: {r: 1, g: 0, b: 0, a: 1}
+  _allyInteractionCellColor: {r: 0, g: 1, b: 0, a: 1}
+  _transparentAlpha: 0.2
+  _opaqueAlpha: 0.5

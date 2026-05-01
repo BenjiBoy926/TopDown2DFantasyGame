@@ -3,50 +3,45 @@ using UnityEngine;
 
 public class CharacterRangeDisplay : MonoBehaviour
 {
-    public bool IsShown => _isShown;
-
-    [SerializeField] private GameObject _traversibleCellPrefab;
-    [SerializeField] private GameObject _attackableCellPrefab;
+    [SerializeField] private SpriteRenderer _cellPrefab;
+    [SerializeField] private Color _stayableCellColor = Color.blue;
+    [SerializeField] private Color _attackableCellColor = Color.red;
+    [SerializeField] private Color _allyInteractionCellColor = Color.green;
+    [SerializeField] private float _transparentAlpha = 0.2f;
+    [SerializeField] private float _opaqueAlpha = 0.5f;
     private Character _character;
-    private readonly HashSet<GameObject> _cells = new();
-    private bool _isShown;
+    private readonly HashSet<SpriteRenderer> _cells = new();
+    private float _currentAlpha;
 
     private void Awake()
     {
         _character = GetComponentInParent<Character>();
     }
 
-    public void Show()
+    public void Refresh()
     {
-        if (_isShown) return;
-
-        foreach (Vector2Int cell in _character.TraversibleCells)
-        {
-            AddCell(_traversibleCellPrefab, cell);
-        }
-        foreach (Vector2Int cell in _character.AttackableEdgeCells)
-        {
-            AddCell(_attackableCellPrefab, cell);
-        }
-        _isShown = true;
+        // Create cells
     }
 
     public void Hide()
     {
-        if (!_isShown) return;
-
-        foreach (GameObject cell in _cells)
-        {
-            Destroy(cell);
-        }
-        _cells.Clear();
-        _isShown = false;
+        // Set alpha to 0
     }
 
-    private void AddCell(GameObject prefab, Vector2Int cell)
+    public void ShowTransparent()
+    {
+
+    }
+
+    public void ShowOpaque()
+    {
+
+    }
+
+    private void AddCell(Vector2Int cell)
     {
         Vector2 position = _character.CellToWorld(cell);
-        GameObject cellObj = Instantiate(prefab, position, Quaternion.identity);
+        SpriteRenderer cellObj = Instantiate(_cellPrefab, position, Quaternion.identity);
         _cells.Add(cellObj);
     }
 }

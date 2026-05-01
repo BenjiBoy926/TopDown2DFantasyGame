@@ -3,20 +3,20 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Character))]
+[RequireComponent(typeof(CharacterRangeDisplay))]
 public class CharacterRange : MonoBehaviour
 {
     private const float ClampMargin = 0.1f;
 
     public IReadOnlyCollection<Vector2Int> StayableCells => _stayableCells;
-    public IReadOnlyCollection<Vector2Int> AttackableEdgeCells => _attackableEdgeCells;
+    public IReadOnlyCollection<Vector2Int> InteractableEdgeCells => _interactableEdgeCells;
 
-    [SerializeField] private CharacterRangeDisplay _transparentDisplay;
-    [SerializeField] private CharacterRangeDisplay _opaqueDisplay;
     [SerializeField] private List<TileBase> _wallTiles = new();
     private Character _character;
+    private CharacterRangeDisplay _display;
     private readonly HashSet<Vector2Int> _traversibleCells = new();
     private readonly HashSet<Vector2Int> _stayableCells = new();
-    private readonly HashSet<Vector2Int> _attackableEdgeCells = new();
+    private readonly HashSet<Vector2Int> _interactableEdgeCells = new();
     private readonly HashSet<Vector2Int> _reachableCells = new();
 
     private static readonly Queue<CellCost> _searchQueue = new();
@@ -24,26 +24,25 @@ public class CharacterRange : MonoBehaviour
     private void Awake()
     {
         _character = GetComponent<Character>();
+        _display = GetComponent<CharacterRangeDisplay>();
     }
 
     public void ShowTransparentRange()
     {
-        Hide();
+        // TOD: refresh on hover character set, not each time range is shown
         Refresh();
-        _transparentDisplay.Show();
+        _display.ShowTransparent();
     }
 
     public void ShowOpaqueRange()
     {
-        Hide();
         Refresh();
-        _opaqueDisplay.Show();
+        _display.ShowOpaque();
     }
 
     public void Hide()
     {
-        _transparentDisplay.Hide();
-        _opaqueDisplay.Hide();
+        _display.Hide();
     }
 
     public void Refresh()
@@ -54,7 +53,8 @@ public class CharacterRange : MonoBehaviour
 
         _reachableCells.Clear();
         _reachableCells.UnionWith(_traversibleCells);
-        _reachableCells.UnionWith(_attackableEdgeCells);
+        _reachableCells.UnionWith(_interactableEdgeCells);
+        _display.Refresh();
     }
 
     private void RecalculateTraversibleCells()
@@ -96,7 +96,7 @@ public class CharacterRange : MonoBehaviour
 
     private void RecalculateAttackableEdgeCells()
     {
-        _attackableEdgeCells.Clear();
+        _interactableEdgeCells.Clear();
         foreach (var stayableCell in _stayableCells)
         {
             CellNeighbors neighbors = CellNeighbors.Get(stayableCell);
@@ -167,7 +167,7 @@ public class CharacterRange : MonoBehaviour
     {
         if (!_stayableCells.Contains(cell))
         {
-            _attackableEdgeCells.Add(cell);
+            _interactableEdgeCells.Add(cell);
         }
     }
 
