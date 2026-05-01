@@ -157,6 +157,11 @@ public class Character : MonoBehaviour
         return _range.ClampToReachableCells(input);
     }
 
+    public void RefreshRange()
+    {
+        _range.Refresh();
+    }
+
     public void ShowTransparentRange()
     {
         _range.ShowTransparentRange();

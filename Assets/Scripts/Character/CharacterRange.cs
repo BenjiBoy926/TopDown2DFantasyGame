@@ -27,24 +27,6 @@ public class CharacterRange : MonoBehaviour
         _display = GetComponent<CharacterRangeDisplay>();
     }
 
-    public void ShowTransparentRange()
-    {
-        // TOD: refresh on hover character set, not each time range is shown
-        Refresh();
-        _display.ShowTransparent();
-    }
-
-    public void ShowOpaqueRange()
-    {
-        Refresh();
-        _display.ShowOpaque();
-    }
-
-    public void Hide()
-    {
-        _display.Hide();
-    }
-
     public void Refresh()
     {
         RecalculateTraversibleCells();
@@ -55,6 +37,21 @@ public class CharacterRange : MonoBehaviour
         _reachableCells.UnionWith(_traversibleCells);
         _reachableCells.UnionWith(_interactableEdgeCells);
         _display.Refresh();
+    }
+
+    public void ShowTransparentRange()
+    {
+        _display.ShowTransparent();
+    }
+
+    public void ShowOpaqueRange()
+    {
+        _display.ShowOpaque();
+    }
+
+    public void Hide()
+    {
+        _display.Hide();
     }
 
     private void RecalculateTraversibleCells()

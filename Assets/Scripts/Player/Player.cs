@@ -194,6 +194,7 @@ public class Player : MonoBehaviour
         _hoveredCharacter = hoveredCharacter;
         if (_hoveredCharacter)
         {
+            _hoveredCharacter.RefreshRange();
             _hoveredCharacter.ShowTransparentRange();
         }
     }
