@@ -16,7 +16,7 @@ public class Character : MonoBehaviour
 {
     public static event Action<Character> MoveFinished = delegate { };
 
-    public IReadOnlyCollection<Vector2Int> TraversibleCells => _range.TraversibleCells;
+    public IReadOnlyCollection<Vector2Int> TraversibleCells => _range.StayableCells;
     public IReadOnlyCollection<Vector2Int> AttackableEdgeCells => _range.AttackableEdgeCells;
     public Vector2 Position
     {

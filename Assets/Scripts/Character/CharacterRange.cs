@@ -7,7 +7,7 @@ public class CharacterRange : MonoBehaviour
 {
     private const float ClampMargin = 0.1f;
 
-    public IReadOnlyCollection<Vector2Int> TraversibleCells => _traversibleCells;
+    public IReadOnlyCollection<Vector2Int> StayableCells => _stayableCells;
     public IReadOnlyCollection<Vector2Int> AttackableEdgeCells => _attackableEdgeCells;
 
     [SerializeField] private CharacterRangeDisplay _transparentDisplay;
@@ -15,6 +15,7 @@ public class CharacterRange : MonoBehaviour
     [SerializeField] private List<TileBase> _wallTiles = new();
     private Character _character;
     private readonly HashSet<Vector2Int> _traversibleCells = new();
+    private readonly HashSet<Vector2Int> _stayableCells = new();
     private readonly HashSet<Vector2Int> _attackableEdgeCells = new();
     private readonly HashSet<Vector2Int> _reachableCells = new();
 
@@ -48,6 +49,7 @@ public class CharacterRange : MonoBehaviour
     public void Refresh()
     {
         RecalculateTraversibleCells();
+        RecalculateStayableCells();
         RecalculateAttackableEdgeCells();
 
         _reachableCells.Clear();
@@ -80,12 +82,24 @@ public class CharacterRange : MonoBehaviour
         }
     }
 
+    private void RecalculateStayableCells()
+    {
+        _stayableCells.Clear();
+        foreach (var traversibleCell in _traversibleCells)
+        {
+            if (_character.CanStayInCell(traversibleCell))
+            {
+                _stayableCells.Add(traversibleCell);
+            }
+        }
+    }
+
     private void RecalculateAttackableEdgeCells()
     {
         _attackableEdgeCells.Clear();
-        foreach (var traversibleCell in _traversibleCells)
+        foreach (var stayableCell in _stayableCells)
         {
-            CellNeighbors neighbors = CellNeighbors.Get(traversibleCell);
+            CellNeighbors neighbors = CellNeighbors.Get(stayableCell);
             CheckAttackableEdgeCell(neighbors.Left);
             CheckAttackableEdgeCell(neighbors.Right);
             CheckAttackableEdgeCell(neighbors.Up);
@@ -151,7 +165,7 @@ public class CharacterRange : MonoBehaviour
 
     private void CheckAttackableEdgeCell(Vector2Int cell)
     {
-        if (!_traversibleCells.Contains(cell))
+        if (!_stayableCells.Contains(cell))
         {
             _attackableEdgeCells.Add(cell);
         }
