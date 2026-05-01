@@ -29,7 +29,7 @@ public class CharacterRangeDisplay : MonoBehaviour
         foreach (var interactableEdgeCell in _character.InteractableEdgeCells)
         {
             SpriteRenderer cell = AddCell(interactableEdgeCell);
-            cell.color = GetCellColor(interactableEdgeCell);
+            cell.color = GetInteractableEdgeCellColor(interactableEdgeCell);
         }
         ReflectCurrentAlpha();
     }
@@ -67,21 +67,11 @@ public class CharacterRangeDisplay : MonoBehaviour
         return cellObj;
     }
 
-    private Color GetCellColor(Vector2Int cell)
+    private Color GetInteractableEdgeCellColor(Vector2Int cell)
     {
         Obstacle obstacle = _character.GetObstacle(cell);
-        if (!obstacle || obstacle == _character.Obstacle)
-        {
-            return _stayableCellColor;
-        }
-        else if (obstacle.Faction == _character.Faction)
-        {
-            return _allyInteractionCellColor;
-        }
-        else
-        {
-            return _attackableCellColor;
-        }
+        bool useAttackableColor = !obstacle || obstacle.Faction != _character.Faction;
+        return useAttackableColor ? _attackableCellColor : _allyInteractionCellColor;
     }
 
     private void SetCurrentAlpha(float alpha)
