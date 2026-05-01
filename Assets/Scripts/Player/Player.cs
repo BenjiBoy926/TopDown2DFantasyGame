@@ -14,8 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerCamera _camera;
 
     [Space]
-    [SerializeField] private AudioClip _cellHoverClip;
-    [SerializeField] private float _cellHoverVolume = .1f;
+    [SerializeField] private AudioSource _cellHoverAudio;
 
     [Space]
     [SerializeField] private AudioClip _moveStartClip;
@@ -27,6 +26,7 @@ public class Player : MonoBehaviour
     private Character _hoveredCharacter;
     private Coroutine _characterActionRoutine;
     private Vector2Int _currentCell;
+    private int _audioID = -1;
 
     private void Awake()
     {
@@ -249,7 +249,7 @@ public class Player : MonoBehaviour
         _gridPosition.position = _battle.CellToWorld(_currentCell);
         if (IsInputAllowed)
         {
-            EazySoundManager.PlaySound(_cellHoverClip, _cellHoverVolume);
+            _cellHoverAudio.Play();
         }
     }
 
