@@ -597,6 +597,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5654268995549710596}
+  - component: {fileID: 7593684018669679513}
   m_Layer: 0
   m_Name: GridPosition
   m_TagString: Untagged
@@ -623,6 +624,20 @@ Transform:
   - {fileID: 8865241046193712896}
   m_Father: {fileID: 1164692482890641632}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7593684018669679513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5215266504164375851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb9c3c803c144dd43a30de2eb63deaba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveDuration: 0.05
+  _moveEase: 6
 --- !u!1 &5272343057412105947
 GameObject:
   m_ObjectHideFlags: 0
@@ -1191,7 +1206,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _exactPosition: {fileID: 3077381733802155434}
-  _gridPosition: {fileID: 5654268995549710596}
   _camera: {fileID: 7013612627280034469}
   _cellHoverAudio: {fileID: 9151918261416316240}
   _moveStartClip: {fileID: 8300000, guid: 35cf7766e9e2aa542811e896fde57989, type: 3}

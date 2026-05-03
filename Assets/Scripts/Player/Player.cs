@@ -8,8 +8,6 @@ public class Player : MonoBehaviour
     public Character ActiveCharacter => _activeCharacter;
 
     [SerializeField] private Transform _exactPosition;
-    [SerializeField] private Transform _gridPosition;
-    [SerializeField] private PlayerCamera _camera;
 
     [Space]
     [SerializeField] private AudioSource _cellHoverAudio;
@@ -20,6 +18,8 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioClip _moveCancelClip;
 
     private Battle _battle;
+    private PlayerCamera _camera;
+    private PlayerGridReticle _gridPosition;
     private Character _activeCharacter;
     private Character _hoveredCharacter;
     private Coroutine _characterActionRoutine;
@@ -29,6 +29,8 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         _battle = GetComponentInParent<Battle>();
+        _camera = GetComponentInChildren<PlayerCamera>();
+        _gridPosition = GetComponentInChildren<PlayerGridReticle>();
     }
 
     private void Update()
@@ -232,7 +234,9 @@ public class Player : MonoBehaviour
         if (_currentCell == cell) return;
 
         _currentCell = cell;
-        _gridPosition.position = _battle.CellToWorld(_currentCell);
+
+        Vector2 worldPosition = _battle.CellToWorld(_currentCell);
+        _gridPosition.MoveToPosition(worldPosition);
         if (_isInputAllowed)
         {
             _cellHoverAudio.Play();
