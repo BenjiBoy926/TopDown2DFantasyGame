@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private bool IsInputAllowed => !_battle.IsTurnChangeAnimationPlaying && _characterActionRoutine == null;
     public bool IsCameraGrabbed => _camera.IsGrabbed;
     public Character ActiveCharacter => _activeCharacter;
 
@@ -25,6 +24,7 @@ public class Player : MonoBehaviour
     private Character _hoveredCharacter;
     private Coroutine _characterActionRoutine;
     private Vector2Int _currentCell;
+    private bool _isInputAllowed = true;
 
     private void Awake()
     {
@@ -33,13 +33,9 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        bool isInputAllowed = IsInputAllowed;
-        _exactPosition.gameObject.SetActive(isInputAllowed);
-        _gridPosition.gameObject.SetActive(isInputAllowed);
-        if (!isInputAllowed)
-        {
-            Deselect();
-        }
+        // There should be a way to refresh this less often, but since the refresh check is currently computationally cheap,
+        // there is no need to make it more efficient yet
+        RefreshIsInputAllowed();
     }
 
     public void IncludeInView()
@@ -189,7 +185,7 @@ public class Player : MonoBehaviour
             _hoveredCharacter.HideRange();
         }
 
-        if (hoveredCharacter && !IsInputAllowed) return;
+        if (hoveredCharacter && !_isInputAllowed) return;
 
         _hoveredCharacter = hoveredCharacter;
         if (_hoveredCharacter)
@@ -207,7 +203,7 @@ public class Player : MonoBehaviour
             _activeCharacter.HideRange();
         }
 
-        if (activeCharacter && !IsInputAllowed) return;
+        if (activeCharacter && !_isInputAllowed) return;
         
         _activeCharacter = activeCharacter;
         if (_activeCharacter)
@@ -237,7 +233,7 @@ public class Player : MonoBehaviour
 
         _currentCell = cell;
         _gridPosition.position = _battle.CellToWorld(_currentCell);
-        if (IsInputAllowed)
+        if (_isInputAllowed)
         {
             _cellHoverAudio.Play();
         }
@@ -267,5 +263,32 @@ public class Player : MonoBehaviour
     {
         yield return actionRoutine;
         _characterActionRoutine = null;
+    }
+
+    private void RefreshIsInputAllowed()
+    {
+        SetIsInputAllowed(ShouldInputBeAllowed());
+    }
+
+    private bool ShouldInputBeAllowed()
+    {
+        return !_battle.IsTurnChangeAnimationPlaying && _characterActionRoutine == null;
+    }
+
+    private void SetIsInputAllowed(bool isInputAllowed)
+    {
+        if (isInputAllowed == _isInputAllowed) return;
+
+        _isInputAllowed = isInputAllowed;
+        _exactPosition.gameObject.SetActive(isInputAllowed);
+        _gridPosition.gameObject.SetActive(isInputAllowed);
+        if (isInputAllowed)
+        {
+            RefreshHoveredCharacter();
+        }
+        else
+        {
+            Deselect();
+        }
     }
 }

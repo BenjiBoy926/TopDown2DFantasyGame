@@ -36,7 +36,6 @@ public class CharacterRangeDisplay : MonoBehaviour
         ReflectCurrentAlpha();
     }
 
-
     public void Hide()
     {
         SetCurrentAlpha(0);
