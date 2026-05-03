@@ -10,12 +10,14 @@ public class CharacterRangeDisplay : MonoBehaviour
     [SerializeField] private float _transparentAlpha = 0.2f;
     [SerializeField] private float _opaqueAlpha = 0.5f;
     private Character _character;
+    private Transform _cellParent;
     private readonly HashSet<SpriteRenderer> _cells = new();
     private float _currentAlpha = 0;
 
     private void Awake()
     {
         _character = GetComponentInParent<Character>();
+        _cellParent = new GameObject($"{_character.name} Range Display").transform;
     }
 
     public void Refresh()
@@ -62,7 +64,7 @@ public class CharacterRangeDisplay : MonoBehaviour
     private SpriteRenderer AddCell(Vector2Int cell)
     {
         Vector2 position = _character.CellToWorld(cell);
-        SpriteRenderer cellObj = Instantiate(_cellPrefab, position, Quaternion.identity);
+        SpriteRenderer cellObj = Instantiate(_cellPrefab, position, Quaternion.identity, _cellParent);
         _cells.Add(cellObj);
         return cellObj;
     }
