@@ -7,9 +7,7 @@ public class Player : MonoBehaviour
     public bool IsCameraGrabbed => _camera.IsGrabbed;
     public Character ActiveCharacter => _activeCharacter;
 
-    [SerializeField] private Transform _exactPosition;
 
-    [Space]
     [SerializeField] private AudioSource _cellHoverAudio;
 
     [Space]
@@ -19,7 +17,8 @@ public class Player : MonoBehaviour
 
     private Battle _battle;
     private PlayerCamera _camera;
-    private PlayerGridReticle _gridPosition;
+    private PlayerCursor _cursor;
+    private PlayerGridReticle _gridReticle;
     private Character _activeCharacter;
     private Character _hoveredCharacter;
     private Coroutine _characterActionRoutine;
@@ -30,7 +29,8 @@ public class Player : MonoBehaviour
     {
         _battle = GetComponentInParent<Battle>();
         _camera = GetComponentInChildren<PlayerCamera>();
-        _gridPosition = GetComponentInChildren<PlayerGridReticle>();
+        _cursor = GetComponentInChildren<PlayerCursor>();
+        _gridReticle = GetComponentInChildren<PlayerGridReticle>();
     }
 
     private void Update()
@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
 
     public void IncludeInView()
     {
-        _camera.IncludeInView(_exactPosition.position);
+        _camera.IncludeInView(_cursor.Position);
     }
 
     public void ChangeZoom(float zoom)
@@ -62,8 +62,8 @@ public class Player : MonoBehaviour
 
     public void SlidePosition(Vector2 offset)
     {
-        Vector2 position = _exactPosition.position;
-        SetPosition(position + offset);
+        Vector2 Position = _cursor.Position;
+        SetPosition(Position + offset);
     }
 
     public void SetScreenPosition(Vector2 screenPosition)
@@ -85,11 +85,11 @@ public class Player : MonoBehaviour
         {
             _activeCharacter.LookAt(newPosition);
             _activeCharacter.Position = _activeCharacter.ClampToTraversibleCells(newPosition);
-            _exactPosition.position = _activeCharacter.ClampToReachableCells(newPosition);
+            _cursor.Position = _activeCharacter.ClampToReachableCells(newPosition);
         }
         else
         {
-            _exactPosition.position = newPosition;
+            _cursor.Position = newPosition;
         }
         RefreshCurrentCell();
     }
@@ -103,7 +103,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            _camera.Grab(_exactPosition.position);
+            _camera.Grab(_cursor.Position);
         }
     }
 
@@ -150,7 +150,7 @@ public class Player : MonoBehaviour
         if (!_activeCharacter)
             return;
 
-        Vector2Int targettingCell = _battle.WorldToCell(_exactPosition.position);
+        Vector2Int targettingCell = _battle.WorldToCell(_cursor.Position);
         Obstacle target = _battle.GetObstacle(targettingCell);
         bool shouldAttack = target && target.Character && target.Faction != _activeCharacter.Faction;
         Coroutine action = shouldAttack ? 
@@ -211,7 +211,7 @@ public class Player : MonoBehaviour
         if (_activeCharacter)
         {
             SetHoveredCharacter(null);
-            _activeCharacter.Position = _exactPosition.position;
+            _activeCharacter.Position = _cursor.Position;
             _activeCharacter.SetIsRunning(true);
             _activeCharacter.ShowOpaqueRange();
         }
@@ -225,7 +225,7 @@ public class Player : MonoBehaviour
 
     private void RefreshCurrentCell()
     {
-        Vector2Int cell = _battle.WorldToCell(_exactPosition.position);
+        Vector2Int cell = _battle.WorldToCell(_cursor.Position);
         SetCurrentCell(cell);
     }
 
@@ -236,7 +236,7 @@ public class Player : MonoBehaviour
         _currentCell = cell;
 
         Vector2 worldPosition = _battle.CellToWorld(_currentCell);
-        _gridPosition.MoveToPosition(worldPosition);
+        _gridReticle.MoveToPosition(worldPosition);
         if (_isInputAllowed)
         {
             _cellHoverAudio.Play();
@@ -284,8 +284,8 @@ public class Player : MonoBehaviour
         if (isInputAllowed == _isInputAllowed) return;
 
         _isInputAllowed = isInputAllowed;
-        _exactPosition.gameObject.SetActive(isInputAllowed);
-        _gridPosition.gameObject.SetActive(isInputAllowed);
+        _cursor.gameObject.SetActive(isInputAllowed);
+        _gridReticle.gameObject.SetActive(isInputAllowed);
         if (isInputAllowed)
         {
             RefreshHoveredCharacter();
