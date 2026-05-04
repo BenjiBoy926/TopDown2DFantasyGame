@@ -50,7 +50,27 @@ public class CharacterHealBehaviour : MonoBehaviour
 
     private IEnumerator SpiralSequence()
     {
-        // Doesn't actually spin yet
+        Vector2 circleCenter = _character.CellToWorld(_character.CurrentCell);
+        float startTime = Time.time;
+        float elapsedTime = Time.time - startTime;
+        float totalTime = _spiralTurnDuration * _spiralTurns;
+
+        while (elapsedTime < totalTime)
+        {
+            float percentComplete = elapsedTime / totalTime;
+            float turnsCompleted = percentComplete * _spiralTurns;
+            float currentTurnPercent = Mathf.Repeat(turnsCompleted, 1);
+            float angle = 2 * Mathf.PI * currentTurnPercent;
+            float x = Mathf.Cos(angle) * _character.CellWidth * _spiralRadius;
+            float y = Mathf.Sin(angle) * _character.CellHeight * _spiralRadius;
+            Vector2 offset = new(x, y);
+            _character.Position = circleCenter + offset;
+
+            yield return null;
+
+            elapsedTime = Time.time - startTime;
+        }
+
         Vector2 cellCenter = _character.CellToWorld(_character.CurrentCell);
         _character.Position = cellCenter;
         yield break;
