@@ -9,6 +9,7 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(CharacterAttackBehaviour))]
 [RequireComponent(typeof(CharacterHurtBehaviour))]
 [RequireComponent(typeof(CharacterDefendBehaviour))]
+[RequireComponent(typeof(CharacterHealBehaviour))]
 [RequireComponent(typeof(CharacterCancelBehaviour))]
 [RequireComponent(typeof(CharacterStats))]
 public class Character : MonoBehaviour
@@ -42,6 +43,7 @@ public class Character : MonoBehaviour
     private CharacterAttackBehaviour _attackBehaviour;
     private CharacterHurtBehaviour _hurtBehaviour;
     private CharacterDefendBehaviour _defendBehaviour;
+    private CharacterHealBehaviour _healBehaviour;
     private CharacterCancelBehaviour _cancelBehaviour;
     private CharacterStats _stats;
     private Battle _battle;
@@ -122,6 +124,13 @@ public class Character : MonoBehaviour
     {
         StopAllCoroutines();
         IEnumerator sequence = _defendBehaviour.GetSequence();
+        return StartCoroutine(sequence);
+    }
+
+    public Coroutine Heal(Character other)
+    {
+        StopAllCoroutines();
+        IEnumerator sequence = _healBehaviour.GetSequence(other);
         return StartCoroutine(sequence);
     }
 
@@ -224,6 +233,7 @@ public class Character : MonoBehaviour
         _attackBehaviour = GetComponent<CharacterAttackBehaviour>();
         _hurtBehaviour = GetComponent<CharacterHurtBehaviour>();
         _defendBehaviour = GetComponent<CharacterDefendBehaviour>();
+        _healBehaviour = GetComponent<CharacterHealBehaviour>();
         _cancelBehaviour = GetComponent<CharacterCancelBehaviour>();
         _stats = GetComponent<CharacterStats>();
     }
