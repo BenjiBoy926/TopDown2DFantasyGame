@@ -152,10 +152,10 @@ public class Player : MonoBehaviour
             return;
 
         Vector2Int targettingCell = _battle.WorldToCell(_cursor.Position);
-        Character character = _battle.GetCharacter(targettingCell);
-        bool shouldAttack = character && character.Faction != _activeCharacter.Faction;
+        Character occupant = _battle.GetOccupant(targettingCell);
+        bool shouldAttack = occupant && occupant.Faction != _activeCharacter.Faction;
         Coroutine action = shouldAttack ? 
-            _activeCharacter.Attack(character) : 
+            _activeCharacter.Attack(occupant) : 
             _activeCharacter.Defend();
 
         SetCharacterActionRoutine(action);
@@ -220,7 +220,7 @@ public class Player : MonoBehaviour
 
     public Character GetCharacterAtCurrentCell()
     {
-        return _battle.GetCharacter(_currentCell);
+        return _battle.GetOccupant(_currentCell);
     }
 
     private void RefreshCurrentCell()

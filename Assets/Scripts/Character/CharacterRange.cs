@@ -149,8 +149,8 @@ public class CharacterRange : MonoBehaviour
             return false;
         }
 
-        Character character = _character.GetCharacter(cell.Cell);
-        bool canMoveThroughOccupant = !character || character.Faction == _character.Faction;
+        Character occupant = _character.GetOccupant(cell.Cell);
+        bool canMoveThroughOccupant = !occupant || occupant.Faction == _character.Faction;
         return canMoveThroughOccupant;
     }
 

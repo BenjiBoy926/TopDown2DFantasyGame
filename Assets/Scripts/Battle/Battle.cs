@@ -47,9 +47,9 @@ public class Battle : MonoBehaviour
         return _field.WorldToCell(position);
     }
 
-    public Character GetCharacter(Vector2Int cell)
+    public Character GetOccupant(Vector2Int cell)
     {
-        return _field.GetCharacter(cell);
+        return _field.GetOccupant(cell);
     }
 
     public Vector2Int GetCell(Character character)

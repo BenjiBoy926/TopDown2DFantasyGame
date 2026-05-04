@@ -189,9 +189,9 @@ public class Character : MonoBehaviour
         return _battle.GetTile(cell);
     }
 
-    public Character GetCharacter(Vector2Int cell)
+    public Character GetOccupant(Vector2Int cell)
     {
-        return _battle.GetCharacter(cell);
+        return _battle.GetOccupant(cell);
     }
 
     public Vector2 ClampToTraversibleCells(Vector2 position)
@@ -201,8 +201,8 @@ public class Character : MonoBehaviour
 
     public bool CanStayInCell(Vector2Int cell)
     {
-        Character character = GetCharacter(cell);
-        return !character || character == this;
+        Character occupant = GetOccupant(cell);
+        return !occupant || occupant == this;
     }
 
     public IEnumerator MoveFadeOut()

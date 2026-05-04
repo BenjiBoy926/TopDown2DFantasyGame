@@ -9,22 +9,22 @@ public class Battlefield : MonoBehaviour
     public float CellHeight => _tilemap.cellSize.y;
 
     private Tilemap _tilemap;
-    private readonly Dictionary<Vector2Int, Character> _cellToCharacter = new();
-    private readonly Dictionary<Character, Vector2Int> _characterToCell = new();
+    private readonly Dictionary<Vector2Int, Character> _cellToOccupant = new();
+    private readonly Dictionary<Character, Vector2Int> _occupantToCell = new();
 
     public void Register(Character character)
     {
         character.Position = SnapToGrid(character.Position);
         Vector2Int cell = WorldToCell(character.Position);
-        _characterToCell[character] = cell;
-        _cellToCharacter[cell] = character;
+        _occupantToCell[character] = cell;
+        _cellToOccupant[cell] = character;
     }
 
     public void Unregister(Character character)
     {
-        Vector2Int cell = _characterToCell[character];
-        _characterToCell.Remove(character);
-        _cellToCharacter.Remove(cell);
+        Vector2Int cell = _occupantToCell[character];
+        _occupantToCell.Remove(character);
+        _cellToOccupant.Remove(cell);
     }
 
     public Vector2 SnapToGrid(Vector2 position)
@@ -47,24 +47,24 @@ public class Battlefield : MonoBehaviour
         return (Vector2Int)_tilemap.WorldToCell(position);
     }
 
-    public Character GetCharacter(Vector2Int cell)
+    public Character GetOccupant(Vector2Int cell)
     {
-        return _cellToCharacter.TryGetValue(cell, out Character character) ? character : null;
+        return _cellToOccupant.TryGetValue(cell, out Character character) ? character : null;
     }
 
     public Vector2Int GetCell(Character character)
     {
-        return _characterToCell[character];
+        return _occupantToCell[character];
     }
 
     public void RefreshCell(Character character)
     {
-        Vector2Int oldCell = _characterToCell[character];
+        Vector2Int oldCell = _occupantToCell[character];
         Vector2Int newCell = WorldToCell(character.Position);
 
-        _cellToCharacter.Remove(oldCell);
-        _cellToCharacter[newCell] = character;
-        _characterToCell[character] = newCell;
+        _cellToOccupant.Remove(oldCell);
+        _cellToOccupant[newCell] = character;
+        _occupantToCell[character] = newCell;
     }
 
     public TileBase GetTile(Vector2Int cell)
