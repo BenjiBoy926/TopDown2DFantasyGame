@@ -9,6 +9,7 @@ public class CharacterHealBehaviour : MonoBehaviour
     [SerializeField] private Ease _moveToSpiralStartEase = Ease.OutQuad;
 
     [Space]
+    [SerializeField] private float _spiralPhi = Mathf.PI / 2;
     [SerializeField] private float _spiralRadius = 0.49f;
     [SerializeField] private int _spiralTurns = 3;
     [SerializeField] private float _spiralTurnDuration = 0.15f;
@@ -38,8 +39,7 @@ public class CharacterHealBehaviour : MonoBehaviour
 
     private IEnumerator DanceSequence()
     {
-        Vector2 cellCenter = _character.CellToWorld(_character.CurrentCell);
-        Vector2 spiralStart = cellCenter + Vector2.up * _character.CellSize * _spiralRadius;
+        Vector2 spiralStart = GetSpiralPosition(0);
         _character.SetIsRunning(true);
         yield return transform.DOMove(spiralStart, _moveToSpiralStartDuration)
             .SetEase(_moveToSpiralStartEase)
@@ -50,7 +50,6 @@ public class CharacterHealBehaviour : MonoBehaviour
 
     private IEnumerator SpiralSequence()
     {
-        Vector2 circleCenter = _character.CellToWorld(_character.CurrentCell);
         float startTime = Time.time;
         float elapsedTime = Time.time - startTime;
         float totalTime = _spiralTurnDuration * _spiralTurns;
@@ -60,11 +59,8 @@ public class CharacterHealBehaviour : MonoBehaviour
             float percentComplete = elapsedTime / totalTime;
             float turnsCompleted = percentComplete * _spiralTurns;
             float currentTurnPercent = Mathf.Repeat(turnsCompleted, 1);
-            float angle = 2 * Mathf.PI * currentTurnPercent;
-            float x = Mathf.Cos(angle) * _character.CellWidth * _spiralRadius;
-            float y = Mathf.Sin(angle) * _character.CellHeight * _spiralRadius;
-            Vector2 offset = new(x, y);
-            _character.Position = circleCenter + offset;
+            
+            _character.Position = GetSpiralPosition(currentTurnPercent);
 
             yield return null;
 
@@ -74,5 +70,18 @@ public class CharacterHealBehaviour : MonoBehaviour
         Vector2 cellCenter = _character.CellToWorld(_character.CurrentCell);
         _character.Position = cellCenter;
         yield break;
+    }
+
+    private Vector2 GetSpiralPosition(float currentTurnPercent)
+    {
+        return _character.CellToWorld(_character.CurrentCell) + GetSpiralOffset(currentTurnPercent);
+    }
+
+    private Vector2 GetSpiralOffset(float currentTurnPercent)
+    {
+        float angle = 2 * Mathf.PI * currentTurnPercent;
+        float x = Mathf.Cos(angle + _spiralPhi) * _character.CellWidth * _spiralRadius;
+        float y = Mathf.Sin(angle + _spiralPhi) * _character.CellHeight * _spiralRadius;
+        return new(x, y);
     }
 }
