@@ -413,6 +413,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae06c6aef4c04644b91ec844f82cb236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _moveToSpiralStartDuration: 0.3
+  _moveToSpiralStartEase: 6
+  _spiralRadius: 0.3
+  _spiralTurns: 3
+  _spiralTurnDuration: 0.15
 --- !u!114 &8912661773358370159
 MonoBehaviour:
   m_ObjectHideFlags: 0
