@@ -11,6 +11,24 @@ public class PlayerCursor : MonoBehaviour
     [SerializeField] private GameObject _attackSprite;
     [SerializeField] private GameObject _defendSprite;
     [SerializeField] private GameObject _healSprite;
+    private Player _player;
+
+    public void Refresh()
+    {
+        Character character = _player.GetCharacterAtCurrentCell();
+        if (!character || character == _player.ActiveCharacter)
+        {
+            ShowDefault();
+        }
+        else if (character.Faction != _player.ActiveCharacterFaction)
+        {
+            ShowAttack();
+        }
+        else
+        {
+            ShowHeal();
+        }
+    }
 
     public void ShowAttack()
     {
@@ -42,6 +60,7 @@ public class PlayerCursor : MonoBehaviour
 
     private void Awake()
     {
+        _player = GetComponentInParent<Player>();
         ShowDefault();
     }
 }

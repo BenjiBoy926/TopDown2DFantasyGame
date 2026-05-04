@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     public bool IsCameraGrabbed => _camera.IsGrabbed;
     public Character ActiveCharacter => _activeCharacter;
+    public Faction ActiveCharacterFaction => _activeCharacter ? _activeCharacter.Faction : null;
 
 
     [SerializeField] private AudioSource _cellHoverAudio;
@@ -96,7 +97,7 @@ public class Player : MonoBehaviour
 
     public void Grab()
     {
-        Character characterAtCursor = GetCharacterAtCursor();
+        Character characterAtCursor = GetCharacterAtCurrentCell();
         if (characterAtCursor)
         {
             StartMove();
@@ -121,7 +122,7 @@ public class Player : MonoBehaviour
 
     public void StartMove()
     {
-        Character characterAtCursor = GetCharacterAtCursor();
+        Character characterAtCursor = GetCharacterAtCurrentCell();
         if (CanMoveCharacter(characterAtCursor))
         {
             SetActiveCharacter(characterAtCursor);
@@ -217,7 +218,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private Character GetCharacterAtCursor()
+    public Character GetCharacterAtCurrentCell()
     {
         Obstacle obstacle = _battle.GetObstacle(_currentCell);
         return obstacle ? obstacle.Character : null;
@@ -236,6 +237,7 @@ public class Player : MonoBehaviour
         _currentCell = cell;
 
         Vector2 worldPosition = _battle.CellToWorld(_currentCell);
+        _cursor.Refresh();
         _gridReticle.MoveToPosition(worldPosition);
         if (_isInputAllowed)
         {
@@ -248,7 +250,7 @@ public class Player : MonoBehaviour
     {
         if (!_activeCharacter)
         {
-            SetHoveredCharacter(GetCharacterAtCursor());
+            SetHoveredCharacter(GetCharacterAtCurrentCell());
         }
     }
 

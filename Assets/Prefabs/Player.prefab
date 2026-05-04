@@ -895,7 +895,7 @@ GameObject:
   - component: {fileID: 5654268995549710596}
   - component: {fileID: 7593684018669679513}
   m_Layer: 0
-  m_Name: GridPosition
+  m_Name: GridReticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1555,8 +1555,8 @@ Transform:
   - {fileID: 3077381733802155434}
   - {fileID: 5654268995549710596}
   - {fileID: 341963366493241652}
-  - {fileID: 6535431965023183177}
   - {fileID: 7169836514128309468}
+  - {fileID: 6535431965023183177}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6482233165459462729
@@ -1899,7 +1899,7 @@ GameObject:
   - component: {fileID: 3077381733802155434}
   - component: {fileID: 5009188101589773455}
   m_Layer: 0
-  m_Name: ExactPosition
+  m_Name: Cursor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
