@@ -20,6 +20,12 @@ public class CharacterStats : MonoBehaviour
         _ui.ShakeHealthUI();
     }
 
+    public void BeHealed()
+    {
+        SetHealth(_baseHealth);
+        // Make UI do a dance
+    }
+
     public void FadeInUI()
     {
         _ui.Show();

@@ -134,6 +134,12 @@ public class Character : MonoBehaviour
         return StartCoroutine(sequence);
     }
 
+    public Coroutine BeHealed()
+    {
+        _stats.BeHealed();
+        return null;
+    }
+
     public Coroutine Cancel()
     { 
         StopAllCoroutines();
