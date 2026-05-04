@@ -237,7 +237,6 @@ public class Player : MonoBehaviour
         _currentCell = cell;
 
         Vector2 worldPosition = _battle.CellToWorld(_currentCell);
-        _cursor.Refresh();
         _gridReticle.MoveToPosition(worldPosition);
         if (_isInputAllowed)
         {
