@@ -9,22 +9,22 @@ public class Battlefield : MonoBehaviour
     public float CellHeight => _tilemap.cellSize.y;
 
     private Tilemap _tilemap;
-    private readonly Dictionary<Vector2Int, Obstacle> _cellToObstacle = new();
-    private readonly Dictionary<Obstacle, Vector2Int> _obstacleToCell = new();
+    private readonly Dictionary<Vector2Int, Character> _cellToCharacter = new();
+    private readonly Dictionary<Character, Vector2Int> _characterToCell = new();
 
-    public void Register(Obstacle obstacle)
+    public void Register(Character character)
     {
-        obstacle.Position = SnapToGrid(obstacle.Position);
-        Vector2Int cell = WorldToCell(obstacle.Position);
-        _obstacleToCell[obstacle] = cell;
-        _cellToObstacle[cell] = obstacle;
+        character.Position = SnapToGrid(character.Position);
+        Vector2Int cell = WorldToCell(character.Position);
+        _characterToCell[character] = cell;
+        _cellToCharacter[cell] = character;
     }
 
-    public void Unregister(Obstacle obstacle)
+    public void Unregister(Character character)
     {
-        Vector2Int cell = _obstacleToCell[obstacle];
-        _obstacleToCell.Remove(obstacle);
-        _cellToObstacle.Remove(cell);
+        Vector2Int cell = _characterToCell[character];
+        _characterToCell.Remove(character);
+        _cellToCharacter.Remove(cell);
     }
 
     public Vector2 SnapToGrid(Vector2 position)
@@ -47,24 +47,24 @@ public class Battlefield : MonoBehaviour
         return (Vector2Int)_tilemap.WorldToCell(position);
     }
 
-    public Obstacle GetObstacle(Vector2Int cell)
+    public Character GetCharacter(Vector2Int cell)
     {
-        return _cellToObstacle.TryGetValue(cell, out Obstacle obstacle) ? obstacle : null;
+        return _cellToCharacter.TryGetValue(cell, out Character character) ? character : null;
     }
 
-    public Vector2Int GetCell(Obstacle obstacle)
+    public Vector2Int GetCell(Character character)
     {
-        return _obstacleToCell[obstacle];
+        return _characterToCell[character];
     }
 
-    public void RefreshCell(Obstacle obstacle)
+    public void RefreshCell(Character character)
     {
-        Vector2Int oldCell = _obstacleToCell[obstacle];
-        Vector2Int newCell = WorldToCell(obstacle.Position);
+        Vector2Int oldCell = _characterToCell[character];
+        Vector2Int newCell = WorldToCell(character.Position);
 
-        _cellToObstacle.Remove(oldCell);
-        _cellToObstacle[newCell] = obstacle;
-        _obstacleToCell[obstacle] = newCell;
+        _cellToCharacter.Remove(oldCell);
+        _cellToCharacter[newCell] = character;
+        _characterToCell[character] = newCell;
     }
 
     public TileBase GetTile(Vector2Int cell)

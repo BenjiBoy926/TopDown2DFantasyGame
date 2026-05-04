@@ -17,22 +17,14 @@ public class Battle : MonoBehaviour
 
     public void Register(Character character)
     {
+        _field.Register(character);
         _turn.Register(character);
     }
 
     public void Unregister(Character character)
     {
+        _field.Unregister(character);
         _turn.Unregister(character);
-    }
-
-    public void Register(Obstacle obstacle)
-    {
-        _field.Register(obstacle);
-    }
-
-    public void Unregister(Obstacle obstacle)
-    {
-        _field.Unregister(obstacle);
     }
 
     public void StartNextTurn()
@@ -55,14 +47,14 @@ public class Battle : MonoBehaviour
         return _field.WorldToCell(position);
     }
 
-    public Obstacle GetObstacle(Vector2Int cell)
+    public Character GetCharacter(Vector2Int cell)
     {
-        return _field.GetObstacle(cell);
+        return _field.GetCharacter(cell);
     }
 
-    public Vector2Int GetCell(Obstacle obstacle)
+    public Vector2Int GetCell(Character character)
     {
-        return _field.GetCell(obstacle);
+        return _field.GetCell(character);
     }
 
     public TileBase GetTile(Vector2Int cell)
@@ -70,9 +62,9 @@ public class Battle : MonoBehaviour
         return _field.GetTile(cell);
     }
 
-    public void RefreshCell(Obstacle obstacle)
+    public void RefreshCell(Character character)
     {
-        _field.RefreshCell(obstacle);
+        _field.RefreshCell(character);
     }
 
     private void Awake()

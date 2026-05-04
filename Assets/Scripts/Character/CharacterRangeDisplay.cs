@@ -70,8 +70,8 @@ public class CharacterRangeDisplay : MonoBehaviour
 
     private Color GetInteractableEdgeCellColor(Vector2Int cell)
     {
-        Obstacle obstacle = _character.GetObstacle(cell);
-        bool useAttackableColor = !obstacle || obstacle.Faction != _character.Faction;
+        Character character = _character.GetCharacter(cell);
+        bool useAttackableColor = !character || character.Faction != _character.Faction;
         return useAttackableColor ? _attackableCellColor : _allyInteractionCellColor;
     }
 

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[RequireComponent(typeof(Obstacle))]
 [RequireComponent(typeof(CharacterRange))]
 [RequireComponent(typeof(CharacterAttackBehaviour))]
 [RequireComponent(typeof(CharacterHurtBehaviour))]
@@ -23,10 +22,9 @@ public class Character : MonoBehaviour
         get => transform.position;
         set => transform.position = value;
     }
-    public Vector2Int HomeCell => _battle.GetCell(_obstacle);
+    public Vector2Int HomeCell => _battle.GetCell(this);
     public Vector2Int CurrentCell => _battle.WorldToCell(Position);
     public Faction Faction => _faction;
-    public Obstacle Obstacle => _obstacle;
     public bool IsAbleToMove => !IsDead && !_hasMovedThisTurn;
     public float CellWidth => _battle.CellWidth;
     public float CellHeight => _battle.CellHeight;
@@ -40,7 +38,6 @@ public class Character : MonoBehaviour
     [SerializeField] private float _usedMoveFadeDuration = 0.35f;
     private CharacterAnimator _animator;
     private SpriteRenderer _sprite;
-    private Obstacle _obstacle;
     private CharacterRange _range;
     private CharacterAttackBehaviour _attackBehaviour;
     private CharacterHurtBehaviour _hurtBehaviour;
@@ -138,7 +135,7 @@ public class Character : MonoBehaviour
     public void SecureCurrentCell()
     {
         UseMove();
-        _battle.RefreshCell(_obstacle);
+        _battle.RefreshCell(this);
     }
 
     public void UseMove()
@@ -192,9 +189,9 @@ public class Character : MonoBehaviour
         return _battle.GetTile(cell);
     }
 
-    public Obstacle GetObstacle(Vector2Int cell)
+    public Character GetCharacter(Vector2Int cell)
     {
-        return _battle.GetObstacle(cell);
+        return _battle.GetCharacter(cell);
     }
 
     public Vector2 ClampToTraversibleCells(Vector2 position)
@@ -204,8 +201,8 @@ public class Character : MonoBehaviour
 
     public bool CanStayInCell(Vector2Int cell)
     {
-        Obstacle obstacle = GetObstacle(cell);
-        return !obstacle || obstacle == _obstacle;
+        Character character = GetCharacter(cell);
+        return !character || character == this;
     }
 
     public IEnumerator MoveFadeOut()
@@ -223,7 +220,6 @@ public class Character : MonoBehaviour
     {
         _animator = GetComponentInChildren<CharacterAnimator>();
         _sprite = GetComponentInChildren<SpriteRenderer>();
-        _obstacle = GetComponent<Obstacle>();
         _range = GetComponent<CharacterRange>();
         _attackBehaviour = GetComponent<CharacterAttackBehaviour>();
         _hurtBehaviour = GetComponent<CharacterHurtBehaviour>();
