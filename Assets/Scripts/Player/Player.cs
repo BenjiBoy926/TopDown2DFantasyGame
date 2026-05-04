@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        // There should be a way to refresh this less often, but since the refresh check is currently computationally cheap,
+        // There should be a way to refresh this less often, but since the refresh check is currently very cheap,
         // there is no need to make it more efficient yet
         RefreshIsInputAllowed();
     }
@@ -151,12 +151,20 @@ public class Player : MonoBehaviour
         if (!_activeCharacter)
             return;
 
-        Vector2Int targettingCell = _battle.WorldToCell(_cursor.Position);
-        Character occupant = _battle.GetOccupant(targettingCell);
-        bool shouldAttack = occupant && occupant.Faction != _activeCharacter.Faction;
-        Coroutine action = shouldAttack ? 
-            _activeCharacter.Attack(occupant) : 
-            _activeCharacter.Defend();
+        Character target = GetCharacterAtCurrentCell();
+        Coroutine action;
+        if (!target || target == _activeCharacter)
+        {
+            action = _activeCharacter.Defend();
+        }
+        else if (target.Faction == _activeCharacter.Faction)
+        {
+            action = _activeCharacter.Heal(target);
+        }
+        else
+        {
+            action = _activeCharacter.Attack(target);
+        }
 
         SetCharacterActionRoutine(action);
         Deselect();
