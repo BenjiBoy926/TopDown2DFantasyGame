@@ -15,6 +15,12 @@ public class PlayerCursor : MonoBehaviour
 
     public void Refresh()
     {
+        if (!_player.ActiveCharacter)
+        {
+            ShowDefault();
+            return;
+        }
+
         Character character = _player.GetCharacterAtCurrentCell();
         if (!character || character == _player.ActiveCharacter)
         {
