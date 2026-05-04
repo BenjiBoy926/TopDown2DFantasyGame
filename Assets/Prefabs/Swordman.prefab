@@ -417,7 +417,7 @@ MonoBehaviour:
   _moveToSpiralStartEase: 6
   _spiralRadius: 0.3
   _spiralTurns: 3
-  _spiralTurnDuration: 0.15
+  _spiralTurnDuration: 0.5
 --- !u!114 &8912661773358370159
 MonoBehaviour:
   m_ObjectHideFlags: 0
