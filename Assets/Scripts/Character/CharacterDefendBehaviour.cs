@@ -14,7 +14,7 @@ public class CharacterDefendBehaviour : MonoBehaviour
     {
         _character.SecureCurrentCell();
 
-        Vector2 targetPosition = _character.CellToWorld(_character.CurrentCell);
+        Vector2 targetPosition = _character.CurrentCellCenter;
         _character.LookAt(targetPosition);
 
         _character.SetIsRunning(true);

@@ -40,11 +40,17 @@ public class CharacterHealBehaviour : MonoBehaviour
     private IEnumerator DanceSequence()
     {
         Vector2 spiralStart = GetSpiralPosition(0);
+
         _character.SetIsRunning(true);
+
         yield return transform.DOMove(spiralStart, _moveToSpiralStartDuration)
             .SetEase(_moveToSpiralStartEase)
             .WaitForCompletion();
         yield return SpiralSequence();
+        yield return transform.DOMove(_character.CurrentCellCenter, _moveToSpiralStartDuration)
+            .SetEase(_moveToSpiralStartEase)
+            .WaitForCompletion();
+
         _character.SetIsRunning(false);
     }
 
@@ -66,15 +72,11 @@ public class CharacterHealBehaviour : MonoBehaviour
 
             elapsedTime = Time.time - startTime;
         }
-
-        Vector2 cellCenter = _character.CellToWorld(_character.CurrentCell);
-        _character.Position = cellCenter;
-        yield break;
     }
 
     private Vector2 GetSpiralPosition(float currentTurnPercent)
     {
-        return _character.CellToWorld(_character.CurrentCell) + GetSpiralOffset(currentTurnPercent);
+        return _character.CurrentCellCenter + GetSpiralOffset(currentTurnPercent);
     }
 
     private Vector2 GetSpiralOffset(float currentTurnPercent)

@@ -51,7 +51,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
 
     private IEnumerator MoveToCellCenter()
     {
-        Vector2 cellPosition = _character.CellToWorld(_character.CurrentCell);
+        Vector2 cellPosition = _character.CurrentCellCenter;
         yield return transform.DOMove(cellPosition, _moveToCellCenterDuration)
             .SetEase(_moveToCellCenterEase)
             .WaitForCompletion();
@@ -59,7 +59,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
 
     private IEnumerator ChargeSequence(Character other)
     {
-        Vector2 cellPosition = _character.CellToWorld(_character.CurrentCell);
+        Vector2 cellPosition = _character.CurrentCellCenter;
         Vector2 towardsTarget = (other.Position - cellPosition).normalized;
         Vector2 chargeOffset = towardsTarget * _character.CellSize * 0.49f;
         Vector2 chargePosition = cellPosition + chargeOffset;
@@ -80,7 +80,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
 
     private void PlayFallbackTween()
     {
-        Vector2 cellPosition = _character.CellToWorld(_character.CurrentCell);
+        Vector2 cellPosition = _character.CurrentCellCenter;
         transform.DOMove(cellPosition, _fallbackDuration).SetEase(_fallbackEase);
     }
 

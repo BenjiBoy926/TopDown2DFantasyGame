@@ -26,6 +26,7 @@ public class Character : MonoBehaviour
     }
     public Vector2Int HomeCell => _battle.GetCell(this);
     public Vector2Int CurrentCell => _battle.WorldToCell(Position);
+    public Vector2 CurrentCellCenter => _battle.SnapToGrid(Position);
     public Faction Faction => _faction;
     public bool IsAbleToMove => !IsDead && !_hasMovedThisTurn;
     public float CellWidth => _battle.CellWidth;
