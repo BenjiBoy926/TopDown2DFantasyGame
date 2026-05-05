@@ -23,7 +23,6 @@ public class CharacterStats : MonoBehaviour
     public void RestoreHealth()
     {
         SetHealth(_baseHealth);
-        // Make UI do a dance
     }
 
     public void FadeInUI()
