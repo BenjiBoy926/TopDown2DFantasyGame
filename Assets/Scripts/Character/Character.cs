@@ -32,6 +32,7 @@ public class Character : MonoBehaviour
     public float CellWidth => _battle.CellWidth;
     public float CellHeight => _battle.CellHeight;
     public int Power => _stats.Power;
+    public bool CanBeRevived => _faction.CanBeRevived;
     public bool IsDead => _stats.IsDead;
     public Vector2 CellSize => new(_battle.CellWidth, _battle.CellHeight);
     public int TraversalRange => _stats.TraversalRange;

@@ -52,7 +52,10 @@ public class CharacterHurtBehaviour : MonoBehaviour
         if (_character.IsDead)
         {
             yield return GetDeathSequence();
-            gameObject.SetActive(false);
+            if (!_character.CanBeRevived)
+            {
+                gameObject.SetActive(false);
+            }
         }
         else
         {
@@ -77,7 +80,10 @@ public class CharacterHurtBehaviour : MonoBehaviour
         EazySoundManager.PlaySound(_deathClip);
         yield return _character.PlayDieAnimation();
         yield return _afterDeathWait;
-        yield return _character.FadeAlpha(0, _fadeAwayDuration, _fadeAwayEase);
+        if (!_character.CanBeRevived)
+        {
+            yield return _character.FadeAlpha(0, _fadeAwayDuration, _fadeAwayEase);
+        }
     }
 
     private void Awake()
