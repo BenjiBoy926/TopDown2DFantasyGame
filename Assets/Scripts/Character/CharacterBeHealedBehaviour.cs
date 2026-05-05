@@ -25,8 +25,6 @@ public class CharacterBeHealedBehaviour : MonoBehaviour
 
     public IEnumerator GetSequence(Character other)
     {
-        // TODO: slight change to animation if they are dead and being revived instead of just healed
-
         if (_character.IsDead)
         {
             yield return GetReviveTwitchSequence(other);
