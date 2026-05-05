@@ -315,7 +315,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4986117399037434538, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 9167384704403469945, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 493156361702298770, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
@@ -388,7 +388,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4986117399037434538, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 9167384704403469945, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 493156361702298770, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
@@ -489,7 +489,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animation: {fileID: 500435276}
-  _startingFaction: {fileID: 11400000, guid: 1f60f3d9c8dbcb04cb0f0112ee02ca2e, type: 2}
+  _startingFaction: {fileID: 11400000, guid: f0825ffdbfea0a042898fd68e2767291, type: 2}
 --- !u!483693784 &390487300
 TilemapRenderer:
   m_ObjectHideFlags: 0
@@ -2281,7 +2281,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 98516946786670474, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 4275367599875259225, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 4806524866476595634, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
@@ -2344,7 +2344,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4986117399037434538, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 9167384704403469945, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 493156361702298770, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
@@ -2422,7 +2422,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4986117399037434538, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 9167384704403469945, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 493156361702298770, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
@@ -2535,7 +2535,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 98516946786670474, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 4275367599875259225, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 4806524866476595634, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
@@ -2598,7 +2598,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 98516946786670474, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 4275367599875259225, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 4806524866476595634, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
@@ -2661,7 +2661,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 98516946786670474, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 4275367599875259225, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 4806524866476595634, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
@@ -2724,7 +2724,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4986117399037434538, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 9167384704403469945, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 493156361702298770, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}

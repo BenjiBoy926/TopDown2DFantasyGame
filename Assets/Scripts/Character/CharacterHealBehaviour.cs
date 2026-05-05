@@ -32,7 +32,7 @@ public class CharacterHealBehaviour : MonoBehaviour
 
         EazySoundManager.PlaySound(_healSound);
         yield return DanceSequence();
-        yield return other.BeHealed();
+        yield return other.BeHealed(_character);
         yield return _character.MoveFadeOut();
         CharacterUI.ShowAll();
     }

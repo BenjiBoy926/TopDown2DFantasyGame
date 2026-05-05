@@ -138,10 +138,10 @@ public class Character : MonoBehaviour
         return StartCoroutine(sequence);
     }
 
-    public Coroutine BeHealed()
+    public Coroutine BeHealed(Character other)
     {
         StopAllCoroutines();
-        IEnumerator sequence = _beHealedBehaviour.GetSequence();
+        IEnumerator sequence = _beHealedBehaviour.GetSequence(other);
         return StartCoroutine(sequence);
     }
 

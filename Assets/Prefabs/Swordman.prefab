@@ -543,10 +543,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63e1e4291d67b1a4e86f950772e8aaee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hopHeight: 0.3
+  _reviveTwitchDuration: 0.3
+  _reviveTwitchMagnitude: 0.1
+  _reviveTwitchVibrato: 30
+  _reviveTwitchElastiticy: 1
+  _reviveTwitchPause: 0.5
   _hopDuration: 0.7
-  _vibrato: 10
-  _elasticity: 0
+  _hopHeight: 0.49
+  _hopVibrato: 10
+  _hopElasticity: 0
   _healSound: {fileID: 8300000, guid: cfce0cea076109f478783201b2a9f57f, type: 3}
 --- !u!114 &8912661773358370159
 MonoBehaviour:
