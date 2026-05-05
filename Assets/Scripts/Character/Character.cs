@@ -10,6 +10,7 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(CharacterHurtBehaviour))]
 [RequireComponent(typeof(CharacterDefendBehaviour))]
 [RequireComponent(typeof(CharacterHealBehaviour))]
+[RequireComponent(typeof(CharacterBeHealedBehaviour))]
 [RequireComponent(typeof(CharacterCancelBehaviour))]
 [RequireComponent(typeof(CharacterStats))]
 public class Character : MonoBehaviour
@@ -44,6 +45,7 @@ public class Character : MonoBehaviour
     private CharacterHurtBehaviour _hurtBehaviour;
     private CharacterDefendBehaviour _defendBehaviour;
     private CharacterHealBehaviour _healBehaviour;
+    private CharacterBeHealedBehaviour _beHealedBehaviour;
     private CharacterCancelBehaviour _cancelBehaviour;
     private CharacterStats _stats;
     private Battle _battle;
@@ -136,8 +138,9 @@ public class Character : MonoBehaviour
 
     public Coroutine BeHealed()
     {
-        _stats.BeHealed();
-        return null;
+        StopAllCoroutines();
+        IEnumerator sequence = _beHealedBehaviour.GetSequence();
+        return StartCoroutine(sequence);
     }
 
     public Coroutine Cancel()
@@ -149,13 +152,8 @@ public class Character : MonoBehaviour
 
     public void SecureCurrentCell()
     {
-        UseMove();
-        _battle.RefreshCell(this);
-    }
-
-    public void UseMove()
-    {
         SetHasMovedThisTurn(true);
+        _battle.RefreshCell(this);
     }
 
     public void RestoreMove()
@@ -231,6 +229,11 @@ public class Character : MonoBehaviour
         _stats.TakeDamageFrom(other);
     }
 
+    public void RestoreHealth()
+    {
+        _stats.RestoreHealth();
+    }
+
     private void Awake()
     {
         _animator = GetComponentInChildren<CharacterAnimator>();
@@ -240,6 +243,7 @@ public class Character : MonoBehaviour
         _hurtBehaviour = GetComponent<CharacterHurtBehaviour>();
         _defendBehaviour = GetComponent<CharacterDefendBehaviour>();
         _healBehaviour = GetComponent<CharacterHealBehaviour>();
+        _beHealedBehaviour = GetComponent<CharacterBeHealedBehaviour>();
         _cancelBehaviour = GetComponent<CharacterCancelBehaviour>();
         _stats = GetComponent<CharacterStats>();
     }
