@@ -407,8 +407,6 @@ MonoBehaviour:
   _shakeFadeOut: 0
   _shakeRandomnessMode: 0
   _recoilDuration: 0.3
-  _recoilOutEase: 6
-  _recoilInEase: 5
   _afterDeathWaitDuration: 0.3
   _fadeAwayDuration: 0.5
   _fadeAwayEase: 6
@@ -445,7 +443,8 @@ MonoBehaviour:
   _spiralPhi: 1.5707964
   _spiralRadius: 0.3
   _spiralTurns: 3
-  _spiralTurnDuration: 0.5
+  _spiralTurnDuration: 0.15
+  _healSound: {fileID: 8300000, guid: cfce0cea076109f478783201b2a9f57f, type: 3}
 --- !u!114 &3838531534147464238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,6 +461,7 @@ MonoBehaviour:
   _hopDuration: 0.7
   _vibrato: 10
   _elasticity: 0
+  _healSound: {fileID: 8300000, guid: cfce0cea076109f478783201b2a9f57f, type: 3}
 --- !u!114 &8912661773358370159
 MonoBehaviour:
   m_ObjectHideFlags: 0

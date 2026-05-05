@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Hellmade.Sound;
 using System.Collections;
 using UnityEngine;
 
@@ -14,6 +15,9 @@ public class CharacterHealBehaviour : MonoBehaviour
     [SerializeField] private int _spiralTurns = 3;
     [SerializeField] private float _spiralTurnDuration = 0.15f;
 
+    [Space]
+    [SerializeField] private AudioClip _healSound;
+
     private Character _character;
 
     public IEnumerator GetSequence(Character other)
@@ -26,6 +30,7 @@ public class CharacterHealBehaviour : MonoBehaviour
             other.LookAt(_character.Position);
         }
 
+        EazySoundManager.PlaySound(_healSound);
         yield return DanceSequence();
         yield return other.BeHealed();
         yield return _character.MoveFadeOut();
