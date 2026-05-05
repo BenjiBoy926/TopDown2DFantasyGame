@@ -406,7 +406,7 @@ MonoBehaviour:
   _shakeRandomness: 90
   _shakeFadeOut: 0
   _shakeRandomnessMode: 0
-  _recoilDuration: 0.1
+  _recoilDuration: 0.3
   _recoilOutEase: 6
   _recoilInEase: 5
   _afterDeathWaitDuration: 0.3
@@ -458,6 +458,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63e1e4291d67b1a4e86f950772e8aaee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hopHeight: 0.3
+  _hopDuration: 0.7
+  _vibrato: 10
+  _elasticity: 0
 --- !u!114 &8912661773358370159
 MonoBehaviour:
   m_ObjectHideFlags: 0

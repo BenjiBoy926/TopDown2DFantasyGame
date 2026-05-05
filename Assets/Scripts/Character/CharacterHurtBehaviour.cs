@@ -15,8 +15,6 @@ public class CharacterHurtBehaviour : MonoBehaviour
 
     [Space]
     [SerializeField] private float _recoilDuration = 0.1f;
-    [SerializeField] private Ease _recoilOutEase = Ease.OutQuad;
-    [SerializeField] private Ease _recoilInEase = Ease.InQuad;
 
     [Space]
     [SerializeField] private float _afterDeathWaitDuration = 1;
@@ -66,13 +64,7 @@ public class CharacterHurtBehaviour : MonoBehaviour
     {
         Vector2 recoilDirection = (_character.Position - attacker.Position).normalized;
         Vector2 recoilOffset = recoilDirection * _character.CellSize * 0.49f;
-        yield return transform.DOMove(recoilOffset, _recoilDuration)
-            .SetRelative()
-            .SetEase(_recoilOutEase)
-            .WaitForCompletion();
-        yield return transform.DOMove(-recoilOffset, _recoilDuration)
-            .SetRelative()
-            .SetEase(_recoilInEase)
+        yield return transform.DOPunchPosition(recoilOffset, _recoilDuration, 0, 0)
             .WaitForCompletion();
 
         // To guarantee accuracy of the character's position after the recoil,
