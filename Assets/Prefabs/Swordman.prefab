@@ -581,7 +581,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseHealth: 7
   _basePower: 3
-  _traversalRange: 3
+  _traversalRange: 4
 --- !u!114 &1418184813022317413
 MonoBehaviour:
   m_ObjectHideFlags: 0
