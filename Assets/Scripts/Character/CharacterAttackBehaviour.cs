@@ -12,6 +12,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
     [Space]
     [SerializeField] private float _chargeDuration = 0.09f;
     [SerializeField] private Ease _chargeEase = Ease.InBack;
+    [SerializeField] private float _chargeDistance = 0.2f;
 
     [Space]
     [SerializeField] private float _fallbackDuration = .2f;
@@ -67,7 +68,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
     {
         Vector2 cellPosition = _character.CurrentCellCenter;
         Vector2 towardsTarget = (other.Position - cellPosition).normalized;
-        Vector2 chargeOffset = towardsTarget * _character.CellSize * 0.49f;
+        Vector2 chargeOffset = towardsTarget * _character.CellSize * _chargeDistance;
         Vector2 chargePosition = cellPosition + chargeOffset;
 
         EazySoundManager.PlaySound(_windUpClip);
