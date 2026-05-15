@@ -52,6 +52,19 @@ public class CharacterAttackBehaviour : MonoBehaviour
 
         CharacterUI.ShowAll();
         _isAttackInitiator = false;
+
+        // CAUTION: if any other coroutine waits for this coroutine and the attacker dies,
+        // that coroutine will be waiting indefinitely since the attacker's game object will be disabled
+        // and unable to continue running coroutines. It is not CURRENTLY a bug because no other coroutine waits for this one,
+        // but could become a bug in the future if this warning is not heeded!
+        if (other.IsDead && !other.CanBeRevived)
+        {
+            other.gameObject.SetActive(false);
+        }
+        if (_character.IsDead && !_character.CanBeRevived)
+        {
+            _character.gameObject.SetActive(false);
+        }
     }
 
     public IEnumerator GetAttackSwipeSequence(Character other)

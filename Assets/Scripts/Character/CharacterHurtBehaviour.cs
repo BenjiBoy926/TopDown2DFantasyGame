@@ -52,10 +52,6 @@ public class CharacterHurtBehaviour : MonoBehaviour
         if (_character.IsDead)
         {
             yield return GetDeathSequence();
-            if (!_character.CanBeRevived)
-            {
-                gameObject.SetActive(false);
-            }
         }
         else
         {
