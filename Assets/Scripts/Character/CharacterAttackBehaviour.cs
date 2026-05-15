@@ -48,7 +48,11 @@ public class CharacterAttackBehaviour : MonoBehaviour
         yield return _character.GetHurtSequence(other);
         yield return otherHurtRoutine;
 
-        yield return _character.MoveFadeOut();
+        bool shouldDisappear = _character.IsDead && !_character.CanBeRevived;
+        if (!shouldDisappear)
+        {
+            yield return _character.MoveFadeOut();
+        }
 
         CharacterUI.ShowAll();
         _isAttackInitiator = false;
@@ -61,7 +65,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
         {
             other.gameObject.SetActive(false);
         }
-        if (_character.IsDead && !_character.CanBeRevived)
+        if (shouldDisappear)
         {
             _character.gameObject.SetActive(false);
         }
