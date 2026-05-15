@@ -14,7 +14,9 @@ public class CharacterHurtBehaviour : MonoBehaviour
     [SerializeField] private ShakeRandomnessMode _shakeRandomnessMode = ShakeRandomnessMode.Full;
 
     [Space]
+    [SerializeField] private float _returnToCellBeforeRecoilDuration = 0.05f;
     [SerializeField] private float _recoilDuration = 0.1f;
+    [SerializeField] private float _recoilDistance = 0.49f;
 
     [Space]
     [SerializeField] private float _afterDeathWaitDuration = 1;
@@ -63,8 +65,10 @@ public class CharacterHurtBehaviour : MonoBehaviour
 
     private IEnumerator GetRecoilSequence(Character attacker)
     {
+        yield return transform.DOMove(_character.CurrentCellCenter, _returnToCellBeforeRecoilDuration).WaitForCompletion();
+
         Vector2 recoilDirection = (_character.Position - attacker.Position).normalized;
-        Vector2 recoilOffset = recoilDirection * _character.CellSize * 0.49f;
+        Vector2 recoilOffset = recoilDirection * _character.CellSize * _recoilDistance;
         yield return transform.DOPunchPosition(recoilOffset, _recoilDuration, 0, 0)
             .WaitForCompletion();
 

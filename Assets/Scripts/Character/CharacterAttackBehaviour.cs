@@ -20,12 +20,12 @@ public class CharacterAttackBehaviour : MonoBehaviour
     [SerializeField] private AudioClip _hurtClip;
 
     private Character _character;
-    private bool _isAudioPlayer = false;
+    private bool _isAttackInitiator = false;
 
     public IEnumerator GetFullAttackSequence(Character other)
     {
         CharacterUI.HideAll();
-        _isAudioPlayer = true;
+        _isAttackInitiator = true;
 
         _character.SecureCurrentCell();
         _character.LookAt(other.Position);
@@ -38,7 +38,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
         yield return GetAttackSwipeSequence(other);
         yield return otherSwipeRoutine;
 
-        if (_isAudioPlayer)
+        if (_isAttackInitiator)
         {
             EazySoundManager.PlaySound(_hurtClip);
         }
@@ -51,7 +51,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
         yield return _character.MoveFadeOut();
 
         CharacterUI.ShowAll();
-        _isAudioPlayer = false;
+        _isAttackInitiator = false;
     }
 
     public IEnumerator GetAttackSwipeSequence(Character other)
@@ -76,7 +76,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
         Vector2 chargeOffset = towardsTarget * _character.CellSize * _chargeDistance;
         Vector2 chargePosition = cellPosition + chargeOffset;
 
-        if (_isAudioPlayer)
+        if (_isAttackInitiator)
         {
             EazySoundManager.PlaySound(_windUpClip);
         }
@@ -87,7 +87,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
 
     private IEnumerator AttackConnectSequence(Character other)
     {
-        if (_isAudioPlayer)
+        if (_isAttackInitiator)
         {
             EazySoundManager.PlaySound(_attackConnectClip);
         }
