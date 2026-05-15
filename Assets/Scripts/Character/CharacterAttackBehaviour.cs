@@ -23,7 +23,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
 
     private Character _character;
 
-    public IEnumerator GetAttackSequence(Character other)
+    public IEnumerator GetFullAttackSequence(Character other)
     {
         CharacterUI.HideAll();
 
@@ -33,20 +33,26 @@ public class CharacterAttackBehaviour : MonoBehaviour
 
         yield return MoveToCellCenter();
 
-        Coroutine attackAnimation = _character.PlayAttackAnimation();
-        yield return ChargeSequence(other);
-        yield return AttackConnectSequence(other);
+        IEnumerator otherSwipeSequence = other.GetAttackSwipeSequence(_character);
+        Coroutine otherSwipeRoutine = StartCoroutine(otherSwipeSequence);
+        yield return GetAttackSwipeSequence(other);
+        yield return otherSwipeRoutine;
 
-        Coroutine otherHurtRoutine = other.Hurt(_character);
-
-        PlayFallbackTween();
-        yield return attackAnimation;
-        _character.PlayIdleAnimation();
+        IEnumerator otherHurtSequence = other.GetHurtSequence(_character);
+        Coroutine otherHurtRoutine = StartCoroutine(otherHurtSequence);
+        yield return _character.GetHurtSequence(other);
         yield return otherHurtRoutine;
 
         yield return _character.MoveFadeOut();
 
         CharacterUI.ShowAll();
+    }
+
+    public IEnumerator GetAttackSwipeSequence(Character other)
+    {
+        _character.PlayAttackAnimation();
+        yield return ChargeSequence(other);
+        yield return AttackConnectSequence(other);
     }
 
     private IEnumerator MoveToCellCenter()
@@ -76,12 +82,6 @@ public class CharacterAttackBehaviour : MonoBehaviour
         _character.PauseAnimation();
         yield return other.PlayAttackConnectShake();
         _character.ResumeAnimation();
-    }
-
-    private void PlayFallbackTween()
-    {
-        Vector2 cellPosition = _character.CurrentCellCenter;
-        transform.DOMove(cellPosition, _fallbackDuration).SetEase(_fallbackEase);
     }
 
     private void Awake()

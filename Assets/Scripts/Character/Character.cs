@@ -113,14 +113,7 @@ public class Character : MonoBehaviour
     public Coroutine Attack(Character other)
     {
         StopAllCoroutines();
-        IEnumerator sequence = _attackBehaviour.GetAttackSequence(other);
-        return StartCoroutine(sequence);
-    }
-
-    public Coroutine Hurt(Character other)
-    {
-        StopAllCoroutines();
-        IEnumerator sequence = _hurtBehaviour.GetHurtSequence(other);
+        IEnumerator sequence = _attackBehaviour.GetFullAttackSequence(other);
         return StartCoroutine(sequence);
     }
 
@@ -150,6 +143,16 @@ public class Character : MonoBehaviour
         StopAllCoroutines();
         IEnumerator sequence = _cancelBehaviour.GetSequence();
         return StartCoroutine(sequence);
+    }
+
+    public IEnumerator GetAttackSwipeSequence(Character other)
+    {
+        return _attackBehaviour.GetAttackSwipeSequence(other);
+    }
+
+    public IEnumerator GetHurtSequence(Character attacker)
+    {
+        return _hurtBehaviour.GetHurtSequence(attacker);
     }
 
     public void SecureCurrentCell()
