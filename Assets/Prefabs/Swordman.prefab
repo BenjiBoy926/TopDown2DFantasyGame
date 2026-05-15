@@ -470,10 +470,10 @@ MonoBehaviour:
   _moveToCellCenterEase: 1
   _chargeDuration: 0.2
   _chargeEase: 26
-  _fallbackDuration: 0.2
-  _fallbackEase: 27
+  _chargeDistance: 0.2
   _windUpClip: {fileID: 8300000, guid: 323e15cfe809e114ab92c9f4b25e8bc2, type: 3}
   _attackConnectClip: {fileID: 8300000, guid: 88b1cbe3caa3fee4b8b103b5edd7aba9, type: 3}
+  _hurtClip: {fileID: 8300000, guid: 2b21ef916f6943c439b71a7c74568878, type: 3}
 --- !u!114 &9138772102123916440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -496,7 +496,6 @@ MonoBehaviour:
   _afterDeathWaitDuration: 0.3
   _fadeAwayDuration: 0.5
   _fadeAwayEase: 6
-  _hurtClip: {fileID: 8300000, guid: 2b21ef916f6943c439b71a7c74568878, type: 3}
   _deathClip: {fileID: 8300000, guid: 566d2ea6240b489479a6e9fd608c2621, type: 3}
 --- !u!114 &7638847843088813906
 MonoBehaviour:

@@ -17,6 +17,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
     [Space]
     [SerializeField] private AudioClip _windUpClip;
     [SerializeField] private AudioClip _attackConnectClip;
+    [SerializeField] private AudioClip _hurtClip;
 
     private Character _character;
     private bool _isAudioPlayer = false;
@@ -36,6 +37,11 @@ public class CharacterAttackBehaviour : MonoBehaviour
         Coroutine otherSwipeRoutine = StartCoroutine(otherSwipeSequence);
         yield return GetAttackSwipeSequence(other);
         yield return otherSwipeRoutine;
+
+        if (_isAudioPlayer)
+        {
+            EazySoundManager.PlaySound(_hurtClip);
+        }
 
         IEnumerator otherHurtSequence = other.GetHurtSequence(_character);
         Coroutine otherHurtRoutine = StartCoroutine(otherHurtSequence);

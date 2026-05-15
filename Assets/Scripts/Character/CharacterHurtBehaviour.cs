@@ -22,7 +22,6 @@ public class CharacterHurtBehaviour : MonoBehaviour
     [SerializeField] private Ease _fadeAwayEase = Ease.OutQuad;
 
     [Space]
-    [SerializeField] private AudioClip _hurtClip;
     [SerializeField] private AudioClip _deathClip;
 
     private Character _character;
@@ -43,7 +42,6 @@ public class CharacterHurtBehaviour : MonoBehaviour
     public IEnumerator GetHurtSequence(Character attacker)
     {
         _character.TakeDamageFrom(attacker);
-        EazySoundManager.PlaySound(_hurtClip);
 
         Coroutine hurtAnimation = _character.PlayHurtAnimation();
         yield return GetRecoilSequence(attacker);
