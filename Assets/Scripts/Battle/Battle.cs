@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(BattleSetup))]
 [RequireComponent(typeof(Battlefield))]
 [RequireComponent(typeof(BattleTurn))]
-[RequireComponent(typeof(BattleRecord))]
+[RequireComponent(typeof(BattleHistory))]
 public class Battle : MonoBehaviour
 {
     public float CellWidth => _field.CellWidth;
@@ -17,7 +17,7 @@ public class Battle : MonoBehaviour
     private BattleSetup _setup;
     private Battlefield _field;
     private BattleTurn _turn;
-    private BattleRecord _record;
+    private BattleHistory _history;
     private readonly HashSet<Character> _allCharacters = new();
 
     public void Register(Character character)
@@ -80,27 +80,27 @@ public class Battle : MonoBehaviour
 
     public void RecordInitialState()
     {
-        _record.RecordInitialState();
+        _history.RecordInitialState();
     }
 
     public void Record(Character a, Character b)
     {
-        _record.Record(a, b);
+        _history.Record(a, b);
     }
 
     public void Record(Character character)
     {
-        _record.Record(character);
+        _history.Record(character);
     }
 
     public void Undo()
     {
-        _record.Undo();
+        _history.Undo();
     }
 
     public void Redo()
     {
-        _record.Redo();
+        _history.Redo();
     }
 
     private void Awake()
@@ -108,7 +108,7 @@ public class Battle : MonoBehaviour
         _setup = GetComponent<BattleSetup>();
         _field = GetComponent<Battlefield>();
         _turn = GetComponent<BattleTurn>();
-        _record = GetComponent<BattleRecord>();
+        _history = GetComponent<BattleHistory>();
     }
 
     private void Start()
