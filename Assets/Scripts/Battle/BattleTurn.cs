@@ -13,6 +13,24 @@ public class BattleTurn : MonoBehaviour
     private int _currentFactionIndex = -1;
     private readonly List<Character> _characterListScratch = new();
 
+    private void OnEnable()
+    {
+        Character.MoveFinished += OnCharacterMoveFinished;
+    }
+
+    private void OnDisable()
+    {
+        Character.MoveFinished -= OnCharacterMoveFinished;
+    }
+
+    private void OnCharacterMoveFinished(Character obj)
+    {
+        if (CountMoveableCharacters(CurrentFaction) == 0)
+        {
+            StartNextTurn();
+        }
+    }
+
     public void Register(Character obj)
     {
         Faction faction = obj.Faction;
@@ -37,7 +55,7 @@ public class BattleTurn : MonoBehaviour
     {
         RestoreAllCharacterMoves();
 
-        int nextFactionIndex = GetNextFaction(_currentFactionIndex);
+        int nextFactionIndex = GetNextFactionIndex(_currentFactionIndex);
         Faction nextFaction = _factions[nextFactionIndex];
 
         int iterations = 0;
@@ -45,7 +63,7 @@ public class BattleTurn : MonoBehaviour
         
         while (CountMoveableCharacters(nextFaction) <= 0 && iterations < maxIterations)
         {
-            nextFactionIndex = GetNextFaction(nextFactionIndex);
+            nextFactionIndex = GetNextFactionIndex(nextFactionIndex);
             nextFaction = _factions[nextFactionIndex];
             iterations++;
         }
@@ -66,7 +84,7 @@ public class BattleTurn : MonoBehaviour
         StartTurn(index);
     }
 
-    private int GetNextFaction(int currentFaction)
+    private int GetNextFactionIndex(int currentFaction)
     {
         return (currentFaction + 1) % _factions.Count;
     }
@@ -82,24 +100,6 @@ public class BattleTurn : MonoBehaviour
         foreach (Character character in _characters)
         {
             character.RestoreMove();
-        }
-    }
-
-    private void OnEnable()
-    {
-        Character.MoveFinished += OnCharacterMoveFinished;
-    }
-
-    private void OnDisable()
-    {
-        Character.MoveFinished -= OnCharacterMoveFinished;
-    }
-
-    private void OnCharacterMoveFinished(Character obj)
-    {
-        if (CountMoveableCharacters(CurrentFaction) == 0)
-        {
-            StartNextTurn();
         }
     }
 

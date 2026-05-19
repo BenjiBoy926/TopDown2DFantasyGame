@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+[RequireComponent(typeof(BattleSetup))]
 [RequireComponent(typeof(Battlefield))]
 [RequireComponent(typeof(BattleTurn))]
 [RequireComponent(typeof(BattleRecord))]
@@ -12,7 +13,7 @@ public class Battle : MonoBehaviour
     public bool IsTurnChangeAnimationPlaying => _turn.IsAnimationPlaying;
     public Faction CurrentFactionTurn => _turn.CurrentFaction;
 
-    [SerializeField] private float _startDelay = .5f;
+    private BattleSetup _setup;
     private Battlefield _field;
     private BattleTurn _turn;
     private BattleRecord _record;
@@ -27,6 +28,11 @@ public class Battle : MonoBehaviour
     {
         _field.Unregister(character);
         _turn.Unregister(character);
+    }
+
+    public void StartFirstTurn()
+    {
+        _turn.StartFirstTurn();
     }
 
     public void StartNextTurn()
@@ -91,14 +97,14 @@ public class Battle : MonoBehaviour
 
     private void Awake()
     {
+        _setup = GetComponent<BattleSetup>();
         _field = GetComponent<Battlefield>();
         _turn = GetComponent<BattleTurn>();
         _record = GetComponent<BattleRecord>();
     }
 
-    private IEnumerator Start()
+    private void Start()
     {
-        yield return new WaitForSeconds(_startDelay);
-        _turn.StartFirstTurn();
+        _setup.Begin();
     }
 }

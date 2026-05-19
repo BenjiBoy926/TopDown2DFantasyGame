@@ -279,15 +279,11 @@ public class Character : MonoBehaviour
         }    
     }
 
-    private void Start()
+    public void SetBattle(Battle battle)
     {
-        _battle = GetComponentInParent<Battle>();
-        if (_battle)
-        {
-            _battle.Register(this);
-        }
+        _battle = battle;
     }
-    
+
     private void SetHasMovedThisTurn(bool hasMovedThisTurn)
     {
         _hasMovedThisTurn = hasMovedThisTurn;
@@ -296,13 +292,11 @@ public class Character : MonoBehaviour
     private YieldInstruction PerformSpriteFade()
     {
         _sprite.DOKill();
-        if (_hasMovedThisTurn)
-        {
-            return _sprite.DOColor(_usedMoveFadeColor, _usedMoveFadeDuration).WaitForCompletion();
-        }
-        else
-        {
-            return _sprite.DOColor(Color.white, _usedMoveFadeDuration).WaitForCompletion();
-        }
+        return _sprite.DOColor(GetMoveFadeColor(), _usedMoveFadeDuration).WaitForCompletion();
+    }
+
+    private Color GetMoveFadeColor()
+    {
+        return _hasMovedThisTurn ? _usedMoveFadeColor : Color.white;
     }
 }
