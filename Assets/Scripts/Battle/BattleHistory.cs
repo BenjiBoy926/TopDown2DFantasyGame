@@ -48,9 +48,10 @@ public class BattleHistory : MonoBehaviour
         _currentStateIndex--;
 
         BattleState previousState = _states[_currentStateIndex + 1];
-        foreach (var record in previousState.Records)
+        for (int i = 0; i < previousState.RecordCount; i++)
         {
-            CharacterRecord olderRecord = FindPreviousRecord(record.Character, _currentStateIndex);
+            CharacterRecord recordToUndo = previousState.GetRecord(i);
+            CharacterRecord olderRecord = FindPreviousRecord(recordToUndo.Character, _currentStateIndex);
             olderRecord.Apply();
         }
     }

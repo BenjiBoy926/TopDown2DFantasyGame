@@ -256,15 +256,19 @@ public class Character : MonoBehaviour
 
     public void ApplyState(CharacterState state)
     {
+        _stats.SetHealth(state.Health);
+        gameObject.SetActive(!IsDead);
+
         Position = CellToWorld(state.Cell);
-        PlayIdleAnimation();
+        if (isActiveAndEnabled)
+        {
+            _battle.RefreshCell(this);
+            PlayIdleAnimation();
+        }
 
         SetHasMovedThisTurn(state.HasMoved);
         _sprite.DOKill();
         _sprite.color = GetMoveFadeColor();
-
-        _stats.SetHealth(state.Health);
-        gameObject.SetActive(!IsDead);
     }
 
     private void Awake()

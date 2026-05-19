@@ -5,7 +5,7 @@ using UnityEngine;
 [Serializable]
 public class BattleState
 {
-    public IReadOnlyList<CharacterRecord> Records => _records;
+    public int RecordCount => _records.Count;
 
     [SerializeField] private List<CharacterRecord> _records = new();
 
@@ -13,6 +13,11 @@ public class BattleState
     {
         CharacterRecord record = CharacterRecord.Read(character);
         _records.Add(record);
+    }
+
+    public CharacterRecord GetRecord(int i)
+    {
+        return _records[i];
     }
 
     public void ApplyAll()
@@ -25,8 +30,9 @@ public class BattleState
 
     public bool TryGetRecord(Character character, out CharacterRecord outRecord)
     {
-        foreach (var record in _records)
+        for (int i = 0; i < _records.Count; i++)
         {
+            CharacterRecord record = _records[i];
             if (record.Character == character)
             {
                 outRecord = record;

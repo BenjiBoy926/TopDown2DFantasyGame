@@ -106,11 +106,17 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnUndo(InputAction.CallbackContext context)
     {
-        _player.Undo();
+        if (context.started)
+        {
+            _player.Undo();
+        }
     }
 
     public void OnRedo(InputAction.CallbackContext context)
     {
-        _player.Redo();
+        if (context.started)
+        {
+            _player.Redo();
+        }
     }
 }
