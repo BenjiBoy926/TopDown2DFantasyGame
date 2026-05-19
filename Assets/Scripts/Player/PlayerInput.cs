@@ -103,4 +103,14 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
             _player.ZoomIn();
         }
     }
+
+    public void OnUndo(InputAction.CallbackContext context)
+    {
+        _player.Undo();
+    }
+
+    public void OnRedo(InputAction.CallbackContext context)
+    {
+        _player.Redo();
+    }
 }

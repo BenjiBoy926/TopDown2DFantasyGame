@@ -8,7 +8,7 @@ public class BattleHistory : MonoBehaviour
     private int LatestStateIndex => _states.Count - 1;
 
     [SerializeField, ReadOnly] private List<BattleState> _states = new();
-    private int _currentStateIndex = 0;
+    [SerializeField, ReadOnly] private int _currentStateIndex = 0;
     private Battle _battle;
 
     private void Awake()

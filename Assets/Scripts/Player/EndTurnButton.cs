@@ -25,6 +25,8 @@ public class EndTurnButton : MonoBehaviour
 
     private void OnButtonClicked()
     {
+        // TODO: link this to the Player script in some way
+        // so that you can only end the turn if Player._isInputAllowed
         _battle.StartNextTurn();
     }
 }

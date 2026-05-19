@@ -41,6 +41,22 @@ public class Player : MonoBehaviour
         RefreshIsInputAllowed();
     }
 
+    public void Undo()
+    {
+        if (_isInputAllowed)
+        {
+            _battle.Undo();
+        }
+    }
+
+    public void Redo()
+    {
+        if (_isInputAllowed)
+        {
+            _battle.Redo();
+        }
+    }
+
     public void IncludeInView()
     {
         _camera.IncludeInView(_cursor.Position);
