@@ -29,6 +29,6 @@ public class BattleSetup : MonoBehaviour
 
     private void RecordInitialState()
     {
-        Debug.Log("Recording initial state");
+        _battle.RecordInitialState();
     }
 }

@@ -75,6 +75,11 @@ public class Battle : MonoBehaviour
         _field.RefreshCell(character);
     }
 
+    public void RecordInitialState()
+    {
+        _record.RecordInitialState();
+    }
+
     public void Record(Character a, Character b)
     {
         _record.Record(a, b);

@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class BattleRecord : MonoBehaviour
 {
+    public void RecordInitialState()
+    {
+        Debug.Log("Recorded initial state");
+    }
+
     public void Record(Character a, Character b)
     {
         Debug.Log($"Recorded action betwee {a.name} and {b.name}");
