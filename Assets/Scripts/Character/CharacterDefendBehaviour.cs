@@ -24,6 +24,7 @@ public class CharacterDefendBehaviour : MonoBehaviour
         _character.SetIsRunning(false);
 
         yield return _character.MoveFadeOut();
+        _character.RecordMove();
     }
 
     private void Awake()

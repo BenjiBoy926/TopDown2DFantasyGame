@@ -239,6 +239,16 @@ public class Character : MonoBehaviour
         _stats.RestoreHealth();
     }
 
+    public void RecordMoveWith(Character other)
+    {
+        _battle.Record(this, other);
+    }
+
+    public void RecordMove()
+    {
+        _battle.Record(this);
+    }
+
     private void Awake()
     {
         _animator = GetComponentInChildren<CharacterAnimator>();

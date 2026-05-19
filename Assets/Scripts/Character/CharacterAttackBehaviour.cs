@@ -56,6 +56,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
 
         CharacterUI.ShowAll();
         _isAttackInitiator = false;
+        _character.RecordMoveWith(other);
 
         // CAUTION: if any other coroutine waits for this coroutine and the attacker dies,
         // that coroutine will be waiting indefinitely since the attacker's game object will be disabled

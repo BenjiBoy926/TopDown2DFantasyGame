@@ -35,6 +35,7 @@ public class CharacterHealBehaviour : MonoBehaviour
         yield return other.BeHealed(_character);
         yield return _character.MoveFadeOut();
         CharacterUI.ShowAll();
+        _character.RecordMoveWith(other);
     }
 
     private void Awake()

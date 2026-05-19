@@ -4,6 +4,7 @@ using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Battlefield))]
 [RequireComponent(typeof(BattleTurn))]
+[RequireComponent(typeof(BattleRecord))]
 public class Battle : MonoBehaviour
 {
     public float CellWidth => _field.CellWidth;
@@ -14,6 +15,7 @@ public class Battle : MonoBehaviour
     [SerializeField] private float _startDelay = .5f;
     private Battlefield _field;
     private BattleTurn _turn;
+    private BattleRecord _record;
 
     public void Register(Character character)
     {
@@ -67,10 +69,31 @@ public class Battle : MonoBehaviour
         _field.RefreshCell(character);
     }
 
+    public void Record(Character a, Character b)
+    {
+        _record.Record(a, b);
+    }
+
+    public void Record(Character character)
+    {
+        _record.Record(character);
+    }
+
+    public void Undo()
+    {
+        _record.Undo();
+    }
+
+    public void Redo()
+    {
+        _record.Redo();
+    }
+
     private void Awake()
     {
         _field = GetComponent<Battlefield>();
         _turn = GetComponent<BattleTurn>();
+        _record = GetComponent<BattleRecord>();
     }
 
     private IEnumerator Start()
