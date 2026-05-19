@@ -6,6 +6,7 @@ public class CharacterStats : MonoBehaviour
     public int Power => _basePower;
     public bool IsDead => _currentHealth <= 0;
     public int TraversalRange => _traversalRange;
+    public int CurrentHealth => _currentHealth;
 
     [SerializeField] private int _baseHealth = 10;
     [SerializeField] private int _basePower = 3;
@@ -57,7 +58,7 @@ public class CharacterStats : MonoBehaviour
         return other.Power;
     }
 
-    private void SetHealth(int health)
+    public void SetHealth(int health)
     {
         _currentHealth = Mathf.Max(health, 0);
         _ui.ShowHealth(_currentHealth, _baseHealth);

@@ -249,6 +249,24 @@ public class Character : MonoBehaviour
         _battle.Record(this);
     }
 
+    public CharacterState ReadState()
+    {
+        return new(CurrentCell, _hasMovedThisTurn, _stats.CurrentHealth);
+    }
+
+    public void ApplyState(CharacterState state)
+    {
+        Position = CellToWorld(state.Cell);
+        PlayIdleAnimation();
+
+        SetHasMovedThisTurn(state.HasMoved);
+        _sprite.DOKill();
+        _sprite.color = GetMoveFadeColor();
+
+        _stats.SetHealth(state.Health);
+        gameObject.SetActive(!IsDead);
+    }
+
     private void Awake()
     {
         _animator = GetComponentInChildren<CharacterAnimator>();
