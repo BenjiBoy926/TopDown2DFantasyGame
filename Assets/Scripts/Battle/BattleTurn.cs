@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Battle))]
 public class BattleTurn : MonoBehaviour
 {
     public Faction CurrentFaction => _currentFactionIndex >= 0 ? _factions[_currentFactionIndex] : null;
@@ -8,10 +9,15 @@ public class BattleTurn : MonoBehaviour
 
     [SerializeField] private BattleTurnChangeAnimation _animation;
     [SerializeField] private Faction _startingFaction;
-    private readonly HashSet<Character> _characters = new();
     private readonly List<Faction> _factions = new(2);
     private int _currentFactionIndex = -1;
     private readonly List<Character> _characterListScratch = new();
+    private Battle _battle;
+
+    private void Awake()
+    {
+        _battle = GetComponent<Battle>();
+    }
 
     private void OnEnable()
     {
@@ -31,19 +37,13 @@ public class BattleTurn : MonoBehaviour
         }
     }
 
-    public void Register(Character obj)
+    public void AddFaction(Character obj)
     {
         Faction faction = obj.Faction;
         if (!_factions.Contains(faction))
         {
             _factions.Add(faction);
         }
-        _characters.Add(obj);
-    }
-
-    public void Unregister(Character obj)
-    {
-        _characters.Remove(obj);
     }
 
     public void StartFirstTurn()
@@ -97,7 +97,7 @@ public class BattleTurn : MonoBehaviour
 
     private void RestoreAllCharacterMoves()
     {
-        foreach (Character character in _characters)
+        foreach (Character character in _battle.AllCharacters)
         {
             character.RestoreMove();
         }
@@ -122,7 +122,7 @@ public class BattleTurn : MonoBehaviour
     private void GetCharactersInFaction(Faction faction, List<Character> characters)
     {
         characters.Clear();
-        foreach (Character character in _characters)
+        foreach (Character character in _battle.AllCharacters)
         {
             if (character.Faction == faction)
             {

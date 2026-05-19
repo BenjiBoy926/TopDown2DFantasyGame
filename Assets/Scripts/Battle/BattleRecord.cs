@@ -2,13 +2,25 @@ using NaughtyAttributes;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Battle))]
 public class BattleRecord : MonoBehaviour
 {
     [SerializeField, ReadOnly] private List<BattleState> _states = new();
+    private Battle _battle;
+
+    private void Awake()
+    {
+        _battle = GetComponent<Battle>();
+    }
 
     public void RecordInitialState()
     {
-        Debug.Log("Recorded initial state");
+        BattleState initialState = new();
+        foreach (Character character in _battle.AllCharacters)
+        {
+            initialState.AddRecord(character);
+        }
+        _states.Add(initialState);
     }
 
     public void Record(Character a, Character b)

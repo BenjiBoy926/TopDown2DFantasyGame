@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -12,22 +12,25 @@ public class Battle : MonoBehaviour
     public float CellHeight => _field.CellHeight;
     public bool IsTurnChangeAnimationPlaying => _turn.IsAnimationPlaying;
     public Faction CurrentFactionTurn => _turn.CurrentFaction;
+    public IReadOnlyCollection<Character> AllCharacters => _allCharacters;
 
     private BattleSetup _setup;
     private Battlefield _field;
     private BattleTurn _turn;
     private BattleRecord _record;
+    private readonly HashSet<Character> _allCharacters = new();
 
     public void Register(Character character)
     {
+        _turn.AddFaction(character);
         _field.Register(character);
-        _turn.Register(character);
+        _allCharacters.Add(character);
     }
 
     public void Unregister(Character character)
     {
         _field.Unregister(character);
-        _turn.Unregister(character);
+        _allCharacters.Add(character);
     }
 
     public void StartFirstTurn()
