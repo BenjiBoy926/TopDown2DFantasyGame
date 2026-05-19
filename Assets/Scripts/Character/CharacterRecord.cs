@@ -21,7 +21,7 @@ public struct CharacterRecord
         return new(character, character.ReadState());
     }
 
-    public readonly void Write()
+    public readonly void Apply()
     {
         Character.ApplyState(State);
     }

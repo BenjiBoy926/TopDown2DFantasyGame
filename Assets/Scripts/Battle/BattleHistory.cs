@@ -45,16 +45,24 @@ public class BattleHistory : MonoBehaviour
     {
         if (_currentStateIndex <= 0) return;
 
-        Debug.Log($"Undo state #{_currentStateIndex}");
         _currentStateIndex--;
+
+        BattleState previousState = _states[_currentStateIndex + 1];
+        foreach (var record in previousState.Records)
+        {
+            CharacterRecord olderRecord = FindPreviousRecord(record.Character, _currentStateIndex);
+            olderRecord.Apply();
+        }
     }
 
     public void Redo()
     {
         if (_currentStateIndex >= LatestStateIndex) return;
 
-        Debug.Log($"Redo state #{_currentStateIndex}");
         _currentStateIndex++;
+
+        BattleState currentState = _states[_currentStateIndex];
+        currentState.ApplyAll();
     }
 
     private void InsertState(BattleState state)
@@ -65,5 +73,20 @@ public class BattleHistory : MonoBehaviour
         }
         _states.Add(state);
         _currentStateIndex++;
+    }
+
+    private CharacterRecord FindPreviousRecord(Character character, int startIndex)
+    {
+        for (int i = startIndex; i >= 0; i--)
+        {
+            BattleState state = _states[i];
+            if (state.TryGetRecord(character, out var record))
+            {
+                return record;
+            }
+        }
+        throw new System.Exception($"Expected to find a record for {character} at or before index {startIndex}, " +
+            $"but no such record could be found. Are you sure that the initial state of the character was recorded " +
+            $"when they first entered the battle?");
     }
 }
