@@ -6,8 +6,15 @@ using UnityEngine;
 public class BattleState
 {
     public int RecordCount => _records.Count;
+    public Faction CurrentTurn => _currentTurn;
 
+    [SerializeField] private Faction _currentTurn;
     [SerializeField] private List<CharacterRecord> _records = new();
+
+    public void SetCurrentTurn(Faction currentTurn)
+    {
+        _currentTurn = currentTurn;
+    }
 
     public void AddRecord(Character character)
     {

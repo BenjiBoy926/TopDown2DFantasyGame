@@ -19,6 +19,7 @@ public class BattleHistory : MonoBehaviour
     public void RecordInitialState()
     {
         BattleState initialState = new();
+        initialState.SetCurrentTurn(_battle.StartingFaction);
         foreach (Character character in _battle.AllCharacters)
         {
             initialState.AddRecord(character);
@@ -29,6 +30,7 @@ public class BattleHistory : MonoBehaviour
     public void Record(Character a, Character b)
     {
         BattleState state = new();
+        state.SetCurrentTurn(_battle.CurrentFactionTurn);
         state.AddRecord(a);
         state.AddRecord(b);
         InsertState(state);
@@ -37,6 +39,7 @@ public class BattleHistory : MonoBehaviour
     public void Record(Character character)
     {
         BattleState state = new();
+        state.SetCurrentTurn(_battle.CurrentFactionTurn);
         state.AddRecord(character);
         InsertState(state);
     }

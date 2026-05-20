@@ -5,6 +5,8 @@ using TMPro;
 
 public class BattleTurnChangeAnimation : MonoBehaviour
 {
+    private static WaitForSeconds _waitForSeconds3 = new(3);
+
     public bool IsPlaying => _isPlaying;
 
     [SerializeField] private Image _panel;
@@ -32,7 +34,7 @@ public class BattleTurnChangeAnimation : MonoBehaviour
         _panel.color = color;
         _label.text = $"{faction.Name} Turn";
 
-        yield return new WaitForSeconds(3);
+        yield return _waitForSeconds3;
 
         _panel.enabled = _label.enabled = false;
         _isPlaying = false;

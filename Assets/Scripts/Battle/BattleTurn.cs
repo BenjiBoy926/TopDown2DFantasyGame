@@ -5,18 +5,20 @@ using UnityEngine;
 public class BattleTurn : MonoBehaviour
 {
     public Faction CurrentFaction => _currentFactionIndex >= 0 ? _factions[_currentFactionIndex] : null;
+    public Faction StartingFaction => _startingFaction;
     public bool IsAnimationPlaying => _animation && _animation.IsPlaying;
 
-    [SerializeField] private BattleTurnChangeAnimation _animation;
     [SerializeField] private Faction _startingFaction;
     private readonly List<Faction> _factions = new(2);
     private int _currentFactionIndex = -1;
     private readonly List<Character> _characterListScratch = new();
     private Battle _battle;
+    private BattleTurnChangeAnimation _animation;
 
     private void Awake()
     {
         _battle = GetComponent<Battle>();
+        _animation = GetComponentInChildren<BattleTurnChangeAnimation>();
     }
 
     private void OnEnable()

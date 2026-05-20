@@ -41,6 +41,14 @@ public class Player : MonoBehaviour
         RefreshIsInputAllowed();
     }
 
+    public void StartNextTurn()
+    {
+        if (_isInputAllowed)
+        {
+            _battle.StartNextTurn();
+        }
+    }
+
     public void Undo()
     {
         if (_isInputAllowed)

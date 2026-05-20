@@ -12,6 +12,7 @@ public class Battle : MonoBehaviour
     public float CellHeight => _field.CellHeight;
     public bool IsTurnChangeAnimationPlaying => _turn.IsAnimationPlaying;
     public Faction CurrentFactionTurn => _turn.CurrentFaction;
+    public Faction StartingFaction => _turn.StartingFaction;
     public IReadOnlyCollection<Character> AllCharacters => _allCharacters;
 
     private BattleSetup _setup;

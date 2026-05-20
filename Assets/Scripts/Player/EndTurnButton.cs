@@ -5,12 +5,12 @@ using UnityEngine.UI;
 public class EndTurnButton : MonoBehaviour
 {
     private Button _button;
-    private Battle _battle;
+    private Player _player;
 
     private void Awake()
     {
         _button = GetComponent<Button>();
-        _battle = GetComponentInParent<Battle>();
+        _player = GetComponentInParent<Player>();
     }
 
     private void OnEnable()
@@ -25,8 +25,6 @@ public class EndTurnButton : MonoBehaviour
 
     private void OnButtonClicked()
     {
-        // TODO: link this to the Player script in some way
-        // so that you can only end the turn if Player._isInputAllowed
-        _battle.StartNextTurn();
+        _player.StartNextTurn();
     }
 }
