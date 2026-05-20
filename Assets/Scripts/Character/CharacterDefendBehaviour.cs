@@ -23,8 +23,8 @@ public class CharacterDefendBehaviour : MonoBehaviour
             .WaitForCompletion();
         _character.SetIsRunning(false);
 
-        yield return _character.MoveFadeOut();
         _character.RecordMove();
+        yield return _character.MoveFadeOut();
     }
 
     private void Awake()

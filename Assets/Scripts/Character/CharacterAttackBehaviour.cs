@@ -48,6 +48,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
         yield return _character.GetHurtSequence(other);
         yield return otherHurtRoutine;
 
+        _character.RecordMoveWith(other);
         bool shouldDisappear = _character.IsDead && !_character.CanBeRevived;
         if (!shouldDisappear)
         {
@@ -56,7 +57,6 @@ public class CharacterAttackBehaviour : MonoBehaviour
 
         CharacterUI.ShowAll();
         _isAttackInitiator = false;
-        _character.RecordMoveWith(other);
 
         // CAUTION: if any other coroutine waits for this coroutine and the attacker dies,
         // that coroutine will be waiting indefinitely since the attacker's game object will be disabled
