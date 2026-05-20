@@ -56,8 +56,9 @@ public class BattleTurn : MonoBehaviour
     public void StartNextTurn()
     {
         RestoreAllCharacterMoves();
+
         GetCharactersInFaction(CurrentFaction, _characterListScratch);
-        _battle.Record(_characterListScratch);
+        List<Character> charactersToRecord = new(_characterListScratch);
 
         int nextFactionIndex = GetNextFactionIndex(_currentFactionIndex);
         Faction nextFaction = _factions[nextFactionIndex];
@@ -80,6 +81,7 @@ public class BattleTurn : MonoBehaviour
         {
             StartTurn(nextFactionIndex);
         }
+        _battle.Record(charactersToRecord);
     }
 
     public void StartTurn(Faction faction)
