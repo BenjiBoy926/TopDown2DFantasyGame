@@ -84,6 +84,11 @@ public class Battle : MonoBehaviour
         _history.RecordInitialState();
     }
 
+    public void Record(List<Character> characters)
+    {
+        _history.Record(characters);
+    }
+
     public void Record(Character a, Character b)
     {
         _history.Record(a, b);
