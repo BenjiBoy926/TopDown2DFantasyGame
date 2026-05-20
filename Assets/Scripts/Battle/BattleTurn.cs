@@ -82,7 +82,7 @@ public class BattleTurn : MonoBehaviour
         }
     }
 
-    private void StartTurn(Faction faction)
+    public void StartTurn(Faction faction)
     {
         int index = _factions.IndexOf(faction);
         StartTurn(index);
@@ -95,6 +95,8 @@ public class BattleTurn : MonoBehaviour
 
     private void StartTurn(int factionIndex)
     {
+        if (_currentFactionIndex == factionIndex) return;
+
         _currentFactionIndex = factionIndex;
         _animation.Play(CurrentFaction);
     }

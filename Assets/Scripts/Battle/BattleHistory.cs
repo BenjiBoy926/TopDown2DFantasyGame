@@ -1,5 +1,6 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Battle))]
@@ -68,6 +69,7 @@ public class BattleHistory : MonoBehaviour
             CharacterRecord olderRecord = FindPreviousRecord(recordToUndo.Character, _currentStateIndex);
             olderRecord.Apply();
         }
+        SetCurrentTurn();
     }
 
     public void Redo()
@@ -78,6 +80,13 @@ public class BattleHistory : MonoBehaviour
 
         BattleState currentState = _states[_currentStateIndex];
         currentState.ApplyAll();
+        SetCurrentTurn();
+    }
+
+    private void SetCurrentTurn()
+    {
+        BattleState state = _states[_currentStateIndex];
+        _battle.StartTurn(state.CurrentTurn);
     }
 
     private void InsertState(BattleState state)
