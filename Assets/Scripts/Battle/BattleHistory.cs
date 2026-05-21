@@ -19,7 +19,10 @@ public class BattleHistory : MonoBehaviour
 
     public void RecordInitialState()
     {
-        BattleState initialState = new();
+        // Suspiciously similar to RecordTurnChange <.<
+        // Don't forget that you need to set it to the starting faction 
+        // and not the current faction though
+        BattleState initialState = new BattleState_TurnChange();
         initialState.SetCurrentTurn(_battle.StartingFaction);
         foreach (Character character in _battle.AllCharacters)
         {
@@ -87,6 +90,10 @@ public class BattleHistory : MonoBehaviour
     {
         BattleState state = _states[_currentStateIndex];
         _battle.StartTurn(state.CurrentTurn);
+        if (state.IsTurnChange)
+        {
+            _battle.PlayTurnChangeAnimation();
+        }
     }
 
     private void InsertState(BattleState state)

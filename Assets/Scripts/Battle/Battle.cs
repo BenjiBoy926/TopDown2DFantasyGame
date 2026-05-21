@@ -48,6 +48,11 @@ public class Battle : MonoBehaviour
     {
         _turn.SetCurrentTurn(faction);
     }
+    
+    public void PlayTurnChangeAnimation()
+    {
+        _turn.PlayTurnChangeAnimation();
+    }
 
     public Vector2 SnapToGrid(Vector2 position)
     {

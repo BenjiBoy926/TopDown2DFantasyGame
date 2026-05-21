@@ -51,7 +51,7 @@ public class BattleTurn : MonoBehaviour
     public void StartFirstTurn()
     {
         SetCurrentTurn(_startingFaction);
-        _animation.Play(CurrentFaction);
+        PlayTurnChangeAnimation();
     }
 
     public void StartNextTurn()
@@ -63,9 +63,14 @@ public class BattleTurn : MonoBehaviour
 
         int nextFactionIndex = GetNextFactionWithMoveableCharacters();
         SetCurrentTurn(nextFactionIndex);
-        _animation.Play(CurrentFaction);
+        PlayTurnChangeAnimation();
 
         _battle.RecordTurnChange(charactersToRecord);
+    }
+
+    public void PlayTurnChangeAnimation()
+    {
+        _animation.Play(CurrentFaction);
     }
 
     public void SetCurrentTurn(Faction faction)
