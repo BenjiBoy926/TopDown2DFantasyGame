@@ -94,9 +94,9 @@ public class Battle : MonoBehaviour
         _history.RecordInitialState();
     }
 
-    public void RecordTurnChange(List<Character> characters)
+    public void RecordTurnChange(IReadOnlyCollection<Character> characters, Faction faction)
     {
-        _history.RecordTurnChange(characters);
+        _history.RecordTurnChange(characters, faction);
     }
 
     public void Record(Character a, Character b)

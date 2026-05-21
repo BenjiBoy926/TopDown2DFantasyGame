@@ -19,22 +19,13 @@ public class BattleHistory : MonoBehaviour
 
     public void RecordInitialState()
     {
-        // Suspiciously similar to RecordTurnChange <.<
-        // Don't forget that you need to set it to the starting faction 
-        // and not the current faction though
-        BattleState initialState = new BattleState_TurnChange();
-        initialState.SetCurrentTurn(_battle.StartingFaction);
-        foreach (Character character in _battle.AllCharacters)
-        {
-            initialState.AddRecord(character);
-        }
-        _states.Add(initialState);
+        RecordTurnChange(_battle.AllCharacters, _battle.StartingFaction);
     }
 
-    public void RecordTurnChange(List<Character> characters)
+    public void RecordTurnChange(IReadOnlyCollection<Character> characters, Faction faction)
     {
         BattleState state = new BattleState_TurnChange();
-        state.SetCurrentTurn(_battle.CurrentFactionTurn);
+        state.SetCurrentTurn(faction);
         foreach (Character character in characters)
         {
             state.AddRecord(character);
@@ -65,6 +56,8 @@ public class BattleHistory : MonoBehaviour
 
         _currentStateIndex--;
 
+        // NOTE: this occasionally spits out an index out of range. Usually when it does, you can just perform undo again and it works as intended.
+        // Still need to figure out why it is happening and fix it
         BattleState previousState = _states[_currentStateIndex + 1];
         for (int i = 0; i < previousState.RecordCount; i++)
         {
