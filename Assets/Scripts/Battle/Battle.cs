@@ -46,7 +46,7 @@ public class Battle : MonoBehaviour
 
     public void StartTurn(Faction faction)
     {
-        _turn.StartTurn(faction);
+        _turn.SetCurrentTurn(faction);
     }
 
     public Vector2 SnapToGrid(Vector2 position)

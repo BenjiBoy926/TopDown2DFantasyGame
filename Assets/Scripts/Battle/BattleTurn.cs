@@ -50,7 +50,8 @@ public class BattleTurn : MonoBehaviour
 
     public void StartFirstTurn()
     {
-        StartTurn(_startingFaction);
+        SetCurrentTurn(_startingFaction);
+        _animation.Play(CurrentFaction);
     }
 
     public void StartNextTurn()
@@ -60,12 +61,27 @@ public class BattleTurn : MonoBehaviour
         GetCharactersInFaction(CurrentFaction, _characterListScratch);
         List<Character> charactersToRecord = new(_characterListScratch);
 
+        int nextFactionIndex = GetNextFactionWithMoveableCharacters();
+        SetCurrentTurn(nextFactionIndex);
+        _animation.Play(CurrentFaction);
+
+        _battle.Record(charactersToRecord);
+    }
+
+    public void SetCurrentTurn(Faction faction)
+    {
+        int index = _factions.IndexOf(faction);
+        SetCurrentTurn(index);
+    }
+
+    private int GetNextFactionWithMoveableCharacters()
+    {
         int nextFactionIndex = GetNextFactionIndex(_currentFactionIndex);
         Faction nextFaction = _factions[nextFactionIndex];
 
         int iterations = 0;
         int maxIterations = 5;
-        
+
         while (CountMoveableCharacters(nextFaction) <= 0 && iterations < maxIterations)
         {
             nextFactionIndex = GetNextFactionIndex(nextFactionIndex);
@@ -75,19 +91,9 @@ public class BattleTurn : MonoBehaviour
 
         if (iterations >= maxIterations)
         {
-            Debug.LogError($"There are no moveable characters in any factions in the battle, so we cannot start the next turn");
+            throw new System.Exception($"There are no moveable characters in any factions in the battle, so we cannot start the next turn");
         }
-        else
-        {
-            StartTurn(nextFactionIndex);
-        }
-        _battle.Record(charactersToRecord);
-    }
-
-    public void StartTurn(Faction faction)
-    {
-        int index = _factions.IndexOf(faction);
-        StartTurn(index);
+        return nextFactionIndex;
     }
 
     private int GetNextFactionIndex(int currentFaction)
@@ -95,12 +101,9 @@ public class BattleTurn : MonoBehaviour
         return (currentFaction + 1) % _factions.Count;
     }
 
-    private void StartTurn(int factionIndex)
+    private void SetCurrentTurn(int factionIndex)
     {
-        if (_currentFactionIndex == factionIndex) return;
-
         _currentFactionIndex = factionIndex;
-        _animation.Play(CurrentFaction);
     }
 
     private void RestoreAllCharacterMoves()
