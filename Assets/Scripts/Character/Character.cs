@@ -251,11 +251,13 @@ public class Character : MonoBehaviour
 
     public CharacterState ReadState()
     {
-        return new(CurrentCell, _hasMovedThisTurn, _stats.CurrentHealth);
+        return new(_animator.HorizontalDirection, _animator.VerticalDirection, CurrentCell, _hasMovedThisTurn, _stats.CurrentHealth);
     }
 
     public void ApplyState(CharacterState state)
     {
+        _animator.SetHorizontalDirection(state.HorizontalDirection);
+        _animator.SetVerticalDirection(state.VerticalDirection);
         _stats.SetHealth(state.Health);
 
         bool isActive = !IsDead || _faction.CanBeRevived;

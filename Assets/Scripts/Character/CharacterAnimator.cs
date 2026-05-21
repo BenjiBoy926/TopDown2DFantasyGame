@@ -6,11 +6,11 @@ using NaughtyAttributes;
 [RequireComponent(typeof(SpriteRenderer))]
 public class CharacterAnimator : MonoBehaviour
 {
-    public enum HorizontalDirection
+    public enum HorizontalDirectionType
     {
         Left, Right
     }
-    public enum VerticalDirection
+    public enum VerticalDirectionType
     {
         Up, Side, Down
     }
@@ -23,9 +23,11 @@ public class CharacterAnimator : MonoBehaviour
     private static readonly WaitForSeconds OneShotProgressCheckWait = new(OneShotProgressCheckInterval);
 
     public bool IsOneShotAnimationPlaying => _oneShotRoutine != null;
+    public HorizontalDirectionType HorizontalDirection => _horizontalDirection;
+    public VerticalDirectionType VerticalDirection => _verticalDirection;
 
-    [SerializeField] private HorizontalDirection _horizontalDirection;
-    [SerializeField] private VerticalDirection _verticalDirection;
+    [SerializeField] private HorizontalDirectionType _horizontalDirection;
+    [SerializeField] private VerticalDirectionType _verticalDirection;
     [SerializeField] private bool _isRunning;
     [SerializeField] private int _hurtAnimationLoopCount = 5;
     private Animator _animator;
@@ -69,34 +71,34 @@ public class CharacterAnimator : MonoBehaviour
 
         if (isHorizontal && direction.x > 0)
         {
-            SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Right);
-            SetVerticalDirection(CharacterAnimator.VerticalDirection.Side);
+            SetHorizontalDirection(HorizontalDirectionType.Right);
+            SetVerticalDirection(VerticalDirectionType.Side);
         }
         if (isHorizontal && direction.x < 0)
         {
-            SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Left);
-            SetVerticalDirection(CharacterAnimator.VerticalDirection.Side);
+            SetHorizontalDirection(HorizontalDirectionType.Left);
+            SetVerticalDirection(VerticalDirectionType.Side);
         }
         if (isVertical && direction.y > 0)
         {
-            SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Right);
-            SetVerticalDirection(CharacterAnimator.VerticalDirection.Up);
+            SetHorizontalDirection(HorizontalDirectionType.Right);
+            SetVerticalDirection(VerticalDirectionType.Up);
         }
         if (isVertical && direction.y < 0)
         {
-            SetHorizontalDirection(CharacterAnimator.HorizontalDirection.Right);
-            SetVerticalDirection(CharacterAnimator.VerticalDirection.Down);
+            SetHorizontalDirection(HorizontalDirectionType.Right);
+            SetVerticalDirection(VerticalDirectionType.Down);
         }
     }
 
-    public void SetHorizontalDirection(HorizontalDirection horizontalDirection)
+    public void SetHorizontalDirection(HorizontalDirectionType horizontalDirection)
     {
         if (_horizontalDirection == horizontalDirection) return;
         _horizontalDirection = horizontalDirection;
         RefreshLoopingAnimation();
     }
 
-    public void SetVerticalDirection(VerticalDirection verticalDirection)
+    public void SetVerticalDirection(VerticalDirectionType verticalDirection)
     {
         if (_verticalDirection == verticalDirection) return;
         _verticalDirection = verticalDirection;
@@ -114,7 +116,7 @@ public class CharacterAnimator : MonoBehaviour
     {
         if (_spriteRenderer)
         {
-            _spriteRenderer.flipX = _horizontalDirection == HorizontalDirection.Left;
+            _spriteRenderer.flipX = _horizontalDirection == HorizontalDirectionType.Left;
         }
         if (_animator)
         {
