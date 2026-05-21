@@ -257,13 +257,22 @@ public class Character : MonoBehaviour
     public void ApplyState(CharacterState state)
     {
         _stats.SetHealth(state.Health);
-        gameObject.SetActive(!IsDead);
+
+        bool isActive = !IsDead || _faction.CanBeRevived;
+        gameObject.SetActive(isActive);
+        if (IsDead && isActive)
+        {
+            _animator.Die();
+        }
+        if (!IsDead)
+        {
+            PlayIdleAnimation();
+        }
 
         Position = CellToWorld(state.Cell);
-        if (isActiveAndEnabled)
+        if (isActive)
         {
             _battle.RefreshCell(this);
-            PlayIdleAnimation();
         }
 
         SetHasMovedThisTurn(state.HasMoved);
