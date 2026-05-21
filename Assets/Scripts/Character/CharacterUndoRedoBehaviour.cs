@@ -19,35 +19,59 @@ public class CharacterUndoRedoBehaviour : MonoBehaviour
         bool isDead = state.Health <= 0;
         if (wasDead && !isDead)
         {
-            gameObject.SetActive(true);
-            yield return _character.FadeAlpha(1, _stepDuration, Ease.Linear);
-            _character.PlayIdleAnimation();
+            yield return ShowRevival();
         }
 
         if (_character.Health != state.Health)
         {
-            _character.SetHealth(state.Health);
-            yield return transform.DOPunchPosition(Vector3.up * .49f, _stepDuration, 0, 0).WaitForCompletion();
+            yield return ShowHealthChange(state);
         }
 
-        Vector2 position = _character.CellToWorld(state.Cell);
-        yield return transform.DOMove(position, _stepDuration).WaitForCompletion();
+        if (_character.CurrentCell != state.Cell)
+        {
+            yield return ShowCellChange(state);
+        }
+
         _character.SetDirection(state.Direction);
-        _character.RefreshCell();
         _character.SetHasMovedThisTurn(state.HasMoved);
 
         if (isDead)
         {
-            yield return _character.PlayDieAnimation();
-            if (!_character.CanBeRevived)
-            {
-                yield return _character.FadeAlpha(0, _stepDuration, Ease.Linear);
-                gameObject.SetActive(false);
-            }
+            yield return ShowDeath();
         }
         else
         {
             yield return _character.PerformSpriteFade(.1f);
+        }
+    }
+
+    private IEnumerator ShowRevival()
+    {
+        gameObject.SetActive(true);
+        yield return _character.FadeAlpha(1, _stepDuration, Ease.Linear);
+        _character.PlayIdleAnimation();
+    }
+
+    private IEnumerator ShowHealthChange(CharacterState state)
+    {
+        _character.SetHealth(state.Health);
+        yield return transform.DOPunchPosition(Vector3.up * .49f, _stepDuration, 0, 0).WaitForCompletion();
+    }
+
+    private IEnumerator ShowCellChange(CharacterState state)
+    {
+        Vector2 position = _character.CellToWorld(state.Cell);
+        yield return transform.DOMove(position, _stepDuration).WaitForCompletion();
+        _character.RefreshCell();
+    }
+
+    private IEnumerator ShowDeath()
+    {
+        yield return _character.PlayDieAnimation();
+        if (!_character.CanBeRevived)
+        {
+            yield return _character.FadeAlpha(0, _stepDuration, Ease.Linear);
+            gameObject.SetActive(false);
         }
     }
 }
