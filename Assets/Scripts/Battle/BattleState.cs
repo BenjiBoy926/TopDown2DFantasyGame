@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,11 +29,11 @@ public class BattleState
         return _records[i];
     }
 
-    public void ApplyAll()
+    public IEnumerator GetAllApplySequences()
     {
         foreach (var record in _records)
         {
-            record.Apply();
+            yield return record.GetApplySequence();
         }
     }
 

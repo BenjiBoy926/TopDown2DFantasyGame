@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -50,31 +51,43 @@ public class BattleHistory : MonoBehaviour
         InsertState(state);
     }
 
-    public void Undo()
+    public Coroutine Undo()
     {
-        if (_currentStateIndex <= 0) return;
+        if (_currentStateIndex <= 0) return null;
 
         _currentStateIndex--;
 
+        StopAllCoroutines();
+        return StartCoroutine(ShowUndoSequence());
+    }
+
+    public Coroutine Redo()
+    {
+        if (_currentStateIndex >= LatestStateIndex) return null;
+
+        _currentStateIndex++;
+
+        StopAllCoroutines();
+        return StartCoroutine(ShowRedoSequence());
+    }
+
+    private IEnumerator ShowUndoSequence()
+    {
         int previousStateIndex = _currentStateIndex + 1;
         BattleState previousState = _states[previousStateIndex];
         for (int i = 0; i < previousState.RecordCount; i++)
         {
             CharacterRecord recordToUndo = previousState.GetRecord(i);
             CharacterRecord olderRecord = FindPreviousRecord(recordToUndo.Character, _currentStateIndex);
-            olderRecord.Apply();
+            yield return olderRecord.GetApplySequence();
         }
         SetCurrentTurn();
     }
 
-    public void Redo()
+    private IEnumerator ShowRedoSequence()
     {
-        if (_currentStateIndex >= LatestStateIndex) return;
-
-        _currentStateIndex++;
-
         BattleState currentState = _states[_currentStateIndex];
-        currentState.ApplyAll();
+        yield return currentState.GetAllApplySequences();
         SetCurrentTurn();
     }
 

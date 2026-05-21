@@ -109,14 +109,14 @@ public class Battle : MonoBehaviour
         _history.Record(character);
     }
 
-    public void Undo()
+    public Coroutine Undo()
     {
-        _history.Undo();
+        return _history.Undo();
     }
 
-    public void Redo()
+    public Coroutine Redo()
     {
-        _history.Redo();
+        return _history.Redo();
     }
 
     private void Awake()

@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     private PlayerGridReticle _gridReticle;
     private Character _activeCharacter;
     private Character _hoveredCharacter;
-    private Coroutine _characterActionRoutine;
+    private Coroutine _inputSuspensionRoutine;
     private Vector2Int _currentCell;
     private bool _isInputAllowed = true;
 
@@ -49,7 +49,8 @@ public class Player : MonoBehaviour
     {
         if (_isInputAllowed)
         {
-            _battle.Undo();
+            Coroutine undoRoutine = _battle.Undo();
+            SetInputSuspensionRoutine(undoRoutine);
         }
     }
 
@@ -57,7 +58,8 @@ public class Player : MonoBehaviour
     {
         if (_isInputAllowed)
         {
-            _battle.Redo();
+            Coroutine redoRoutine = _battle.Redo();
+            SetInputSuspensionRoutine(redoRoutine);
         }
     }
 
@@ -186,7 +188,7 @@ public class Player : MonoBehaviour
             action = _activeCharacter.Attack(target);
         }
 
-        SetCharacterActionRoutine(action);
+        SetInputSuspensionRoutine(action);
         Deselect();
     }
 
@@ -196,7 +198,7 @@ public class Player : MonoBehaviour
             return;
 
         Coroutine action = _activeCharacter.Cancel();
-        SetCharacterActionRoutine(action);
+        SetInputSuspensionRoutine(action);
         Deselect();
     }
 
@@ -283,16 +285,16 @@ public class Player : MonoBehaviour
         return character && character.IsAbleToMove && character.Faction == _battle.CurrentFactionTurn;
     }
 
-    private void SetCharacterActionRoutine(Coroutine actionRoutine)
+    private void SetInputSuspensionRoutine(Coroutine actionRoutine)
     {
         StopAllCoroutines();
-        _characterActionRoutine = StartCoroutine(WaitForCharacterRoutine(actionRoutine));
+        _inputSuspensionRoutine = StartCoroutine(WaitForInputSuspensionRoutine(actionRoutine));
     }
 
-    private IEnumerator WaitForCharacterRoutine(Coroutine actionRoutine)
+    private IEnumerator WaitForInputSuspensionRoutine(Coroutine actionRoutine)
     {
         yield return actionRoutine;
-        _characterActionRoutine = null;
+        _inputSuspensionRoutine = null;
     }
 
     private void RefreshIsInputAllowed()
@@ -302,7 +304,7 @@ public class Player : MonoBehaviour
 
     private bool ShouldInputBeAllowed()
     {
-        return !_battle.IsTurnChangeAnimationPlaying && _characterActionRoutine == null;
+        return !_battle.IsTurnChangeAnimationPlaying && _inputSuspensionRoutine == null;
     }
 
     private void SetIsInputAllowed(bool isInputAllowed)

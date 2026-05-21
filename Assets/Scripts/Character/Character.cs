@@ -33,6 +33,7 @@ public class Character : MonoBehaviour
     public float CellWidth => _battle.CellWidth;
     public float CellHeight => _battle.CellHeight;
     public int Power => _stats.Power;
+    public int Health => _stats.CurrentHealth;
     public bool CanBeRevived => _faction.CanBeRevived;
     public bool IsDead => _stats.IsDead;
     public Vector2 CellSize => new(_battle.CellWidth, _battle.CellHeight);
@@ -171,7 +172,7 @@ public class Character : MonoBehaviour
     public void RestoreMove()
     {
         SetHasMovedThisTurn(false);
-        PerformSpriteFade();
+        PerformSpriteFade(_usedMoveFadeDuration);
     }
 
     public Vector2 ClampToReachableCells(Vector2 input)
@@ -232,7 +233,7 @@ public class Character : MonoBehaviour
 
     public IEnumerator MoveFadeOut()
     {
-        yield return PerformSpriteFade();
+        yield return PerformSpriteFade(_usedMoveFadeDuration);
         MoveFinished.Invoke(this);
     }
 
@@ -266,9 +267,9 @@ public class Character : MonoBehaviour
         return new(_animator.GetDirection(), CurrentCell, _hasMovedThisTurn, _stats.CurrentHealth);
     }
 
-    public void ApplyState(CharacterState state)
+    public IEnumerator GetApplyStateSequence(CharacterState state)
     {
-        _undoRedoBehaviour.ApplyState(state);
+        return _undoRedoBehaviour.GetApplyStateSequence(state);
     }
 
     public void SetHasMovedThisTurn(bool hasMovedThisTurn)
@@ -276,10 +277,10 @@ public class Character : MonoBehaviour
         _hasMovedThisTurn = hasMovedThisTurn;
     }
 
-    public void UpdateSpriteFadeColorImmediately()
+    public YieldInstruction PerformSpriteFade(float duration)
     {
         _sprite.DOKill();
-        _sprite.color = GetMoveFadeColor();
+        return _sprite.DOColor(GetMoveFadeColor(), duration).WaitForCompletion();
     }
 
     private void Awake()
@@ -316,12 +317,6 @@ public class Character : MonoBehaviour
     public void SetBattle(Battle battle)
     {
         _battle = battle;
-    }
-
-    private YieldInstruction PerformSpriteFade()
-    {
-        _sprite.DOKill();
-        return _sprite.DOColor(GetMoveFadeColor(), _usedMoveFadeDuration).WaitForCompletion();
     }
 
     private Color GetMoveFadeColor()

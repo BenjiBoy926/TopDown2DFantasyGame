@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 [Serializable]
@@ -21,8 +22,8 @@ public struct CharacterRecord
         return new(character, character.ReadState());
     }
 
-    public readonly void Apply()
+    public readonly IEnumerator GetApplySequence()
     {
-        Character.ApplyState(State);
+        return _character.GetApplyStateSequence(State);
     }
 }
