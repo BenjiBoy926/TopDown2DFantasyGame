@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Character))]
 public class CharacterUndoRedoBehaviour : MonoBehaviour
