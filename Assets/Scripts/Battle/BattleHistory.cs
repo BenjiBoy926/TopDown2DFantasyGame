@@ -1,6 +1,5 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Battle))]
@@ -20,6 +19,7 @@ public class BattleHistory : MonoBehaviour
     public void RecordInitialState()
     {
         RecordTurnChange(_battle.AllCharacters, _battle.StartingFaction);
+        _currentStateIndex = 0;
     }
 
     public void RecordTurnChange(IReadOnlyCollection<Character> characters, Faction faction)
@@ -56,9 +56,8 @@ public class BattleHistory : MonoBehaviour
 
         _currentStateIndex--;
 
-        // NOTE: this occasionally spits out an index out of range. Usually when it does, you can just perform undo again and it works as intended.
-        // Still need to figure out why it is happening and fix it
-        BattleState previousState = _states[_currentStateIndex + 1];
+        int previousStateIndex = _currentStateIndex + 1;
+        BattleState previousState = _states[previousStateIndex];
         for (int i = 0; i < previousState.RecordCount; i++)
         {
             CharacterRecord recordToUndo = previousState.GetRecord(i);
