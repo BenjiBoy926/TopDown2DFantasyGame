@@ -65,7 +65,7 @@ public class BattleTurn : MonoBehaviour
         SetCurrentTurn(nextFactionIndex);
         _animation.Play(CurrentFaction);
 
-        _battle.Record(charactersToRecord);
+        _battle.RecordTurnChange(charactersToRecord);
     }
 
     public void SetCurrentTurn(Faction faction)

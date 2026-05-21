@@ -7,6 +7,7 @@ public class BattleState
 {
     public int RecordCount => _records.Count;
     public Faction CurrentTurn => _currentTurn;
+    public virtual bool IsTurnChange => false;
 
     [SerializeField] private Faction _currentTurn;
     [SerializeField] private List<CharacterRecord> _records = new();

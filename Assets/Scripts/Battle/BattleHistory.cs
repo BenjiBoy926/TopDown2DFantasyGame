@@ -28,9 +28,9 @@ public class BattleHistory : MonoBehaviour
         _states.Add(initialState);
     }
 
-    public void Record(List<Character> characters)
+    public void RecordTurnChange(List<Character> characters)
     {
-        BattleState state = new();
+        BattleState state = new BattleState_TurnChange();
         state.SetCurrentTurn(_battle.CurrentFactionTurn);
         foreach (Character character in characters)
         {
