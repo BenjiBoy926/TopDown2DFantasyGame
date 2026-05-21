@@ -467,7 +467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 918d99679130ccd4c99b7a6a2a1257ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveToCellCenterDuration: 0.3
+  _moveToCellCenterDuration: 0.05
   _moveToCellCenterEase: 1
   _chargeDuration: 0.2
   _chargeEase: 26
@@ -514,6 +514,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveDuration: 0.35
   _moveEase: 9
+  _clip: {fileID: 8300000, guid: c5cb2ac29e89dbf43a9b644caaad45e6, type: 3}
 --- !u!114 &1280907208005117164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -526,7 +527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae06c6aef4c04644b91ec844f82cb236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveToSpiralStartDuration: 0.3
+  _moveToSpiralStartDuration: 0.05
   _moveToSpiralStartEase: 6
   _spiralPhi: 1.5707964
   _spiralRadius: 0.3
@@ -569,6 +570,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveDuration: 0.35
   _moveEase: 27
+  _clip: {fileID: 8300000, guid: 7cc057bed53baf34799f52aab3c84800, type: 3}
 --- !u!114 &2940260544673848408
 MonoBehaviour:
   m_ObjectHideFlags: 0

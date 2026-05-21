@@ -10,11 +10,7 @@ public class Player : MonoBehaviour
 
 
     [SerializeField] private AudioSource _cellHoverAudio;
-
-    [Space]
     [SerializeField] private AudioClip _moveStartClip;
-    [SerializeField] private AudioClip _moveConfirmClip;
-    [SerializeField] private AudioClip _moveCancelClip;
 
     private Battle _battle;
     private PlayerCamera _camera;
@@ -192,7 +188,6 @@ public class Player : MonoBehaviour
 
         SetCharacterActionRoutine(action);
         Deselect();
-        EazySoundManager.PlaySound(_moveConfirmClip);
     }
 
     public void CancelMove()
@@ -203,7 +198,6 @@ public class Player : MonoBehaviour
         Coroutine action = _activeCharacter.Cancel();
         SetCharacterActionRoutine(action);
         Deselect();
-        EazySoundManager.PlaySound(_moveCancelClip);
     }
 
     private void Deselect()
