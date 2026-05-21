@@ -13,8 +13,7 @@ public class CharacterUndoRedoBehaviour : MonoBehaviour
 
     public void ApplyState(CharacterState state)
     {
-        // TODO: refactor to store vector2 and not two separate enums
-        _character.SetDirection(state.HorizontalDirection, state.VerticalDirection);
+        _character.SetDirection(state.Direction);
         _character.SetHealth(state.Health);
 
         bool isActive = !_character.IsDead || _character.CanBeRevived;

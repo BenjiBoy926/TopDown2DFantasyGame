@@ -66,12 +66,6 @@ public class Character : MonoBehaviour
         _animator.SetDirection(direction);
     }
 
-    public void SetDirection(CharacterAnimator.HorizontalDirectionType horizontalDirection, CharacterAnimator.VerticalDirectionType verticalDirection)
-    {
-        _animator.SetHorizontalDirection(horizontalDirection);
-        _animator.SetVerticalDirection(verticalDirection);
-    }
-
     public void PauseAnimation()
     {
         _animator.Pause();
@@ -269,7 +263,7 @@ public class Character : MonoBehaviour
 
     public CharacterState ReadState()
     {
-        return new(_animator.HorizontalDirection, _animator.VerticalDirection, CurrentCell, _hasMovedThisTurn, _stats.CurrentHealth);
+        return new(_animator.GetDirection(), CurrentCell, _hasMovedThisTurn, _stats.CurrentHealth);
     }
 
     public void ApplyState(CharacterState state)

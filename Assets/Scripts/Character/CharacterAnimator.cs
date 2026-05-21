@@ -91,6 +91,23 @@ public class CharacterAnimator : MonoBehaviour
         }
     }
 
+    public Vector2 GetDirection()
+    {
+        if (_horizontalDirection == HorizontalDirectionType.Left)
+        {
+            return Vector2.left;
+        }
+        else if (_verticalDirection == VerticalDirectionType.Up)
+        {
+            return Vector2.up;
+        }
+        else if (_verticalDirection == VerticalDirectionType.Down)
+        {
+            return Vector2.down;
+        }
+        return Vector2.right;
+    }
+
     public void SetHorizontalDirection(HorizontalDirectionType horizontalDirection)
     {
         if (_horizontalDirection == horizontalDirection) return;
