@@ -12,6 +12,7 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(CharacterHealBehaviour))]
 [RequireComponent(typeof(CharacterBeHealedBehaviour))]
 [RequireComponent(typeof(CharacterCancelBehaviour))]
+[RequireComponent(typeof(CharacterUndoRedoBehaviour))]
 [RequireComponent(typeof(CharacterStats))]
 public class Character : MonoBehaviour
 {
@@ -49,6 +50,7 @@ public class Character : MonoBehaviour
     private CharacterHealBehaviour _healBehaviour;
     private CharacterBeHealedBehaviour _beHealedBehaviour;
     private CharacterCancelBehaviour _cancelBehaviour;
+    private CharacterUndoRedoBehaviour _undoRedoBehaviour;
     private CharacterStats _stats;
     private Battle _battle;
     private bool _hasMovedThisTurn = false;
@@ -62,6 +64,12 @@ public class Character : MonoBehaviour
     public void SetDirection(Vector2 direction)
     {
         _animator.SetDirection(direction);
+    }
+
+    public void SetDirection(CharacterAnimator.HorizontalDirectionType horizontalDirection, CharacterAnimator.VerticalDirectionType verticalDirection)
+    {
+        _animator.SetHorizontalDirection(horizontalDirection);
+        _animator.SetVerticalDirection(verticalDirection);
     }
 
     public void PauseAnimation()
@@ -158,6 +166,11 @@ public class Character : MonoBehaviour
     public void SecureCurrentCell()
     {
         SetHasMovedThisTurn(true);
+        RefreshCell();
+    }
+
+    public void RefreshCell()
+    {
         _battle.RefreshCell(this);
     }
 
@@ -170,6 +183,11 @@ public class Character : MonoBehaviour
     public Vector2 ClampToReachableCells(Vector2 input)
     {
         return _range.ClampToReachableCells(input);
+    }
+
+    public Vector2 ClampToStayableCells(Vector2 position)
+    {
+        return _range.ClampToStayableCells(position);
     }
 
     public void RefreshRange()
@@ -212,11 +230,6 @@ public class Character : MonoBehaviour
         return _battle.GetOccupant(cell);
     }
 
-    public Vector2 ClampToTraversibleCells(Vector2 position)
-    {
-        return _range.ClampToStayableCells(position);
-    }
-
     public bool CanStayInCell(Vector2Int cell)
     {
         Character occupant = GetOccupant(cell);
@@ -232,6 +245,11 @@ public class Character : MonoBehaviour
     public void TakeDamageFrom(Character other)
     {
         _stats.TakeDamageFrom(other);
+    }
+
+    public void SetHealth(int health)
+    {
+        _stats.SetHealth(health);
     }
 
     public void RestoreHealth()
@@ -256,28 +274,16 @@ public class Character : MonoBehaviour
 
     public void ApplyState(CharacterState state)
     {
-        _animator.SetHorizontalDirection(state.HorizontalDirection);
-        _animator.SetVerticalDirection(state.VerticalDirection);
-        _stats.SetHealth(state.Health);
+        _undoRedoBehaviour.ApplyState(state);
+    }
 
-        bool isActive = !IsDead || _faction.CanBeRevived;
-        gameObject.SetActive(isActive);
-        if (IsDead && isActive)
-        {
-            _animator.Die();
-        }
-        if (!IsDead)
-        {
-            PlayIdleAnimation();
-        }
+    public void SetHasMovedThisTurn(bool hasMovedThisTurn)
+    {
+        _hasMovedThisTurn = hasMovedThisTurn;
+    }
 
-        Position = CellToWorld(state.Cell);
-        if (isActive)
-        {
-            _battle.RefreshCell(this);
-        }
-
-        SetHasMovedThisTurn(state.HasMoved);
+    public void UpdateSpriteFadeColorImmediately()
+    {
         _sprite.DOKill();
         _sprite.color = GetMoveFadeColor();
     }
@@ -293,6 +299,7 @@ public class Character : MonoBehaviour
         _healBehaviour = GetComponent<CharacterHealBehaviour>();
         _beHealedBehaviour = GetComponent<CharacterBeHealedBehaviour>();
         _cancelBehaviour = GetComponent<CharacterCancelBehaviour>();
+        _undoRedoBehaviour = GetComponent<CharacterUndoRedoBehaviour>();
         _stats = GetComponent<CharacterStats>();
     }
 
@@ -315,11 +322,6 @@ public class Character : MonoBehaviour
     public void SetBattle(Battle battle)
     {
         _battle = battle;
-    }
-
-    private void SetHasMovedThisTurn(bool hasMovedThisTurn)
-    {
-        _hasMovedThisTurn = hasMovedThisTurn;
     }
 
     private YieldInstruction PerformSpriteFade()

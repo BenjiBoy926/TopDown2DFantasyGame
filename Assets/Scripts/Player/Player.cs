@@ -109,7 +109,7 @@ public class Player : MonoBehaviour
         if (_activeCharacter)
         {
             _activeCharacter.LookAt(newPosition);
-            _activeCharacter.Position = _activeCharacter.ClampToTraversibleCells(newPosition);
+            _activeCharacter.Position = _activeCharacter.ClampToStayableCells(newPosition);
             _cursor.Position = _activeCharacter.ClampToReachableCells(newPosition);
         }
         else
