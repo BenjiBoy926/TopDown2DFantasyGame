@@ -17,6 +17,7 @@ public class BattleUndoOverlay : MonoBehaviour
 
     public YieldInstruction FadeIn()
     {
+        gameObject.SetActive(true);
         return FadeTo(_fadeAlpha);
     }
 

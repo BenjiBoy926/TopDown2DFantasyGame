@@ -22,11 +22,7 @@ public class CharacterUndoRedoBehaviour : MonoBehaviour
             yield return ShowRevival();
         }
 
-        if (_character.Health != state.Health)
-        {
-            yield return ShowHealthChange(state);
-        }
-
+        _character.SetHealth(state.Health);
         if (_character.CurrentCell != state.Cell)
         {
             yield return ShowCellChange(state);
@@ -50,11 +46,6 @@ public class CharacterUndoRedoBehaviour : MonoBehaviour
         gameObject.SetActive(true);
         yield return _character.FadeAlpha(1, _stepDuration, Ease.Linear);
         _character.PlayIdleAnimation();
-    }
-
-    private IEnumerator ShowHealthChange(CharacterState state)
-    {
-        _character.SetHealth(state.Health);
         yield return transform.DOPunchPosition(Vector3.up * .49f, _stepDuration, 0, 0).WaitForCompletion();
     }
 

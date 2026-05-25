@@ -15,6 +15,7 @@ public class BattleTurnChangeAnimation : MonoBehaviour
 
     public void Play(Faction faction)
     {
+        gameObject.SetActive(true);
         StopAllCoroutines();
         StartCoroutine(GetPlaySequence(faction));
     }
