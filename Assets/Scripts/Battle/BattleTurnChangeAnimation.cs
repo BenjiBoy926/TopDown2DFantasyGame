@@ -9,8 +9,8 @@ public class BattleTurnChangeAnimation : MonoBehaviour
 
     public bool IsPlaying => _isPlaying;
 
-    [SerializeField] private Image _panel;
-    [SerializeField] private TMP_Text _label;
+    private Image _panel;
+    private TMP_Text _label;
     private bool _isPlaying = false;
 
     public void Play(Faction faction)
@@ -22,6 +22,8 @@ public class BattleTurnChangeAnimation : MonoBehaviour
 
     private void Awake()
     {
+        _panel = GetComponentInChildren<Image>();
+        _label = GetComponentInChildren<TMP_Text>();
         _panel.enabled = _label.enabled = false;
     }
 

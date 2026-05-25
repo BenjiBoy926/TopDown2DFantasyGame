@@ -14,11 +14,13 @@ public class BattleTurn : MonoBehaviour
     private readonly List<Character> _characterListScratch = new();
     private Battle _battle;
     private BattleTurnChangeAnimation _animation;
+    private BattleTurnIndicator _indicator;
 
     private void Awake()
     {
         _battle = GetComponent<Battle>();
         _animation = GetComponentInChildren<BattleTurnChangeAnimation>();
+        _indicator = GetComponentInChildren<BattleTurnIndicator>();
     }
 
     private void OnEnable()
@@ -108,7 +110,10 @@ public class BattleTurn : MonoBehaviour
 
     private void SetCurrentTurn(int factionIndex)
     {
+        if (_currentFactionIndex == factionIndex) return;
+
         _currentFactionIndex = factionIndex;
+        _indicator.SetFaction(CurrentFaction);
     }
 
     private void RestoreAllCharacterMoves()

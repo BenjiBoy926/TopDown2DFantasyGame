@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 361030519}
   - component: {fileID: 361030521}
   - component: {fileID: 361030520}
+  - component: {fileID: 361030522}
   m_Layer: 0
   m_Name: BattleTurnIndicator
   m_TagString: Untagged
@@ -198,6 +199,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 361030518}
   m_CullTransparentMesh: 1
+--- !u!114 &361030522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 361030518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e64abd4d87b607478972c4d44968959, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _growScale: 2
+  _growDuration: 1
+  _growEase: 15
+  _shrinkDuration: 0.3
+  _shrinkEase: 1
 --- !u!1 &390487294
 GameObject:
   m_ObjectHideFlags: 0
@@ -4398,8 +4416,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2122ecfb16a6dd94cbce78adf5f55e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _panel: {fileID: 1986414126}
-  _label: {fileID: 2093789710}
 --- !u!114 &1986414126
 MonoBehaviour:
   m_ObjectHideFlags: 0
