@@ -8,5 +8,16 @@ public class PlayerCursor : MonoBehaviour
         set => transform.position = value;
     }
 
-    // Note: may want to change sprite based on what you are hovering but what I tried before just looked too crowded
+    private void Start()
+    {
+        Cursor.visible = false;
+    }
+
+    private void OnApplicationFocus(bool focus)
+    {
+        if (!focus)
+        {
+            Cursor.visible = false;
+        }
+    }
 }
