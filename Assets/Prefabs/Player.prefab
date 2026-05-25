@@ -1604,8 +1604,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cellHoverAudio: {fileID: 7090440810606284232}
   _moveStartClip: {fileID: 8300000, guid: 35cf7766e9e2aa542811e896fde57989, type: 3}
-  _moveConfirmClip: {fileID: 8300000, guid: c5cb2ac29e89dbf43a9b644caaad45e6, type: 3}
-  _moveCancelClip: {fileID: 8300000, guid: 7cc057bed53baf34799f52aab3c84800, type: 3}
 --- !u!1 &8030848800100871835
 GameObject:
   m_ObjectHideFlags: 0

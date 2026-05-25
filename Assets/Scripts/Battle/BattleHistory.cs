@@ -11,10 +11,12 @@ public class BattleHistory : MonoBehaviour
     [SerializeField, ReadOnly] private List<BattleState> _states = new();
     [SerializeField, ReadOnly] private int _currentStateIndex = 0;
     private Battle _battle;
+    private BattleUndoOverlay _overlay;
 
     private void Awake()
     {
         _battle = GetComponent<Battle>();
+        _overlay = GetComponentInChildren<BattleUndoOverlay>();
     }
 
     public void RecordInitialState()
@@ -73,6 +75,8 @@ public class BattleHistory : MonoBehaviour
 
     private IEnumerator ShowUndoSequence()
     {
+        yield return _overlay.FadeIn();
+
         int previousStateIndex = _currentStateIndex + 1;
         BattleState previousState = _states[previousStateIndex];
         for (int i = 0; i < previousState.RecordCount; i++)
@@ -82,13 +86,19 @@ public class BattleHistory : MonoBehaviour
             yield return olderRecord.GetApplySequence();
         }
         SetCurrentTurn();
+
+        yield return _overlay.FadeOut();
     }
 
     private IEnumerator ShowRedoSequence()
     {
+        yield return _overlay.FadeIn();
+
         BattleState currentState = _states[_currentStateIndex];
         yield return currentState.GetAllApplySequences();
         SetCurrentTurn();
+
+        yield return _overlay.FadeOut();
     }
 
     private void SetCurrentTurn()
