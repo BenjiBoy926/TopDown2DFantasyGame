@@ -570,7 +570,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveDuration: 0.35
   _moveEase: 27
-  _clip: {fileID: 0}
+  _clip: {fileID: 8300000, guid: 7cc057bed53baf34799f52aab3c84800, type: 3}
 --- !u!114 &2940260544673848408
 MonoBehaviour:
   m_ObjectHideFlags: 0
