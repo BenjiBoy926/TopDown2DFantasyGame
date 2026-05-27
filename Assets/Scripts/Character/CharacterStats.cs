@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
 {
-    // Note: this might be affected by multiple factors like buffs, debuffs, equipment, etc. For now, we just return the base values.
-    public int Power => _basePower;
-    public bool IsDead => _currentHealth <= 0;
+    public int BaseHealth => _baseHealth;
     public int TraversalRange => _traversalRange;
     public int CurrentHealth => _currentHealth;
+    public bool IsDead => _currentHealth <= 0;
+    public int Power => _basePower;
 
     [SerializeField] private int _baseHealth = 10;
     [SerializeField] private int _basePower = 3;
@@ -26,16 +26,6 @@ public class CharacterStats : MonoBehaviour
         SetHealth(_baseHealth);
     }
 
-    public void FadeInUI()
-    {
-        _ui.Show();
-    }
-
-    public void FadeOutUI()
-    {
-        _ui.Hide();
-    }
-
     private void Awake()
     {
         _currentHealth = _baseHealth;
@@ -44,8 +34,8 @@ public class CharacterStats : MonoBehaviour
 
     private void Start()
     {
-        _ui.ShowHealth(_currentHealth, _baseHealth);
-        _ui.ShowPower(Power);
+        _ui.ShowHealth();
+        _ui.ShowPower();
     }
 
     private int CalculateHealthAfterHitFrom(Character other)
@@ -61,6 +51,6 @@ public class CharacterStats : MonoBehaviour
     public void SetHealth(int health)
     {
         _currentHealth = Mathf.Max(health, 0);
-        _ui.ShowHealth(_currentHealth, _baseHealth);
+        _ui.ShowHealth();
     }
 }

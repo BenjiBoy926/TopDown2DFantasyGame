@@ -16,13 +16,25 @@ public class CharacterHealthUI : MonoBehaviour
     [SerializeField] private bool _shakeFadeOut = false;
     [SerializeField] private ShakeRandomnessMode _shakeRandomnessMode = ShakeRandomnessMode.Full;
 
+    private CharacterStats _stats;
+    private SpriteSlider _slider;
     private TMP_Text _label;
     private SpriteRenderer _renderer;
 
-    public void ShowHealth(int currentHealth, int baseHealth)
+    public void ShowHealth()
     {
-        _label.text = currentHealth.ToString();
-        if (currentHealth == baseHealth)
+        int currentHealth = _stats.CurrentHealth;
+        int baseHealth = _stats.BaseHealth;
+
+        float healthPercentage = (float)currentHealth / baseHealth;
+        _slider.Value = healthPercentage;
+
+        if (_label)
+        {
+            _label.text = currentHealth.ToString();
+        }
+
+        if (currentHealth >= baseHealth)
         {
             _renderer.sprite = _healthFullSprite;
         }
@@ -50,6 +62,8 @@ public class CharacterHealthUI : MonoBehaviour
 
     private void Awake()
     {
+        _stats = GetComponentInParent<CharacterStats>();
+        _slider = GetComponentInChildren<SpriteSlider>();
         _label = GetComponentInChildren<TMP_Text>();
         _renderer = GetComponentInChildren<SpriteRenderer>();
     }

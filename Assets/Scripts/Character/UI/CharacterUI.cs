@@ -54,14 +54,14 @@ public class CharacterUI : MonoBehaviour
         }
     }
 
-    public void ShowHealth(int currentHealth, int baseHealth)
+    public void ShowHealth()
     {
-        _healthUI.ShowHealth(currentHealth, baseHealth);
+        _healthUI.ShowHealth();
     }
 
-    public void ShowPower(int power)
+    public void ShowPower()
     {
-        _powerUI.ShowPower(power);
+        _powerUI.ShowPower();
     }
 
     public void ShakeHealthUI()
