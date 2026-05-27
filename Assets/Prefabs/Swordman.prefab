@@ -161,7 +161,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveDuration: 0.35
   _moveEase: 9
-  _clip: {fileID: 0}
+  _clip: {fileID: 8300000, guid: c5cb2ac29e89dbf43a9b644caaad45e6, type: 3}
 --- !u!114 &1280907208005117164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -630,6 +630,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa430172d5602a64ca59294d3926f966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _halfThreshold: 0.5
+  _lowThreshold: 0.2
+  _fullColor: {r: 0, g: 1, b: 0, a: 1}
+  _halfColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _lowColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &6672081108302527227
 GameObject:
   m_ObjectHideFlags: 0
