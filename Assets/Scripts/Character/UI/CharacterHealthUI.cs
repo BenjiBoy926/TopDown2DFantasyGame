@@ -22,7 +22,7 @@ public class CharacterHealthUI : MonoBehaviour
         int baseHealth = _stats.BaseHealth;
 
         float healthPercentage = (float)currentHealth / baseHealth;
-        _healthbar.ShowHealthPercent(healthPercentage);
+        _healthbar.Refresh();
         _heartIcon.ShowHealthPercent(healthPercentage);
 
         if (_label)

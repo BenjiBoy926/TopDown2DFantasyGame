@@ -7,19 +7,26 @@ public class CharacterHealthbar : MonoBehaviour
     [SerializeField] private Color _fullColor = Color.green;
     [SerializeField] private Color _halfColor = Color.yellow;
     [SerializeField] private Color _lowColor = Color.red;
+    private CharacterStats _stats;
     private SpriteRenderer _barSprite;
 
-    public void ShowHealthPercent(float percent)
+    public void Refresh()
     {
+        int currentHealth = _stats.CurrentHealth;
+        int baseHealth = _stats.BaseHealth;
+
+        float healthPercent = (float)currentHealth / baseHealth;
         Vector3 scale = transform.localScale;
-        scale.x = percent;
+        scale.x = healthPercent;
         transform.localScale = scale;
 
-        if (percent > _halfThreshold)
+        int halfHealthThreshold = Mathf.CeilToInt(baseHealth * _halfThreshold);
+        int lowHealthThreshold = Mathf.CeilToInt(baseHealth * _lowThreshold);
+        if (currentHealth > halfHealthThreshold)
         {
             _barSprite.color = _fullColor;
         }
-        else if (percent > _lowThreshold)
+        else if (currentHealth > lowHealthThreshold)
         {
             _barSprite.color = _halfColor;
         }
@@ -31,6 +38,7 @@ public class CharacterHealthbar : MonoBehaviour
 
     private void Awake()
     {
+        _stats = GetComponentInParent<CharacterStats>();
         _barSprite = GetComponentInChildren<SpriteRenderer>();
     }
 }
