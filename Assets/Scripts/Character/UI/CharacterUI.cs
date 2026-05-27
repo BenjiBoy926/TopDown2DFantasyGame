@@ -61,7 +61,10 @@ public class CharacterUI : MonoBehaviour
 
     public void ShowPower()
     {
-        _powerUI.ShowPower();
+        if (_powerUI)
+        {
+            _powerUI.ShowPower();
+        }
     }
 
     public void ShakeHealthUI()
