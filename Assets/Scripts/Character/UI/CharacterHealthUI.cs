@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class CharacterHealthUI : MonoBehaviour
 {
-    [SerializeField] private Sprite _healthFullSprite;
-    [SerializeField] private Sprite _healthDamagedSprite;
-    [SerializeField] private Sprite _healthDepletedSprite;
-
-    [Space]
     [SerializeField] private float _shakeDuration = 0.3f;
     [SerializeField] private float _shakeStrength = 0.5f;
     [SerializeField] private int _shakeVibrato = 100;
@@ -18,8 +13,8 @@ public class CharacterHealthUI : MonoBehaviour
 
     private CharacterStats _stats;
     private SpriteSlider _slider;
+    private CharacterHeartIcon _heartIcon;
     private TMP_Text _label;
-    private SpriteRenderer _renderer;
 
     public void ShowHealth()
     {
@@ -28,23 +23,11 @@ public class CharacterHealthUI : MonoBehaviour
 
         float healthPercentage = (float)currentHealth / baseHealth;
         _slider.Value = healthPercentage;
+        _heartIcon.ShowHealthPercent(healthPercentage);
 
         if (_label)
         {
             _label.text = currentHealth.ToString();
-        }
-
-        if (currentHealth >= baseHealth)
-        {
-            _renderer.sprite = _healthFullSprite;
-        }
-        else if (currentHealth > 0)
-        {
-            _renderer.sprite = _healthDamagedSprite;
-        }
-        else
-        {
-            _renderer.sprite = _healthDepletedSprite;
         }
     }
 
@@ -65,6 +48,6 @@ public class CharacterHealthUI : MonoBehaviour
         _stats = GetComponentInParent<CharacterStats>();
         _slider = GetComponentInChildren<SpriteSlider>();
         _label = GetComponentInChildren<TMP_Text>();
-        _renderer = GetComponentInChildren<SpriteRenderer>();
+        _heartIcon = GetComponentInChildren<CharacterHeartIcon>();
     }
 }
