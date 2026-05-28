@@ -1,5 +1,4 @@
 using DG.Tweening;
-using TMPro;
 using UnityEngine;
 
 public class CharacterHealthUI : MonoBehaviour
@@ -12,9 +11,8 @@ public class CharacterHealthUI : MonoBehaviour
     [SerializeField] private ShakeRandomnessMode _shakeRandomnessMode = ShakeRandomnessMode.Full;
 
     private CharacterStats _stats;
-    private CharacterHealthbar _healthbar;
+    private CharacterHealthText _healthText;
     private CharacterHeartIcon _heartIcon;
-    private TMP_Text _label;
 
     public void ShowHealth()
     {
@@ -22,13 +20,8 @@ public class CharacterHealthUI : MonoBehaviour
         int baseHealth = _stats.BaseHealth;
 
         float healthPercentage = (float)currentHealth / baseHealth;
-        _healthbar.Refresh();
+        _healthText.Refresh();
         _heartIcon.ShowHealthPercent(healthPercentage);
-
-        if (_label)
-        {
-            _label.text = currentHealth.ToString();
-        }
     }
 
     public void Shake()
@@ -46,8 +39,7 @@ public class CharacterHealthUI : MonoBehaviour
     private void Awake()
     {
         _stats = GetComponentInParent<CharacterStats>();
-        _healthbar = GetComponentInChildren<CharacterHealthbar>();
-        _label = GetComponentInChildren<TMP_Text>();
+        _healthText = GetComponentInChildren<CharacterHealthText>();
         _heartIcon = GetComponentInChildren<CharacterHeartIcon>();
     }
 }
