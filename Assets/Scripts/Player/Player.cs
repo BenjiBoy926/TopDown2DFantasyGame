@@ -283,11 +283,17 @@ public class Player : MonoBehaviour
 
     private void RefreshMovePreview()
     {
+        if (!_activeCharacter) return;
+
         Character characterAtCell = GetCharacterAtCurrentCell();
-        if (_activeCharacter && characterAtCell && _activeCharacter != characterAtCell)
+        if (characterAtCell && characterAtCell != _activeCharacter)
         {
             _activeCharacter.PreviewMove(characterAtCell);
         }
+        else
+        {
+            _activeCharacter.ClearMovePreview();
+        } 
     }
 
     private bool CanMoveCharacter(Character character)
