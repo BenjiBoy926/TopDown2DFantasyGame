@@ -11,7 +11,17 @@ public class CharacterUI : MonoBehaviour
         _powerUI = GetComponentInChildren<CharacterPowerUI>();
     }
 
-    public void ShowHealth()
+    public void PreviewHealth(int health)
+    {
+        _healthUI.Preview(health);
+    }
+
+    public void ClearHealthPreview()
+    {
+        _healthUI.ClearPreview();
+    }
+
+    public void ShowCurrentHealth()
     {
         _healthUI.ShowCurrentHealth();
     }

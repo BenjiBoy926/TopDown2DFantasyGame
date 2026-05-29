@@ -1,15 +1,17 @@
 using DG.Tweening;
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(CharacterHealthbar))]
 public class CharacterHealthbarPreview : MonoBehaviour
 {
     [SerializeField] private float _fadeDuration = .3f;
+    private CharacterHealthbar _healthbar;
     private SpriteRenderer _renderer;
 
     private void Awake()
     {
-        _renderer = GetComponent<SpriteRenderer>();
+        _healthbar = GetComponent<CharacterHealthbar>();
+        _renderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void OnEnable()
@@ -21,5 +23,20 @@ public class CharacterHealthbarPreview : MonoBehaviour
     private void OnDisable()
     {
         _renderer.DOKill();
+    }
+
+    public void SetFill(int health)
+    {
+        _healthbar.SetFill(health);
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
     }
 }

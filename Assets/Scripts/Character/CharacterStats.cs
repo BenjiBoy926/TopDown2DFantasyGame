@@ -26,7 +26,7 @@ public class CharacterStats : MonoBehaviour
 
     private void Start()
     {
-        _ui.ShowHealth();
+        _ui.ShowCurrentHealth();
         _ui.ShowPower();
     }
 
@@ -52,7 +52,17 @@ public class CharacterStats : MonoBehaviour
         return _healthColor.GetColor(health, _baseHealth);
     }
 
-    private int CalculateHealthAfterHitFrom(Character other)
+    public void PreviewHealth(int health)
+    {
+        _ui.PreviewHealth(health);
+    }
+
+    public void ClearHealthPreview()
+    {
+        _ui.ClearHealthPreview();
+    }
+
+    public int CalculateHealthAfterHitFrom(Character other)
     {
         return _currentHealth - CalculateDamageTakenFrom(other);
     }
@@ -65,6 +75,6 @@ public class CharacterStats : MonoBehaviour
     public void SetHealth(int health)
     {
         _currentHealth = Mathf.Max(health, 0);
-        _ui.ShowHealth();
+        _ui.ShowCurrentHealth();
     }
 }

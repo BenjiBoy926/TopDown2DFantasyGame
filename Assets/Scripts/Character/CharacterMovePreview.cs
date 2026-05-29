@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Character))]
 public class CharacterMovePreview : MonoBehaviour
 {
     private Character _character;
+    private readonly List<Character> _activePreviews = new();
 
     private void Awake()
     {
@@ -24,16 +26,28 @@ public class CharacterMovePreview : MonoBehaviour
 
     public void Clear()
     {
-        Debug.Log("Clearing move preview");
+        for (int i = 0; i < _activePreviews.Count; i++)
+        {
+            Character character = _activePreviews[i];
+            character.ClearHealthPreview();
+        }
     }
 
     private void PreviewHeal(Character other)
     {
-        Debug.Log("Previewing heal on " + other.name);
+        other.PreviewHealth(other.BaseHealth);
+        _activePreviews.Add(other);
     }
 
     private void PreviewAttack(Character other)
     {
-        Debug.Log("Previewing attack on " + other.name);
+        int thisHealth = _character.CalculateHealthAfterHitFrom(other);
+        _character.PreviewHealth(thisHealth);
+
+        int otherHealth = other.CalculateHealthAfterHitFrom(_character);
+        other.PreviewHealth(otherHealth);
+
+        _activePreviews.Add(_character);
+        _activePreviews.Add(other);
     }
 }

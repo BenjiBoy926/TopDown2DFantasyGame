@@ -12,15 +12,43 @@ public class CharacterHealthUI : MonoBehaviour
 
     private CharacterStats _stats;
     private CharacterHealthbar _healthBar;
+    private CharacterHealthbarPreview _healthBarPreview;
     private CharacterHeartIcon _heartIcon;
+
+    private void Awake()
+    {
+        _stats = GetComponentInParent<CharacterStats>();
+        _healthBar = GetComponentInChildren<CharacterHealthbar>();
+        _healthBarPreview = GetComponentInChildren<CharacterHealthbarPreview>(true);
+        _heartIcon = GetComponentInChildren<CharacterHeartIcon>();
+    }
+
+    public void Preview(int health)
+    {
+        int higher = Mathf.Max(health, _stats.CurrentHealth);
+        int lower = Mathf.Min(health, _stats.CurrentHealth);
+        ShowHealth(lower);
+        _healthBarPreview.Show();
+        _healthBarPreview.SetFill(higher);
+    }
+
+    public void ClearPreview()
+    {
+        _healthBarPreview.Hide();
+        ShowCurrentHealth();
+    }
 
     public void ShowCurrentHealth()
     {
-        _healthBar.ShowCurrentHealth();
+        ShowHealth(_stats.CurrentHealth);
+    }
 
-        int currentHealth = _stats.CurrentHealth;
+    public void ShowHealth(int health)
+    {
+        _healthBar.ShowHealth(health);
+
         int baseHealth = _stats.BaseHealth;
-        float healthPercentage = (float)currentHealth / baseHealth;
+        float healthPercentage = (float)health / baseHealth;
         _heartIcon.ShowHealthPercent(healthPercentage);
     }
 
@@ -34,12 +62,5 @@ public class CharacterHealthUI : MonoBehaviour
             false,
             _shakeFadeOut,
             _shakeRandomnessMode);
-    }
-
-    private void Awake()
-    {
-        _stats = GetComponentInParent<CharacterStats>();
-        _healthBar = GetComponentInChildren<CharacterHealthbar>();
-        _heartIcon = GetComponentInChildren<CharacterHeartIcon>();
     }
 }

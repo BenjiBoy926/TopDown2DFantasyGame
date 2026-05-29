@@ -33,6 +33,7 @@ public class Character : MonoBehaviour
     public bool IsAbleToMove => !IsDead && !_hasMovedThisTurn;
     public float CellWidth => _battle.CellWidth;
     public float CellHeight => _battle.CellHeight;
+    public int BaseHealth => _stats.BaseHealth;
     public int Power => _stats.Power;
     public bool CanBeRevived => _faction.CanBeRevived;
     public bool IsDead => _stats.IsDead;
@@ -323,6 +324,21 @@ public class Character : MonoBehaviour
     public void ClearMovePreview()
     {
         _preview.Clear();
+    }
+
+    public void PreviewHealth(int health)
+    {
+        _stats.PreviewHealth(health);
+    }
+
+    public void ClearHealthPreview()
+    {
+        _stats.ClearHealthPreview();
+    }
+
+    public int CalculateHealthAfterHitFrom(Character other)
+    {
+        return _stats.CalculateHealthAfterHitFrom(other);
     }
 
     public void SetBattle(Battle battle)
