@@ -27,7 +27,8 @@ public class CharacterHealthUI : MonoBehaviour
     {
         int higher = Mathf.Max(health, _stats.CurrentHealth);
         int lower = Mathf.Min(health, _stats.CurrentHealth);
-        ShowHealth(lower);
+        _healthBar.ShowHealth(lower);
+        ShowHealthOnHeartIcon(health);
         _healthBarPreview.Show();
         _healthBarPreview.SetFill(higher);
     }
@@ -46,7 +47,11 @@ public class CharacterHealthUI : MonoBehaviour
     public void ShowHealth(int health)
     {
         _healthBar.ShowHealth(health);
+        ShowHealthOnHeartIcon(health);
+    }
 
+    public void ShowHealthOnHeartIcon(int health)
+    {
         int baseHealth = _stats.BaseHealth;
         float healthPercentage = (float)health / baseHealth;
         _heartIcon.ShowHealthPercent(healthPercentage);
