@@ -2,11 +2,6 @@ using UnityEngine;
 
 public class CharacterHealthbar : MonoBehaviour
 {
-    [SerializeField] private float _halfThreshold = .5f;
-    [SerializeField] private float _lowThreshold = .2f;
-    [SerializeField] private Color _fullColor = Color.green;
-    [SerializeField] private Color _halfColor = Color.yellow;
-    [SerializeField] private Color _lowColor = Color.red;
     private CharacterStats _stats;
     private SpriteRenderer _barSprite;
 
@@ -20,20 +15,7 @@ public class CharacterHealthbar : MonoBehaviour
         scale.x = healthPercent;
         transform.localScale = scale;
 
-        int halfHealthThreshold = Mathf.CeilToInt(baseHealth * _halfThreshold);
-        int lowHealthThreshold = Mathf.CeilToInt(baseHealth * _lowThreshold);
-        if (currentHealth > halfHealthThreshold)
-        {
-            _barSprite.color = _fullColor;
-        }
-        else if (currentHealth > lowHealthThreshold)
-        {
-            _barSprite.color = _halfColor;
-        }
-        else
-        {
-            _barSprite.color = _lowColor;
-        }
+        _barSprite.color = _stats.GetHealthColor();
     }
 
     private void Awake()
