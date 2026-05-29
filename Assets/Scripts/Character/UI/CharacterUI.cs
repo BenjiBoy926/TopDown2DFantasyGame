@@ -42,7 +42,7 @@ public class CharacterUI : MonoBehaviour
     {
         foreach (var instance in _instances)
         {
-            instance.Hide();
+            //instance.Hide();
         }
     }
 
@@ -50,7 +50,7 @@ public class CharacterUI : MonoBehaviour
     {
         foreach (var instance in _instances)
         {
-            instance.Show();
+            //instance.Show();
         }
     }
 
