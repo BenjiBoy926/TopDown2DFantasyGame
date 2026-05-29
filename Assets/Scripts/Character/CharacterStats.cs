@@ -64,7 +64,8 @@ public class CharacterStats : MonoBehaviour
 
     public int CalculateHealthAfterHitFrom(Character other)
     {
-        return _currentHealth - CalculateDamageTakenFrom(other);
+        int newHealth = _currentHealth - CalculateDamageTakenFrom(other);
+        return Mathf.Max(0, newHealth);
     }
 
     private int CalculateDamageTakenFrom(Character other)

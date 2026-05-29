@@ -13,6 +13,7 @@ public class CharacterCancelBehaviour : MonoBehaviour
 
     public IEnumerator GetSequence()
     {
+        _character.ClearMovePreview();
         EazySoundManager.PlaySound(_clip);
 
         Vector2 targetPosition = _character.CellToWorld(_character.HomeCell);

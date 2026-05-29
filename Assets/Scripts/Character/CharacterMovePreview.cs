@@ -31,6 +31,7 @@ public class CharacterMovePreview : MonoBehaviour
             Character character = _activePreviews[i];
             character.ClearHealthPreview();
         }
+        _activePreviews.Clear();
     }
 
     private void PreviewHeal(Character other)
