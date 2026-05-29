@@ -270,6 +270,7 @@ public class Player : MonoBehaviour
             _cellHoverAudio.Play();
         }
         RefreshHoveredCharacter();
+        RefreshMovePreview();
     }
 
     private void RefreshHoveredCharacter()
@@ -277,6 +278,15 @@ public class Player : MonoBehaviour
         if (!_activeCharacter)
         {
             SetHoveredCharacter(GetCharacterAtCurrentCell());
+        }
+    }
+
+    private void RefreshMovePreview()
+    {
+        Character characterAtCell = GetCharacterAtCurrentCell();
+        if (_activeCharacter && characterAtCell && _activeCharacter != characterAtCell)
+        {
+            _activeCharacter.PreviewMove(characterAtCell);
         }
     }
 

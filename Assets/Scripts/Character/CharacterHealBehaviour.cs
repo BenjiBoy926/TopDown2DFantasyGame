@@ -23,7 +23,7 @@ public class CharacterHealBehaviour : MonoBehaviour
     public IEnumerator GetSequence(Character other)
     {
         CharacterUI.HideAll();
-        _character.SecureCurrentCell();
+        _character.ConfirmMove();
         _character.LookAt(other.Position);
         if (!other.IsDead)
         {

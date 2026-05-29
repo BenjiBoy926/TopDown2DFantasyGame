@@ -4842,7 +4842,7 @@ GameObject:
   - component: {fileID: 7531185571972932703}
   - component: {fileID: 2662163760916472649}
   m_Layer: 0
-  m_Name: VFX_WispFire
+  m_Name: WispFire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -158,10 +158,11 @@ public class Character : MonoBehaviour
         return _hurtBehaviour.GetHurtSequence(attacker);
     }
 
-    public void SecureCurrentCell()
+    public void ConfirmMove()
     {
         SetHasMovedThisTurn(true);
         RefreshCell();
+        ClearMovePreview();
     }
 
     public void RefreshCell()
@@ -281,6 +282,33 @@ public class Character : MonoBehaviour
     {
         _sprite.DOKill();
         return _sprite.DOColor(GetMoveFadeColor(), duration).WaitForCompletion();
+    }
+
+    public void PreviewMove(Character other)
+    {
+        if (other.Faction == Faction)
+        {
+            PreviewHeal(other);
+        }
+        else
+        {
+            PreviewAttack(other);
+        }
+    }
+
+    public void PreviewAttack(Character other)
+    {
+        Debug.Log("Show attack preview");
+    }
+
+    public void PreviewHeal(Character other)
+    {
+        Debug.Log("Show heal preview");
+    }
+
+    public void ClearMovePreview()
+    {
+        Debug.Log("Hide preview");
     }
 
     private void Awake()

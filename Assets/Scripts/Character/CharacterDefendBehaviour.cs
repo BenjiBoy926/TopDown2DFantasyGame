@@ -15,7 +15,7 @@ public class CharacterDefendBehaviour : MonoBehaviour
     {
         EazySoundManager.PlaySound(_clip);
 
-        _character.SecureCurrentCell();
+        _character.ConfirmMove();
 
         Vector2 targetPosition = _character.CurrentCellCenter;
         _character.SetIsRunning(true);

@@ -27,7 +27,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
         CharacterUI.HideAll();
         _isAttackInitiator = true;
 
-        _character.SecureCurrentCell();
+        _character.ConfirmMove();
         _character.LookAt(other.Position);
         other.LookAt(_character.Position);
 
