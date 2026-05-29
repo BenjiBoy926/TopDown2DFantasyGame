@@ -1,6 +1,7 @@
-using UnityEngine;
-using System.Collections;
+using DG.Tweening;
 using NaughtyAttributes;
+using System.Collections;
+using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
@@ -33,6 +34,13 @@ public class CharacterAnimator : MonoBehaviour
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
     private Coroutine _oneShotRoutine;
+
+    private void Awake()
+    {
+        _animator = GetComponent<Animator>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        PlayLoopingAnimation();
+    }
 
     public void Pause()
     {
@@ -142,11 +150,16 @@ public class CharacterAnimator : MonoBehaviour
         }
     }
 
-    private void Awake()
+    public YieldInstruction FadeAlpha(float alpha, float duration, Ease ease)
     {
-        _animator = GetComponent<Animator>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        PlayLoopingAnimation();
+        _spriteRenderer.DOKill();
+        return _spriteRenderer.DOFade(alpha, duration).SetEase(ease).WaitForCompletion();
+    }
+
+    public YieldInstruction FadeColor(Color color, float duration)
+    {
+        _spriteRenderer.DOKill();
+        return _spriteRenderer.DOColor(color, duration).WaitForCompletion();
     }
 
     private Coroutine PlayOneShot(Actions action)

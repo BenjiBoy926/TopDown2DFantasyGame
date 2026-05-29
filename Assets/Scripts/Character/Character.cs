@@ -43,7 +43,6 @@ public class Character : MonoBehaviour
     [SerializeField] private Color _usedMoveFadeColor = Color.gray;
     [SerializeField] private float _usedMoveFadeDuration = 0.35f;
     private CharacterAnimator _animator;
-    private SpriteRenderer _sprite;
     private CharacterStats _stats;
     private CharacterRange _range;
     private CharacterMovePreview _preview;
@@ -60,7 +59,6 @@ public class Character : MonoBehaviour
     private void Awake()
     {
         _animator = GetComponentInChildren<CharacterAnimator>();
-        _sprite = GetComponentInChildren<SpriteRenderer>();
         _stats = GetComponent<CharacterStats>();
         _range = GetComponent<CharacterRange>();
         _preview = GetComponent<CharacterMovePreview>();
@@ -138,7 +136,7 @@ public class Character : MonoBehaviour
 
     public YieldInstruction FadeAlpha(float alpha, float duration, Ease ease)
     {
-        return _sprite.DOFade(alpha, duration).SetEase(ease).WaitForCompletion();
+        return _animator.FadeAlpha(alpha, duration, ease);
     }
 
     public void SetIsRunning(bool isRunning)
@@ -313,8 +311,8 @@ public class Character : MonoBehaviour
 
     public YieldInstruction PerformSpriteFade(float duration)
     {
-        _sprite.DOKill();
-        return _sprite.DOColor(GetMoveFadeColor(), duration).WaitForCompletion();
+        Color fadeColor = GetMoveFadeColor();
+        return _animator.FadeColor(fadeColor, duration);
     }
 
     public void PreviewMove(Character other)
