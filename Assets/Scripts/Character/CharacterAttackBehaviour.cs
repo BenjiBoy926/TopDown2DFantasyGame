@@ -24,7 +24,6 @@ public class CharacterAttackBehaviour : MonoBehaviour
 
     public IEnumerator GetFullAttackSequence(Character other)
     {
-        CharacterUI.HideAll();
         _isAttackInitiator = true;
 
         _character.ConfirmMove();
@@ -55,7 +54,6 @@ public class CharacterAttackBehaviour : MonoBehaviour
             yield return _character.MoveFadeOut();
         }
 
-        CharacterUI.ShowAll();
         _isAttackInitiator = false;
 
         // CAUTION: if any other coroutine waits for this coroutine and the attacker dies,
