@@ -26,8 +26,8 @@ Transform:
   m_GameObject: {fileID: 14704934408251962}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5764, y: 0, z: 0}
-  m_LocalScale: {x: 1.1527374, y: 0.07441123, z: 1}
+  m_LocalPosition: {x: 0.5732, y: 0, z: 0}
+  m_LocalScale: {x: 1.1462821, y: 0.07441123, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 646681605254034028}
@@ -106,6 +106,7 @@ GameObject:
   - component: {fileID: 8511498810787689882}
   - component: {fileID: 1418184813022317413}
   - component: {fileID: 6773452163994373656}
+  - component: {fileID: 6207368685314870910}
   m_Layer: 0
   m_Name: Swordman
   m_TagString: Untagged
@@ -366,6 +367,18 @@ MonoBehaviour:
   _fullColor: {r: 0, g: 1, b: 0, a: 1}
   _halfColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _lowColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &6207368685314870910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881692635917527445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4f565d7f9b45e4f8426e18ab0a8c9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3026293565773508968
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,7 +405,7 @@ Transform:
   m_GameObject: {fileID: 3026293565773508968}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5, y: -0.012, z: 0}
+  m_LocalPosition: {x: -0.489, y: -0.012, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+[RequireComponent(typeof(CharacterStats))]
 [RequireComponent(typeof(CharacterRange))]
+[RequireComponent(typeof(CharacterMovePreview))]
 [RequireComponent(typeof(CharacterAttackBehaviour))]
 [RequireComponent(typeof(CharacterHurtBehaviour))]
 [RequireComponent(typeof(CharacterDefendBehaviour))]
@@ -13,7 +15,6 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(CharacterBeHealedBehaviour))]
 [RequireComponent(typeof(CharacterCancelBehaviour))]
 [RequireComponent(typeof(CharacterUndoRedoBehaviour))]
-[RequireComponent(typeof(CharacterStats))]
 public class Character : MonoBehaviour
 {
     public static event Action<Character> MoveFinished = delegate { };
@@ -33,7 +34,6 @@ public class Character : MonoBehaviour
     public float CellWidth => _battle.CellWidth;
     public float CellHeight => _battle.CellHeight;
     public int Power => _stats.Power;
-    public int Health => _stats.CurrentHealth;
     public bool CanBeRevived => _faction.CanBeRevived;
     public bool IsDead => _stats.IsDead;
     public Vector2 CellSize => new(_battle.CellWidth, _battle.CellHeight);
@@ -44,7 +44,9 @@ public class Character : MonoBehaviour
     [SerializeField] private float _usedMoveFadeDuration = 0.35f;
     private CharacterAnimator _animator;
     private SpriteRenderer _sprite;
+    private CharacterStats _stats;
     private CharacterRange _range;
+    private CharacterMovePreview _preview;
     private CharacterAttackBehaviour _attackBehaviour;
     private CharacterHurtBehaviour _hurtBehaviour;
     private CharacterDefendBehaviour _defendBehaviour;
@@ -52,9 +54,40 @@ public class Character : MonoBehaviour
     private CharacterBeHealedBehaviour _beHealedBehaviour;
     private CharacterCancelBehaviour _cancelBehaviour;
     private CharacterUndoRedoBehaviour _undoRedoBehaviour;
-    private CharacterStats _stats;
     private Battle _battle;
     private bool _hasMovedThisTurn = false;
+
+    private void Awake()
+    {
+        _animator = GetComponentInChildren<CharacterAnimator>();
+        _sprite = GetComponentInChildren<SpriteRenderer>();
+        _stats = GetComponent<CharacterStats>();
+        _range = GetComponent<CharacterRange>();
+        _preview = GetComponent<CharacterMovePreview>();
+        _attackBehaviour = GetComponent<CharacterAttackBehaviour>();
+        _hurtBehaviour = GetComponent<CharacterHurtBehaviour>();
+        _defendBehaviour = GetComponent<CharacterDefendBehaviour>();
+        _healBehaviour = GetComponent<CharacterHealBehaviour>();
+        _beHealedBehaviour = GetComponent<CharacterBeHealedBehaviour>();
+        _cancelBehaviour = GetComponent<CharacterCancelBehaviour>();
+        _undoRedoBehaviour = GetComponent<CharacterUndoRedoBehaviour>();
+    }
+
+    private void OnEnable()
+    {
+        if (_battle)
+        {
+            _battle.Register(this);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (_battle)
+        {
+            _battle.Unregister(this);
+        }
+    }
 
     public void LookAt(Vector2 position)
     {
@@ -286,60 +319,12 @@ public class Character : MonoBehaviour
 
     public void PreviewMove(Character other)
     {
-        if (other.Faction == Faction)
-        {
-            PreviewHeal(other);
-        }
-        else
-        {
-            PreviewAttack(other);
-        }
-    }
-
-    public void PreviewAttack(Character other)
-    {
-        Debug.Log("Show attack preview");
-    }
-
-    public void PreviewHeal(Character other)
-    {
-        Debug.Log("Show heal preview");
+        _preview.PreviewMove(other);
     }
 
     public void ClearMovePreview()
     {
-        Debug.Log("Hide preview");
-    }
-
-    private void Awake()
-    {
-        _animator = GetComponentInChildren<CharacterAnimator>();
-        _sprite = GetComponentInChildren<SpriteRenderer>();
-        _range = GetComponent<CharacterRange>();
-        _attackBehaviour = GetComponent<CharacterAttackBehaviour>();
-        _hurtBehaviour = GetComponent<CharacterHurtBehaviour>();
-        _defendBehaviour = GetComponent<CharacterDefendBehaviour>();
-        _healBehaviour = GetComponent<CharacterHealBehaviour>();
-        _beHealedBehaviour = GetComponent<CharacterBeHealedBehaviour>();
-        _cancelBehaviour = GetComponent<CharacterCancelBehaviour>();
-        _undoRedoBehaviour = GetComponent<CharacterUndoRedoBehaviour>();
-        _stats = GetComponent<CharacterStats>();
-    }
-
-    private void OnEnable()
-    {
-        if (_battle)
-        {
-            _battle.Register(this);
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (_battle)
-        {
-            _battle.Unregister(this);
-        }    
+        _preview.Clear();
     }
 
     public void SetBattle(Battle battle)
