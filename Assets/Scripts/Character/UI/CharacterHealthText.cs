@@ -11,7 +11,7 @@ public class CharacterHealthText : MonoBehaviour
     {
         int currentHealth = _stats.CurrentHealth;
         _label.text = currentHealth.ToString();
-        _label.color = _stats.GetHealthColor();
+        _label.color = _stats.GetCurrentHealthColor();
     }
 
     private void Awake()

@@ -14,13 +14,13 @@ public class CharacterHealthUI : MonoBehaviour
     private CharacterHealthbar _healthBar;
     private CharacterHeartIcon _heartIcon;
 
-    public void ShowHealth()
+    public void ShowCurrentHealth()
     {
+        _healthBar.ShowCurrentHealth();
+
         int currentHealth = _stats.CurrentHealth;
         int baseHealth = _stats.BaseHealth;
-
         float healthPercentage = (float)currentHealth / baseHealth;
-        _healthBar.Refresh();
         _heartIcon.ShowHealthPercent(healthPercentage);
     }
 

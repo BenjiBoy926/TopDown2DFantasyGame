@@ -13,7 +13,7 @@ public class CharacterUI : MonoBehaviour
 
     public void ShowHealth()
     {
-        _healthUI.ShowHealth();
+        _healthUI.ShowCurrentHealth();
     }
 
     public void ShowPower()

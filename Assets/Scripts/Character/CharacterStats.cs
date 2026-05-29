@@ -42,9 +42,14 @@ public class CharacterStats : MonoBehaviour
         SetHealth(_baseHealth);
     }
 
-    public Color GetHealthColor()
+    public Color GetCurrentHealthColor()
     {
-        return _healthColor.GetColor();
+        return GetHealthColor(_currentHealth);
+    }
+
+    public Color GetHealthColor(int health)
+    {
+        return _healthColor.GetColor(health, _baseHealth);
     }
 
     private int CalculateHealthAfterHitFrom(Character other)
