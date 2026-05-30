@@ -30,9 +30,11 @@ public class CharacterHealthUI : MonoBehaviour
     {
         if (_isPreviewing)
         {
-            // May need an offset, also may need to change render layer to be above character
+            // May need to change render layer to be above character
             Vector2 cellPosition = _character.CurrentCellCenter;
-            transform.position = cellPosition;
+            Vector2 originalWorldPosition = transform.parent.TransformPoint(_originalLocalPosition);
+            Vector2 originalWorldOffset = originalWorldPosition - (Vector2)transform.parent.position;
+            transform.position = cellPosition - originalWorldOffset;
         }
     }
 
