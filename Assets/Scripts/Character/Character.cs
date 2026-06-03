@@ -40,6 +40,7 @@ public class Character : MonoBehaviour
     public bool IsDead => _stats.IsDead;
     public Vector2 CellSize => new(_battle.CellWidth, _battle.CellHeight);
     public int TraversalRange => _stats.TraversalRange;
+    public static bool IsAnyCharacterActing => _actingCharacters.Count > 0;
 
     [SerializeField] private Faction _faction;
     [SerializeField] private Color _usedMoveFadeColor = Color.gray;
@@ -57,6 +58,7 @@ public class Character : MonoBehaviour
     private CharacterUndoRedoBehaviour _undoRedoBehaviour;
     private Battle _battle;
     private bool _hasMovedThisTurn = false;
+    private static readonly HashSet<Character> _actingCharacters = new();
 
     private void Awake()
     {
@@ -191,11 +193,19 @@ public class Character : MonoBehaviour
         return _hurtBehaviour.GetHurtSequence(attacker);
     }
 
-    public void ConfirmMove()
+    public void BeginMove()
     {
         SetHasMovedThisTurn(true);
         RefreshCell();
         ClearMovePreview();
+        SetIsActing(true);
+    }
+
+    public IEnumerator EndMove()
+    {
+        yield return PerformSpriteFade(_usedMoveFadeDuration);
+        SetIsActing(false);
+        MoveFinished.Invoke(this);
     }
 
     public void RefreshCell()
@@ -263,12 +273,6 @@ public class Character : MonoBehaviour
     {
         Character occupant = GetOccupant(cell);
         return !occupant || occupant == this;
-    }
-
-    public IEnumerator MoveFadeOut()
-    {
-        yield return PerformSpriteFade(_usedMoveFadeDuration);
-        MoveFinished.Invoke(this);
     }
 
     public void TakeDamageFrom(Character other)
@@ -345,6 +349,18 @@ public class Character : MonoBehaviour
     public void SetBattle(Battle battle)
     {
         _battle = battle;
+    }
+
+    public void SetIsActing(bool isActing)
+    {
+        if (isActing)
+        {
+            _actingCharacters.Add(this);
+        }
+        else
+        {
+            _actingCharacters.Remove(this);
+        }
     }
 
     private Color GetMoveFadeColor()

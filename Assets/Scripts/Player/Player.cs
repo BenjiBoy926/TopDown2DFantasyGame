@@ -6,8 +6,6 @@ public class Player : MonoBehaviour
 {
     public bool IsCameraGrabbed => _camera.IsGrabbed;
     public Character ActiveCharacter => _activeCharacter;
-    public Faction ActiveCharacterFaction => _activeCharacter ? _activeCharacter.Faction : null;
-
 
     [SerializeField] private AudioSource _cellHoverAudio;
     [SerializeField] private AudioClip _moveStartClip;
@@ -178,21 +176,18 @@ public class Player : MonoBehaviour
             return;
 
         Character target = GetCharacterAtCurrentCell();
-        Coroutine action;
         if (!target || target == _activeCharacter)
         {
-            action = _activeCharacter.Defend();
+            _activeCharacter.Defend();
         }
         else if (target.Faction == _activeCharacter.Faction)
         {
-            action = _activeCharacter.Heal(target);
+            _activeCharacter.Heal(target);
         }
         else
         {
-            action = _activeCharacter.Attack(target);
+            _activeCharacter.Attack(target);
         }
-
-        SetInputSuspensionRoutine(action);
         Deselect();
     }
 
@@ -318,7 +313,7 @@ public class Player : MonoBehaviour
 
     private bool ShouldInputBeAllowed()
     {
-        return !_battle.IsTurnChangeAnimationPlaying && _inputSuspensionRoutine == null;
+        return !_battle.IsTurnChangeAnimationPlaying && !Character.IsAnyCharacterActing && _inputSuspensionRoutine == null;
     }
 
     private void SetIsInputAllowed(bool isInputAllowed)

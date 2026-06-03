@@ -22,7 +22,7 @@ public class CharacterHealBehaviour : MonoBehaviour
 
     public IEnumerator GetSequence(Character other)
     {
-        _character.ConfirmMove();
+        _character.BeginMove();
         _character.LookAt(other.Position);
         if (!other.IsDead)
         {
@@ -34,7 +34,7 @@ public class CharacterHealBehaviour : MonoBehaviour
         yield return other.BeHealed(_character);
 
         _character.RecordMoveWith(other);
-        yield return _character.MoveFadeOut();
+        yield return _character.EndMove();
     }
 
     private void Awake()

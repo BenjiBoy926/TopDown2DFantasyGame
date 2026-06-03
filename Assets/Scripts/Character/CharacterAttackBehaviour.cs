@@ -26,7 +26,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
     {
         _isAttackInitiator = true;
 
-        _character.ConfirmMove();
+        _character.BeginMove();
         _character.LookAt(other.Position);
         other.LookAt(_character.Position);
 
@@ -51,7 +51,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
         bool shouldDisappear = _character.IsDead && !_character.CanBeRevived;
         if (!shouldDisappear)
         {
-            yield return _character.MoveFadeOut();
+            yield return _character.EndMove();
         }
 
         _isAttackInitiator = false;

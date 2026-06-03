@@ -15,7 +15,7 @@ public class CharacterDefendBehaviour : MonoBehaviour
     {
         EazySoundManager.PlaySound(_clip);
 
-        _character.ConfirmMove();
+        _character.BeginMove();
 
         Vector2 targetPosition = _character.CurrentCellCenter;
         _character.SetIsRunning(true);
@@ -25,7 +25,7 @@ public class CharacterDefendBehaviour : MonoBehaviour
         _character.SetIsRunning(false);
 
         _character.RecordMove();
-        yield return _character.MoveFadeOut();
+        yield return _character.EndMove();
     }
 
     private void Awake()

@@ -14,6 +14,7 @@ public class CharacterCancelBehaviour : MonoBehaviour
     public IEnumerator GetSequence()
     {
         _character.ClearMovePreview();
+        _character.SetIsActing(true);
         EazySoundManager.PlaySound(_clip);
 
         Vector2 targetPosition = _character.CellToWorld(_character.HomeCell);
@@ -23,6 +24,7 @@ public class CharacterCancelBehaviour : MonoBehaviour
             .SetEase(_moveEase)
             .WaitForCompletion();
         _character.SetIsRunning(false);
+        _character.SetIsActing(false);
     }
 
     private void Awake()
