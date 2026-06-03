@@ -16,7 +16,6 @@ public class Player : MonoBehaviour
     private PlayerGridReticle _gridReticle;
     private Character _activeCharacter;
     private Character _hoveredCharacter;
-    private Coroutine _inputSuspensionRoutine;
     private Vector2Int _currentCell;
     private bool _isInputAllowed = true;
 
@@ -194,8 +193,7 @@ public class Player : MonoBehaviour
         if (!_activeCharacter)
             return;
 
-        Coroutine action = _activeCharacter.Cancel();
-        SetInputSuspensionRoutine(action);
+        _activeCharacter.Cancel();
         Deselect();
     }
 
@@ -290,18 +288,6 @@ public class Player : MonoBehaviour
     private bool CanMoveCharacter(Character character)
     {
         return character && character.IsAbleToMove && character.Faction == _battle.CurrentFactionTurn;
-    }
-
-    private void SetInputSuspensionRoutine(Coroutine actionRoutine)
-    {
-        StopAllCoroutines();
-        _inputSuspensionRoutine = StartCoroutine(WaitForInputSuspensionRoutine(actionRoutine));
-    }
-
-    private IEnumerator WaitForInputSuspensionRoutine(Coroutine actionRoutine)
-    {
-        yield return actionRoutine;
-        _inputSuspensionRoutine = null;
     }
 
     private void RefreshIsInputAllowed()
