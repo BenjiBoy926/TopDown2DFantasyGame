@@ -47,8 +47,7 @@ public class Player : MonoBehaviour
     {
         if (_isInputAllowed)
         {
-            Coroutine undoRoutine = _battle.Undo();
-            SetInputSuspensionRoutine(undoRoutine);
+            _battle.Undo();
         }
     }
 
@@ -56,8 +55,7 @@ public class Player : MonoBehaviour
     {
         if (_isInputAllowed)
         {
-            Coroutine redoRoutine = _battle.Redo();
-            SetInputSuspensionRoutine(redoRoutine);
+            _battle.Redo();
         }
     }
 
@@ -313,7 +311,7 @@ public class Player : MonoBehaviour
 
     private bool ShouldInputBeAllowed()
     {
-        return !_battle.IsTurnChangeAnimationPlaying && !Character.IsAnyCharacterActing && _inputSuspensionRoutine == null;
+        return !_battle.IsTurnChangeAnimationPlaying && !Character.IsAnyCharacterActing && !BattleHistory.IsAnySequencePlaying;
     }
 
     private void SetIsInputAllowed(bool isInputAllowed)

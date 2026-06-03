@@ -7,11 +7,13 @@ using UnityEngine;
 public class BattleHistory : MonoBehaviour
 {
     private int LatestStateIndex => _states.Count - 1;
+    public static bool IsAnySequencePlaying => _playingHistories.Count > 0;
 
     [SerializeField, ReadOnly] private List<BattleState> _states = new();
     [SerializeField, ReadOnly] private int _currentStateIndex = 0;
     private Battle _battle;
     private BattleUndoOverlay _overlay;
+    private static readonly HashSet<BattleHistory> _playingHistories = new();
 
     private void Awake()
     {
@@ -75,7 +77,7 @@ public class BattleHistory : MonoBehaviour
 
     private IEnumerator ShowUndoSequence()
     {
-        yield return _overlay.FadeIn();
+        yield return SequenceStart();
 
         int previousStateIndex = _currentStateIndex + 1;
         BattleState previousState = _states[previousStateIndex];
@@ -85,21 +87,32 @@ public class BattleHistory : MonoBehaviour
             CharacterRecord olderRecord = FindPreviousRecord(recordToUndo.Character, _currentStateIndex);
             yield return olderRecord.GetApplySequence();
         }
-        SetCurrentTurn();
 
-        yield return _overlay.FadeOut();
+        yield return SequenceEnd();
     }
 
     private IEnumerator ShowRedoSequence()
     {
-        yield return _overlay.FadeIn();
+        yield return SequenceStart();
 
         BattleState currentState = _states[_currentStateIndex];
         yield return currentState.GetAllApplySequences();
-        SetCurrentTurn();
 
-        yield return _overlay.FadeOut();
+        yield return SequenceEnd();
     }
+
+    private IEnumerator SequenceStart()
+    {
+        _playingHistories.Add(this);
+        yield return _overlay.FadeIn();
+    }
+
+    private IEnumerator SequenceEnd()
+    {
+        SetCurrentTurn();
+        yield return _overlay.FadeOut();
+        _playingHistories.Remove(this);
+    }   
 
     private void SetCurrentTurn()
     {
