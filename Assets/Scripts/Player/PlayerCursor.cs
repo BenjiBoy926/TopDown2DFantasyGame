@@ -8,6 +8,9 @@ public class PlayerCursor : MonoBehaviour
         set => transform.position = value;
     }
 
+    [SerializeField] private ParticleSystem _fire;
+    [SerializeField] private ParticleSystem _burst;
+
     private void Start()
     {
         Cursor.visible = false;
@@ -19,5 +22,17 @@ public class PlayerCursor : MonoBehaviour
         {
             Cursor.visible = false;
         }
+    }
+
+    public void Show()
+    {
+        _burst.Play();
+        _fire.Play();
+    }
+
+    public void Hide()
+    {
+        _burst.Play();
+        _fire.Stop();
     }
 }
