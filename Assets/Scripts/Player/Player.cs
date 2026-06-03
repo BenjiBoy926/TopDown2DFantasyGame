@@ -328,8 +328,6 @@ public class Player : MonoBehaviour
         if (isInputAllowed == _isInputAllowed) return;
 
         _isInputAllowed = isInputAllowed;
-        _cursor.gameObject.SetActive(isInputAllowed);
-        _gridReticle.gameObject.SetActive(isInputAllowed);
         if (isInputAllowed)
         {
             RefreshHoveredCharacter();
