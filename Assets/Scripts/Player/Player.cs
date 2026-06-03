@@ -104,6 +104,8 @@ public class Player : MonoBehaviour
 
     public void SetPosition(Vector2 newPosition)
     {
+        if (!_isInputAllowed) return;
+
         if (_activeCharacter)
         {
             _activeCharacter.LookAt(newPosition);
@@ -144,6 +146,8 @@ public class Player : MonoBehaviour
 
     public void StartMove()
     {
+        if (!_isInputAllowed) return;
+
         Character characterAtCursor = GetCharacterAtCurrentCell();
         if (CanMoveCharacter(characterAtCursor))
         {
@@ -215,9 +219,6 @@ public class Player : MonoBehaviour
         {
             _hoveredCharacter.HideRange();
         }
-
-        if (hoveredCharacter && !_isInputAllowed) return;
-
         _hoveredCharacter = hoveredCharacter;
         if (_hoveredCharacter)
         {
@@ -232,10 +233,7 @@ public class Player : MonoBehaviour
         if (_activeCharacter)
         {
             _activeCharacter.HideRange();
-        }
-
-        if (activeCharacter && !_isInputAllowed) return;
-        
+        }        
         _activeCharacter = activeCharacter;
         if (_activeCharacter)
         {
