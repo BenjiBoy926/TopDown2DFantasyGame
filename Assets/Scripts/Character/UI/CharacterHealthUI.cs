@@ -20,6 +20,7 @@ public class CharacterHealthUI : MonoBehaviour
     private CharacterHealthbar _healthBar;
     private CharacterHealthbarPreview _healthBarPreview;
     private CharacterHeartIcon _heartIcon;
+    private CharacterHealthText _label;
     private SortingGroup _sortingGroup;
     private bool _isPreviewing = false;
     private Vector3 _originalLocalPosition;
@@ -31,6 +32,7 @@ public class CharacterHealthUI : MonoBehaviour
         _healthBar = GetComponentInChildren<CharacterHealthbar>();
         _healthBarPreview = GetComponentInChildren<CharacterHealthbarPreview>(true);
         _heartIcon = GetComponentInChildren<CharacterHeartIcon>();
+        _label = GetComponentInChildren<CharacterHealthText>();
         _sortingGroup = GetComponent<SortingGroup>();
         _originalLocalPosition = transform.localPosition;
         _originalSortingLayer = _sortingGroup.sortingLayerID;
@@ -51,8 +53,10 @@ public class CharacterHealthUI : MonoBehaviour
     {
         int higher = Mathf.Max(health, _character.CurrentHealth);
         int lower = Mathf.Min(health, _character.CurrentHealth);
+        
+        ShowHealth(health);
         _healthBar.ShowHealth(lower);
-        ShowHealthOnHeartIcon(health);
+
         _healthBarPreview.Show();
         _healthBarPreview.SetFill(higher);
         _sortingGroup.sortingLayerID = _previewLayer;
@@ -76,6 +80,7 @@ public class CharacterHealthUI : MonoBehaviour
     public void ShowHealth(int health)
     {
         _healthBar.ShowHealth(health);
+        _label.ShowHealth(health);
         ShowHealthOnHeartIcon(health);
     }
 

@@ -7,11 +7,10 @@ public class CharacterHealthText : MonoBehaviour
     private CharacterStats _stats;
     private TMP_Text _label;
 
-    public void Refresh()
+    public void ShowHealth(int health)
     {
-        int currentHealth = _stats.CurrentHealth;
-        _label.text = currentHealth.ToString();
-        _label.color = _stats.GetCurrentHealthColor();
+        _label.text = health.ToString();
+        _label.color = _stats.GetHealthColor(health);
     }
 
     private void Awake()
