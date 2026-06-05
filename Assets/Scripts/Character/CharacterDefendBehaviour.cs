@@ -25,7 +25,8 @@ public class CharacterDefendBehaviour : MonoBehaviour
         _character.SetIsRunning(false);
 
         _character.RecordMove();
-        yield return _character.EndMove();
+        yield return _character.PerformSpriteFade();
+        _character.EndMove();
     }
 
     private void Awake()

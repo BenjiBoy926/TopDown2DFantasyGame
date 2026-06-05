@@ -201,9 +201,8 @@ public class Character : MonoBehaviour
         SetIsActing(true);
     }
 
-    public IEnumerator EndMove()
+    public void EndMove()
     {
-        yield return PerformSpriteFade(_usedMoveFadeDuration);
         SetIsActing(false);
         MoveFinished.Invoke(this);
     }
@@ -313,6 +312,11 @@ public class Character : MonoBehaviour
     public void SetHasMovedThisTurn(bool hasMovedThisTurn)
     {
         _hasMovedThisTurn = hasMovedThisTurn;
+    }
+
+    public YieldInstruction PerformSpriteFade()
+    {
+        return PerformSpriteFade(_usedMoveFadeDuration);
     }
 
     public YieldInstruction PerformSpriteFade(float duration)

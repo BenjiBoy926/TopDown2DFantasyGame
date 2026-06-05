@@ -51,10 +51,11 @@ public class CharacterAttackBehaviour : MonoBehaviour
         bool shouldDisappear = _character.IsDead && !_character.CanBeRevived;
         if (!shouldDisappear)
         {
-            yield return _character.EndMove();
+            yield return _character.PerformSpriteFade();
         }
 
         _isAttackInitiator = false;
+        _character.EndMove();
 
         // CAUTION: if any other coroutine waits for this coroutine and the attacker dies,
         // that coroutine will be waiting indefinitely since the attacker's game object will be disabled

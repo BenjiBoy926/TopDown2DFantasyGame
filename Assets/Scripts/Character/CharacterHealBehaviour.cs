@@ -34,7 +34,8 @@ public class CharacterHealBehaviour : MonoBehaviour
         yield return other.BeHealed(_character);
 
         _character.RecordMoveWith(other);
-        yield return _character.EndMove();
+        yield return _character.PerformSpriteFade();
+        _character.EndMove();
     }
 
     private void Awake()
