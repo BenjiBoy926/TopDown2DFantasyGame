@@ -86,6 +86,8 @@ public class Player : MonoBehaviour
 
     public void SetScreenPosition(Vector2 screenPosition)
     {
+        if (!_isInputAllowed) return;
+
         if (IsCameraGrabbed)
         {
             _camera.GrabUpdate(screenPosition);
@@ -116,6 +118,8 @@ public class Player : MonoBehaviour
 
     public void Grab()
     {
+        if (!_isInputAllowed) return;
+
         Character characterAtCursor = GetCharacterAtCurrentCell();
         if (characterAtCursor)
         {
