@@ -1554,7 +1554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07895e57931beb44595190880b177537, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _selectionMargin: 0.25
+  _selectionMargin: 0.1
 --- !u!114 &3971295484566185272
 MonoBehaviour:
   m_ObjectHideFlags: 0
