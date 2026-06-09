@@ -29,8 +29,6 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        // There should be a way to refresh this less often, but since the refresh check is currently very cheap,
-        // there is no need to make it more efficient yet
         RefreshIsInputAllowed();
     }
 
@@ -230,6 +228,7 @@ public class Player : MonoBehaviour
             _activeCharacter.HideRange();
         }        
         _activeCharacter = activeCharacter;
+        _cursor.SetSelectionTarget(_activeCharacter ? _activeCharacter.transform : null);
         if (_activeCharacter)
         {
             SetHoveredCharacter(null);
