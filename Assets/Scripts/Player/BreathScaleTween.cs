@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class BreathScaleTween : MonoBehaviour
 {
-    [SerializeField] private float _breathInScale = .8f;
+    [SerializeField] private float _breathInScale = 1;
     [SerializeField] private float _breathInDuration = .5f;
     [SerializeField] private Ease _breathInEase = Ease.OutQuad;
 
     [Space]
-    [SerializeField] private float _breathOutScale = 1;
+    [SerializeField] private float _breathOutScale = .8f;
     [SerializeField] private float _breathOutDuration = 1f;
     [SerializeField] private Ease _breatOutEase = Ease.Linear;
     

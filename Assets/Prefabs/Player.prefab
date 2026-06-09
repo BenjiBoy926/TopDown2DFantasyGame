@@ -128,6 +128,57 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &1153534577337822973
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2149611467594889422}
+  - component: {fileID: 1906879332237288211}
+  m_Layer: 0
+  m_Name: BreathAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2149611467594889422
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153534577337822973}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2535625917897042266}
+  m_Father: {fileID: 3481196093194421666}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1906879332237288211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153534577337822973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22c8459b07434a345887cee93d86fe9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _breathInScale: 0.8
+  _breathInDuration: 0.5
+  _breathInEase: 6
+  _breathOutScale: 1
+  _breathOutDuration: 0.5
+  _breatOutEase: 6
 --- !u!1 &1730631874638646389
 GameObject:
   m_ObjectHideFlags: 0
@@ -554,10 +605,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22c8459b07434a345887cee93d86fe9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _breathInScale: 0.8
+  _breathInScale: 1
   _breathInDuration: 1
   _breathInEase: 6
-  _breathOutScale: 1
+  _breathOutScale: 0.8
   _breathOutDuration: 2
   _breatOutEase: 1
 --- !u!1 &5272343057412105947
@@ -1405,7 +1456,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3481196093194421666}
   - component: {fileID: 2477181036728015027}
-  - component: {fileID: 85909368864619992}
+  - component: {fileID: 7733663285608874489}
   m_Layer: 0
   m_Name: SelectionAura
   m_TagString: Untagged
@@ -1426,7 +1477,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2535625917897042266}
+  - {fileID: 2149611467594889422}
   m_Father: {fileID: 3077381733802155434}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!210 &2477181036728015027
@@ -1441,7 +1492,7 @@ SortingGroup:
   m_SortingLayer: -2
   m_SortingOrder: 0
   m_SortAtRoot: 1
---- !u!114 &85909368864619992
+--- !u!114 &7733663285608874489
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1450,15 +1501,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8349190091273442660}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22c8459b07434a345887cee93d86fe9b, type: 3}
+  m_Script: {fileID: 11500000, guid: 94e5eac1c6e0e02459e8de4ddb777d6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _breathInScale: 0.8
-  _breathInDuration: 0.5
-  _breathInEase: 6
-  _breathOutScale: 1
-  _breathOutDuration: 0.5
-  _breatOutEase: 6
 --- !u!1 &8351034347342549177
 GameObject:
   m_ObjectHideFlags: 0
@@ -1587,7 +1632,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3490633685798353651}
-  m_Father: {fileID: 3481196093194421666}
+  m_Father: {fileID: 2149611467594889422}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8618962170781081908
 SpriteRenderer:
