@@ -8,8 +8,12 @@ public class PlayerCursor : MonoBehaviour
         set => transform.position = value;
     }
 
-    [SerializeField] private ParticleSystem _fire;
-    [SerializeField] private ParticleSystem _burst;
+    private PlayerCursorFire _fire;
+
+    private void Awake()
+    {
+        _fire = GetComponentInChildren<PlayerCursorFire>(true);
+    }
 
     private void Start()
     {
@@ -26,13 +30,11 @@ public class PlayerCursor : MonoBehaviour
 
     public void Show()
     {
-        _burst.Play();
-        _fire.Play();
+        _fire.Show();
     }
 
     public void Hide()
     {
-        _burst.Play();
-        _fire.Stop();
+        _fire.Hide();
     }
 }
