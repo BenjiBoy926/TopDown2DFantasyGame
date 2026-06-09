@@ -1490,7 +1490,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: -2070444131
   m_SortingLayer: -2
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_SortAtRoot: 1
 --- !u!114 &7733663285608874489
 MonoBehaviour:
