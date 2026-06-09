@@ -138,6 +138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5521304026134441310}
   - component: {fileID: 979167153918290741}
+  - component: {fileID: 8900527134537320749}
   m_Layer: 0
   m_Name: Fire
   m_TagString: Untagged
@@ -176,6 +177,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fire: {fileID: 7148985975073295797}
   _burst: {fileID: 7383450541422791080}
+--- !u!210 &8900527134537320749
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730631874638646389}
+  m_Enabled: 1
+  m_SortingLayerID: 430816021
+  m_SortingLayer: 1
+  m_SortingOrder: 0
+  m_SortAtRoot: 1
 --- !u!1 &2033754479294981189
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,6 +501,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5654268995549710596}
   - component: {fileID: 7593684018669679513}
+  - component: {fileID: 8113405708960737753}
   m_Layer: 0
   m_Name: GridReticle
   m_TagString: Untagged
@@ -528,11 +542,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveDuration: 0.05
   _moveEase: 6
-  _breathInScale: 1
-  _breathInDuration: 0.5
+--- !u!114 &8113405708960737753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5215266504164375851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22c8459b07434a345887cee93d86fe9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _breathInScale: 0.8
+  _breathInDuration: 1
   _breathInEase: 6
-  _breathOutScale: 0.8
-  _breathOutDuration: 1
+  _breathOutScale: 1
+  _breathOutDuration: 2
   _breatOutEase: 1
 --- !u!1 &5272343057412105947
 GameObject:
@@ -1379,6 +1405,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3481196093194421666}
   - component: {fileID: 2477181036728015027}
+  - component: {fileID: 85909368864619992}
   m_Layer: 0
   m_Name: SelectionAura
   m_TagString: Untagged
@@ -1414,6 +1441,24 @@ SortingGroup:
   m_SortingLayer: -2
   m_SortingOrder: 0
   m_SortAtRoot: 1
+--- !u!114 &85909368864619992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8349190091273442660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22c8459b07434a345887cee93d86fe9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _breathInScale: 0.8
+  _breathInDuration: 0.5
+  _breathInEase: 6
+  _breathOutScale: 1
+  _breathOutDuration: 0.5
+  _breatOutEase: 6
 --- !u!1 &8351034347342549177
 GameObject:
   m_ObjectHideFlags: 0
@@ -1425,7 +1470,6 @@ GameObject:
   - component: {fileID: 3077381733802155434}
   - component: {fileID: 5009188101589773455}
   - component: {fileID: 3971295484566185272}
-  - component: {fileID: 876566261644639184}
   m_Layer: 0
   m_Name: Cursor
   m_TagString: Untagged
@@ -1512,18 +1556,6 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
---- !u!210 &876566261644639184
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8351034347342549177}
-  m_Enabled: 1
-  m_SortingLayerID: 430816021
-  m_SortingLayer: 1
-  m_SortingOrder: 0
-  m_SortAtRoot: 0
 --- !u!1 &9066211559322068588
 GameObject:
   m_ObjectHideFlags: 0
