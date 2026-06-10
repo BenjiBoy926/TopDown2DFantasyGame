@@ -199,7 +199,9 @@ public class CharacterRange : MonoBehaviour
         {
             int rectangularDistance = RectangularDistance(inputCell, cell);
             float euclidianDistance = SqrDistance(input, cell);
-            if (rectangularDistance <= closestRectangularDistance && euclidianDistance < closestEuclidianDistance)
+
+            if (rectangularDistance < closestRectangularDistance ||
+                (rectangularDistance == closestRectangularDistance && euclidianDistance < closestEuclidianDistance))
             {
                 closestCell = cell;
                 closestRectangularDistance = rectangularDistance;
