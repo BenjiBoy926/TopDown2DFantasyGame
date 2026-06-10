@@ -101,16 +101,8 @@ public class Player : MonoBehaviour
     {
         if (!_isInputAllowed) return;
 
-        if (_activeCharacter)
-        {
-            _activeCharacter.LookAt(newPosition);
-            _activeCharacter.Position = _activeCharacter.ClampToStayableCells(newPosition);
-            _cursor.Position = _activeCharacter.ClampToReachableCells(newPosition);
-        }
-        else
-        {
-            _cursor.Position = newPosition;
-        }
+        SetActiveCharacterPosition(newPosition);
+        SetCursorPosition(newPosition);
         RefreshCurrentCell();
     }
 
@@ -203,6 +195,24 @@ public class Player : MonoBehaviour
     {
         SetHoveredCharacter(null);
         SetActiveCharacter(null);
+    }
+
+    private void SetCursorPosition(Vector2 newPosition)
+    {
+        if (_activeCharacter)
+        {
+            newPosition = _activeCharacter.ClampToReachableCells(newPosition);
+        }
+        _cursor.Position = newPosition;
+    }
+
+    private void SetActiveCharacterPosition(Vector2 newPosition)
+    {
+        if (!_activeCharacter)
+            return;
+
+        _activeCharacter.LookAt(newPosition);
+        _activeCharacter.Position = _activeCharacter.ClampToStayableCells(newPosition);
     }
 
     private void SetHoveredCharacter(Character hoveredCharacter)
