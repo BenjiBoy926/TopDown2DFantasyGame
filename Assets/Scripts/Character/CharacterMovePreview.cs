@@ -14,6 +14,7 @@ public class CharacterMovePreview : MonoBehaviour
 
     public void PreviewMove(Character other)
     {
+        Clear();
         if (_character.Faction == other.Faction)
         {
             PreviewHeal(other);
