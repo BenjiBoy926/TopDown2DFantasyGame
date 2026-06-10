@@ -173,6 +173,7 @@ public class CharacterRange : MonoBehaviour
         Vector2Int currentCell = _character.WorldToCell(position);
         if (cells.Contains(currentCell)) return position;
 
+        // NOTE: min rect distance is 1 but should be higher for characters with a wider attack range
         Vector2Int closestCell = ClosestCell(position, cells);
         Vector2 cellPosition = _character.CellToWorld(closestCell);
 
@@ -192,18 +193,32 @@ public class CharacterRange : MonoBehaviour
         if (cells.Count == 0) return inputCell;
 
         Vector2Int closestCell = Vector2Int.zero;
-        float closestDistance = float.MaxValue;
+        int closestRectangularDistance = int.MaxValue;
+        float closestEuclidianDistance = float.MaxValue;
         foreach (Vector2Int cell in cells)
         {
-            Vector2 cellPosition = _character.CellToWorld(cell);
-            Vector2 offset = input - cellPosition;
-            float currentDistance = offset.sqrMagnitude;
-            if (currentDistance < closestDistance)
+            int rectangularDistance = RectangularDistance(inputCell, cell);
+            float euclidianDistance = SqrDistance(input, cell);
+            if (rectangularDistance <= closestRectangularDistance && euclidianDistance < closestEuclidianDistance)
             {
                 closestCell = cell;
-                closestDistance = currentDistance;
+                closestRectangularDistance = rectangularDistance;
+                closestEuclidianDistance = euclidianDistance;
             }
         }
         return closestCell;
+    }
+
+    private float SqrDistance(Vector2 position, Vector2Int cell)
+    {
+        Vector2 cellPosition = _character.CellToWorld(cell);
+        return (position - cellPosition).sqrMagnitude;
+    }
+
+    private static int RectangularDistance(Vector2Int a, Vector2Int b)
+    {
+        int xDist = Mathf.Abs(a.x - b.x);
+        int yDist = Mathf.Abs(a.y - b.y);
+        return xDist + yDist;
     }
 }
