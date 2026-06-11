@@ -43,13 +43,15 @@ public class CharacterMovePreview : MonoBehaviour
 
     private void PreviewAttack(Character other)
     {
-        int thisHealth = _character.CalculateHealthAfterHitFrom(other);
-        _character.PreviewHealth(thisHealth);
-
         int otherHealth = other.CalculateHealthAfterHitFrom(_character);
         other.PreviewHealth(otherHealth);
-
-        _activePreviews.Add(_character);
         _activePreviews.Add(other);
+
+        if (!_character.IsRanged)
+        {
+            int thisHealth = _character.CalculateHealthAfterHitFrom(other);
+            _character.PreviewHealth(thisHealth);
+            _activePreviews.Add(_character);
+        }
     }
 }
