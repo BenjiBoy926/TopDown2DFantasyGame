@@ -47,7 +47,7 @@ public class CharacterMovePreview : MonoBehaviour
         other.PreviewHealth(otherHealth);
         _activePreviews.Add(other);
 
-        if (!_character.IsRanged)
+        if (!_character.IsRanged && !other.IsRanged)
         {
             int thisHealth = _character.CalculateHealthAfterHitFrom(other);
             _character.PreviewHealth(thisHealth);
