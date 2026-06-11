@@ -12,7 +12,8 @@ public class CharacterAttackBehaviour : MonoBehaviour
     [Space]
     [SerializeField] private float _chargeDuration = 0.09f;
     [SerializeField] private Ease _chargeEase = Ease.InBack;
-    [SerializeField] private float _chargeDistance = 0.2f;
+    [SerializeField] private float _chargeAloneOffset = .49f;
+    [SerializeField] private float _chargeClashOffset = 0.3f;
 
     [Space]
     [SerializeField] private AudioClip _windUpClip;
@@ -97,7 +98,8 @@ public class CharacterAttackBehaviour : MonoBehaviour
     {
         Vector2 cellPosition = _character.CurrentCellCenter;
         Vector2 towardsTarget = (other.Position - cellPosition).normalized;
-        Vector2 chargeOffset = towardsTarget * _character.CellSize * _chargeDistance;
+        float chargeMagnitude = _character.IsRanged || other.IsRanged ? _chargeAloneOffset : _chargeClashOffset;
+        Vector2 chargeOffset = towardsTarget * _character.CellSize * chargeMagnitude;
         Vector2 chargePosition = cellPosition + chargeOffset;
 
         if (_isAttackInitiator)
