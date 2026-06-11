@@ -30,6 +30,7 @@ public class Character : MonoBehaviour
     public Vector2Int CurrentCell => _battle.WorldToCell(Position);
     public Vector2 CurrentCellCenter => _battle.SnapToGrid(Position);
     public Faction Faction => _faction;
+    public bool IsRanged => _isRanged;
     public bool IsAbleToMove => !IsDead && !_hasMovedThisTurn;
     public float CellWidth => _battle.CellWidth;
     public float CellHeight => _battle.CellHeight;
@@ -45,6 +46,7 @@ public class Character : MonoBehaviour
     [SerializeField] private Faction _faction;
     [SerializeField] private Color _usedMoveFadeColor = Color.gray;
     [SerializeField] private float _usedMoveFadeDuration = 0.35f;
+    [SerializeField] private bool _isRanged;
     private CharacterAnimator _animator;
     private CharacterStats _stats;
     private CharacterRange _range;
@@ -183,9 +185,9 @@ public class Character : MonoBehaviour
         return StartCoroutine(sequence);
     }
 
-    public IEnumerator GetAttackSwipeSequence(Character other)
+    public IEnumerator GetMeleeSwipeSequence(Character other)
     {
-        return _attackBehaviour.GetAttackSwipeSequence(other);
+        return _attackBehaviour.GetMeleeSwipeSequence(other);
     }
 
     public IEnumerator GetHurtSequence(Character attacker)

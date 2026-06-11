@@ -24,6 +24,11 @@ public class CharacterAttackBehaviour : MonoBehaviour
 
     public IEnumerator GetFullAttackSequence(Character other)
     {
+        return GetMeleeExchangeSequence(other);
+    }
+    
+    public IEnumerator GetMeleeExchangeSequence(Character other)
+    {
         _isAttackInitiator = true;
 
         _character.BeginMove();
@@ -32,9 +37,9 @@ public class CharacterAttackBehaviour : MonoBehaviour
 
         yield return MoveToCellCenter();
 
-        IEnumerator otherSwipeSequence = other.GetAttackSwipeSequence(_character);
+        IEnumerator otherSwipeSequence = other.GetMeleeSwipeSequence(_character);
         Coroutine otherSwipeRoutine = StartCoroutine(otherSwipeSequence);
-        yield return GetAttackSwipeSequence(other);
+        yield return GetMeleeSwipeSequence(other);
         yield return otherSwipeRoutine;
 
         if (_isAttackInitiator)
@@ -71,7 +76,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
         }
     }
 
-    public IEnumerator GetAttackSwipeSequence(Character other)
+    public IEnumerator GetMeleeSwipeSequence(Character other)
     {
         _character.PlayAttackAnimation();
         yield return ChargeSequence(other);
