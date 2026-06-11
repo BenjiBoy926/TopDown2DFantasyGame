@@ -41,6 +41,7 @@ public class Character : MonoBehaviour
     public bool IsDead => _stats.IsDead;
     public Vector2 CellSize => new(_battle.CellWidth, _battle.CellHeight);
     public int TraversalRange => _stats.TraversalRange;
+    public bool IsOneShotAnimationPlaying => _animator.IsOneShotAnimationPlaying;
     public static bool IsAnyCharacterActing => _actingCharacters.Count > 0;
 
     [SerializeField] private Faction _faction;
@@ -153,7 +154,7 @@ public class Character : MonoBehaviour
     public Coroutine Attack(Character other)
     {
         StopAllCoroutines();
-        IEnumerator sequence = _attackBehaviour.GetFullAttackSequence(other);
+        IEnumerator sequence = _attackBehaviour.GetSequence(other);
         return StartCoroutine(sequence);
     }
 
@@ -207,6 +208,11 @@ public class Character : MonoBehaviour
     {
         SetIsActing(false);
         MoveFinished.Invoke(this);
+    }
+
+    public bool ShouldRemoveFromBattlefield()
+    {
+        return IsDead && !_faction.CanBeRevived;
     }
 
     public void RefreshCell()

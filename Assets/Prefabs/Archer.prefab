@@ -56,10 +56,18 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 62584668, guid: 1e5c7cf9114a6e44eb38110a28e8e818, type: 3}
+    - target: {fileID: 4700560474708384779, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
+      propertyPath: _isRanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5407144191760060124, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 22d6e8be42a9c1240a623cbc02f8c6b5, type: 2}
+    - target: {fileID: 6972252028341952044, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
+      propertyPath: _chargeDistance
+      value: -0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 8511498810787689882, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
       propertyPath: _baseHealth
       value: 4

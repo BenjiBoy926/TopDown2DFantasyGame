@@ -22,12 +22,52 @@ public class CharacterAttackBehaviour : MonoBehaviour
     private Character _character;
     private bool _isAttackInitiator = false;
 
-    public IEnumerator GetFullAttackSequence(Character other)
+    public IEnumerator GetSequence(Character other)
     {
-        return GetMeleeExchangeSequence(other);
+        return _character.IsRanged || other.IsRanged ?
+            GetAttackAloneSequence(other) :
+            GetAttackExchangeSequence(other);
     }
     
-    public IEnumerator GetMeleeExchangeSequence(Character other)
+    private IEnumerator GetAttackAloneSequence(Character other)
+    {
+        yield return BeginSequence(other);
+        yield return GetMeleeSwipeSequence(other);
+
+        EazySoundManager.PlaySound(_hurtClip);
+        MoveToCellCenter();
+        Coroutine otherHurtRoutine = StartCoroutine(other.GetHurtSequence(_character));
+        while (_character.IsOneShotAnimationPlaying)
+        {
+            yield return null;
+        }
+
+        _character.PlayIdleAnimation();
+        yield return otherHurtRoutine;
+
+        yield return EndSequence(other);
+        RemoveDeadCombatantsFromBattlefield(other);
+    }
+
+    private IEnumerator GetAttackExchangeSequence(Character other)
+    {
+        yield return BeginSequence(other);
+
+        IEnumerator otherSwipeSequence = other.GetMeleeSwipeSequence(_character);
+        Coroutine otherSwipeRoutine = StartCoroutine(otherSwipeSequence);
+        yield return GetMeleeSwipeSequence(other);
+        yield return otherSwipeRoutine;
+
+        IEnumerator otherHurtSequence = other.GetHurtSequence(_character);
+        Coroutine otherHurtRoutine = StartCoroutine(otherHurtSequence);
+        yield return GetHurtSequence(other);
+        yield return otherHurtRoutine;
+
+        yield return EndSequence(other);
+        RemoveDeadCombatantsFromBattlefield(other);
+    }
+
+    private IEnumerator BeginSequence(Character other)
     {
         _isAttackInitiator = true;
 
@@ -36,44 +76,6 @@ public class CharacterAttackBehaviour : MonoBehaviour
         other.LookAt(_character.Position);
 
         yield return MoveToCellCenter();
-
-        IEnumerator otherSwipeSequence = other.GetMeleeSwipeSequence(_character);
-        Coroutine otherSwipeRoutine = StartCoroutine(otherSwipeSequence);
-        yield return GetMeleeSwipeSequence(other);
-        yield return otherSwipeRoutine;
-
-        if (_isAttackInitiator)
-        {
-            EazySoundManager.PlaySound(_hurtClip);
-        }
-
-        IEnumerator otherHurtSequence = other.GetHurtSequence(_character);
-        Coroutine otherHurtRoutine = StartCoroutine(otherHurtSequence);
-        yield return _character.GetHurtSequence(other);
-        yield return otherHurtRoutine;
-
-        _character.RecordMoveWith(other);
-        bool shouldDisappear = _character.IsDead && !_character.CanBeRevived;
-        if (!shouldDisappear)
-        {
-            yield return _character.PerformSpriteFade();
-        }
-
-        _isAttackInitiator = false;
-        _character.EndMove();
-
-        // CAUTION: if any other coroutine waits for this coroutine and the attacker dies,
-        // that coroutine will be waiting indefinitely since the attacker's game object will be disabled
-        // and unable to continue running coroutines. It is not CURRENTLY a bug because no other coroutine waits for this one,
-        // but could become a bug in the future if this warning is not heeded!
-        if (other.IsDead && !other.CanBeRevived)
-        {
-            other.gameObject.SetActive(false);
-        }
-        if (shouldDisappear)
-        {
-            _character.gameObject.SetActive(false);
-        }
     }
 
     public IEnumerator GetMeleeSwipeSequence(Character other)
@@ -83,15 +85,15 @@ public class CharacterAttackBehaviour : MonoBehaviour
         yield return AttackConnectSequence(other);
     }
 
-    private IEnumerator MoveToCellCenter()
+    private YieldInstruction MoveToCellCenter()
     {
         Vector2 cellPosition = _character.CurrentCellCenter;
-        yield return transform.DOMove(cellPosition, _moveToCellCenterDuration)
+        return transform.DOMove(cellPosition, _moveToCellCenterDuration)
             .SetEase(_moveToCellCenterEase)
             .WaitForCompletion();
     }
 
-    private IEnumerator ChargeSequence(Character other)
+    private YieldInstruction ChargeSequence(Character other)
     {
         Vector2 cellPosition = _character.CurrentCellCenter;
         Vector2 towardsTarget = (other.Position - cellPosition).normalized;
@@ -102,7 +104,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
         {
             EazySoundManager.PlaySound(_windUpClip);
         }
-        yield return transform.DOMove(chargePosition, _chargeDuration)
+        return transform.DOMove(chargePosition, _chargeDuration)
             .SetEase(_chargeEase)
             .WaitForCompletion();
     }
@@ -116,6 +118,37 @@ public class CharacterAttackBehaviour : MonoBehaviour
         _character.PauseAnimation();
         yield return other.PlayAttackConnectShake();
         _character.ResumeAnimation();
+    }
+
+    private IEnumerator GetHurtSequence(Character other)
+    {
+        EazySoundManager.PlaySound(_hurtClip);
+        return _character.GetHurtSequence(other);
+    }
+
+    private IEnumerator EndSequence(Character other)
+    {
+        _character.RecordMoveWith(other);
+        bool shouldDisappear = _character.IsDead && !_character.CanBeRevived;
+        if (!shouldDisappear)
+        {
+            yield return _character.PerformSpriteFade();
+        }
+
+        _isAttackInitiator = false;
+        _character.EndMove();
+    }
+
+    private void RemoveDeadCombatantsFromBattlefield(Character other)
+    {
+        if (other.ShouldRemoveFromBattlefield())
+        {
+            other.gameObject.SetActive(false);
+        }
+        if (_character.ShouldRemoveFromBattlefield())
+        {
+            _character.gameObject.SetActive(false);
+        }
     }
 
     private void Awake()
