@@ -6,11 +6,14 @@ using UnityEngine;
 [RequireComponent(typeof(Character))]
 public class CharacterAttackBehaviour : MonoBehaviour
 {
+    private const float ApproxFrameDuration = .1f;
+    private const int MeleeFrames = 2;
+    private const int RangedFrames = 3;
+
     [SerializeField] private float _moveToCellCenterDuration = 0.01f;
     [SerializeField] private Ease _moveToCellCenterEase = Ease.Linear;
 
     [Space]
-    [SerializeField] private float _chargeDuration = 0.09f;
     [SerializeField] private Ease _chargeEase = Ease.InBack;
     [SerializeField] private float _chargeAloneOffset = .49f;
     [SerializeField] private float _chargeClashOffset = 0.3f;
@@ -110,14 +113,17 @@ public class CharacterAttackBehaviour : MonoBehaviour
         Vector2 cellPosition = _character.CurrentCellCenter;
         Vector2 towardsTarget = (other.Position - cellPosition).normalized;
         float chargeMagnitude = _character.IsRanged || other.IsRanged ? _chargeAloneOffset : _chargeClashOffset;
-        Vector2 chargeOffset = towardsTarget * _character.CellSize * chargeMagnitude;
+        float chargeDirection = _character.IsRanged ? -1 : 1;
+        Vector2 chargeOffset = chargeDirection * chargeMagnitude * _character.CellSize * towardsTarget;
         Vector2 chargePosition = cellPosition + chargeOffset;
 
         if (_isAttackInitiator)
         {
             EazySoundManager.PlaySound(_windUpClip);
         }
-        return transform.DOMove(chargePosition, _chargeDuration)
+        int frameCount = _character.IsRanged ? RangedFrames : MeleeFrames;
+        float totalChargeDuration = frameCount * ApproxFrameDuration;
+        return transform.DOMove(chargePosition, totalChargeDuration)
             .SetEase(_chargeEase)
             .WaitForCompletion();
     }
