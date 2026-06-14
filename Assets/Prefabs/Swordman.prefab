@@ -496,6 +496,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7802195000465852020}
   - component: {fileID: 6580671886175818056}
+  - component: {fileID: 8118846255082717173}
   m_Layer: 0
   m_Name: ArrowLine
   m_TagString: Untagged
@@ -512,7 +513,7 @@ Transform:
   m_GameObject: {fileID: 3902473278334944102}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -565,7 +566,7 @@ LineRenderer:
   - {x: 1, y: 0, z: 0}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 1
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -628,9 +629,26 @@ LineRenderer:
     shadowBias: 0.5
     generateLightingData: 0
   m_MaskInteraction: 0
-  m_UseWorldSpace: 0
+  m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &8118846255082717173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3902473278334944102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 350ca4394478f244b97ceb0aa0021148, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _duration: 0.1
+  _width: 0.5
+  _upPosition: {x: 0, y: 0.6}
+  _sidePosition: {x: 0.4, y: 0.2}
+  _downPosition: {x: 0, y: -0.1}
 --- !u!1 &4894055703113341417
 GameObject:
   m_ObjectHideFlags: 0

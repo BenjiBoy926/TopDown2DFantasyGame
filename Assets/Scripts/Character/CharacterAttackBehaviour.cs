@@ -21,7 +21,14 @@ public class CharacterAttackBehaviour : MonoBehaviour
     [SerializeField] private AudioClip _hurtClip;
 
     private Character _character;
+    private ArrowBlur _arrowBlur;
     private bool _isAttackInitiator = false;
+
+    private void Awake()
+    {
+        _character = GetComponent<Character>();
+        _arrowBlur = GetComponentInChildren<ArrowBlur>();
+    }
 
     public IEnumerator GetSequence(Character other)
     {
@@ -83,6 +90,10 @@ public class CharacterAttackBehaviour : MonoBehaviour
     {
         _character.PlayAttackAnimation();
         yield return ChargeSequence(other);
+        if (_character.IsRanged)
+        {
+            _arrowBlur.Play(other);
+        }
         yield return AttackConnectSequence(other);
     }
 
@@ -151,10 +162,5 @@ public class CharacterAttackBehaviour : MonoBehaviour
         {
             _character.gameObject.SetActive(false);
         }
-    }
-
-    private void Awake()
-    {
-        _character = GetComponent<Character>();
     }
 }
