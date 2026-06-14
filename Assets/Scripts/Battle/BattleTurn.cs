@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Battle))]
 public class BattleTurn : MonoBehaviour
 {
+    public static Action<Faction> NextTurnStarted = delegate { };
+
     public Faction CurrentFaction => _currentFactionIndex >= 0 ? _factions[_currentFactionIndex] : null;
     public Faction StartingFaction => _startingFaction;
     public bool IsAnimationPlaying => _animation && _animation.IsPlaying;
@@ -68,6 +71,7 @@ public class BattleTurn : MonoBehaviour
         PlayTurnChangeAnimation();
 
         _battle.RecordTurnChange(charactersToRecord, CurrentFaction);
+        NextTurnStarted.Invoke(CurrentFaction);
     }
 
     public void PlayTurnChangeAnimation()

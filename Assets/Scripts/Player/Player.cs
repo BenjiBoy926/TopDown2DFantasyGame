@@ -1,12 +1,13 @@
 using Hellmade.Sound;
-using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     public bool IsCameraGrabbed => _camera.IsGrabbed;
     public Character ActiveCharacter => _activeCharacter;
+    public Faction Faction => _faction;
 
+    [SerializeField] private Faction _faction;
     [SerializeField] private AudioSource _cellHoverAudio;
     [SerializeField] private AudioClip _moveStartClip;
 
@@ -310,7 +311,7 @@ public class Player : MonoBehaviour
 
     private bool ShouldInputBeAllowed()
     {
-        return !_battle.IsTurnChangeAnimationPlaying && !Character.IsAnyCharacterActing && !BattleHistory.IsAnySequencePlaying;
+        return !_battle.IsTurnChangeAnimationPlaying && !Character.IsAnyCharacterActing && !BattleHistory.IsAnySequencePlaying && _battle.CurrentFactionTurn == _faction;
     }
 
     private void SetIsInputAllowed(bool isInputAllowed)
