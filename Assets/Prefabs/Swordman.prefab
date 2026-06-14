@@ -645,7 +645,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _duration: 0.1
-  _width: 0.5
+  _width: 1
   _upPosition: {x: 0, y: 0.6}
   _sidePosition: {x: 0.4, y: 0.2}
   _downPosition: {x: 0, y: -0.1}

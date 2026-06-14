@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using UnityEngine;
+using static CharacterAnimator;
 
 [RequireComponent(typeof(LineRenderer))]
 public class ArrowBlur : MonoBehaviour
@@ -33,7 +34,30 @@ public class ArrowBlur : MonoBehaviour
 
     private Vector2 GetArrowLaunchPoint(Character target)
     {
-        return transform.position;
+        Vector2 offset = GetArrowOffset(target);
+        return (Vector2)transform.position + offset;
+    }
+
+    private Vector2 GetArrowOffset(Character target)
+    {
+        Vector2 direction = target.Position - _character.Position;
+
+        bool isHorizontal = Mathf.Abs(direction.x) > Mathf.Abs(direction.y);
+        bool isVertical = !isHorizontal;
+
+        if (isHorizontal && direction.x > 0)
+        {
+            return _sidePosition;
+        }
+        if (isHorizontal && direction.x < 0)
+        {
+            return new(-_sidePosition.x, _sidePosition.y);
+        }
+        if (isVertical && direction.y > 0)
+        {
+            return _upPosition;
+        }
+        return _downPosition;
     }
 
     private float GetLineWidthMultiplier()
