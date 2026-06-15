@@ -108,16 +108,14 @@ public class BattleHistory : MonoBehaviour
             CharacterRecord olderRecord = FindPreviousRecord(recordToUndo.Character, _currentStateIndex);
             yield return olderRecord.GetApplySequence();
         }
+        SetCurrentTurn();
     }
 
     private IEnumerator RedoOnceSequence()
     {
-        yield return SequenceStart();
-
         BattleState currentState = _states[_currentStateIndex];
         yield return currentState.GetAllApplySequences();
-
-        yield return SequenceEnd();
+        SetCurrentTurn();
     }
 
     private bool CanPlayerMove()
@@ -133,7 +131,6 @@ public class BattleHistory : MonoBehaviour
 
     private IEnumerator SequenceEnd()
     {
-        SetCurrentTurn();
         yield return _overlay.FadeOut();
         _playingHistories.Remove(this);
     }   
