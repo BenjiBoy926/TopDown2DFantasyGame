@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 
 [RequireComponent(typeof(Battle))]
@@ -8,10 +9,8 @@ public class BattleTurn : MonoBehaviour
     public static Action<Faction> NextTurnStarted = delegate { };
 
     public Faction CurrentFaction => _currentFactionIndex >= 0 ? _factions[_currentFactionIndex] : null;
-    public Faction StartingFaction => _startingFaction;
     public bool IsAnimationPlaying => _animation && _animation.IsPlaying;
 
-    [SerializeField] private Faction _startingFaction;
     private readonly List<Faction> _factions = new(2);
     private int _currentFactionIndex = -1;
     private readonly List<Character> _characterListScratch = new();
@@ -53,12 +52,6 @@ public class BattleTurn : MonoBehaviour
         }
     }
 
-    public void StartFirstTurn()
-    {
-        SetCurrentTurn(_startingFaction);
-        PlayTurnChangeAnimation();
-    }
-
     public void StartNextTurn()
     {
         RestoreAllCharacterMoves();
@@ -72,6 +65,12 @@ public class BattleTurn : MonoBehaviour
 
         _battle.RecordTurnChange(charactersToRecord, CurrentFaction);
         NextTurnStarted.Invoke(CurrentFaction);
+    }
+
+    public void StartTurn(Faction faction)
+    {
+        SetCurrentTurn(faction);
+        PlayTurnChangeAnimation();
     }
 
     public void PlayTurnChangeAnimation()
@@ -128,7 +127,7 @@ public class BattleTurn : MonoBehaviour
         }
     }
 
-    private int CountMoveableCharacters(Faction faction)
+    public int CountMoveableCharacters(Faction faction)
     {
         GetCharactersInFaction(faction, _characterListScratch);
 

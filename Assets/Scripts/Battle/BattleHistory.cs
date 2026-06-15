@@ -23,7 +23,7 @@ public class BattleHistory : MonoBehaviour
 
     public void RecordInitialState()
     {
-        RecordTurnChange(_battle.AllCharacters, _battle.StartingFaction);
+        RecordTurnChange(_battle.AllCharacters, _battle.PlayerFaction);
         _currentStateIndex = 0;
     }
 
@@ -60,28 +60,46 @@ public class BattleHistory : MonoBehaviour
 
     public Coroutine Undo()
     {
-        if (_currentStateIndex <= 0) return null;
-
-        _currentStateIndex--;
-
         StopAllCoroutines();
-        return StartCoroutine(ShowUndoSequence());
+        return _currentStateIndex > 0 ? StartCoroutine(UndoToLastPlayerMovePoint()) : null;
     }
 
     public Coroutine Redo()
     {
-        if (_currentStateIndex >= LatestStateIndex) return null;
-
-        _currentStateIndex++;
-
         StopAllCoroutines();
-        return StartCoroutine(ShowRedoSequence());
+        return _currentStateIndex < LatestStateIndex ? StartCoroutine(RedoToLastPlayerMovePoint()) : null;
     }
 
-    private IEnumerator ShowUndoSequence()
+    private IEnumerator UndoToLastPlayerMovePoint()
     {
         yield return SequenceStart();
 
+        do
+        {
+            _currentStateIndex--;
+            yield return UndoOnceSequence();
+        }
+        while (!CanPlayerMove() && _currentStateIndex > 0);
+
+        yield return SequenceEnd();
+    }
+
+    private IEnumerator RedoToLastPlayerMovePoint()
+    {
+        yield return SequenceStart();
+
+        do
+        {
+            _currentStateIndex++;
+            yield return RedoOnceSequence();
+        }
+        while (!CanPlayerMove() && _currentStateIndex < LatestStateIndex);
+
+        yield return SequenceEnd();
+    }
+
+    private IEnumerator UndoOnceSequence()
+    {
         int previousStateIndex = _currentStateIndex + 1;
         BattleState previousState = _states[previousStateIndex];
         for (int i = 0; i < previousState.RecordCount; i++)
@@ -90,11 +108,9 @@ public class BattleHistory : MonoBehaviour
             CharacterRecord olderRecord = FindPreviousRecord(recordToUndo.Character, _currentStateIndex);
             yield return olderRecord.GetApplySequence();
         }
-
-        yield return SequenceEnd();
     }
 
-    private IEnumerator ShowRedoSequence()
+    private IEnumerator RedoOnceSequence()
     {
         yield return SequenceStart();
 
@@ -102,6 +118,11 @@ public class BattleHistory : MonoBehaviour
         yield return currentState.GetAllApplySequences();
 
         yield return SequenceEnd();
+    }
+
+    private bool CanPlayerMove()
+    {
+        return _battle.CurrentFactionTurn == _battle.PlayerFaction && _battle.CountMoveableCharacters(_battle.PlayerFaction) > 0;
     }
 
     private IEnumerator SequenceStart()
@@ -121,10 +142,6 @@ public class BattleHistory : MonoBehaviour
     {
         BattleState state = _states[_currentStateIndex];
         _battle.StartTurn(state.CurrentTurn);
-        if (state.IsTurnChange)
-        {
-            _battle.PlayTurnChangeAnimation();
-        }
     }
 
     private void InsertState(BattleState state)

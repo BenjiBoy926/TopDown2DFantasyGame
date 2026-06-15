@@ -12,13 +12,14 @@ public class Battle : MonoBehaviour
     public float CellHeight => _field.CellHeight;
     public bool IsTurnChangeAnimationPlaying => _turn.IsAnimationPlaying;
     public Faction CurrentFactionTurn => _turn.CurrentFaction;
-    public Faction StartingFaction => _turn.StartingFaction;
+    public Faction PlayerFaction => _player.Faction;
     public IReadOnlyCollection<Character> AllCharacters => _allCharacters;
 
     private BattleSetup _setup;
     private Battlefield _field;
     private BattleTurn _turn;
     private BattleHistory _history;
+    private Player _player;
     private readonly HashSet<Character> _allCharacters = new();
 
     public void Register(Character character)
@@ -34,9 +35,9 @@ public class Battle : MonoBehaviour
         _allCharacters.Add(character);
     }
 
-    public void StartFirstTurn()
+    public void StartPlayerTurn()
     {
-        _turn.StartFirstTurn();
+        _turn.StartTurn(PlayerFaction);
     }
 
     public void StartNextTurn()
@@ -49,9 +50,9 @@ public class Battle : MonoBehaviour
         _turn.SetCurrentTurn(faction);
     }
     
-    public void PlayTurnChangeAnimation()
+    public int CountMoveableCharacters(Faction faction)
     {
-        _turn.PlayTurnChangeAnimation();
+        return _turn.CountMoveableCharacters(faction);
     }
 
     public Vector2 SnapToGrid(Vector2 position)
@@ -125,6 +126,7 @@ public class Battle : MonoBehaviour
         _field = GetComponent<Battlefield>();
         _turn = GetComponent<BattleTurn>();
         _history = GetComponent<BattleHistory>();
+        _player = GetComponentInChildren<Player>();
     }
 
     private void Start()
