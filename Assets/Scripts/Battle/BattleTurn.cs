@@ -101,7 +101,7 @@ public class BattleTurn : MonoBehaviour
 
         if (iterations >= maxIterations)
         {
-            throw new System.Exception($"There are no moveable characters in any factions in the battle, so we cannot start the next turn");
+            throw new Exception($"There are no moveable characters in any factions in the battle, so we cannot start the next turn");
         }
         return nextFactionIndex;
     }
@@ -143,7 +143,7 @@ public class BattleTurn : MonoBehaviour
         return canStillMove;
     }
 
-    private void GetCharactersInFaction(Faction faction, List<Character> characters)
+    public void GetCharactersInFaction(Faction faction, List<Character> characters)
     {
         characters.Clear();
         foreach (Character character in _battle.AllCharacters)

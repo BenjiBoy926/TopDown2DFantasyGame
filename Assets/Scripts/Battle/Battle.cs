@@ -49,7 +49,12 @@ public class Battle : MonoBehaviour
     {
         _turn.SetCurrentTurn(faction);
     }
-    
+
+    public void GetCharactersInFaction(Faction faction, List<Character> result)
+    {
+        _turn.GetCharactersInFaction(faction, result);
+    }
+
     public int CountMoveableCharacters(Faction faction)
     {
         return _turn.CountMoveableCharacters(faction);
