@@ -33,7 +33,10 @@ public class BattleHistory : MonoBehaviour
         state.SetCurrentTurn(faction);
         foreach (Character character in characters)
         {
-            state.AddRecord(character);
+            if (character.IsInBattle)
+            {
+                state.AddRecord(character);
+            }
         }
         InsertState(state);
     }

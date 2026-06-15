@@ -43,6 +43,7 @@ public class Character : MonoBehaviour
     public int TraversalRange => _stats.TraversalRange;
     public bool IsOneShotAnimationPlaying => _animator.IsOneShotAnimationPlaying;
     public static bool IsAnyCharacterActing => _actingCharacters.Count > 0;
+    public bool IsInBattle => gameObject.activeSelf;
 
     [SerializeField] private Faction _faction;
     [SerializeField] private Color _usedMoveFadeColor = Color.gray;
