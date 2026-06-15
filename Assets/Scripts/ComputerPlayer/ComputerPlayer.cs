@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Battle))]
@@ -62,6 +63,7 @@ public class ComputerPlayer : MonoBehaviour
     {
         // For now we just get all characters, but eventually we will group them by "squadrons"
         _battle.GetCharactersInFaction(_battle.CurrentFactionTurn, result);
+        result.RemoveAll(c => c.IsDead);
     }
 
     private IEnumerator Move(Character character)
