@@ -63,7 +63,17 @@ public class ComputerPlayer : MonoBehaviour
     {
         // For now we just get all characters, but eventually we will group them by "squadrons"
         _battle.GetCharactersInFaction(_battle.CurrentFactionTurn, result);
-        result.RemoveAll(c => c.IsDead);
+        result.RemoveAll(ShouldNotMove);
+    }
+
+    private bool ShouldNotMove(Character character)
+    {
+        return !ShouldMove(character);
+    }
+
+    private bool ShouldMove(Character character)
+    {
+        return character.Faction == _faction && !character.IsDead;
     }
 
     private IEnumerator Move(Character character)
