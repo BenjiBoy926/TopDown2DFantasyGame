@@ -54,6 +54,7 @@ public class Character : MonoBehaviour
     private CharacterRange _range;
     private CharacterMovePreview _preview;
     private CharacterAttackBehaviour _attackBehaviour;
+    private CharacterHurtBehaviour _hurtBehaviour;
     private CharacterDefendBehaviour _defendBehaviour;
     private CharacterHealBehaviour _healBehaviour;
     private CharacterBeHealedBehaviour _beHealedBehaviour;
@@ -70,6 +71,7 @@ public class Character : MonoBehaviour
         _range = GetComponent<CharacterRange>();
         _preview = GetComponent<CharacterMovePreview>();
         _attackBehaviour = GetComponent<CharacterAttackBehaviour>();
+        _hurtBehaviour = GetComponent<CharacterHurtBehaviour>();
         _defendBehaviour = GetComponent<CharacterDefendBehaviour>();
         _healBehaviour = GetComponent<CharacterHealBehaviour>();
         _beHealedBehaviour = GetComponent<CharacterBeHealedBehaviour>();
@@ -129,6 +131,11 @@ public class Character : MonoBehaviour
         return _animator.Die(); 
     }
 
+    public YieldInstruction PlayAttackConnectShake()
+    {
+        return _hurtBehaviour.PlayAttackConnectShake();
+    }
+
     public void PlayIdleAnimation()
     {
         SetIsRunning(false);
@@ -183,6 +190,11 @@ public class Character : MonoBehaviour
     public IEnumerator GetMeleeSwipeSequence(Character other)
     {
         return _attackBehaviour.GetMeleeSwipeSequence(other);
+    }
+
+    public IEnumerator GetHurtSequence(Character attacker)
+    {
+        return _hurtBehaviour.GetHurtSequence(attacker);
     }
 
     public void BeginMove()
