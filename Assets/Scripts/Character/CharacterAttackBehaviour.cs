@@ -4,6 +4,7 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Character))]
+[RequireComponent(typeof(CharacterHurtBehaviour))]
 public class CharacterAttackBehaviour : MonoBehaviour
 {
     private const float ApproxFrameDuration = .1f;
@@ -24,12 +25,14 @@ public class CharacterAttackBehaviour : MonoBehaviour
     [SerializeField] private AudioClip _hurtClip;
 
     private Character _character;
+    private CharacterHurtBehaviour _hurtBehaviour;
     private ArrowBlur _arrowBlur;
     private bool _isAttackInitiator = false;
 
     private void Awake()
     {
         _character = GetComponent<Character>();
+        _hurtBehaviour = GetComponent<CharacterHurtBehaviour>();
         _arrowBlur = GetComponentInChildren<ArrowBlur>();
     }
 
@@ -47,7 +50,8 @@ public class CharacterAttackBehaviour : MonoBehaviour
 
         EazySoundManager.PlaySound(_hurtClip);
         MoveToCellCenter();
-        Coroutine otherHurtRoutine = StartCoroutine(other.GetHurtSequence(_character));
+        CharacterHurtBehaviour otherHurtBehaviour = other.GetComponent<CharacterHurtBehaviour>();
+        Coroutine otherHurtRoutine = StartCoroutine(otherHurtBehaviour.GetHurtSequence(_character));
         while (_character.IsOneShotAnimationPlaying)
         {
             yield return null;
@@ -69,7 +73,8 @@ public class CharacterAttackBehaviour : MonoBehaviour
         yield return GetMeleeSwipeSequence(other);
         yield return otherSwipeRoutine;
 
-        IEnumerator otherHurtSequence = other.GetHurtSequence(_character);
+        CharacterHurtBehaviour otherHurtBehaviour = other.GetComponent<CharacterHurtBehaviour>();
+        IEnumerator otherHurtSequence = otherHurtBehaviour.GetHurtSequence(_character);
         Coroutine otherHurtRoutine = StartCoroutine(otherHurtSequence);
         yield return GetHurtSequence(other);
         yield return otherHurtRoutine;
@@ -135,14 +140,15 @@ public class CharacterAttackBehaviour : MonoBehaviour
             EazySoundManager.PlaySound(_attackConnectClip);
         }
         _character.PauseAnimation();
-        yield return other.PlayAttackConnectShake();
+        CharacterHurtBehaviour otherHurtBehaviour = other.GetComponent<CharacterHurtBehaviour>();
+        yield return otherHurtBehaviour.PlayAttackConnectShake();
         _character.ResumeAnimation();
     }
 
     private IEnumerator GetHurtSequence(Character other)
     {
         EazySoundManager.PlaySound(_hurtClip);
-        return _character.GetHurtSequence(other);
+        return _hurtBehaviour.GetHurtSequence(other);
     }
 
     private IEnumerator EndSequence(Character other)
