@@ -135,6 +135,9 @@ public class ComputerPlayer : MonoBehaviour
 
     private float ScoreAttack(Character character, Character target)
     {
-        return 0;
+        int healthBeforeAttack = target.CurrentHealth;
+        int healthAfterAttack = target.CalculateHealthAfterHitFrom(character);
+        int damageDealt = healthBeforeAttack - healthAfterAttack;
+        return (float)damageDealt / healthBeforeAttack;
     }
 }
