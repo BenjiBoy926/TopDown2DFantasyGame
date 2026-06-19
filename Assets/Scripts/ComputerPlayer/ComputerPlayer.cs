@@ -107,7 +107,8 @@ public class ComputerPlayer : MonoBehaviour
     {
         return character != target &&
             character.Faction != target.Faction &&
-            character.IsReachable(target.CurrentCell);
+            character.IsReachable(target.CurrentCell) &&
+            !target.IsDead;
     }
 
     private Coroutine AttackSomeone(Character character, List<Character> attackable)
