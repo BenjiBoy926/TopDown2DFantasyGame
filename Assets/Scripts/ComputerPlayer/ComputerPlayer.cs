@@ -1,21 +1,27 @@
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Battle))]
+[RequireComponent(typeof(ComputerPlayerMove))]
 public class ComputerPlayer : MonoBehaviour
 {
+    public IReadOnlyCollection<Character> AllCharacters => _battle.AllCharacters;
+
     [SerializeField] private float _initialStartDelay = 1f;
+    [SerializeField, ReadOnly] private List<Character> _characters = new();
     private Battle _battle;
     private Player _player;
     private Faction _faction;
-    private readonly List<Character> _characters = new();
     private readonly List<Character> _attackableCharacterScratch = new();
+    private ComputerPlayerMove _move;
 
     private void Awake()
     {
         _battle = GetComponent<Battle>();
         _player = GetComponentInChildren<Player>();
+        _move = GetComponent<ComputerPlayerMove>();
     }
 
     private void OnEnable()
@@ -49,7 +55,7 @@ public class ComputerPlayer : MonoBehaviour
         for (int i = 0; i < _characters.Count; i++)
         {
             Character character = _characters[i];
-            yield return Move(character);
+            yield return _move.Move(character);
         }
 
         // Moving the charaters did not trigger the end of the turn, so we need to start the next turn manually
@@ -74,95 +80,5 @@ public class ComputerPlayer : MonoBehaviour
     private bool ShouldMove(Character character)
     {
         return character.Faction == _faction && !character.IsDead;
-    }
-
-    private IEnumerator Move(Character character)
-    {
-        character.RefreshRange();
-        GetAttackableCharacters(character, _attackableCharacterScratch);
-        if (_attackableCharacterScratch.Count > 0)
-        {
-            yield return AttackSomeone(character, _attackableCharacterScratch);
-        }
-        else
-        {
-            // TODO: move to a better position first
-            yield return character.Defend();
-        }
-    }
-
-    private void GetAttackableCharacters(Character character, List<Character> attackable)
-    {
-        attackable.Clear();
-        foreach (var other in _battle.AllCharacters)
-        {
-            if (IsAttackable(character, other))
-            {
-                attackable.Add(other);
-            }
-        }
-    }
-
-    private bool IsAttackable(Character character, Character target)
-    {
-        return character != target &&
-            character.Faction != target.Faction &&
-            character.IsReachable(target.CurrentCell) &&
-            !target.IsDead;
-    }
-
-    private Coroutine AttackSomeone(Character character, List<Character> attackable)
-    {
-        Character target = GetBestTarget(character, attackable);
-        return character.Attack(target);
-    }
-
-    private Character GetBestTarget(Character character, List<Character> attackable)
-    {
-        Character bestTarget = null;
-        float bestScore = float.MinValue;
-        foreach (var target in attackable)
-        {
-            float score = GetAttackScore(character, target);
-            if (score > bestScore)
-            {
-                bestScore = score;
-                bestTarget = target;
-            }
-        }
-        return bestTarget;
-    }
-
-    private float GetAttackScore(Character character, Character target)
-    {
-        return GetAttackHealthScore(character, target) + GetAttackTravelScore(character, target);
-    }
-
-    private static float GetAttackTravelScore(Character character, Character target)
-    {
-        Vector2Int targetCell = target.CurrentCell;
-        return GetTravelScore(character, targetCell);
-    }
-
-    private static float GetAttackHealthScore(Character character, Character target)
-    {
-        int healthBeforeAttack = target.CurrentHealth;
-        int healthAfterAttack = target.CalculateHealthAfterHitFrom(character);
-        int damageDealt = healthBeforeAttack - healthAfterAttack;
-        return (float)damageDealt / healthBeforeAttack;
-    }
-
-    private Vector2Int GetBestAdjacentTile(Character character, Character target)
-    {
-        CellNeighbors neighbors = CellNeighbors.Get(target.CurrentCell);
-        List<Vector2Int> adjacentCells = new() { neighbors.Left, neighbors.Right, neighbors.Up, neighbors.Down };
-        return adjacentCells[0]; // todo pick best stayable cell
-    }
-
-    private static float GetTravelScore(Character character, Vector2Int targetCell)
-    {
-        Vector2Int myCell = character.CurrentCell;
-        int rectDistance = CharacterRange.RectangularDistance(myCell, targetCell);
-        return (float)rectDistance / character.TraversalRange;
     }
 }
