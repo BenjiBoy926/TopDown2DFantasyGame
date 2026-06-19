@@ -116,6 +116,7 @@ public class ComputerPlayerMove : MonoBehaviour
         return cells.Where(IsStayable).OrderByDescending(GetTravelScore).FirstOrDefault();
     }
 
+    // TODO: reduce the score if this cell shows up in other stayable tiles of allies
     private float GetTravelScore(Vector2Int targetCell)
     {
         Vector2Int myCell = _character.CurrentCell;
@@ -123,6 +124,7 @@ public class ComputerPlayerMove : MonoBehaviour
         return (float)rectDistance / _character.TraversalRange;
     }
 
+    // TODO: reduce the score if the cell shows up in other stayable tiles of allies
     private Vector2Int GetBestDefendCell()
     {
         Character closestEnemy = GetClosestEnemy();
