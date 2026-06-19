@@ -33,7 +33,8 @@ public class ComputerPlayerMove : MonoBehaviour
         }
         else
         {
-            // TODO: move to a better position first
+            Vector2Int cell = GetBestStayableCell();
+            yield return MoveToCell(cell);
             yield return _character.Defend();
         }
     }
@@ -57,10 +58,15 @@ public class ComputerPlayerMove : MonoBehaviour
     {
         Character target = GetBestTarget(attackable);
         Vector2Int adjacentCell = GetBestAdjacentTile(target);
+        yield return MoveToCell(adjacentCell);
+        yield return _character.Attack(target);
+    }
+
+    private YieldInstruction MoveToCell(Vector2Int adjacentCell)
+    {
         Vector2 adjacentPosition = _character.CellToWorld(adjacentCell);
         _character.SetIsRunning(true);
-        yield return _character.transform.DOMove(adjacentPosition, 1).WaitForCompletion();
-        yield return _character.Attack(target);
+        return _character.transform.DOMove(adjacentPosition, 1).WaitForCompletion();
     }
 
     private Character GetBestTarget(List<Character> attackable)
@@ -97,12 +103,22 @@ public class ComputerPlayerMove : MonoBehaviour
     {
         CellNeighbors neighbors = CellNeighbors.Get(target.CurrentCell);
         List<Vector2Int> adjacentCells = new() { neighbors.Left, neighbors.Right, neighbors.Up, neighbors.Down };
-        return adjacentCells.Where(IsStayable).OrderBy(GetTravelScore).Reverse().FirstOrDefault();
+        return GetBestStayableCell(adjacentCells);
     }
 
     private bool IsStayable(Vector2Int cell)
     {
         return _character.IsStayable(cell);
+    }
+
+    private Vector2Int GetBestStayableCell()
+    {
+        return GetBestStayableCell(_character.StayableCells);
+    }
+
+    private Vector2Int GetBestStayableCell(IReadOnlyCollection<Vector2Int> cells)
+    {
+        return cells.Where(IsStayable).OrderBy(GetTravelScore).Reverse().FirstOrDefault();
     }
 
     private float GetTravelScore(Vector2Int targetCell)
