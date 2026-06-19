@@ -159,6 +159,11 @@ public class CharacterRange : MonoBehaviour
         return _reachableCells.Contains(cell);
     }
 
+    public bool IsStayable(Vector2Int cell)
+    {
+        return _stayableCells.Contains(cell);
+    }
+
     private void Add(CellCost cell)
     {
         _traversibleCells.Add(cell.Cell);

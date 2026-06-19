@@ -294,6 +294,11 @@ public class Character : MonoBehaviour
         return _range.IsReachable(cell);
     }
 
+    public bool IsStayable(Vector2Int cell)
+    {
+        return _range.IsStayable(cell);
+    }
+
     // ── Grid ─────────────────────────────────────────────────────────────
 
     public Vector2 CellToWorld(Vector2Int cell)

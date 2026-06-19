@@ -2,8 +2,8 @@ using DG.Tweening;
 using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 [RequireComponent(typeof(ComputerPlayer))]
 public class ComputerPlayerMove : MonoBehaviour
@@ -41,13 +41,8 @@ public class ComputerPlayerMove : MonoBehaviour
     private void GetAttackableCharacters(List<Character> attackable)
     {
         attackable.Clear();
-        foreach (var other in _computerPlayer.AllCharacters)
-        {
-            if (IsAttackable(other))
-            {
-                attackable.Add(other);
-            }
-        }
+        IEnumerable<Character> attackableIterator = _computerPlayer.AllCharacters.Where(IsAttackable);
+        attackable.AddRange(attackableIterator);
     }
 
     private bool IsAttackable(Character target)
@@ -70,18 +65,13 @@ public class ComputerPlayerMove : MonoBehaviour
 
     private Character GetBestTarget(List<Character> attackable)
     {
-        Character bestTarget = null;
-        float bestScore = float.MinValue;
-        foreach (var target in attackable)
-        {
-            float score = GetAttackScore(target);
-            if (score > bestScore)
-            {
-                bestScore = score;
-                bestTarget = target;
-            }
-        }
-        return bestTarget;
+        attackable.Sort(CompareTargets);
+        return attackable[^1];
+    }
+
+    private int CompareTargets(Character a, Character b)
+    {
+        return GetAttackScore(a).CompareTo(GetAttackScore(b));
     }
 
     private float GetAttackScore(Character target)
@@ -107,7 +97,12 @@ public class ComputerPlayerMove : MonoBehaviour
     {
         CellNeighbors neighbors = CellNeighbors.Get(target.CurrentCell);
         List<Vector2Int> adjacentCells = new() { neighbors.Left, neighbors.Right, neighbors.Up, neighbors.Down };
-        return adjacentCells[0]; // todo pick best stayable cell
+        return adjacentCells.Where(IsStayable).OrderBy(GetTravelScore).Reverse().FirstOrDefault();
+    }
+
+    private bool IsStayable(Vector2Int cell)
+    {
+        return _character.IsStayable(cell);
     }
 
     private float GetTravelScore(Vector2Int targetCell)
