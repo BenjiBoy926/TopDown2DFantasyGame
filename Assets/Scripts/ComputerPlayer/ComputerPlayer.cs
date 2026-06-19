@@ -123,7 +123,7 @@ public class ComputerPlayer : MonoBehaviour
         float bestScore = float.MinValue;
         foreach (var target in attackable)
         {
-            float score = ScoreAttack(character, target);
+            float score = GetAttackScore(character, target);
             if (score > bestScore)
             {
                 bestScore = score;
@@ -133,7 +133,20 @@ public class ComputerPlayer : MonoBehaviour
         return bestTarget;
     }
 
-    private float ScoreAttack(Character character, Character target)
+    private float GetAttackScore(Character character, Character target)
+    {
+        return GetAttackHealthScore(character, target) + GetAttackTravelScore(character, target);
+    }
+
+    private static float GetAttackTravelScore(Character character, Character target)
+    {
+        Vector2Int myCell = character.CurrentCell;
+        Vector2Int targetCell = target.CurrentCell;
+        int rectDistance = CharacterRange.RectangularDistance(myCell, targetCell);
+        return (float)rectDistance / character.TraversalRange;
+    }
+
+    private static float GetAttackHealthScore(Character character, Character target)
     {
         int healthBeforeAttack = target.CurrentHealth;
         int healthAfterAttack = target.CalculateHealthAfterHitFrom(character);

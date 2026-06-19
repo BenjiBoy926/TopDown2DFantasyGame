@@ -222,7 +222,7 @@ public class CharacterRange : MonoBehaviour
         return (position - cellPosition).sqrMagnitude;
     }
 
-    private static int RectangularDistance(Vector2Int a, Vector2Int b)
+    public static int RectangularDistance(Vector2Int a, Vector2Int b)
     {
         int xDist = Mathf.Abs(a.x - b.x);
         int yDist = Mathf.Abs(a.y - b.y);
