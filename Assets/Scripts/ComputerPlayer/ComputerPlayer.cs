@@ -140,10 +140,8 @@ public class ComputerPlayer : MonoBehaviour
 
     private static float GetAttackTravelScore(Character character, Character target)
     {
-        Vector2Int myCell = character.CurrentCell;
         Vector2Int targetCell = target.CurrentCell;
-        int rectDistance = CharacterRange.RectangularDistance(myCell, targetCell);
-        return (float)rectDistance / character.TraversalRange;
+        return GetTravelScore(character, targetCell);
     }
 
     private static float GetAttackHealthScore(Character character, Character target)
@@ -152,5 +150,19 @@ public class ComputerPlayer : MonoBehaviour
         int healthAfterAttack = target.CalculateHealthAfterHitFrom(character);
         int damageDealt = healthBeforeAttack - healthAfterAttack;
         return (float)damageDealt / healthBeforeAttack;
+    }
+
+    private Vector2Int GetBestAdjacentTile(Character character, Character target)
+    {
+        CellNeighbors neighbors = CellNeighbors.Get(target.CurrentCell);
+        List<Vector2Int> adjacentCells = new() { neighbors.Left, neighbors.Right, neighbors.Up, neighbors.Down };
+        return adjacentCells[0]; // todo pick best stayable cell
+    }
+
+    private static float GetTravelScore(Character character, Vector2Int targetCell)
+    {
+        Vector2Int myCell = character.CurrentCell;
+        int rectDistance = CharacterRange.RectangularDistance(myCell, targetCell);
+        return (float)rectDistance / character.TraversalRange;
     }
 }
