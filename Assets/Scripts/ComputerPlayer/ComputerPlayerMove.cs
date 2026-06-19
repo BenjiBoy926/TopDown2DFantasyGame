@@ -33,7 +33,7 @@ public class ComputerPlayerMove : MonoBehaviour
         }
         else
         {
-            Vector2Int cell = GetBestStayableCell();
+            Vector2Int cell = GetBestDefendCell();
             yield return MoveToCell(cell);
             yield return _character.Defend();
         }
@@ -111,14 +111,9 @@ public class ComputerPlayerMove : MonoBehaviour
         return _character.IsStayable(cell);
     }
 
-    private Vector2Int GetBestStayableCell()
-    {
-        return GetBestStayableCell(_character.StayableCells);
-    }
-
     private Vector2Int GetBestStayableCell(IReadOnlyCollection<Vector2Int> cells)
     {
-        return cells.Where(IsStayable).OrderBy(GetTravelScore).Reverse().FirstOrDefault();
+        return cells.Where(IsStayable).OrderByDescending(GetTravelScore).FirstOrDefault();
     }
 
     private float GetTravelScore(Vector2Int targetCell)
@@ -126,5 +121,22 @@ public class ComputerPlayerMove : MonoBehaviour
         Vector2Int myCell = _character.CurrentCell;
         int rectDistance = CharacterRange.RectangularDistance(myCell, targetCell);
         return (float)rectDistance / _character.TraversalRange;
+    }
+
+    private Vector2Int GetBestDefendCell()
+    {
+        Character closestEnemy = GetClosestEnemy();
+        int RectDistanceToClosestEnemy(Vector2Int cell) => CharacterRange.RectangularDistance(closestEnemy.CurrentCell, cell);
+        return _character.StayableCells.OrderBy(RectDistanceToClosestEnemy).FirstOrDefault();
+    }
+
+    private Character GetClosestEnemy()
+    {
+        return _computerPlayer.AllCharacters.OrderByDescending(RectangularDistanceToTarget).FirstOrDefault();
+    }
+
+    private int RectangularDistanceToTarget(Character target)
+    {
+        return CharacterRange.RectangularDistance(_character.CurrentCell, target.CurrentCell);
     }
 }
