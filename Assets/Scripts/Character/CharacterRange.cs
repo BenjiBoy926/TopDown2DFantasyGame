@@ -154,6 +154,11 @@ public class CharacterRange : MonoBehaviour
         return canMoveThroughOccupant;
     }
 
+    public bool IsReachable(Vector2Int cell)
+    {
+        return _reachableCells.Contains(cell);
+    }
+
     private void Add(CellCost cell)
     {
         _traversibleCells.Add(cell.Cell);

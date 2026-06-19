@@ -257,6 +257,11 @@ public class Character : MonoBehaviour
         _range.Hide();
     }
 
+    public bool IsReachable(Vector2Int cell)
+    {
+        return _range.IsReachable(cell);
+    }
+
     public Vector2 CellToWorld(Vector2Int cell)
     {
         return _battle.CellToWorld(cell);

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Battle))]
@@ -11,6 +10,7 @@ public class ComputerPlayer : MonoBehaviour
     private Player _player;
     private Faction _faction;
     private readonly List<Character> _characters = new();
+    private readonly List<Character> _attackableCharacterScratch = new();
 
     private void Awake()
     {
@@ -78,6 +78,34 @@ public class ComputerPlayer : MonoBehaviour
 
     private IEnumerator Move(Character character)
     {
-        yield return character.Defend(); //lol
+        character.RefreshRange();
+        GetAttackableCharacters(character, _attackableCharacterScratch);
+        if (_attackableCharacterScratch.Count > 0)
+        {
+            // TODO: actually move to an adjacent space lol
+            Character target = _attackableCharacterScratch[Random.Range(0, _attackableCharacterScratch.Count)];
+            yield return character.Attack(target);
+        }
+        else
+        {
+            yield return character.Defend();
+        }
+    }
+
+    private void GetAttackableCharacters(Character character, List<Character> attackable)
+    {
+        attackable.Clear();
+        foreach (var other in _battle.AllCharacters)
+        {
+            if (IsAttackable(character, other))
+            {
+                attackable.Add(other);
+            }
+        }
+    }
+
+    private bool IsAttackable(Character character, Character target)
+    {
+        return character != target && character.Faction != target.Faction && character.IsReachable(target.CurrentCell);
     }
 }
