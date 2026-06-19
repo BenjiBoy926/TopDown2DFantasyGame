@@ -82,12 +82,11 @@ public class ComputerPlayer : MonoBehaviour
         GetAttackableCharacters(character, _attackableCharacterScratch);
         if (_attackableCharacterScratch.Count > 0)
         {
-            // TODO: actually move to an adjacent space lol
-            Character target = _attackableCharacterScratch[Random.Range(0, _attackableCharacterScratch.Count)];
-            yield return character.Attack(target);
+            yield return AttackSomeone(character, _attackableCharacterScratch);
         }
         else
         {
+            // TODO: move to a better position first
             yield return character.Defend();
         }
     }
@@ -106,6 +105,35 @@ public class ComputerPlayer : MonoBehaviour
 
     private bool IsAttackable(Character character, Character target)
     {
-        return character != target && character.Faction != target.Faction && character.IsReachable(target.CurrentCell);
+        return character != target &&
+            character.Faction != target.Faction &&
+            character.IsReachable(target.CurrentCell);
+    }
+
+    private Coroutine AttackSomeone(Character character, List<Character> attackable)
+    {
+        Character target = GetBestTarget(character, attackable);
+        return character.Attack(target);
+    }
+
+    private Character GetBestTarget(Character character, List<Character> attackable)
+    {
+        Character bestTarget = null;
+        float bestScore = float.MinValue;
+        foreach (var target in attackable)
+        {
+            float score = ScoreAttack(character, target);
+            if (score > bestScore)
+            {
+                bestScore = score;
+                bestTarget = target;
+            }
+        }
+        return bestTarget;
+    }
+
+    private float ScoreAttack(Character character, Character target)
+    {
+        return 0;
     }
 }
