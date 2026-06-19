@@ -112,6 +112,7 @@ public class Character : MonoBehaviour
         {
             _battle.Unregister(this);
         }
+        _actingCharacters.Remove(this);
     }
 
     // ── Animation ────────────────────────────────────────────────────────
