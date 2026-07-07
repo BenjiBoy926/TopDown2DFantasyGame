@@ -110,7 +110,6 @@ public class ComputerPlayerMove : MonoBehaviour
         return cells.Where(IsStayable).OrderByDescending(GetCellScore).FirstOrDefault();
     }
 
-    // TODO: reduce the score if this cell shows up in other stayable tiles of allies
     private float GetCellScore(Vector2Int targetCell)
     {
         bool CanStayInCell(Character other) => other.IsStayable(targetCell);
