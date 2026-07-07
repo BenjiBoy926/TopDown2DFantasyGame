@@ -82,16 +82,10 @@ public class ComputerPlayerMove : MonoBehaviour
 
     private float GetAttackScore(Character target)
     {
-        return GetAttackHealthScore(target) + GetAttackTravelScore(target);
+        return GetAttackDamageScore(target);
     }
 
-    private float GetAttackTravelScore(Character target)
-    {
-        Vector2Int targetCell = target.CurrentCell;
-        return GetTravelScore(targetCell);
-    }
-
-    private float GetAttackHealthScore(Character target)
+    private float GetAttackDamageScore(Character target)
     {
         int healthBeforeAttack = target.CurrentHealth;
         int healthAfterAttack = target.CalculateHealthAfterHitFrom(_character);
@@ -113,18 +107,22 @@ public class ComputerPlayerMove : MonoBehaviour
 
     private Vector2Int GetBestStayableCell(IReadOnlyCollection<Vector2Int> cells)
     {
-        return cells.Where(IsStayable).OrderByDescending(GetTravelScore).FirstOrDefault();
+        return cells.Where(IsStayable).OrderByDescending(GetCellScore).FirstOrDefault();
     }
 
     // TODO: reduce the score if this cell shows up in other stayable tiles of allies
-    private float GetTravelScore(Vector2Int targetCell)
+    private float GetCellScore(Vector2Int targetCell)
     {
-        Vector2Int myCell = _character.CurrentCell;
-        int rectDistance = CharacterRange.RectangularDistance(myCell, targetCell);
-        return (float)rectDistance / _character.TraversalRange;
+        bool CanStayInCell(Character other) => other.IsStayable(targetCell);
+        int alliesThatCanStayInThisCell = _computerPlayer.AllCharacters.Where(IsAlly).Count(CanStayInCell);
+        return -alliesThatCanStayInThisCell;
     }
 
-    // TODO: reduce the score if the cell shows up in other stayable tiles of allies
+    private bool IsAlly(Character other)
+    {
+        return other != _character && other.Faction == _character.Faction;
+    }
+
     private Vector2Int GetBestDefendCell()
     {
         Character closestEnemy = GetClosestEnemy();
