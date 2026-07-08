@@ -138,18 +138,18 @@ public class CharacterRange : MonoBehaviour
 
     private bool IsTraversible(CellCost cell)
     {
-        if (cell.CostToArrive > _character.TraversalRange)
-        {
-            return false;
-        }
-        
-        TileBase tile = _character.GetTile(cell.Cell);
+        return cell.CostToArrive <= _character.TraversalRange && IsPassable(cell.Cell);
+    }
+
+    public bool IsPassable(Vector2Int cell)
+    {
+        TileBase tile = _character.GetTile(cell);
         if (tile && _wallTiles.Contains(tile))
         {
             return false;
         }
 
-        Character occupant = _character.GetOccupant(cell.Cell);
+        Character occupant = _character.GetOccupant(cell);
         bool canMoveThroughOccupant = !occupant || occupant.Faction == _character.Faction;
         return canMoveThroughOccupant;
     }

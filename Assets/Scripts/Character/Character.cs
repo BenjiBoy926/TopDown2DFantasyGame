@@ -333,6 +333,11 @@ public class Character : MonoBehaviour
         _battle.RefreshCell(this);
     }
 
+    public bool IsPassable(Vector2Int cell)
+    {
+        return _range.IsPassable(cell);
+    }
+
     // ── Health ───────────────────────────────────────────────────────────
 
     public void TakeDamageFrom(Character other)

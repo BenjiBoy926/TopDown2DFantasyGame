@@ -50,13 +50,15 @@ public class ComputerPlayerPathfinder : MonoBehaviour
         while (_next.Count > 0)
         {
             Node current = Dequeue();
+            _visited.Add(current);
+
             if (current.Cell == target)
             {
                 // TODO return actual path
                 return new();
             }
 
-
+            VisitNeighbors(current);
         }
 
         return new();
@@ -65,12 +67,18 @@ public class ComputerPlayerPathfinder : MonoBehaviour
     private void VisitNeighbors(Node node)
     {
         NodeNeighbors neighbors = NodeNeighbors.Get(node);
-
+        Visit(neighbors.Left);
+        Visit(neighbors.Right);
+        Visit(neighbors.Up);
+        Visit(neighbors.Down);
     }
 
     private void Visit(Node node)
     {
-        
+        if (ShouldEnqueue(node))
+        {
+            Enqueue(node);
+        }
     }
 
     private bool ShouldEnqueue(Node node)
@@ -80,30 +88,11 @@ public class ComputerPlayerPathfinder : MonoBehaviour
 
     private bool IsTraversible(Node node)
     {
-        // TODO: get this through the _character field
-        return true;
-        //if (node.Cost > _character.TraversalRange)
-        //{
-        //    return false;
-        //}
-
-        //TileBase tile = _character.GetTile(node.Cell);
-        //if (tile && _wallTiles.Contains(tile))
-        //{
-        //    return false;
-        //}
-
-        //Character occupant = _character.GetOccupant(node.Cell);
-        //bool canMoveThroughOccupant = !occupant || occupant.Faction == _character.Faction;
-        //return canMoveThroughOccupant;
+        return node.Cost <= _character.TraversalRange && _character.IsPassable(node.Cell);
     }
 
     private void Enqueue(Node node)
     {
-        if (_visited.Contains(node))
-            return;
-
-        _visited.Add(node);
         _next.Add(node);
     }
 
