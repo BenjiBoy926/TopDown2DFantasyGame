@@ -22,6 +22,7 @@ public class ComputerPlayerPathfinder : MonoBehaviour
     private YieldInstruction MoveDirectlyToCell(Character character, Vector2Int cell)
     {
         Vector2 nextPosition = character.CellToWorld(cell);
+        character.LookAt(nextPosition);
         return character.transform.DOMove(nextPosition, _speed)
             .SetSpeedBased()
             .SetEase(Ease.Linear)
