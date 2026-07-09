@@ -15,7 +15,6 @@ public class ComputerPlayer : MonoBehaviour
     private Battle _battle;
     private Player _player;
     private Faction _faction;
-    private readonly List<Character> _attackableCharacterScratch = new();
     private ComputerPlayerMove _move;
     private ComputerPlayerPathfinder _pathfinder;
 
