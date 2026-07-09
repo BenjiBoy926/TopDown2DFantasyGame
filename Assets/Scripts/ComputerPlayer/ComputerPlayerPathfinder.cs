@@ -48,6 +48,7 @@ public class ComputerPlayerPathfinder : MonoBehaviour
 
     private static readonly HashSet<Node> _visited = new();
     private static readonly List<Node> _next = new();
+    private static readonly List<Vector2Int> _path = new();
 
     public IEnumerator MoveToCell(Character character, Vector2Int cell)
     {
@@ -88,8 +89,7 @@ public class ComputerPlayerPathfinder : MonoBehaviour
 
             if (current.Cell == target)
             {
-                // TODO return actual path
-                return new();
+                return ReconstructPath(current);
             }
 
             VisitNeighbors(current);
@@ -162,5 +162,17 @@ public class ComputerPlayerPathfinder : MonoBehaviour
         int aCost = a.GetCost(_target);
         int bCost = b.GetCost(_target);
         return aCost.CompareTo(bCost);
+    }
+
+    private List<Vector2Int> ReconstructPath(Node node)
+    {
+        _path.Clear();
+        while (node != null)
+        {
+            _path.Add(node.Cell);
+            node = node.Parent;
+        }
+        _path.Reverse();
+        return _path;
     }
 }
