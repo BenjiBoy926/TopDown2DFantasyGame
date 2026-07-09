@@ -1,16 +1,27 @@
+using DG.Tweening;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using UnityEngine.Tilemaps;
 
 public class ComputerPlayerPathfinder : MonoBehaviour
 {
     public class Node
     {
-        public int Cost => Parent != null ? Parent.Cost + 1 : 0;
+        public int DistanceFromStart => Parent != null ? Parent.DistanceFromStart + 1 : 0;
 
         public Vector2Int Cell;
         public Node Parent;
+
+        public int GetCost(Vector2Int target)
+        {
+            return DistanceFromStart + GetEstimatedDistanceToEnd(target);
+        }
+
+        public int GetEstimatedDistanceToEnd(Vector2Int target)
+        {
+            return CharacterRange.RectangularDistance(Cell, target);
+        }
     }
 
     public class NodeNeighbors
@@ -30,11 +41,34 @@ public class ComputerPlayerPathfinder : MonoBehaviour
         }
     }
 
+    [SerializeField] private float _speed = 2;
+
     private Character _character;
     private Vector2Int _target;
 
     private static readonly HashSet<Node> _visited = new();
     private static readonly List<Node> _next = new();
+
+    public IEnumerator MoveToCell(Character character, Vector2Int cell)
+    {
+        List<Vector2Int> path = FindPath(character, cell);
+        character.SetIsRunning(true);
+        for (int i = 0; i < path.Count; i++)
+        {
+            Vector2Int nextCell = path[i];
+            yield return MoveDirectlyToCell(character, nextCell);
+        }
+        character.SetIsRunning(false);
+    }
+
+    private YieldInstruction MoveDirectlyToCell(Character character, Vector2Int cell)
+    {
+        Vector2 nextPosition = character.CellToWorld(cell);
+        return character.transform.DOMove(nextPosition, _speed)
+            .SetSpeedBased()
+            .SetEase(Ease.Linear)
+            .WaitForCompletion();
+    }
 
     public List<Vector2Int> FindPath(Character character, Vector2Int target)
     {
@@ -83,17 +117,28 @@ public class ComputerPlayerPathfinder : MonoBehaviour
 
     private bool ShouldEnqueue(Node node)
     {
-        return !_visited.Contains(node) && IsTraversible(node);
+        return IsTraversible(node);
     }
 
     private bool IsTraversible(Node node)
     {
-        return node.Cost <= _character.TraversalRange && _character.IsPassable(node.Cell);
+        return node.DistanceFromStart <= _character.TraversalRange && _character.IsPassable(node.Cell);
     }
 
     private void Enqueue(Node node)
     {
-        _next.Add(node);
+        int existingIndex = FindNodeInNext(node.Cell);
+        if (existingIndex >= 0)
+        {
+            if (node.DistanceFromStart < _next[existingIndex].DistanceFromStart)
+            {
+                _next[existingIndex] = node;
+            }
+        }
+        else
+        {
+            _next.Add(node);
+        }
     }
 
     private Node Dequeue()
@@ -101,8 +146,21 @@ public class ComputerPlayerPathfinder : MonoBehaviour
         if (_next.Count == 0)
             return null;
 
+        _next.Sort(CompareNodes);
         Node node = _next[0];
         _next.RemoveAt(0);
         return node;
+    }
+
+    private int FindNodeInNext(Vector2Int cell)
+    {
+        return _next.FindIndex(n => n.Cell == cell);
+    }
+
+    private int CompareNodes(Node a, Node b)
+    {
+        int aCost = a.GetCost(_target);
+        int bCost = b.GetCost(_target);
+        return aCost.CompareTo(bCost);
     }
 }

@@ -62,11 +62,9 @@ public class ComputerPlayerMove : MonoBehaviour
         yield return _character.Attack(target);
     }
 
-    private YieldInstruction MoveToCell(Vector2Int adjacentCell)
+    private IEnumerator MoveToCell(Vector2Int adjacentCell)
     {
-        Vector2 adjacentPosition = _character.CellToWorld(adjacentCell);
-        _character.SetIsRunning(true);
-        return _character.transform.DOMove(adjacentPosition, 1).WaitForCompletion();
+        return _computerPlayer.MoveToCell(_character, adjacentCell);
     }
 
     private Character GetBestTarget(List<Character> attackable)
