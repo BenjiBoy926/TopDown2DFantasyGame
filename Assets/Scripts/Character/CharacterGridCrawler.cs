@@ -40,11 +40,12 @@ public class CharacterGridCrawler : MonoBehaviour
         }
     }
 
-    private Character _character;
+    public IReadOnlyCollection<Node> Visited => _visited;
 
-    private static readonly HashSet<Node> _visited = new();
-    private static readonly List<Node> _next = new();
-    private static readonly List<Vector2Int> _path = new();
+    private Character _character;
+    private readonly HashSet<Node> _visited = new();
+    private readonly List<Node> _next = new();
+    private readonly List<Vector2Int> _path = new();
 
     private void Awake()
     {
@@ -137,7 +138,7 @@ public class CharacterGridCrawler : MonoBehaviour
         }
     }
 
-    private static void UpdateExistingNode(Node node, int existingIndex)
+    private void UpdateExistingNode(Node node, int existingIndex)
     {
         if (node.DistanceFromStart < _next[existingIndex].DistanceFromStart)
         {

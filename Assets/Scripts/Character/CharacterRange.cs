@@ -62,29 +62,13 @@ public class CharacterRange : MonoBehaviour
         _display.Hide();
     }
 
-    // TODO: put into CharacterGridCrawler
     private void RecalculateTraversibleCells()
     {
+        _gridCrawler.Crawl();
         _traversibleCells.Clear();
-        _searchQueue.Clear();
-
-        const int MaxIterations = 100;
-        int iterations = 0;
-
-        CellCost homeCell = new(_character.HomeCell, 0);
-        Add(homeCell);
-
-        while (_searchQueue.Count > 0)
+        foreach (var visitedNode in _gridCrawler.Visited)
         {
-            CellCost nextCell = _searchQueue.Dequeue();
-            VisitNeighbors(nextCell);
-
-            iterations++;
-            if (iterations > MaxIterations)
-            {
-                Debug.LogError("Max iterations reached!");
-                break;
-            }
+            _traversibleCells.Add(visitedNode.Cell);
         }
     }
 
@@ -123,33 +107,6 @@ public class CharacterRange : MonoBehaviour
         return ClampToCells(position, _reachableCells);
     }
 
-    private void VisitNeighbors(CellCost cell)
-    {
-        CellCostNeighbors neighbors = CellCostNeighbors.Get(cell);
-        Visit(neighbors.Left);
-        Visit(neighbors.Right);
-        Visit(neighbors.Up);
-        Visit(neighbors.Down);
-    }
-
-    private void Visit(CellCost cell)
-    {
-        if (ShouldAddCell(cell))
-        {
-            Add(cell);
-        }
-    }
-
-    private bool ShouldAddCell(CellCost cell)
-    {
-        return !_traversibleCells.Contains(cell.Cell) && IsTraversible(cell);
-    }
-
-    private bool IsTraversible(CellCost cell)
-    {
-        return cell.CostToArrive <= _character.TraversalRange && IsPassable(cell.Cell);
-    }
-
     public bool IsPassable(Vector2Int cell)
     {
         TileBase tile = _character.GetTile(cell);
@@ -171,12 +128,6 @@ public class CharacterRange : MonoBehaviour
     public bool IsStayable(Vector2Int cell)
     {
         return _stayableCells.Contains(cell);
-    }
-
-    private void Add(CellCost cell)
-    {
-        _traversibleCells.Add(cell.Cell);
-        _searchQueue.Enqueue(cell);
     }
 
     private void CheckAttackableEdgeCell(Vector2Int cell)
