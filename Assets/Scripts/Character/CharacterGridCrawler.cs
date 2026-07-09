@@ -1,7 +1,6 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(Character))]
 public class CharacterGridCrawler : MonoBehaviour
@@ -42,7 +41,6 @@ public class CharacterGridCrawler : MonoBehaviour
     }
 
     private Character _character;
-    private Vector2Int _target;
 
     private static readonly HashSet<Node> _visited = new();
     private static readonly List<Node> _next = new();
@@ -55,8 +53,28 @@ public class CharacterGridCrawler : MonoBehaviour
 
     public List<Vector2Int> FindPath(Vector2Int target)
     {
-        _target = target;
+        int CompareNodes(Node a, Node b)
+        {
+            int aCost = a.GetCost(target);
+            int bCost = b.GetCost(target);
+            return aCost.CompareTo(bCost);
+        }
 
+        Node targetNode = null;
+        void SortBeforeDequeue() => _next.Sort(CompareNodes);
+        bool ExitCondition(Node node) => node.Cell == target;
+        void ExitAction(Node node) => targetNode = node;
+        Crawl(SortBeforeDequeue, ExitCondition, ExitAction);
+        return ReconstructPath(targetNode);
+    }
+
+    public void Crawl() 
+    {
+        Crawl(null, null, null);
+    }
+
+    private void Crawl(Action sortBeforeDequeue, Predicate<Node> exitCondition, Action<Node> exitAction)
+    {
         _visited.Clear();
         _next.Clear();
 
@@ -65,18 +83,18 @@ public class CharacterGridCrawler : MonoBehaviour
 
         while (_next.Count > 0)
         {
+            sortBeforeDequeue?.Invoke();
             Node current = Dequeue();
             _visited.Add(current);
 
-            if (current.Cell == target)
+            if (exitCondition?.Invoke(current) == true)
             {
-                return ReconstructPath(current);
+                exitAction?.Invoke(current);
+                return;
             }
 
             VisitNeighbors(current);
         }
-
-        return new();
     }
 
     private void VisitNeighbors(Node node)
@@ -132,7 +150,6 @@ public class CharacterGridCrawler : MonoBehaviour
         if (_next.Count == 0)
             return null;
 
-        _next.Sort(CompareNodes);
         Node node = _next[0];
         _next.RemoveAt(0);
         return node;
@@ -141,13 +158,6 @@ public class CharacterGridCrawler : MonoBehaviour
     private int FindNodeInNext(Vector2Int cell)
     {
         return _next.FindIndex(n => n.Cell == cell);
-    }
-
-    private int CompareNodes(Node a, Node b)
-    {
-        int aCost = a.GetCost(_target);
-        int bCost = b.GetCost(_target);
-        return aCost.CompareTo(bCost);
     }
 
     private List<Vector2Int> ReconstructPath(Node node)
