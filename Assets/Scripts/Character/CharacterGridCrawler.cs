@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(Character))]
@@ -52,15 +53,14 @@ public class CharacterGridCrawler : MonoBehaviour
         _character = GetComponent<Character>();
     }
 
-    public List<Vector2Int> FindPath(Character character, Vector2Int target)
+    public List<Vector2Int> FindPath(Vector2Int target)
     {
-        _character = character;
         _target = target;
 
         _visited.Clear();
         _next.Clear();
 
-        Node start = new() { Cell = character.CurrentCell, Parent = null };
+        Node start = new() { Cell = _character.CurrentCell, Parent = null };
         Enqueue(start);
 
         while (_next.Count > 0)
@@ -111,14 +111,19 @@ public class CharacterGridCrawler : MonoBehaviour
         int existingIndex = FindNodeInNext(node.Cell);
         if (existingIndex >= 0)
         {
-            if (node.DistanceFromStart < _next[existingIndex].DistanceFromStart)
-            {
-                _next[existingIndex] = node;
-            }
+            UpdateExistingNode(node, existingIndex);
         }
         else
         {
             _next.Add(node);
+        }
+    }
+
+    private static void UpdateExistingNode(Node node, int existingIndex)
+    {
+        if (node.DistanceFromStart < _next[existingIndex].DistanceFromStart)
+        {
+            _next[existingIndex] = node;
         }
     }
 

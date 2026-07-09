@@ -32,7 +32,7 @@ public class CharacterRange : MonoBehaviour
 
     public List<Vector2Int> FindPath(Vector2Int target)
     {
-        return _gridCrawler.FindPath(_character, target);
+        return _gridCrawler.FindPath(target);
     }
 
     public void Refresh()
