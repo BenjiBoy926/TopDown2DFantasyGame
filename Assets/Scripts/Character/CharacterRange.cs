@@ -4,6 +4,7 @@ using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Character))]
 [RequireComponent(typeof(CharacterRangeDisplay))]
+[RequireComponent(typeof(CharacterGridCrawler))]
 public class CharacterRange : MonoBehaviour
 {
     private const float ClampMargin = 0.1f;
@@ -14,6 +15,7 @@ public class CharacterRange : MonoBehaviour
     [SerializeField] private List<TileBase> _wallTiles = new();
     private Character _character;
     private CharacterRangeDisplay _display;
+    private CharacterGridCrawler _gridCrawler;
     private readonly HashSet<Vector2Int> _traversibleCells = new();
     private readonly HashSet<Vector2Int> _stayableCells = new();
     private readonly HashSet<Vector2Int> _interactableEdgeCells = new();
@@ -25,6 +27,12 @@ public class CharacterRange : MonoBehaviour
     {
         _character = GetComponent<Character>();
         _display = GetComponent<CharacterRangeDisplay>();
+        _gridCrawler = GetComponent<CharacterGridCrawler>();
+    }
+
+    public List<Vector2Int> FindPath(Vector2Int target)
+    {
+        return _gridCrawler.FindPath(_character, target);
     }
 
     public void Refresh()
@@ -54,6 +62,7 @@ public class CharacterRange : MonoBehaviour
         _display.Hide();
     }
 
+    // TODO: put into CharacterGridCrawler
     private void RecalculateTraversibleCells()
     {
         _traversibleCells.Clear();

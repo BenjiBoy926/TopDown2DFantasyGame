@@ -338,6 +338,11 @@ public class Character : MonoBehaviour
         return _range.IsPassable(cell);
     }
 
+    public List<Vector2Int> FindPath(Vector2Int target)
+    {
+        return _range.FindPath(target);
+    }
+
     // ── Health ───────────────────────────────────────────────────────────
 
     public void TakeDamageFrom(Character other)
