@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(ComputerPlayer))]
 public class ComputerPlayerMove : MonoBehaviour
@@ -45,10 +46,12 @@ public class ComputerPlayerMove : MonoBehaviour
 
     private bool IsAttackable(Character target)
     {
-        return _character != target &&
-            _character.Faction != target.Faction &&
-            _character.IsReachable(target.CurrentCell) &&
-            !target.IsDead;
+        return IsTargettable(target) && IsReachable(target);
+    }
+
+    private bool IsReachable(Character target)
+    {
+        return _character.IsReachable(target.CurrentCell);
     }
 
     private IEnumerator AttackBestTarget(List<Character> attackable)
@@ -91,6 +94,7 @@ public class ComputerPlayerMove : MonoBehaviour
     private IEnumerator DefendBestCell()
     {
         Character closestEnemy = GetClosestEnemy();
+        Debug.Log($"Closest enemy is {closestEnemy}", this);
         Vector2Int adjacentCell = GetBestAdjacentTile(closestEnemy);
         yield return _computerPlayer.MoveToCell(_character, adjacentCell);
         yield return _character.Defend();
@@ -98,7 +102,17 @@ public class ComputerPlayerMove : MonoBehaviour
 
     private Character GetClosestEnemy()
     {
-        return _computerPlayer.AllCharacters.OrderByDescending(RectangularDistanceToTarget).FirstOrDefault();
+        IOrderedEnumerable<Character> targetsSortedByDistance = _computerPlayer.AllCharacters.Where(IsTargettable).OrderBy(RectangularDistanceToTarget);
+        foreach (var target in targetsSortedByDistance)
+        {
+            Debug.Log($"{target}: {RectangularDistanceToTarget(target)}");
+        }
+        return targetsSortedByDistance.FirstOrDefault();
+    }
+
+    private bool IsTargettable(Character target)
+    {
+        return _character != target && _character.Faction != target.Faction && !target.IsDead;
     }
 
     private Vector2Int GetBestAdjacentTile(Character target)
