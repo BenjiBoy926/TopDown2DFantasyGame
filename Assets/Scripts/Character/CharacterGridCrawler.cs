@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Character))]
 public class CharacterGridCrawler : MonoBehaviour
@@ -64,6 +65,19 @@ public class CharacterGridCrawler : MonoBehaviour
 
     public List<Vector2Int> FindPath(Vector2Int target)
     {
+        Node targetNode = FindFullPath(target);
+        if (targetNode != null)
+        {
+            return ReconstructLimitedPath(targetNode);
+        }
+        else
+        {
+            return new();
+        }
+    }
+
+    private Node FindFullPath(Vector2Int target) 
+    {
         int CompareNodes(Node a, Node b)
         {
             int aCost = a.GetPathfindingCost(target);
@@ -75,9 +89,8 @@ public class CharacterGridCrawler : MonoBehaviour
         void SortBeforeDequeue() => _next.Sort(CompareNodes);
         bool ExitCondition(Node node) => node.Cell == target;
         void ExitAction(Node node) => targetNode = node;
-        // TODO: this returns the whole path to target, later we need to truncate to only within character range
         Crawl(null, SortBeforeDequeue, ExitCondition, ExitAction);
-        return ReconstructPath(targetNode);
+        return targetNode;
     }
 
     public void Crawl() 
@@ -169,12 +182,15 @@ public class CharacterGridCrawler : MonoBehaviour
         return _next.FindIndex(n => n.Cell == cell);
     }
 
-    private List<Vector2Int> ReconstructPath(Node node)
+    private List<Vector2Int> ReconstructLimitedPath(Node node)
     {
         _path.Clear();
         while (node != null)
         {
-            _path.Add(node.Cell);
+            if (node.StepsFromStart <= _character.TraversalRange)
+            {
+                _path.Add(node.Cell);
+            }
             node = node.Parent;
         }
         _path.Reverse();
