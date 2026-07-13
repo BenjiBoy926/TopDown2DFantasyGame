@@ -1,4 +1,3 @@
-using DG.Tweening;
 using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,13 +28,11 @@ public class ComputerPlayerMove : MonoBehaviour
         GetAttackableCharacters(_attackableCharacters);
         if (_attackableCharacters.Count > 0)
         {
-            yield return AttackSomeone(_attackableCharacters);
+            return AttackBestTarget(_attackableCharacters);
         }
         else
         {
-            Vector2Int cell = GetBestDefendCell();
-            yield return MoveToCell(cell);
-            yield return _character.Defend();
+            return DefendBestCell();
         }
     }
 
@@ -54,7 +51,7 @@ public class ComputerPlayerMove : MonoBehaviour
             !target.IsDead;
     }
 
-    private IEnumerator AttackSomeone(List<Character> attackable)
+    private IEnumerator AttackBestTarget(List<Character> attackable)
     {
         Character target = GetBestTarget(attackable);
         Vector2Int adjacentCell = GetBestAdjacentTile(target);
@@ -120,11 +117,11 @@ public class ComputerPlayerMove : MonoBehaviour
         return other != _character && other.Faction == _character.Faction;
     }
 
-    private Vector2Int GetBestDefendCell()
+    private IEnumerator DefendBestCell()
     {
         Character closestEnemy = GetClosestEnemy();
-        int RectDistanceToClosestEnemy(Vector2Int cell) => CharacterRange.RectangularDistance(closestEnemy.CurrentCell, cell);
-        return _character.StayableCells.OrderBy(RectDistanceToClosestEnemy).FirstOrDefault();
+        yield return _computerPlayer.MoveToCell(_character, closestEnemy.CurrentCell);
+        yield return _character.Defend();
     }
 
     private Character GetClosestEnemy()

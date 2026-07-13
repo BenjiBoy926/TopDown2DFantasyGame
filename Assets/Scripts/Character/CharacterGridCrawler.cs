@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Character))]
 public class CharacterGridCrawler : MonoBehaviour
 {
-    public class Node
+    public class Node : IEquatable<Node>
     {
         public int StepsFromStart => Parent != null ? Parent.StepsFromStart + 1 : 0;
 
@@ -20,6 +20,16 @@ public class CharacterGridCrawler : MonoBehaviour
         public int GetEstimatedStepsToEnd(Vector2Int target)
         {
             return CharacterRange.RectangularDistance(Cell, target);
+        }
+
+        public bool Equals(Node other)
+        {
+            return other != null && Cell == other.Cell;
+        }
+
+        public override int GetHashCode()
+        {
+            return Cell.GetHashCode();
         }
     }
 
@@ -120,7 +130,7 @@ public class CharacterGridCrawler : MonoBehaviour
     private bool ShouldEnqueue(Node node, Predicate<Node> additionalEnqueueCondition)
     {
         bool passesAdditionalCondition = additionalEnqueueCondition == null || additionalEnqueueCondition(node);
-        return  _character.IsPassable(node.Cell) && passesAdditionalCondition;
+        return !_visited.Contains(node) && _character.IsPassable(node.Cell) && passesAdditionalCondition;
     }
 
     private void Enqueue(Node node)

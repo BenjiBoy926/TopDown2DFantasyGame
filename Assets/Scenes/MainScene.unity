@@ -134,6 +134,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Goblin_Archer
       objectReference: {fileID: 0}
+    - target: {fileID: 3098449662440363178, guid: 0dfba1cb89cfe0b4a9e95ca953488908, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3773508091941248730, guid: 0dfba1cb89cfe0b4a9e95ca953488908, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5
@@ -3640,6 +3644,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Goblin_Thief (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 6805258466287101109, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4119,6 +4127,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Goblin_Thief (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6805258466287101109, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4288,6 +4300,10 @@ PrefabInstance:
     - target: {fileID: 6805258466287101109, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       propertyPath: m_Name
       value: Goblin_Thief (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6805258466287101109, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

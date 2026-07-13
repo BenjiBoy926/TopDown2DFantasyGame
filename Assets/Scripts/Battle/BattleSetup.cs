@@ -19,7 +19,7 @@ public class BattleSetup : MonoBehaviour
 
     private void RegisterAllCharacters()
     {
-        Character[] characters = GetComponentsInChildren<Character>(true);
+        Character[] characters = GetComponentsInChildren<Character>();
         foreach (var character in characters)
         {
             _battle.Register(character);
