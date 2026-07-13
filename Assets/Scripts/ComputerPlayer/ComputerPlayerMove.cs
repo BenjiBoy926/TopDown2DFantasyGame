@@ -88,6 +88,19 @@ public class ComputerPlayerMove : MonoBehaviour
         return (float)damageDealt / healthBeforeAttack;
     }
 
+    private IEnumerator DefendBestCell()
+    {
+        Character closestEnemy = GetClosestEnemy();
+        Vector2Int adjacentCell = GetBestAdjacentTile(closestEnemy);
+        yield return _computerPlayer.MoveToCell(_character, adjacentCell);
+        yield return _character.Defend();
+    }
+
+    private Character GetClosestEnemy()
+    {
+        return _computerPlayer.AllCharacters.OrderByDescending(RectangularDistanceToTarget).FirstOrDefault();
+    }
+
     private Vector2Int GetBestAdjacentTile(Character target)
     {
         CellNeighbors neighbors = CellNeighbors.Get(target.CurrentCell);
@@ -115,18 +128,6 @@ public class ComputerPlayerMove : MonoBehaviour
     private bool IsAlly(Character other)
     {
         return other != _character && other.Faction == _character.Faction;
-    }
-
-    private IEnumerator DefendBestCell()
-    {
-        Character closestEnemy = GetClosestEnemy();
-        yield return _computerPlayer.MoveToCell(_character, closestEnemy.CurrentCell);
-        yield return _character.Defend();
-    }
-
-    private Character GetClosestEnemy()
-    {
-        return _computerPlayer.AllCharacters.OrderByDescending(RectangularDistanceToTarget).FirstOrDefault();
     }
 
     private int RectangularDistanceToTarget(Character target)
