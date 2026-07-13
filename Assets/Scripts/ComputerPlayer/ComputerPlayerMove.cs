@@ -94,7 +94,6 @@ public class ComputerPlayerMove : MonoBehaviour
     private IEnumerator DefendBestCell()
     {
         Character closestEnemy = GetClosestEnemy();
-        Debug.Log($"Closest enemy is {closestEnemy}", this);
         Vector2Int adjacentCell = GetBestAdjacentTile(closestEnemy);
         yield return _computerPlayer.MoveToCell(_character, adjacentCell);
         yield return _character.Defend();
@@ -102,12 +101,7 @@ public class ComputerPlayerMove : MonoBehaviour
 
     private Character GetClosestEnemy()
     {
-        IOrderedEnumerable<Character> targetsSortedByDistance = _computerPlayer.AllCharacters.Where(IsTargettable).OrderBy(RectangularDistanceToTarget);
-        foreach (var target in targetsSortedByDistance)
-        {
-            Debug.Log($"{target}: {RectangularDistanceToTarget(target)}");
-        }
-        return targetsSortedByDistance.FirstOrDefault();
+        return _computerPlayer.AllCharacters.Where(IsTargettable).OrderBy(RectangularDistanceToTarget).FirstOrDefault();
     }
 
     private bool IsTargettable(Character target)
