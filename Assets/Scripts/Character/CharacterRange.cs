@@ -21,8 +21,6 @@ public class CharacterRange : MonoBehaviour
     private readonly HashSet<Vector2Int> _interactableEdgeCells = new();
     private readonly HashSet<Vector2Int> _reachableCells = new();
 
-    private static readonly Queue<CellCost> _searchQueue = new();
-
     private void Awake()
     {
         _character = GetComponent<Character>();

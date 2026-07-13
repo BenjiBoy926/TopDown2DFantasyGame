@@ -7,17 +7,17 @@ public class CharacterGridCrawler : MonoBehaviour
 {
     public class Node
     {
-        public int DistanceFromStart => Parent != null ? Parent.DistanceFromStart + 1 : 0;
+        public int StepsFromStart => Parent != null ? Parent.StepsFromStart + 1 : 0;
 
         public Vector2Int Cell;
         public Node Parent;
 
-        public int GetCost(Vector2Int target)
+        public int GetPathfindingCost(Vector2Int target)
         {
-            return DistanceFromStart + GetEstimatedDistanceToEnd(target);
+            return StepsFromStart + GetEstimatedStepsToEnd(target);
         }
 
-        public int GetEstimatedDistanceToEnd(Vector2Int target)
+        public int GetEstimatedStepsToEnd(Vector2Int target)
         {
             return CharacterRange.RectangularDistance(Cell, target);
         }
@@ -56,8 +56,8 @@ public class CharacterGridCrawler : MonoBehaviour
     {
         int CompareNodes(Node a, Node b)
         {
-            int aCost = a.GetCost(target);
-            int bCost = b.GetCost(target);
+            int aCost = a.GetPathfindingCost(target);
+            int bCost = b.GetPathfindingCost(target);
             return aCost.CompareTo(bCost);
         }
 
@@ -65,16 +65,18 @@ public class CharacterGridCrawler : MonoBehaviour
         void SortBeforeDequeue() => _next.Sort(CompareNodes);
         bool ExitCondition(Node node) => node.Cell == target;
         void ExitAction(Node node) => targetNode = node;
-        Crawl(SortBeforeDequeue, ExitCondition, ExitAction);
+        // TODO: this returns the whole path to target, later we need to truncate to only within character range
+        Crawl(null, SortBeforeDequeue, ExitCondition, ExitAction);
         return ReconstructPath(targetNode);
     }
 
     public void Crawl() 
     {
-        Crawl(null, null, null);
+        bool IsInRange(Node node) => node.StepsFromStart <= _character.TraversalRange;
+        Crawl(IsInRange, null, null, null);
     }
 
-    private void Crawl(Action sortBeforeDequeue, Predicate<Node> exitCondition, Action<Node> exitAction)
+    private void Crawl(Predicate<Node> additionalEnqueueCondition, Action sortBeforeDequeue, Predicate<Node> exitCondition, Action<Node> exitAction)
     {
         _visited.Clear();
         _next.Clear();
@@ -94,35 +96,31 @@ public class CharacterGridCrawler : MonoBehaviour
                 return;
             }
 
-            VisitNeighbors(current);
+            VisitNeighbors(current, additionalEnqueueCondition);
         }
     }
 
-    private void VisitNeighbors(Node node)
+    private void VisitNeighbors(Node node, Predicate<Node> additionalEnqueueCondition)
     {
         NodeNeighbors neighbors = NodeNeighbors.Get(node);
-        Visit(neighbors.Left);
-        Visit(neighbors.Right);
-        Visit(neighbors.Up);
-        Visit(neighbors.Down);
+        Visit(neighbors.Left, additionalEnqueueCondition);
+        Visit(neighbors.Right, additionalEnqueueCondition);
+        Visit(neighbors.Up, additionalEnqueueCondition);
+        Visit(neighbors.Down, additionalEnqueueCondition);
     }
 
-    private void Visit(Node node)
+    private void Visit(Node node, Predicate<Node> additionalEnqueueCondition)
     {
-        if (ShouldEnqueue(node))
+        if (ShouldEnqueue(node, additionalEnqueueCondition))
         {
             Enqueue(node);
         }
     }
 
-    private bool ShouldEnqueue(Node node)
+    private bool ShouldEnqueue(Node node, Predicate<Node> additionalEnqueueCondition)
     {
-        return IsTraversible(node);
-    }
-
-    private bool IsTraversible(Node node)
-    {
-        return node.DistanceFromStart <= _character.TraversalRange && _character.IsPassable(node.Cell);
+        bool passesAdditionalCondition = additionalEnqueueCondition == null || additionalEnqueueCondition(node);
+        return  _character.IsPassable(node.Cell) && passesAdditionalCondition;
     }
 
     private void Enqueue(Node node)
@@ -140,7 +138,7 @@ public class CharacterGridCrawler : MonoBehaviour
 
     private void UpdateExistingNode(Node node, int existingIndex)
     {
-        if (node.DistanceFromStart < _next[existingIndex].DistanceFromStart)
+        if (node.StepsFromStart < _next[existingIndex].StepsFromStart)
         {
             _next[existingIndex] = node;
         }
