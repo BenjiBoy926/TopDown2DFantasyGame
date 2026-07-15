@@ -1,15 +1,17 @@
+using DG.Tweening;
 using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(ComputerPlayer))]
 public class ComputerPlayerMove : MonoBehaviour
 {
+    [SerializeField] private float _speed = 2;
     [SerializeField, ReadOnly] private Character _character;
     [SerializeField, ReadOnly] private List<Character> _attackableCharacters = new();
+    [SerializeField, ReadOnly] private List<Vector2Int> _path = new();
     private ComputerPlayer _computerPlayer;
 
     private void Awake()
@@ -58,13 +60,9 @@ public class ComputerPlayerMove : MonoBehaviour
     {
         Character target = GetBestTarget(attackable);
         Vector2Int adjacentCell = GetBestAdjacentTile(target);
-        yield return MoveToCell(adjacentCell);
+        _character.FindPath(adjacentCell, _path);
+        yield return WalkOnPath(_path);
         yield return _character.Attack(target);
-    }
-
-    private IEnumerator MoveToCell(Vector2Int adjacentCell)
-    {
-        return _computerPlayer.MoveToCell(_character, adjacentCell);
     }
 
     private Character GetBestTarget(List<Character> attackable)
@@ -93,9 +91,8 @@ public class ComputerPlayerMove : MonoBehaviour
 
     private IEnumerator DefendBestCell()
     {
-        Character closestEnemy = GetClosestEnemy();
-        Vector2Int adjacentCell = GetBestAdjacentTile(closestEnemy);
-        yield return _computerPlayer.MoveToCell(_character, adjacentCell);
+        _character.FindPathToNearestEnemy(_path);
+        yield return WalkOnPath(_path);
         yield return _character.Defend();
     }
 
@@ -112,8 +109,7 @@ public class ComputerPlayerMove : MonoBehaviour
     private Vector2Int GetBestAdjacentTile(Character target)
     {
         CellNeighbors neighbors = CellNeighbors.Get(target.CurrentCell);
-        List<Vector2Int> adjacentCells = new() { neighbors.Left, neighbors.Right, neighbors.Up, neighbors.Down };
-        return GetBestStayableCell(adjacentCells);
+        return GetBestStayableCell(neighbors);
     }
 
     private bool IsStayable(Vector2Int cell)
@@ -121,7 +117,7 @@ public class ComputerPlayerMove : MonoBehaviour
         return _character.IsStayable(cell);
     }
 
-    private Vector2Int GetBestStayableCell(IReadOnlyCollection<Vector2Int> cells)
+    private Vector2Int GetBestStayableCell(IEnumerable<Vector2Int> cells)
     {
         return cells.Where(IsStayable).OrderByDescending(GetCellScore).FirstOrDefault();
     }
@@ -141,5 +137,26 @@ public class ComputerPlayerMove : MonoBehaviour
     private int RectangularDistanceToTarget(Character target)
     {
         return CharacterRange.RectangularDistance(_character.CurrentCell, target.CurrentCell);
+    }
+
+    public IEnumerator WalkOnPath(List<Vector2Int> path)
+    {
+        _character.SetIsRunning(true);
+        for (int i = 0; i < path.Count; i++)
+        {
+            Vector2Int nextCell = path[i];
+            yield return MoveDirectlyToCell(nextCell);
+        }
+        _character.SetIsRunning(false);
+    }
+
+    private YieldInstruction MoveDirectlyToCell(Vector2Int cell)
+    {
+        Vector2 nextPosition = _character.CellToWorld(cell);
+        _character.LookAt(nextPosition);
+        return _character.transform.DOMove(nextPosition, _speed)
+            .SetSpeedBased()
+            .SetEase(Ease.Linear)
+            .WaitForCompletion();
     }
 }

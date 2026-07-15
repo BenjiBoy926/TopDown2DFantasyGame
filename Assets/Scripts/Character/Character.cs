@@ -328,6 +328,12 @@ public class Character : MonoBehaviour
         return occupant && occupant.Faction != _faction;
     }
 
+    public bool IsAllyInCell(Vector2Int cell)
+    {
+        Character occupant = GetOccupant(cell);
+        return occupant && occupant.Faction == _faction;
+    }
+
     public bool CanStayInCell(Vector2Int cell)
     {
         Character occupant = GetOccupant(cell);
@@ -342,6 +348,11 @@ public class Character : MonoBehaviour
     public bool IsPassable(Vector2Int cell)
     {
         return _range.IsPassable(cell);
+    }
+
+    public void FindPathToNearestEnemy(List<Vector2Int> path)
+    {
+        _range.FindPathToNearestEnemy(path);
     }
 
     public void FindPath(Vector2Int target, List<Vector2Int> path)

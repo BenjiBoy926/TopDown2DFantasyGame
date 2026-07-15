@@ -84,10 +84,10 @@ public class GridSearch : MonoBehaviour
     private void VisitNeighbors(Node node)
     {
         NodeNeighbors neighbors = NodeNeighbors.Get(node);
-        Visit(neighbors.Left);
-        Visit(neighbors.Right);
-        Visit(neighbors.Up);
-        Visit(neighbors.Down);
+        foreach (var neighbor in neighbors)
+        {
+            Visit(neighbor);
+        }
     }
 
     private void Visit(Node node)

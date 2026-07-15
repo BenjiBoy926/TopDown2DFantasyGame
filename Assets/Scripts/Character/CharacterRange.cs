@@ -28,6 +28,11 @@ public class CharacterRange : MonoBehaviour
         _gridSearch = GetComponent<GridSearch>();
     }
 
+    public void FindPathToNearestEnemy(List<Vector2Int> path)
+    {
+        _gridSearch.FindPathToNearestEnemy(path);
+    }
+
     public void FindPath(Vector2Int target, List<Vector2Int> path)
     {
         _gridSearch.FindPath(target, path);
@@ -78,10 +83,10 @@ public class CharacterRange : MonoBehaviour
         foreach (var stayableCell in _stayableCells)
         {
             CellNeighbors neighbors = CellNeighbors.Get(stayableCell);
-            CheckAttackableEdgeCell(neighbors.Left);
-            CheckAttackableEdgeCell(neighbors.Right);
-            CheckAttackableEdgeCell(neighbors.Up);
-            CheckAttackableEdgeCell(neighbors.Down);
+            foreach (var neighborCell in neighbors)
+            {
+                CheckInteractableEdgeCell(neighborCell);
+            }
         }
     }
 
@@ -111,7 +116,7 @@ public class CharacterRange : MonoBehaviour
         return _stayableCells.Contains(cell);
     }
 
-    private void CheckAttackableEdgeCell(Vector2Int cell)
+    private void CheckInteractableEdgeCell(Vector2Int cell)
     {
         if (!_stayableCells.Contains(cell))
         {

@@ -5,7 +5,6 @@ using UnityEngine;
 
 [RequireComponent(typeof(Battle))]
 [RequireComponent(typeof(ComputerPlayerMove))]
-[RequireComponent(typeof(ComputerPlayerPathfinder))]
 public class ComputerPlayer : MonoBehaviour
 {
     public IReadOnlyCollection<Character> AllCharacters => _battle.AllCharacters;
@@ -16,14 +15,12 @@ public class ComputerPlayer : MonoBehaviour
     private Player _player;
     private Faction _faction;
     private ComputerPlayerMove _move;
-    private ComputerPlayerPathfinder _pathfinder;
 
     private void Awake()
     {
         _battle = GetComponent<Battle>();
         _player = GetComponentInChildren<Player>();
         _move = GetComponent<ComputerPlayerMove>();
-        _pathfinder = GetComponent<ComputerPlayerPathfinder>();
     }
 
     private void OnEnable()
@@ -65,11 +62,6 @@ public class ComputerPlayer : MonoBehaviour
         {
             _battle.StartNextTurn();
         }
-    }
-
-    public IEnumerator MoveToCell(Character character, Vector2Int cell)
-    {
-        return _pathfinder.MoveToCell(character, cell);
     }
 
     private void GetMoveableCharacters(List<Character> result)
