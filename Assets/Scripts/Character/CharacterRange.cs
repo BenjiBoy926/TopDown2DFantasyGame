@@ -66,7 +66,7 @@ public class CharacterRange : MonoBehaviour
         _traversibleCells.Clear();
         foreach (var visitedNode in _gridCrawler.Visited)
         {
-            _traversibleCells.Add(visitedNode.Cell);
+            _traversibleCells.Add(visitedNode);
         }
     }
 

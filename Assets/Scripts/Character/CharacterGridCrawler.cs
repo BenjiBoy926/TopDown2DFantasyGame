@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(Character))]
 public class CharacterGridCrawler : MonoBehaviour
 {
-    public class Node : IEquatable<Node>
+    public class Node
     {
         public int StepsFromStart => Parent != null ? Parent.StepsFromStart + 1 : 0;
 
@@ -21,16 +21,6 @@ public class CharacterGridCrawler : MonoBehaviour
         public int GetEstimatedStepsToEnd(Vector2Int target)
         {
             return CharacterRange.RectangularDistance(Cell, target);
-        }
-
-        public bool Equals(Node other)
-        {
-            return other != null && Cell == other.Cell;
-        }
-
-        public override int GetHashCode()
-        {
-            return Cell.GetHashCode();
         }
     }
 
@@ -51,11 +41,11 @@ public class CharacterGridCrawler : MonoBehaviour
         }
     }
 
-    public IReadOnlyCollection<Node> Visited => _visited;
+    public IReadOnlyCollection<Vector2Int> Visited => _visited;
 
     private Character _character;
-    private readonly HashSet<Node> _visited = new();
-    private readonly List<Node> _next = new();
+    private readonly HashSet<Vector2Int> _visited = new();
+    private readonly List<Node> _searchQueue = new();
     private readonly List<Vector2Int> _path = new();
 
     private void Awake()
@@ -101,15 +91,15 @@ public class CharacterGridCrawler : MonoBehaviour
     private void Search(Predicate<Node> additionalEnqueueCondition, Comparison<Node> dequeueComparer, Predicate<Node> exitCondition, Action<Node> exitAction)
     {
         _visited.Clear();
-        _next.Clear();
+        _searchQueue.Clear();
 
         Node start = new() { Cell = _character.CurrentCell, Parent = null };
         Enqueue(start);
 
-        while (_next.Count > 0)
+        while (_searchQueue.Count > 0)
         {
             Node current = Dequeue(dequeueComparer);
-            _visited.Add(current);
+            _visited.Add(current.Cell);
 
             if (exitCondition?.Invoke(current) == true)
             {
@@ -141,7 +131,7 @@ public class CharacterGridCrawler : MonoBehaviour
     private bool ShouldEnqueue(Node node, Predicate<Node> additionalEnqueueCondition)
     {
         bool passesAdditionalCondition = additionalEnqueueCondition == null || additionalEnqueueCondition(node);
-        return !_visited.Contains(node) && _character.IsPassable(node.Cell) && passesAdditionalCondition;
+        return !_visited.Contains(node.Cell) && _character.IsPassable(node.Cell) && passesAdditionalCondition;
     }
 
     private void Enqueue(Node node)
@@ -153,32 +143,35 @@ public class CharacterGridCrawler : MonoBehaviour
         }
         else
         {
-            _next.Add(node);
+            _searchQueue.Add(node);
         }
     }
 
     private void UpdateExistingNode(Node node, int existingIndex)
     {
-        if (node.StepsFromStart < _next[existingIndex].StepsFromStart)
+        if (node.StepsFromStart < _searchQueue[existingIndex].StepsFromStart)
         {
-            _next[existingIndex] = node;
+            _searchQueue[existingIndex] = node;
         }
     }
 
-    private Node Dequeue(Comparison<Node> comparer)
+    private Node Dequeue(Comparison<Node> comparison)
     {
-        if (_next.Count == 0)
+        if (_searchQueue.Count == 0)
             return null;
 
-        _next.Sort(comparer);
-        Node node = _next[0];
-        _next.RemoveAt(0);
+        if (comparison != null)
+        {
+            _searchQueue.Sort(comparison);
+        }
+        Node node = _searchQueue[0];
+        _searchQueue.RemoveAt(0);
         return node;
     }
 
     private int FindNodeInNext(Vector2Int cell)
     {
-        return _next.FindIndex(n => n.Cell == cell);
+        return _searchQueue.FindIndex(n => n.Cell == cell);
     }
 
     private List<Vector2Int> ReconstructLimitedPath(Node node)
