@@ -1,0 +1,16 @@
+public class NodeNeighbors
+{
+    public Node Left, Right, Up, Down;
+
+    public static NodeNeighbors Get(Node node)
+    {
+        CellNeighbors neighbors = CellNeighbors.Get(node.Cell);
+        return new NodeNeighbors
+        {
+            Left = new Node { Cell = neighbors.Left, Parent = node },
+            Right = new Node { Cell = neighbors.Right, Parent = node },
+            Up = new Node { Cell = neighbors.Up, Parent = node },
+            Down = new Node { Cell = neighbors.Down, Parent = node }
+        };
+    }
+}

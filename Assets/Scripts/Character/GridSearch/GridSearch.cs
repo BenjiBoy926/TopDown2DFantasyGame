@@ -1,46 +1,10 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Character))]
-public class CharacterGridCrawler : MonoBehaviour
+public class GridSearch : MonoBehaviour
 {
-    public class Node
-    {
-        public int StepsFromStart => Parent != null ? Parent.StepsFromStart + 1 : 0;
-
-        public Vector2Int Cell;
-        public Node Parent;
-
-        public int GetPathfindingCost(Vector2Int target)
-        {
-            return StepsFromStart + GetEstimatedStepsToEnd(target);
-        }
-
-        public int GetEstimatedStepsToEnd(Vector2Int target)
-        {
-            return CharacterRange.RectangularDistance(Cell, target);
-        }
-    }
-
-    public class NodeNeighbors
-    {
-        public Node Left, Right, Up, Down;
-
-        public static NodeNeighbors Get(Node node)
-        {
-            CellNeighbors neighbors = CellNeighbors.Get(node.Cell);
-            return new NodeNeighbors
-            {
-                Left = new Node { Cell = neighbors.Left, Parent = node },
-                Right = new Node { Cell = neighbors.Right, Parent = node },
-                Up = new Node { Cell = neighbors.Up, Parent = node },
-                Down = new Node { Cell = neighbors.Down, Parent = node }
-            };
-        }
-    }
-
     private Character _character;
     private readonly HashSet<Vector2Int> _visited = new();
     private readonly List<Node> _searchQueue = new();
