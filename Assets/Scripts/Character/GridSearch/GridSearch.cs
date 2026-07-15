@@ -36,28 +36,28 @@ public class GridSearch : MonoBehaviour
     private Node FindFullPath(Vector2Int target) 
     {
         var strategy = new GridSearchStrategy.FindPathToCell(target);
-        Search(strategy);
-        return strategy.Result;
+        var result = Search(strategy);
+        return result.ExitNode;
     }
 
     private Node FindFullPathToNearestEnemy()
     {
         var strategy = new GridSearchStrategy.FindPathToNearestEnemy(_character);
-        Search(strategy);
-        return strategy.Result;
+        var result = Search(strategy);
+        return result.ExitNode;
     }
 
     public void FindAllCellsInRange(HashSet<Vector2Int> cellsInRange) 
     {
         var strategy = new GridSearchStrategy.FindAllCellsInRange(_character);
-        Search(strategy);
-        foreach (var cell in _visited)
+        var result = Search(strategy);
+        foreach (var cell in result.VisitedCells)
         {
             cellsInRange.Add(cell);
         }
     }
 
-    private void Search(GridSearchStrategy strategy)
+    private GridSearchResult Search(GridSearchStrategy strategy)
     {
         _strategy = strategy;
         _visited.Clear();
@@ -73,12 +73,13 @@ public class GridSearch : MonoBehaviour
 
             if (strategy.IsExitNode(current))
             {
-                strategy.OnExitNodeReached(current);
-                return;
+                return new(current, _visited);
             }
 
             VisitNeighbors(current);
         }
+
+        return new(null, _visited);
     }
 
     private void VisitNeighbors(Node node)

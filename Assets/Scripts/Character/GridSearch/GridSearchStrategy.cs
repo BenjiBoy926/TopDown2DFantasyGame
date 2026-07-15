@@ -10,7 +10,6 @@ public abstract class GridSearchStrategy
     public abstract bool PassesCustomEnqueueConditions(Node node);
     protected abstract int CompareNodes(Node a, Node b);
     public abstract bool IsExitNode(Node node);
-    public abstract void OnExitNodeReached(Node node);
 
     public class FindAllCellsInRange : GridSearchStrategy
     {
@@ -26,11 +25,6 @@ public abstract class GridSearchStrategy
             return false;
         }
 
-        public override void OnExitNodeReached(Node node)
-        {
-
-        }
-
         public override bool PassesCustomEnqueueConditions(Node node)
         {
             return node.StepsFromStart <= _character.TraversalRange;
@@ -44,18 +38,11 @@ public abstract class GridSearchStrategy
 
     public class FindPathToCell : GridSearchStrategy
     {
-        public Node Result { get; private set; }
-
         private Vector2Int _target;
 
         public FindPathToCell(Vector2Int target)
         {
             _target = target;
-        }
-
-        public override void OnExitNodeReached(Node node)
-        {
-            Result = node;
         }
 
         public override bool IsExitNode(Node node)
@@ -78,8 +65,6 @@ public abstract class GridSearchStrategy
 
     public class FindPathToNearestEnemy : GridSearchStrategy
     {
-        public Node Result { get; private set; }
-
         private readonly Character _character;
 
         public FindPathToNearestEnemy(Character character)
@@ -98,11 +83,6 @@ public abstract class GridSearchStrategy
                 }
             }
             return false;
-        }
-
-        public override void OnExitNodeReached(Node node)
-        {
-            Result = node;
         }
 
         public override bool PassesCustomEnqueueConditions(Node node)
