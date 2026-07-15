@@ -41,28 +41,21 @@ public class CharacterGridCrawler : MonoBehaviour
         }
     }
 
-    public IReadOnlyCollection<Vector2Int> Visited => _visited;
-
     private Character _character;
     private readonly HashSet<Vector2Int> _visited = new();
     private readonly List<Node> _searchQueue = new();
-    private readonly List<Vector2Int> _path = new();
 
     private void Awake()
     {
         _character = GetComponent<Character>();
     }
 
-    public List<Vector2Int> FindPath(Vector2Int target)
+    public void FindPath(Vector2Int target, List<Vector2Int> path)
     {
         Node targetNode = FindFullPath(target);
         if (targetNode != null)
         {
-            return ReconstructLimitedPath(targetNode);
-        }
-        else
-        {
-            return new();
+            ReconstructLimitedPath(targetNode, path);
         }
     }
 
@@ -82,10 +75,15 @@ public class CharacterGridCrawler : MonoBehaviour
         return targetNode;
     }
 
-    public void FindAllCellsInRange() 
+    public void FindAllCellsInRange(HashSet<Vector2Int> cellsInRange) 
     {
+        cellsInRange.Clear();
         bool IsInRange(Node node) => node.StepsFromStart <= _character.TraversalRange;
         Search(IsInRange, null, null, null);
+        foreach (var cell in _visited)
+        {
+            cellsInRange.Add(cell);
+        }
     }
 
     private void Search(Predicate<Node> additionalEnqueueCondition, Comparison<Node> dequeueComparer, Predicate<Node> exitCondition, Action<Node> exitAction)
@@ -174,18 +172,17 @@ public class CharacterGridCrawler : MonoBehaviour
         return _searchQueue.FindIndex(n => n.Cell == cell);
     }
 
-    private List<Vector2Int> ReconstructLimitedPath(Node node)
+    private void ReconstructLimitedPath(Node node, List<Vector2Int> path)
     {
-        _path.Clear();
+        path.Clear();
         while (node != null)
         {
             if (node.StepsFromStart <= _character.TraversalRange)
             {
-                _path.Add(node.Cell);
+                path.Add(node.Cell);
             }
             node = node.Parent;
         }
-        _path.Reverse();
-        return _path;
+        path.Reverse();
     }
 }

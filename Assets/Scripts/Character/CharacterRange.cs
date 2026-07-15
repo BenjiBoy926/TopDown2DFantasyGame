@@ -28,14 +28,14 @@ public class CharacterRange : MonoBehaviour
         _gridCrawler = GetComponent<CharacterGridCrawler>();
     }
 
-    public List<Vector2Int> FindPath(Vector2Int target)
+    public void FindPath(Vector2Int target, List<Vector2Int> path)
     {
-        return _gridCrawler.FindPath(target);
+        _gridCrawler.FindPath(target, path);
     }
 
     public void Refresh()
     {
-        RecalculateTraversibleCells();
+        _gridCrawler.FindAllCellsInRange(_traversibleCells);
         RecalculateStayableCells();
         RecalculateAttackableEdgeCells();
 
@@ -58,16 +58,6 @@ public class CharacterRange : MonoBehaviour
     public void Hide()
     {
         _display.Hide();
-    }
-
-    private void RecalculateTraversibleCells()
-    {
-        _gridCrawler.FindAllCellsInRange();
-        _traversibleCells.Clear();
-        foreach (var visitedNode in _gridCrawler.Visited)
-        {
-            _traversibleCells.Add(visitedNode);
-        }
     }
 
     private void RecalculateStayableCells()

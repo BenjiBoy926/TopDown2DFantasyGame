@@ -6,14 +6,16 @@ using UnityEngine;
 public class ComputerPlayerPathfinder : MonoBehaviour
 {
     [SerializeField] private float _speed = 2;
+    private readonly List<Vector2Int> _path = new();
 
     public IEnumerator MoveToCell(Character character, Vector2Int cell)
     {
-        List<Vector2Int> path = character.FindPath(cell);
+        character.FindPath(cell, _path);
+
         character.SetIsRunning(true);
-        for (int i = 0; i < path.Count; i++)
+        for (int i = 0; i < _path.Count; i++)
         {
-            Vector2Int nextCell = path[i];
+            Vector2Int nextCell = _path[i];
             yield return MoveDirectlyToCell(character, nextCell);
         }
         character.SetIsRunning(false);

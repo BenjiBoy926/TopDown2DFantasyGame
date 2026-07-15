@@ -338,9 +338,9 @@ public class Character : MonoBehaviour
         return _range.IsPassable(cell);
     }
 
-    public List<Vector2Int> FindPath(Vector2Int target)
+    public void FindPath(Vector2Int target, List<Vector2Int> path)
     {
-        return _range.FindPath(target);
+        _range.FindPath(target, path);
     }
 
     // ── Health ───────────────────────────────────────────────────────────
