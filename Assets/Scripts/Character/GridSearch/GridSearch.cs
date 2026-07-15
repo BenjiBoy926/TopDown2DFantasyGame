@@ -9,6 +9,7 @@ public class GridSearch : MonoBehaviour
     private GridSearchStrategy _strategy;
     private readonly HashSet<Vector2Int> _visited = new();
     private readonly List<Node> _searchQueue = new();
+    private GridSearchState _state;
 
     private void Awake()
     {
@@ -42,15 +43,16 @@ public class GridSearch : MonoBehaviour
 
     private Node FindFullPathToNearestEnemy()
     {
-        var strategy = new GridSearchStrategy.FindPathToNearestEnemy(_character);
+        var strategy = new GridSearchStrategy.FindPathToNearestEnemy();
         var result = Search(strategy);
         return result.ExitNode;
     }
 
     public void FindAllCellsInRange(HashSet<Vector2Int> cellsInRange) 
     {
-        var strategy = new GridSearchStrategy.FindAllCellsInRange(_character);
+        var strategy = new GridSearchStrategy.FindAllCellsInRange();
         var result = Search(strategy);
+        cellsInRange.Clear();
         foreach (var cell in result.VisitedCells)
         {
             cellsInRange.Add(cell);
@@ -62,6 +64,7 @@ public class GridSearch : MonoBehaviour
         _strategy = strategy;
         _visited.Clear();
         _searchQueue.Clear();
+        _state = new(_character, _strategy, _visited, _searchQueue);
 
         Node start = new() { Cell = _character.CurrentCell, Parent = null };
         Enqueue(start);
@@ -71,7 +74,7 @@ public class GridSearch : MonoBehaviour
             Node current = Dequeue();
             _visited.Add(current.Cell);
 
-            if (strategy.IsExitNode(current))
+            if (strategy.IsExitNode(_state, current))
             {
                 return new(current, _visited);
             }
@@ -101,7 +104,7 @@ public class GridSearch : MonoBehaviour
 
     private bool ShouldEnqueue(Node node)
     {
-        return !_visited.Contains(node.Cell) && _character.IsPassable(node.Cell) && _strategy.PassesCustomEnqueueConditions(node);
+        return !_visited.Contains(node.Cell) && _character.IsPassable(node.Cell) && _strategy.PassesCustomEnqueueConditions(_state, node);
     }
 
     private void Enqueue(Node node)

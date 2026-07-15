@@ -7,27 +7,20 @@ public abstract class GridSearchStrategy
 
     private Comparison<Node> _nodeComparison;
 
-    public abstract bool PassesCustomEnqueueConditions(Node node);
+    public abstract bool IsExitNode(GridSearchState state, Node node);
+    public abstract bool PassesCustomEnqueueConditions(GridSearchState state, Node node);
     protected abstract int CompareNodes(Node a, Node b);
-    public abstract bool IsExitNode(Node node);
 
     public class FindAllCellsInRange : GridSearchStrategy
     {
-        private readonly Character _character;
-
-        public FindAllCellsInRange(Character character)
-        {
-            _character = character;
-        }
-
-        public override bool IsExitNode(Node node)
+        public override bool IsExitNode(GridSearchState state, Node node)
         {
             return false;
         }
 
-        public override bool PassesCustomEnqueueConditions(Node node)
+        public override bool PassesCustomEnqueueConditions(GridSearchState state, Node node)
         {
-            return node.StepsFromStart <= _character.TraversalRange;
+            return node.StepsFromStart <= state.Character.TraversalRange;
         }
 
         protected override int CompareNodes(Node a, Node b)
@@ -45,12 +38,12 @@ public abstract class GridSearchStrategy
             _target = target;
         }
 
-        public override bool IsExitNode(Node node)
+        public override bool IsExitNode(GridSearchState state, Node node)
         {
             return node.Cell == _target;
         }
 
-        public override bool PassesCustomEnqueueConditions(Node node)
+        public override bool PassesCustomEnqueueConditions(GridSearchState state, Node node)
         {
             return true;
         }
@@ -65,19 +58,12 @@ public abstract class GridSearchStrategy
 
     public class FindPathToNearestEnemy : GridSearchStrategy
     {
-        private readonly Character _character;
-
-        public FindPathToNearestEnemy(Character character)
-        {
-            _character = character;
-        }
-
-        public override bool IsExitNode(Node node)
+        public override bool IsExitNode(GridSearchState state, Node node)
         {
             CellNeighbors neighbors = CellNeighbors.Get(node.Cell);
             foreach (var cell in neighbors)
             {
-                if (_character.IsEnemyInCell(cell))
+                if (state.Character.IsEnemyInCell(cell))
                 {
                     return true;
                 }
@@ -85,7 +71,7 @@ public abstract class GridSearchStrategy
             return false;
         }
 
-        public override bool PassesCustomEnqueueConditions(Node node)
+        public override bool PassesCustomEnqueueConditions(GridSearchState state, Node node)
         {
             return true;
         }
