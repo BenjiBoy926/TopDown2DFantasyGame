@@ -6,6 +6,7 @@ using UnityEngine;
 public class GridSearch : MonoBehaviour
 {
     private Character _character;
+    private GridSearchStrategy _strategy;
     private readonly HashSet<Vector2Int> _visited = new();
     private readonly List<Node> _searchQueue = new();
 
@@ -25,33 +26,24 @@ public class GridSearch : MonoBehaviour
 
     private Node FindFullPath(Vector2Int target) 
     {
-        int CompareNodes(Node a, Node b)
-        {
-            int aCost = a.GetPathfindingCost(target);
-            int bCost = b.GetPathfindingCost(target);
-            return aCost.CompareTo(bCost);
-        }
-
-        Node targetNode = null;
-        bool ExitCondition(Node node) => node.Cell == target;
-        void ExitAction(Node node) => targetNode = node;
-        Search(null, CompareNodes, ExitCondition, ExitAction);
-        return targetNode;
+        var strategy = new GridSearchStrategy.FindPathToCell(target);
+        Search(strategy);
+        return strategy.Result;
     }
 
     public void FindAllCellsInRange(HashSet<Vector2Int> cellsInRange) 
     {
-        cellsInRange.Clear();
-        bool IsInRange(Node node) => node.StepsFromStart <= _character.TraversalRange;
-        Search(IsInRange, null, null, null);
+        var strategy = new GridSearchStrategy.FindAllCellsInRange(_character);
+        Search(strategy);
         foreach (var cell in _visited)
         {
             cellsInRange.Add(cell);
         }
     }
 
-    private void Search(Predicate<Node> additionalEnqueueCondition, Comparison<Node> dequeueComparer, Predicate<Node> exitCondition, Action<Node> exitAction)
+    private void Search(GridSearchStrategy strategy)
     {
+        _strategy = strategy;
         _visited.Clear();
         _searchQueue.Clear();
 
@@ -60,40 +52,39 @@ public class GridSearch : MonoBehaviour
 
         while (_searchQueue.Count > 0)
         {
-            Node current = Dequeue(dequeueComparer);
+            Node current = Dequeue();
             _visited.Add(current.Cell);
 
-            if (exitCondition?.Invoke(current) == true)
+            if (strategy.IsExitNode(current))
             {
-                exitAction?.Invoke(current);
+                strategy.OnExitNodeReached(current);
                 return;
             }
 
-            VisitNeighbors(current, additionalEnqueueCondition);
+            VisitNeighbors(current);
         }
     }
 
-    private void VisitNeighbors(Node node, Predicate<Node> additionalEnqueueCondition)
+    private void VisitNeighbors(Node node)
     {
         NodeNeighbors neighbors = NodeNeighbors.Get(node);
-        Visit(neighbors.Left, additionalEnqueueCondition);
-        Visit(neighbors.Right, additionalEnqueueCondition);
-        Visit(neighbors.Up, additionalEnqueueCondition);
-        Visit(neighbors.Down, additionalEnqueueCondition);
+        Visit(neighbors.Left);
+        Visit(neighbors.Right);
+        Visit(neighbors.Up);
+        Visit(neighbors.Down);
     }
 
-    private void Visit(Node node, Predicate<Node> additionalEnqueueCondition)
+    private void Visit(Node node)
     {
-        if (ShouldEnqueue(node, additionalEnqueueCondition))
+        if (ShouldEnqueue(node))
         {
             Enqueue(node);
         }
     }
 
-    private bool ShouldEnqueue(Node node, Predicate<Node> additionalEnqueueCondition)
+    private bool ShouldEnqueue(Node node)
     {
-        bool passesAdditionalCondition = additionalEnqueueCondition == null || additionalEnqueueCondition(node);
-        return !_visited.Contains(node.Cell) && _character.IsPassable(node.Cell) && passesAdditionalCondition;
+        return !_visited.Contains(node.Cell) && _character.IsPassable(node.Cell) && _strategy.PassesCustomEnqueueConditions(node);
     }
 
     private void Enqueue(Node node)
@@ -117,15 +108,12 @@ public class GridSearch : MonoBehaviour
         }
     }
 
-    private Node Dequeue(Comparison<Node> comparison)
+    private Node Dequeue()
     {
         if (_searchQueue.Count == 0)
             return null;
 
-        if (comparison != null)
-        {
-            _searchQueue.Sort(comparison);
-        }
+        _searchQueue.Sort(_strategy.NodeComparison);
         Node node = _searchQueue[0];
         _searchQueue.RemoveAt(0);
         return node;
