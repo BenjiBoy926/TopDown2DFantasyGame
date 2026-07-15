@@ -86,20 +86,19 @@ public class CharacterGridCrawler : MonoBehaviour
         }
 
         Node targetNode = null;
-        void SortBeforeDequeue() => _next.Sort(CompareNodes);
         bool ExitCondition(Node node) => node.Cell == target;
         void ExitAction(Node node) => targetNode = node;
-        Crawl(null, SortBeforeDequeue, ExitCondition, ExitAction);
+        Search(null, CompareNodes, ExitCondition, ExitAction);
         return targetNode;
     }
 
-    public void Crawl() 
+    public void FindAllCellsInRange() 
     {
         bool IsInRange(Node node) => node.StepsFromStart <= _character.TraversalRange;
-        Crawl(IsInRange, null, null, null);
+        Search(IsInRange, null, null, null);
     }
 
-    private void Crawl(Predicate<Node> additionalEnqueueCondition, Action sortBeforeDequeue, Predicate<Node> exitCondition, Action<Node> exitAction)
+    private void Search(Predicate<Node> additionalEnqueueCondition, Comparison<Node> dequeueComparer, Predicate<Node> exitCondition, Action<Node> exitAction)
     {
         _visited.Clear();
         _next.Clear();
@@ -109,8 +108,7 @@ public class CharacterGridCrawler : MonoBehaviour
 
         while (_next.Count > 0)
         {
-            sortBeforeDequeue?.Invoke();
-            Node current = Dequeue();
+            Node current = Dequeue(dequeueComparer);
             _visited.Add(current);
 
             if (exitCondition?.Invoke(current) == true)
@@ -167,11 +165,12 @@ public class CharacterGridCrawler : MonoBehaviour
         }
     }
 
-    private Node Dequeue()
+    private Node Dequeue(Comparison<Node> comparer)
     {
         if (_next.Count == 0)
             return null;
 
+        _next.Sort(comparer);
         Node node = _next[0];
         _next.RemoveAt(0);
         return node;

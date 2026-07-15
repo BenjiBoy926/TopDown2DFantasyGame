@@ -62,7 +62,7 @@ public class CharacterRange : MonoBehaviour
 
     private void RecalculateTraversibleCells()
     {
-        _gridCrawler.Crawl();
+        _gridCrawler.FindAllCellsInRange();
         _traversibleCells.Clear();
         foreach (var visitedNode in _gridCrawler.Visited)
         {
