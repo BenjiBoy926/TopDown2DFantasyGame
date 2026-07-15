@@ -44,10 +44,9 @@ public abstract class GridSearchStrategy
 
     public class FindPathToCell : GridSearchStrategy
     {
-        public Node Result => _result;
+        public Node Result { get; private set; }
 
         private Vector2Int _target;
-        private Node _result;
 
         public FindPathToCell(Vector2Int target)
         {
@@ -56,7 +55,7 @@ public abstract class GridSearchStrategy
 
         public override void OnExitNodeReached(Node node)
         {
-            _result = node;
+            Result = node;
         }
 
         public override bool IsExitNode(Node node)
@@ -74,6 +73,46 @@ public abstract class GridSearchStrategy
             int aCost = a.GetPathfindingCost(_target);
             int bCost = b.GetPathfindingCost(_target);
             return aCost.CompareTo(bCost);
+        }
+    }
+
+    public class FindPathToNearestEnemy : GridSearchStrategy
+    {
+        public Node Result { get; private set; }
+
+        private readonly Character _character;
+
+        public FindPathToNearestEnemy(Character character)
+        {
+            _character = character;
+        }
+
+        public override bool IsExitNode(Node node)
+        {
+            CellNeighbors neighbors = CellNeighbors.Get(node.Cell);
+            foreach (var cell in neighbors)
+            {
+                if (_character.IsEnemyInCell(cell))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public override void OnExitNodeReached(Node node)
+        {
+            Result = node;
+        }
+
+        public override bool PassesCustomEnqueueConditions(Node node)
+        {
+            return true;
+        }
+
+        protected override int CompareNodes(Node a, Node b)
+        {
+            return a.StepsFromStart.CompareTo(b.StepsFromStart);
         }
     }
 }

@@ -322,6 +322,12 @@ public class Character : MonoBehaviour
         return _battle.GetOccupant(cell);
     }
 
+    public bool IsEnemyInCell(Vector2Int cell)
+    {
+        Character occupant = GetOccupant(cell);
+        return occupant && occupant.Faction != _faction;
+    }
+
     public bool CanStayInCell(Vector2Int cell)
     {
         Character occupant = GetOccupant(cell);

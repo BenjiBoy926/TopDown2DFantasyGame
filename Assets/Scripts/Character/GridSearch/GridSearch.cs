@@ -24,9 +24,25 @@ public class GridSearch : MonoBehaviour
         }
     }
 
+    public void FindPathToNearestEnemy(List<Vector2Int> path)
+    {
+        Node targetNode = FindFullPathToNearestEnemy();
+        if (targetNode != null)
+        {
+            ReconstructLimitedPath(targetNode, path);
+        }
+    }
+
     private Node FindFullPath(Vector2Int target) 
     {
         var strategy = new GridSearchStrategy.FindPathToCell(target);
+        Search(strategy);
+        return strategy.Result;
+    }
+
+    private Node FindFullPathToNearestEnemy()
+    {
+        var strategy = new GridSearchStrategy.FindPathToNearestEnemy(_character);
         Search(strategy);
         return strategy.Result;
     }

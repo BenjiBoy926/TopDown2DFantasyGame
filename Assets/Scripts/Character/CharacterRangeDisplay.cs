@@ -70,9 +70,7 @@ public class CharacterRangeDisplay : MonoBehaviour
 
     private Color GetInteractableEdgeCellColor(Vector2Int cell)
     {
-        Character occupant = _character.GetOccupant(cell);
-        bool useAttackableColor = !occupant || occupant.Faction != _character.Faction;
-        return useAttackableColor ? _attackableCellColor : _allyInteractionCellColor;
+        return _character.IsEnemyInCell(cell) ? _attackableCellColor : _allyInteractionCellColor;
     }
 
     private void SetCurrentAlpha(float alpha)

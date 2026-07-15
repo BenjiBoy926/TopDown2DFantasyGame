@@ -98,14 +98,7 @@ public class CharacterRange : MonoBehaviour
     public bool IsPassable(Vector2Int cell)
     {
         TileBase tile = _character.GetTile(cell);
-        if (tile && _wallTiles.Contains(tile))
-        {
-            return false;
-        }
-
-        Character occupant = _character.GetOccupant(cell);
-        bool canMoveThroughOccupant = !occupant || occupant.Faction == _character.Faction;
-        return canMoveThroughOccupant;
+        return tile && !_wallTiles.Contains(tile) && !_character.IsEnemyInCell(cell);
     }
 
     public bool IsReachable(Vector2Int cell)

@@ -1,6 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public struct CellNeighbors
+public struct CellNeighbors : IEnumerable<Vector2Int>
 {
     public Vector2Int Left, Right, Up, Down;
 
@@ -13,5 +15,18 @@ public struct CellNeighbors
             Up = center + Vector2Int.up,
             Down = center + Vector2Int.down
         };
+    }
+
+    public readonly IEnumerator<Vector2Int> GetEnumerator()
+    {
+        yield return Up;
+        yield return Right;
+        yield return Down;
+        yield return Left;
+    }
+
+    readonly IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }
