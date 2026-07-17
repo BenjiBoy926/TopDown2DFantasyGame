@@ -4,7 +4,6 @@ using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Character))]
 [RequireComponent(typeof(CharacterRangeDisplay))]
-[RequireComponent(typeof(GridSearch))]
 public class CharacterRange : MonoBehaviour
 {
     private const float ClampMargin = 0.1f;
@@ -15,7 +14,6 @@ public class CharacterRange : MonoBehaviour
     [SerializeField] private List<TileBase> _wallTiles = new();
     private Character _character;
     private CharacterRangeDisplay _display;
-    private GridSearch _gridSearch;
     private readonly HashSet<Vector2Int> _traversibleCells = new();
     private readonly HashSet<Vector2Int> _stayableCells = new();
     private readonly HashSet<Vector2Int> _interactableEdgeCells = new();
@@ -25,22 +23,11 @@ public class CharacterRange : MonoBehaviour
     {
         _character = GetComponent<Character>();
         _display = GetComponent<CharacterRangeDisplay>();
-        _gridSearch = GetComponent<GridSearch>();
-    }
-
-    public void FindPathToNearestEnemy(List<Vector2Int> path)
-    {
-        _gridSearch.FindPathToNearestEnemy(path);
-    }
-
-    public void FindPath(Vector2Int target, List<Vector2Int> path)
-    {
-        _gridSearch.FindPath(target, path);
     }
 
     public void Refresh()
     {
-        _gridSearch.FindAllCellsInRange(_traversibleCells);
+        RecalculateTraversibleCells();
         RecalculateStayableCells();
         RecalculateAttackableEdgeCells();
 
@@ -63,6 +50,16 @@ public class CharacterRange : MonoBehaviour
     public void Hide()
     {
         _display.Hide();
+    }
+
+    private void RecalculateTraversibleCells()
+    {
+        GridSearchResult result = _character.SearchGrid(new GridSearchStrategy.FindAllCellsInRange());
+        _traversibleCells.Clear();
+        foreach (var cell in result.VisitedCells)
+        {
+            _traversibleCells.Add(cell);
+        }
     }
 
     private void RecalculateStayableCells()
