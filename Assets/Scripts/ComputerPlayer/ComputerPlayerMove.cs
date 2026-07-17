@@ -8,10 +8,8 @@ using UnityEngine;
 [RequireComponent(typeof(ComputerPlayer))]
 public class ComputerPlayerMove : MonoBehaviour
 {
-    [SerializeField] private float _speed = 2;
     [SerializeField, ReadOnly] private Character _character;
     [SerializeField, ReadOnly] private List<Character> _attackableCharacters = new();
-    [SerializeField, ReadOnly] private List<Vector2Int> _path = new();
     private ComputerPlayer _computerPlayer;
 
     private void Awake()
@@ -60,8 +58,8 @@ public class ComputerPlayerMove : MonoBehaviour
     {
         Character target = GetBestTarget(attackable);
         Vector2Int adjacentCell = GetBestAdjacentTile(target);
-        _character.FindPath(adjacentCell, _path);
-        yield return WalkOnPath(_path);
+        GridSearchResult result = _character.SearchGrid(new GridSearchStrategy.FindPathToCell(adjacentCell));
+        yield return _character.WalkToNodeClamped(result.ExitNode);
         yield return _character.Attack(target);
     }
 
@@ -91,8 +89,8 @@ public class ComputerPlayerMove : MonoBehaviour
 
     private IEnumerator DefendBestCell()
     {
-        _character.FindPathToNearestEnemy(_path);
-        yield return WalkOnPath(_path);
+        GridSearchResult result = _character.SearchGrid(new GridSearchStrategy.FindPathToNearestEnemy());
+        yield return _character.WalkToNodeClamped(result.ExitNode);
         yield return _character.Defend();
     }
 
@@ -137,26 +135,5 @@ public class ComputerPlayerMove : MonoBehaviour
     private int RectangularDistanceToTarget(Character target)
     {
         return CharacterRange.RectangularDistance(_character.CurrentCell, target.CurrentCell);
-    }
-
-    public IEnumerator WalkOnPath(List<Vector2Int> path)
-    {
-        _character.SetIsRunning(true);
-        for (int i = 0; i < path.Count; i++)
-        {
-            Vector2Int nextCell = path[i];
-            yield return MoveDirectlyToCell(nextCell);
-        }
-        _character.SetIsRunning(false);
-    }
-
-    private YieldInstruction MoveDirectlyToCell(Vector2Int cell)
-    {
-        Vector2 nextPosition = _character.CellToWorld(cell);
-        _character.LookAt(nextPosition);
-        return _character.transform.DOMove(nextPosition, _speed)
-            .SetSpeedBased()
-            .SetEase(Ease.Linear)
-            .WaitForCompletion();
     }
 }

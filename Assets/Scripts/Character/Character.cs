@@ -4,8 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+
 [RequireComponent(typeof(CharacterStats))]
 [RequireComponent(typeof(CharacterRange))]
+[RequireComponent(typeof(GridSearch))]
+[RequireComponent(typeof(CharacterWalker))]
 [RequireComponent(typeof(CharacterMovePreview))]
 [RequireComponent(typeof(CharacterAttackBehaviour))]
 [RequireComponent(typeof(CharacterHurtBehaviour))]
@@ -14,7 +17,6 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(CharacterBeHealedBehaviour))]
 [RequireComponent(typeof(CharacterCancelBehaviour))]
 [RequireComponent(typeof(CharacterUndoRedoBehaviour))]
-[RequireComponent(typeof(GridSearch))]
 public class Character : MonoBehaviour
 {
     // ── Events ───────────────────────────────────────────────────────────
@@ -68,6 +70,8 @@ public class Character : MonoBehaviour
     private CharacterAnimator _animator;
     private CharacterStats _stats;
     private CharacterRange _range;
+    private GridSearch _gridSearch;
+    private CharacterWalker _walker;
     private CharacterMovePreview _preview;
     private CharacterAttackBehaviour _attackBehaviour;
     private CharacterHurtBehaviour _hurtBehaviour;
@@ -77,7 +81,6 @@ public class Character : MonoBehaviour
     private CharacterCancelBehaviour _cancelBehaviour;
     private CharacterUndoRedoBehaviour _undoRedoBehaviour;
     private Battle _battle;
-    private GridSearch _gridSearch;
     private bool _hasMovedThisTurn = false;
     // NOTE: static — must not carry state across scene reloads. Clear on scene unload if needed.
     private static readonly HashSet<Character> _actingCharacters = new();
@@ -89,6 +92,8 @@ public class Character : MonoBehaviour
         _animator = GetComponentInChildren<CharacterAnimator>();
         _stats = GetComponent<CharacterStats>();
         _range = GetComponent<CharacterRange>();
+        _gridSearch = GetComponent<GridSearch>();
+        _walker = GetComponent<CharacterWalker>();
         _preview = GetComponent<CharacterMovePreview>();
         _attackBehaviour = GetComponent<CharacterAttackBehaviour>();
         _hurtBehaviour = GetComponent<CharacterHurtBehaviour>();
@@ -97,7 +102,6 @@ public class Character : MonoBehaviour
         _beHealedBehaviour = GetComponent<CharacterBeHealedBehaviour>();
         _cancelBehaviour = GetComponent<CharacterCancelBehaviour>();
         _undoRedoBehaviour = GetComponent<CharacterUndoRedoBehaviour>();
-        _gridSearch = GetComponent<GridSearch>();
     }
 
     private void OnEnable()
@@ -352,19 +356,14 @@ public class Character : MonoBehaviour
         return _range.IsPassable(cell);
     }
 
-    public void FindPathToNearestEnemy(List<Vector2Int> path)
-    {
-        _gridSearch.FindPathToNearestEnemy(path);
-    }
-
-    public void FindPath(Vector2Int target, List<Vector2Int> path)
-    {
-        _gridSearch.FindPath(target, path);
-    }
-
     public GridSearchResult SearchGrid(GridSearchStrategy strategy)
     {
         return _gridSearch.Search(strategy);
+    }
+
+    public Coroutine WalkToNodeClamped(Node node)
+    {
+        return _walker.WalkToNodeClamped(node);
     }
 
     // ── Health ───────────────────────────────────────────────────────────
