@@ -59,6 +59,12 @@ public class ComputerPlayerMove : MonoBehaviour
         Character target = GetBestTarget(attackable);
         Vector2Int adjacentCell = GetBestAdjacentTile(target);
         GridSearchResult result = _character.SearchGrid(new GridSearchStrategy.FindPathToCell(adjacentCell));
+        if (result.ExitNode == null)
+        {
+            Debug.LogError($"{_character.name} decided to attack {target.name} from the cell {adjacentCell}, " +
+                $"but no walking path from {_character.CurrentCell} to {adjacentCell} could be found.");
+            yield break;
+        }
         yield return _character.WalkToNodeClamped(result.ExitNode);
         yield return _character.Attack(target);
     }
@@ -76,7 +82,7 @@ public class ComputerPlayerMove : MonoBehaviour
 
     private float GetAttackScore(Character target)
     {
-        return GetAttackDamageScore(target);
+        return GetAttackDamageScore(target) + GetAttackSelfPreservationScore(target);
     }
 
     private float GetAttackDamageScore(Character target)
@@ -87,16 +93,27 @@ public class ComputerPlayerMove : MonoBehaviour
         return (float)damageDealt / healthBeforeAttack;
     }
 
+    private float GetAttackSelfPreservationScore(Character target)
+    {
+        if (_character.IsRanged || target.IsRanged)
+        {
+            return 1;
+        }
+        int healthAfterHit = _character.CalculateHealthAfterHitFrom(target);
+        float percentHealthLoss = (_character.CurrentHealth - healthAfterHit) / _character.CurrentHealth;
+        return 1 - percentHealthLoss;
+    }
+
     private IEnumerator DefendBestCell()
     {
         GridSearchResult result = _character.SearchGrid(new GridSearchStrategy.FindPathToNearestEnemy());
+        if (result.ExitNode == null)
+        {
+            Debug.LogError($"{_character.name} could not find any path from {_character.CurrentCell} to any enemy on the grid");
+            yield break;
+        }
         yield return _character.WalkToNodeClamped(result.ExitNode);
         yield return _character.Defend();
-    }
-
-    private Character GetClosestEnemy()
-    {
-        return _computerPlayer.AllCharacters.Where(IsTargettable).OrderBy(RectangularDistanceToTarget).FirstOrDefault();
     }
 
     private bool IsTargettable(Character target)

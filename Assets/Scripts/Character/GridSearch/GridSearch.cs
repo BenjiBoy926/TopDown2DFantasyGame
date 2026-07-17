@@ -16,49 +16,6 @@ public class GridSearch : MonoBehaviour
         _character = GetComponent<Character>();
     }
 
-    public void FindPath(Vector2Int target, List<Vector2Int> path)
-    {
-        Node targetNode = FindFullPath(target);
-        if (targetNode != null)
-        {
-            ReconstructLimitedPath(targetNode, path);
-        }
-    }
-
-    public void FindPathToNearestEnemy(List<Vector2Int> path)
-    {
-        Node targetNode = FindFullPathToNearestEnemy();
-        if (targetNode != null)
-        {
-            ReconstructLimitedPath(targetNode, path);
-        }
-    }
-
-    private Node FindFullPath(Vector2Int target) 
-    {
-        var strategy = new GridSearchStrategy.FindPathToCell(target);
-        var result = Search(strategy);
-        return result.ExitNode;
-    }
-
-    private Node FindFullPathToNearestEnemy()
-    {
-        var strategy = new GridSearchStrategy.FindPathToNearestEnemy();
-        var result = Search(strategy);
-        return result.ExitNode;
-    }
-
-    public void FindAllCellsInRange(HashSet<Vector2Int> cellsInRange) 
-    {
-        var strategy = new GridSearchStrategy.FindAllCellsInRange();
-        var result = Search(strategy);
-        cellsInRange.Clear();
-        foreach (var cell in result.VisitedCells)
-        {
-            cellsInRange.Add(cell);
-        }
-    }
-
     public GridSearchResult Search(GridSearchStrategy strategy)
     {
         _strategy = strategy;
@@ -142,19 +99,5 @@ public class GridSearch : MonoBehaviour
     private int FindNodeInNext(Vector2Int cell)
     {
         return _searchQueue.FindIndex(n => n.Cell == cell);
-    }
-
-    private void ReconstructLimitedPath(Node node, List<Vector2Int> path)
-    {
-        path.Clear();
-        while (node != null)
-        {
-            if (node.StepsFromStart <= _character.TraversalRange)
-            {
-                path.Add(node.Cell);
-            }
-            node = node.Parent;
-        }
-        path.Reverse();
     }
 }
