@@ -40,7 +40,7 @@ public abstract class GridSearchStrategy
 
         public override bool IsExitNode(GridSearchState state, Node node)
         {
-            return node.Cell == _target && state.Character.CanStayInCell(node.Cell);
+            return node.Cell == _target;
         }
 
         public override bool PassesCustomEnqueueConditions(GridSearchState state, Node node)
@@ -60,10 +60,6 @@ public abstract class GridSearchStrategy
     {
         public override bool IsExitNode(GridSearchState state, Node node)
         {
-            if (!state.Character.CanStayInCell(node.Cell))
-            {
-                return false;
-            }
             CellNeighbors neighbors = CellNeighbors.Get(node.Cell);
             foreach (var cell in neighbors)
             {

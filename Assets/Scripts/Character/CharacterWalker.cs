@@ -55,5 +55,16 @@ public class CharacterWalker : MonoBehaviour
             node = node.Parent;
         }
         path.Reverse();
+        TrimOccupiedCellsInPath(path);
+    }
+
+    private void TrimOccupiedCellsInPath(List<Vector2Int> path)
+    {
+        Vector2Int finalCell = path[^1];
+        while (path.Count > 0 && !_character.CanStayInCell(finalCell))
+        {
+            path.RemoveAt(path.Count - 1);
+            finalCell = path[^1];
+        }
     }
 }
