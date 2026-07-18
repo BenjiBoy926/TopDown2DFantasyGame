@@ -318,6 +318,12 @@ public class Player : MonoBehaviour
     {
         if (isInputAllowed == _isInputAllowed) return;
 
+        if (!isInputAllowed && _battle.CurrentFactionTurn != _faction)
+        {
+            Vector3 commanderPosition = _faction.Commander.transform.position;
+            SetPosition(commanderPosition);
+        }
+
         _isInputAllowed = isInputAllowed;
         if (isInputAllowed)
         {
@@ -328,11 +334,6 @@ public class Player : MonoBehaviour
         {
             _cursor.Hide();
             Deselect();
-        }
-        if (!isInputAllowed && _battle.CurrentFactionTurn != _faction)
-        {
-            Vector3 commanderPosition = _faction.Commander.transform.position;
-            SetPosition(commanderPosition);
         }
     }
 }
