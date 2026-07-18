@@ -82,7 +82,7 @@ public class ComputerPlayerMove : MonoBehaviour
 
     private float GetAttackScore(Character target)
     {
-        return GetAttackDamageScore(target) + GetAttackSelfPreservationScore(target);
+        return GetAttackDamageScore(target);
     }
 
     private float GetAttackDamageScore(Character target)
@@ -93,6 +93,7 @@ public class ComputerPlayerMove : MonoBehaviour
         return (float)damageDealt / healthBeforeAttack;
     }
 
+    // NOTE: the results when adding this to the attack score didn't feel "fun" to play against.
     private float GetAttackSelfPreservationScore(Character target)
     {
         if (_character.IsRanged || target.IsRanged)
@@ -147,10 +148,5 @@ public class ComputerPlayerMove : MonoBehaviour
     private bool IsAlly(Character other)
     {
         return other != _character && other.Faction == _character.Faction;
-    }
-
-    private int RectangularDistanceToTarget(Character target)
-    {
-        return CharacterRange.RectangularDistance(_character.CurrentCell, target.CurrentCell);
     }
 }
