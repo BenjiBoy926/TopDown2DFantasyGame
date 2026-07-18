@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public bool IsCameraGrabbed => _camera.IsGrabbed;
     public Character ActiveCharacter => _activeCharacter;
     public Faction Faction => _faction;
 
@@ -12,7 +11,6 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioClip _moveStartClip;
 
     private Battle _battle;
-    private PlayerCamera _camera;
     private PlayerCursor _cursor;
     private PlayerGridReticle _gridReticle;
     private Character _activeCharacter;
@@ -23,7 +21,6 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         _battle = GetComponentInParent<Battle>();
-        _camera = GetComponentInChildren<PlayerCamera>();
         _cursor = GetComponentInChildren<PlayerCursor>();
         _gridReticle = GetComponentInChildren<PlayerGridReticle>();
     }
@@ -59,22 +56,22 @@ public class Player : MonoBehaviour
 
     public void IncludeInView()
     {
-        _camera.IncludeInView(_cursor.Position);
+        _battle.IncludeInView(_cursor.Position);
     }
 
     public void ChangeZoom(float zoom)
     {
-        _camera.ChangeZoom(zoom);
+        _battle.ChangeZoom(zoom);
     }
 
     public void ZoomIn()
     {
-        _camera.ZoomIn();
+        _battle.ZoomIn();
     }
 
     public void ZoomOut()
     {
-        _camera.ZoomOut();
+        _battle.ZoomOut();
     }
 
     public void SlidePosition(Vector2 offset)
@@ -87,13 +84,13 @@ public class Player : MonoBehaviour
     {
         if (!_isInputAllowed) return;
 
-        if (IsCameraGrabbed)
+        if (_battle.IsCameraGrabbed)
         {
-            _camera.GrabUpdate(screenPosition);
+            _battle.UpdateCameraGrab(screenPosition);
         }
         else
         {
-            Vector2 worldPosition = _camera.ScreenToWorld(screenPosition);
+            Vector2 worldPosition = _battle.ScreenToWorld(screenPosition);
             SetPosition(worldPosition);
         }
     }
@@ -118,7 +115,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            _camera.Grab(_cursor.Position);
+            _battle.GrabCamera(_cursor.Position);
         }
     }
 
@@ -130,7 +127,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            _camera.Release();
+            _battle.ReleaseCamera();
         }
     }
 

@@ -14,13 +14,31 @@ public class Battle : MonoBehaviour
     public Faction CurrentFactionTurn => _turn.CurrentFaction;
     public Faction PlayerFaction => _player.Faction;
     public IReadOnlyCollection<Character> AllCharacters => _allCharacters;
+    public bool IsCameraGrabbed => _camera.IsGrabbed;
 
     private BattleSetup _setup;
     private Battlefield _field;
     private BattleTurn _turn;
     private BattleHistory _history;
+    private BattleCamera _camera;
     private Player _player;
     private readonly HashSet<Character> _allCharacters = new();
+
+    private void Awake()
+    {
+        _setup = GetComponent<BattleSetup>();
+        _field = GetComponent<Battlefield>();
+        _turn = GetComponent<BattleTurn>();
+        _history = GetComponent<BattleHistory>();
+        _camera = GetComponentInChildren<BattleCamera>();
+        _player = GetComponentInChildren<Player>();
+    }
+
+    private void Start()
+    {
+        _setup.Begin();
+    }
+
 
     public void Register(Character character)
     {
@@ -125,17 +143,50 @@ public class Battle : MonoBehaviour
         return _history.Redo();
     }
 
-    private void Awake()
+    // Camera ===
+
+    public void GrabCamera(Vector2 worldPosition)
     {
-        _setup = GetComponent<BattleSetup>();
-        _field = GetComponent<Battlefield>();
-        _turn = GetComponent<BattleTurn>();
-        _history = GetComponent<BattleHistory>();
-        _player = GetComponentInChildren<Player>();
+        _camera.Grab(worldPosition);
     }
 
-    private void Start()
+    public void UpdateCameraGrab(Vector2 screenPosition)
     {
-        _setup.Begin();
+        _camera.GrabUpdate(screenPosition);
+    }
+
+    public void ReleaseCamera()
+    {
+        _camera.Release();
+    }
+
+    public Vector2 ScreenToWorld(Vector2 screenPosition)
+    {
+        return _camera.ScreenToWorld(screenPosition);
+    }
+
+    public void IncludeInView(Vector2 position)
+    {
+        _camera.IncludeInView(position);
+    }
+
+    public void ChangeZoom(float zoom)
+    {
+        _camera.ChangeZoom(zoom);
+    }
+
+    public void SetZoom(float zoom)
+    {
+        _camera.SetZoom(zoom);
+    }
+
+    public void ZoomIn()
+    {
+        _camera.ZoomIn();
+    }
+
+    public void ZoomOut()
+    {
+        _camera.ZoomOut();
     }
 }

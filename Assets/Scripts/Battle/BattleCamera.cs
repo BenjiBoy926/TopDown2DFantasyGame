@@ -3,7 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerCamera : MonoBehaviour
+public class BattleCamera : MonoBehaviour
 {
     public bool IsGrabbed => _isGrabbed;
     private float WorldHeight => _camera.orthographicSize * 2;
