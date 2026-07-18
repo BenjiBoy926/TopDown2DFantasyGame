@@ -66,6 +66,14 @@ public class ComputerPlayerMove : MonoBehaviour
             yield break;
         }
         yield return _character.WalkToNodeClamped(result.ExitNode);
+
+        int rectDistance = CharacterRange.RectangularDistance(_character.CurrentCell, target.CurrentCell);
+        if (rectDistance > 1)
+        {
+            Debug.LogError($"{_character.name} could not stay in cell {adjacentCell} to attack {target.name}. " +
+                $"Stopped at {_character.CurrentCell}");
+            yield break;
+        }
         yield return _character.Attack(target);
     }
 
