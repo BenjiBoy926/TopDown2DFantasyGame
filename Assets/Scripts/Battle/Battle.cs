@@ -152,7 +152,7 @@ public class Battle : MonoBehaviour
 
     public void UpdateCameraGrab(Vector2 screenPosition)
     {
-        _camera.GrabUpdate(screenPosition);
+        _camera.UpdateGrab(screenPosition);
     }
 
     public void ReleaseCamera()
