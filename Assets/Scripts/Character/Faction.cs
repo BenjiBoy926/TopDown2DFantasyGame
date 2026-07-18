@@ -6,8 +6,23 @@ public class Faction : ScriptableObject
     public string Name => _name;
     public Color Color => _color;
     public bool CanBeRevived => _canBeRevived;
+    public Character Commander => _commander;
 
     [SerializeField] private string _name;
     [SerializeField] private Color _color = Color.white;
     [SerializeField] private bool _canBeRevived = false;
+    private Character _commander;
+
+    public void RegisterCommander(Character commander)
+    {
+        _commander = commander;
+    }
+
+    public void UnregisterCommander(Character commander)
+    {
+        if (_commander == commander)
+        {
+            _commander = null;
+        }
+    }
 }

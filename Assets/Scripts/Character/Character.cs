@@ -461,6 +461,16 @@ public class Character : MonoBehaviour
         }
     }
 
+    public void RegisterAsCommander()
+    {
+        _faction.RegisterCommander(this);
+    }
+
+    public void UnregisterAsCommander()
+    {
+        _faction.UnregisterCommander(this);
+    }
+
     // ── Private ──────────────────────────────────────────────────────────
 
     private Color GetMoveFadeColor()

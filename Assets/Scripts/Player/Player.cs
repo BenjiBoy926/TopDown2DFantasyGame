@@ -329,5 +329,10 @@ public class Player : MonoBehaviour
             _cursor.Hide();
             Deselect();
         }
+        if (!isInputAllowed && _battle.CurrentFactionTurn != _faction)
+        {
+            Vector3 commanderPosition = _faction.Commander.transform.position;
+            SetPosition(commanderPosition);
+        }
     }
 }
