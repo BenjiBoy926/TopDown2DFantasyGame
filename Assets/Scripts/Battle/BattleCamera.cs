@@ -1,12 +1,15 @@
 using DG.Tweening;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(Camera))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BattleCameraGrab))]
 [RequireComponent(typeof(BattleCameraFollow))]
+[RequireComponent(typeof(BattleCameraGlide))]
 public class BattleCamera : MonoBehaviour
 {
+    public bool IsGliding => _glide.IsActive;
     public bool IsGrabbed => _grab.IsActive;
     private float WorldHeight => _camera.orthographicSize * 2;
     private float WorldWidth => WorldHeight * _camera.aspect;
@@ -36,6 +39,7 @@ public class BattleCamera : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private BattleCameraGrab _grab;
     private BattleCameraFollow _follow;
+    private BattleCameraGlide _glide;
 
     private void Awake()
     {
@@ -43,6 +47,7 @@ public class BattleCamera : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _grab = GetComponent<BattleCameraGrab>();
         _follow = GetComponent<BattleCameraFollow>();
+        _glide = GetComponent<BattleCameraGlide>();
     }
 
     // Grab
@@ -74,7 +79,26 @@ public class BattleCamera : MonoBehaviour
         _follow.End();
     }
 
+    // Glide
+
+    public void Glide(Transform transform)
+    {
+        _glide.Begin(transform);
+    }
+
+    public void EndGlide()
+    {
+        _glide.End();
+    }
+
     // Self
+
+    public Vector3 GetFramingPosition(Transform target)
+    {
+        Vector2 targetPosition = target.position;
+        float z = transform.position.z;
+        return new(targetPosition.x, targetPosition.y, z);
+    }
 
     public Vector2 ScreenToWorld(Vector2 screen)
     {

@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8412669798690128537}
   - component: {fileID: 5179970857030055801}
   - component: {fileID: 5361265769631795408}
+  - component: {fileID: 6570646020809201309}
   m_Layer: 0
   m_Name: BattleCamera
   m_TagString: MainCamera
@@ -209,8 +210,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4266fc8ebf026924dafa3ad2d556ef41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initialFollowDuration: 0.35
-  _initialFollowEase:
+--- !u!114 &6570646020809201309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8868835111868810993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3dd7cf9a57d8594e972f0bb30fc5b56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _duration: 0.35
+  _ease:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
