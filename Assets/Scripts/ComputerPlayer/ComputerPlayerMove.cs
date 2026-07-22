@@ -65,6 +65,8 @@ public class ComputerPlayerMove : MonoBehaviour
                 $"but no walking path from {_character.CurrentCell} to {adjacentCell} could be found.");
             yield break;
         }
+
+        _computerPlayer.CameraFollow(_character.transform);
         yield return _character.WalkToNodeClamped(result.ExitNode);
 
         int rectDistance = CharacterRange.RectangularDistance(_character.CurrentCell, target.CurrentCell);
@@ -74,6 +76,8 @@ public class ComputerPlayerMove : MonoBehaviour
                 $"Stopped at {_character.CurrentCell}");
             yield break;
         }
+        
+        _computerPlayer.CameraUnfollow();
         yield return _character.Attack(target);
     }
 
@@ -121,7 +125,11 @@ public class ComputerPlayerMove : MonoBehaviour
             Debug.LogError($"{_character.name} could not find any path from {_character.CurrentCell} to any enemy on the grid");
             yield break;
         }
+
+        _computerPlayer.CameraFollow(_character.transform);
         yield return _character.WalkToNodeClamped(result.ExitNode);
+
+        _computerPlayer.CameraUnfollow();
         yield return _character.Defend();
     }
 

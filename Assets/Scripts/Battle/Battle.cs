@@ -160,6 +160,16 @@ public class Battle : MonoBehaviour
         _camera.Release();
     }
 
+    public void CameraFollow(Transform target)
+    {
+        _camera.Follow(target);
+    }
+
+    public void CameraUnfollow()
+    {
+        _camera.Unfollow();
+    }
+
     public Vector2 ScreenToWorld(Vector2 screenPosition)
     {
         return _camera.ScreenToWorld(screenPosition);

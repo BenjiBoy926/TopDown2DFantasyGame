@@ -33,6 +33,16 @@ public class ComputerPlayer : MonoBehaviour
         BattleTurn.NextTurnStarted -= OnNextTurnStarted;
     }
 
+    public void CameraFollow(Transform target)
+    {
+        _battle.CameraFollow(target);
+    }
+
+    public void CameraUnfollow()
+    {
+        _battle.CameraUnfollow();
+    }
+
     private void OnNextTurnStarted(Faction faction)
     {
         if (faction != _player.Faction)

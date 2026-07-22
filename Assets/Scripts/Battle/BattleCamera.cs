@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Camera))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BattleCameraGrab))]
+[RequireComponent(typeof(BattleCameraFollow))]
 public class BattleCamera : MonoBehaviour
 {
     public bool IsGrabbed => _grab.IsActive;
@@ -34,13 +35,17 @@ public class BattleCamera : MonoBehaviour
     private Camera _camera;
     private Rigidbody2D _rigidbody;
     private BattleCameraGrab _grab;
+    private BattleCameraFollow _follow;
 
     private void Awake()
     {
         _camera = GetComponent<Camera>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _grab = GetComponent<BattleCameraGrab>();
+        _follow = GetComponent<BattleCameraFollow>();
     }
+
+    // Grab
 
     public void Grab(Vector2 worldPosition)
     {
@@ -56,6 +61,20 @@ public class BattleCamera : MonoBehaviour
     {
         _grab.End();
     }
+
+    // Follow
+    
+    public void Follow(Transform target)
+    {
+        _follow.Begin(target);
+    }
+
+    public void Unfollow()
+    {
+        _follow.End();
+    }
+
+    // Self
 
     public Vector2 ScreenToWorld(Vector2 screen)
     {
