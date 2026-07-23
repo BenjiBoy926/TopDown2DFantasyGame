@@ -170,6 +170,11 @@ public class Battle : MonoBehaviour
         _camera.Unfollow();
     }
 
+    public void CameraGlide(Transform target)
+    {
+        _camera.Glide(target);
+    }
+
     public Vector2 ScreenToWorld(Vector2 screenPosition)
     {
         return _camera.ScreenToWorld(screenPosition);

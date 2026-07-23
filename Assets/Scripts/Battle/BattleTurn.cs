@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 
 [RequireComponent(typeof(Battle))]
@@ -63,6 +62,10 @@ public class BattleTurn : MonoBehaviour
         SetCurrentTurn(nextFactionIndex);
         PlayTurnChangeAnimation();
 
+        if (CurrentFaction == _battle.PlayerFaction)
+        {
+            _battle.CameraGlide(_battle.PlayerFaction.Commander.transform);
+        }
         _battle.RecordTurnChange(charactersToRecord, CurrentFaction);
         NextTurnStarted.Invoke(CurrentFaction);
     }
