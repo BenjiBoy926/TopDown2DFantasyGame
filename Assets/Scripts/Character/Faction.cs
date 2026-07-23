@@ -7,6 +7,8 @@ public class Faction : ScriptableObject
     public Color Color => _color;
     public bool CanBeRevived => _canBeRevived;
     public Character Commander => _commander;
+    public Transform CommanderTransform => _commander ? _commander.transform : null;
+    public Vector3 CommanderPosition => CommanderTransform.position;
 
     [SerializeField] private string _name;
     [SerializeField] private Color _color = Color.white;

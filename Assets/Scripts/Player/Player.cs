@@ -5,6 +5,7 @@ public class Player : MonoBehaviour
 {
     public Character ActiveCharacter => _activeCharacter;
     public Faction Faction => _faction;
+    public Transform CommanderTransform => _faction.CommanderTransform;
 
     [SerializeField] private Faction _faction;
     [SerializeField] private AudioSource _cellHoverAudio;
@@ -317,8 +318,7 @@ public class Player : MonoBehaviour
 
         if (!isInputAllowed && _battle.CurrentFactionTurn != _faction)
         {
-            Vector3 commanderPosition = _faction.Commander.transform.position;
-            SetPosition(commanderPosition);
+            SetPosition(_faction.CommanderPosition);
         }
 
         _isInputAllowed = isInputAllowed;

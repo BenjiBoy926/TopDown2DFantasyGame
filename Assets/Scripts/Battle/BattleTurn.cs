@@ -64,7 +64,7 @@ public class BattleTurn : MonoBehaviour
 
         if (CurrentFaction == _battle.PlayerFaction)
         {
-            _battle.CameraGlide(_battle.PlayerFaction.Commander.transform);
+            _battle.CameraGlide(_battle.PlayerCommanderTransform);
         }
         _battle.RecordTurnChange(charactersToRecord, CurrentFaction);
         NextTurnStarted.Invoke(CurrentFaction);

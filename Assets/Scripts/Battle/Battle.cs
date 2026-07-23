@@ -13,6 +13,7 @@ public class Battle : MonoBehaviour
     public bool IsTurnChangeAnimationPlaying => _turn.IsAnimationPlaying;
     public Faction CurrentFactionTurn => _turn.CurrentFaction;
     public Faction PlayerFaction => _player.Faction;
+    public Transform PlayerCommanderTransform => _player.CommanderTransform;
     public IReadOnlyCollection<Character> AllCharacters => _allCharacters;
     public bool IsCameraGrabbed => _camera.IsGrabbed;
 
