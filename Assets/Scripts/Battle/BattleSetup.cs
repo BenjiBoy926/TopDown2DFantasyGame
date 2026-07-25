@@ -8,6 +8,7 @@ public class BattleSetup : MonoBehaviour
     public void Begin()
     {
         RegisterAllCharacters();
+        RegisterAllSquads();
         RecordInitialState();
         _battle.StartPlayerTurn();
     }
@@ -24,6 +25,15 @@ public class BattleSetup : MonoBehaviour
         {
             _battle.Register(character);
             character.SetBattle(_battle);
+        }
+    }
+
+    private void RegisterAllSquads()
+    {
+        Squad[] squads = GetComponentsInChildren<Squad>();
+        foreach (var squad in squads)
+        {
+            squad.CollectMembers(_battle);
         }
     }
 
