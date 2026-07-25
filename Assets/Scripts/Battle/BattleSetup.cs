@@ -24,7 +24,6 @@ public class BattleSetup : MonoBehaviour
         foreach (var character in characters)
         {
             _battle.Register(character);
-            character.SetBattle(_battle);
         }
     }
 
@@ -33,7 +32,7 @@ public class BattleSetup : MonoBehaviour
         Squad[] squads = GetComponentsInChildren<Squad>();
         foreach (var squad in squads)
         {
-            squad.CollectMembers(_battle);
+            _battle.Register(squad);
         }
     }
 

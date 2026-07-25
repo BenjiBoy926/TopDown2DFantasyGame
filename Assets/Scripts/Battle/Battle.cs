@@ -15,6 +15,7 @@ public class Battle : MonoBehaviour
     public Faction PlayerFaction => _player.Faction;
     public Transform PlayerCommanderTransform => _player.CommanderTransform;
     public IReadOnlyCollection<Character> AllCharacters => _allCharacters;
+    public IReadOnlyCollection<Squad> AllSquads => _allSquads;
     public bool IsCameraGrabbed => _camera.IsGrabbed;
 
     private BattleSetup _setup;
@@ -24,6 +25,7 @@ public class Battle : MonoBehaviour
     private BattleCamera _camera;
     private Player _player;
     private readonly HashSet<Character> _allCharacters = new();
+    private readonly HashSet<Squad> _allSquads = new();
 
     private void Awake()
     {
@@ -46,12 +48,19 @@ public class Battle : MonoBehaviour
         _turn.AddFaction(character);
         _field.Register(character);
         _allCharacters.Add(character);
+        character.SetBattle(this);
     }
 
     public void Unregister(Character character)
     {
         _field.Unregister(character);
         _allCharacters.Add(character);
+    }
+
+    public void Register(Squad squad)
+    {
+        _allSquads.Add(squad);
+        squad.CollectMembers(this);
     }
 
     public void StartPlayerTurn()

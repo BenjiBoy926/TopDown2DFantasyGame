@@ -76,14 +76,28 @@ public class ComputerPlayer : MonoBehaviour
 
     private void GetMoveableCharacters(List<Character> result)
     {
-        // For now we just get all characters, but eventually we will group them by "squadrons"
-        _battle.GetCharactersInFaction(_battle.CurrentFactionTurn, result);
-        result.RemoveAll(ShouldNotMove);
+        foreach (var squad in _battle.AllSquads)
+        {
+            squad.Refresh();
+        }
+        foreach (var squad in _battle.AllSquads)
+        {
+            if (squad.IsAwake)
+            {
+                AddCharactersInSquad(squad, result);
+            }
+        }
     }
 
-    private bool ShouldNotMove(Character character)
+    private void AddCharactersInSquad(Squad squad, List<Character> result)
     {
-        return !ShouldMove(character);
+        foreach (var member in squad.Members)
+        {
+            if (ShouldMove(member))
+            {
+                result.Add(member);
+            }
+        }
     }
 
     private bool ShouldMove(Character character)

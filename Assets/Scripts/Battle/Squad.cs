@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Squad : MonoBehaviour
 {
+    public IReadOnlyList<Character> Members => _members;
+    public bool IsAwake => _isAwake;
+
     [SerializeField] private Vector2Int _extents = Vector2Int.one;
     [SerializeField, ReadOnly] private Battle _battle;
     [SerializeField, ReadOnly] private List<Character> _members = new();
+    [SerializeField, ReadOnly] private bool _isAwake;
 
     public void CollectMembers(Battle battle)
     {
@@ -21,6 +25,17 @@ public class Squad : MonoBehaviour
         }
     }
 
+    public void Refresh()
+    {
+        if (_isAwake) 
+            return;
+
+        if (ShouldBeAwake())
+        {
+            WakeUp();
+        }
+    }
+
     private void AddMemberAt(Vector2Int offset)
     {
         Vector2Int center = _battle.WorldToCell(transform.position);
@@ -30,6 +45,37 @@ public class Squad : MonoBehaviour
         {
             _members.Add(character);
         }
+    }
+
+    private bool ShouldBeAwake()
+    {
+        for (int i = 0; i < _members.Count; i++)
+        {
+            Character member = _members[i];
+            if (IsEnemyInRange(member))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private bool IsEnemyInRange(Character member)
+    {
+        member.RefreshRange();
+        foreach (var cell in member.ReachableCells)
+        {
+            if (member.IsEnemyInCell(cell))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void WakeUp()
+    {
+        _isAwake = true;
     }
 
     private void OnDrawGizmosSelected()

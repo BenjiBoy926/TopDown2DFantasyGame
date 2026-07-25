@@ -59,6 +59,7 @@ public class Character : MonoBehaviour
     // Range
     public IReadOnlyCollection<Vector2Int> StayableCells => _range.StayableCells;
     public IReadOnlyCollection<Vector2Int> InteractableEdgeCells => _range.InteractableEdgeCells;
+    public IReadOnlyCollection<Vector2Int> ReachableCells => _range.ReachableCells;
 
     // ── Fields ───────────────────────────────────────────────────────────
 
