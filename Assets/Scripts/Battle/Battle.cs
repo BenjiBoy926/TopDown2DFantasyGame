@@ -60,7 +60,6 @@ public class Battle : MonoBehaviour
     public void Register(Squad squad)
     {
         _allSquads.Add(squad);
-        squad.CollectMembers(this);
     }
 
     public void StartPlayerTurn()

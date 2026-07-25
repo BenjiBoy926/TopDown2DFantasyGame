@@ -7,22 +7,12 @@ public class Squad : MonoBehaviour
     public IReadOnlyList<Character> Members => _members;
     public bool IsAwake => _isAwake;
 
-    [SerializeField] private Vector2Int _extents = Vector2Int.one;
-    [SerializeField, ReadOnly] private Battle _battle;
     [SerializeField, ReadOnly] private List<Character> _members = new();
     [SerializeField, ReadOnly] private bool _isAwake;
 
-    public void CollectMembers(Battle battle)
+    private void Awake()
     {
-        _battle = battle;
-        for (int x = -_extents.x; x <= _extents.x; x++)
-        {
-            for (int y = -_extents.y; y <= _extents.y; y++)
-            {
-                Vector2Int offset = new(x, y);
-                AddMemberAt(offset);
-            }
-        }
+        _members = new(GetComponentsInChildren<Character>());
     }
 
     public void Refresh()
@@ -33,17 +23,6 @@ public class Squad : MonoBehaviour
         if (ShouldBeAwake())
         {
             WakeUp();
-        }
-    }
-
-    private void AddMemberAt(Vector2Int offset)
-    {
-        Vector2Int center = _battle.WorldToCell(transform.position);
-        Vector2Int cell = center + offset;
-        Character character = _battle.GetOccupant(cell);
-        if (character != null)
-        {
-            _members.Add(character);
         }
     }
 
@@ -76,19 +55,5 @@ public class Squad : MonoBehaviour
     private void WakeUp()
     {
         _isAwake = true;
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Color color = Color.red;
-        color.a = .2f;
-        Color oldColor = Gizmos.color;
-        Gizmos.color = color;
-
-        Vector3 position = transform.position;
-        Vector3 size = new Vector3(_extents.x * 2, _extents.y * 2, 0) + Vector3.one;
-        Gizmos.DrawCube(position, size);       
-
-        Gizmos.color = oldColor;
     }
 }

@@ -76,6 +76,7 @@ public class ComputerPlayer : MonoBehaviour
 
     private void GetMoveableCharacters(List<Character> result)
     {
+        result.Clear();
         foreach (var squad in _battle.AllSquads)
         {
             squad.Refresh();
