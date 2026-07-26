@@ -42,7 +42,6 @@ public class Battle : MonoBehaviour
         _setup.Begin();
     }
 
-
     public void Register(Character character)
     {
         _turn.AddFaction(character);
@@ -61,6 +60,8 @@ public class Battle : MonoBehaviour
     {
         _allSquads.Add(squad);
     }
+
+    // Battle Turn ===
 
     public void StartPlayerTurn()
     {
@@ -87,6 +88,8 @@ public class Battle : MonoBehaviour
         return _turn.CountMoveableCharacters(faction);
     }
 
+    // Battlefield ===
+
     public Vector2 SnapToGrid(Vector2 position)
     {
         return _field.SnapToGrid(position);
@@ -107,11 +110,6 @@ public class Battle : MonoBehaviour
         return _field.GetOccupant(cell);
     }
 
-    public Vector2Int GetCell(Character character)
-    {
-        return _field.GetCell(character);
-    }
-
     public TileBase GetTile(Vector2Int cell)
     {
         return _field.GetTile(cell);
@@ -121,6 +119,8 @@ public class Battle : MonoBehaviour
     {
         _field.RefreshCell(character);
     }
+
+    // History ===
 
     public void RecordInitialState()
     {
@@ -150,6 +150,11 @@ public class Battle : MonoBehaviour
     public Coroutine Redo()
     {
         return _history.Redo();
+    }
+
+    public CharacterRecord GetCurrentCharacterRecord(Character character)
+    {
+        return _history.GetCurrentRecord(character);
     }
 
     // Camera ===

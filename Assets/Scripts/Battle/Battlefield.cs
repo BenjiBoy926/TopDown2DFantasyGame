@@ -2,15 +2,23 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(Battle))]
 [RequireComponent(typeof(Tilemap))]
 public class Battlefield : MonoBehaviour
 {
     public float CellWidth => _tilemap.cellSize.x;
     public float CellHeight => _tilemap.cellSize.y;
 
+    private Battle _battle;
     private Tilemap _tilemap;
     private readonly Dictionary<Vector2Int, Character> _cellToOccupant = new();
     private readonly Dictionary<Character, Vector2Int> _occupantToCell = new();
+    
+    private void Awake()
+    {
+        _battle = GetComponent<Battle>();
+        _tilemap = GetComponent<Tilemap>();
+    }
 
     public void Register(Character character)
     {
@@ -49,12 +57,14 @@ public class Battlefield : MonoBehaviour
 
     public Character GetOccupant(Vector2Int cell)
     {
-        return _cellToOccupant.TryGetValue(cell, out Character character) ? character : null;
-    }
-
-    public Vector2Int GetCell(Character character)
-    {
-        return _occupantToCell[character];
+        foreach (var character in _battle.AllCharacters)
+        {
+            if (character.OccupiesCell(cell))
+            {
+                return character;
+            }
+        }
+        return null;
     }
 
     public void RefreshCell(Character character)
@@ -70,10 +80,5 @@ public class Battlefield : MonoBehaviour
     public TileBase GetTile(Vector2Int cell)
     {
         return _tilemap.GetTile((Vector3Int)cell);
-    }
-
-    private void Awake()
-    {
-        _tilemap = GetComponent<Tilemap>();
     }
 }

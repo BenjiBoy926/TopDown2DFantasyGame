@@ -105,7 +105,7 @@ public class BattleHistory : MonoBehaviour
         for (int i = 0; i < previousState.RecordCount; i++)
         {
             CharacterRecord recordToUndo = previousState.GetRecord(i);
-            CharacterRecord olderRecord = FindPreviousRecord(recordToUndo.Character, _currentStateIndex);
+            CharacterRecord olderRecord = GetCurrentRecord(recordToUndo.Character);
             yield return olderRecord.GetApplySequence();
         }
         SetCurrentTurn();
@@ -151,9 +151,9 @@ public class BattleHistory : MonoBehaviour
         _currentStateIndex++;
     }
 
-    private CharacterRecord FindPreviousRecord(Character character, int startIndex)
+    public CharacterRecord GetCurrentRecord(Character character)
     {
-        for (int i = startIndex; i >= 0; i--)
+        for (int i = _currentStateIndex; i >= 0; i--)
         {
             BattleState state = _states[i];
             if (state.TryGetRecord(character, out var record))
@@ -161,7 +161,7 @@ public class BattleHistory : MonoBehaviour
                 return record;
             }
         }
-        throw new System.Exception($"Expected to find a record for {character} at or before index {startIndex}, " +
+        throw new System.Exception($"Expected to find a record for {character} at or before index {_currentStateIndex}, " +
             $"but no such record could be found. Are you sure that the initial state of the character was recorded " +
             $"when they first entered the battle?");
     }

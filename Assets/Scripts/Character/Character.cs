@@ -37,7 +37,7 @@ public class Character : MonoBehaviour
         get => transform.position;
         set => transform.position = value;
     }
-    public Vector2Int HomeCell => _battle.GetCell(this);
+    public Vector2Int HomeCell => _battle.GetCurrentCharacterRecord(this).State.Cell;
     public Vector2Int CurrentCell => _battle.WorldToCell(Position);
     public Vector2 CurrentCellCenter => _battle.SnapToGrid(Position);
     public float CellWidth => _battle.CellWidth;
@@ -308,6 +308,11 @@ public class Character : MonoBehaviour
     }
 
     // ── Grid ─────────────────────────────────────────────────────────────
+
+    public bool OccupiesCell(Vector2Int cell)
+    {
+        return CurrentCell == cell && !IsDead;
+    }
 
     public Vector2 CellToWorld(Vector2Int cell)
     {
