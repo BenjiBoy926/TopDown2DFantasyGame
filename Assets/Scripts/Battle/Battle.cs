@@ -45,15 +45,13 @@ public class Battle : MonoBehaviour
     public void Register(Character character)
     {
         _turn.AddFaction(character);
-        _field.Register(character);
         _allCharacters.Add(character);
         character.SetBattle(this);
     }
 
     public void Unregister(Character character)
     {
-        _field.Unregister(character);
-        _allCharacters.Add(character);
+        _allCharacters.Remove(character);
     }
 
     public void Register(Squad squad)
@@ -115,11 +113,6 @@ public class Battle : MonoBehaviour
         return _field.GetTile(cell);
     }
 
-    public void RefreshCell(Character character)
-    {
-        _field.RefreshCell(character);
-    }
-
     // History ===
 
     public void RecordInitialState()
@@ -152,9 +145,9 @@ public class Battle : MonoBehaviour
         return _history.Redo();
     }
 
-    public CharacterRecord GetCurrentCharacterRecord(Character character)
+    public CharacterRecord GetLastRecordedState(Character character)
     {
-        return _history.GetCurrentRecord(character);
+        return _history.GetLastRecordedState(character);
     }
 
     // Camera ===

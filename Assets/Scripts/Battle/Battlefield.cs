@@ -11,28 +11,11 @@ public class Battlefield : MonoBehaviour
 
     private Battle _battle;
     private Tilemap _tilemap;
-    private readonly Dictionary<Vector2Int, Character> _cellToOccupant = new();
-    private readonly Dictionary<Character, Vector2Int> _occupantToCell = new();
     
     private void Awake()
     {
         _battle = GetComponent<Battle>();
         _tilemap = GetComponent<Tilemap>();
-    }
-
-    public void Register(Character character)
-    {
-        character.Position = SnapToGrid(character.Position);
-        Vector2Int cell = WorldToCell(character.Position);
-        _occupantToCell[character] = cell;
-        _cellToOccupant[cell] = character;
-    }
-
-    public void Unregister(Character character)
-    {
-        Vector2Int cell = _occupantToCell[character];
-        _occupantToCell.Remove(character);
-        _cellToOccupant.Remove(cell);
     }
 
     public Vector2 SnapToGrid(Vector2 position)
@@ -59,22 +42,12 @@ public class Battlefield : MonoBehaviour
     {
         foreach (var character in _battle.AllCharacters)
         {
-            if (character.OccupiesCell(cell))
+            if (character.CurrentCell == cell)
             {
                 return character;
             }
         }
         return null;
-    }
-
-    public void RefreshCell(Character character)
-    {
-        Vector2Int oldCell = _occupantToCell[character];
-        Vector2Int newCell = WorldToCell(character.Position);
-
-        _cellToOccupant.Remove(oldCell);
-        _cellToOccupant[newCell] = character;
-        _occupantToCell[character] = newCell;
     }
 
     public TileBase GetTile(Vector2Int cell)

@@ -105,7 +105,7 @@ public class BattleHistory : MonoBehaviour
         for (int i = 0; i < previousState.RecordCount; i++)
         {
             CharacterRecord recordToUndo = previousState.GetRecord(i);
-            CharacterRecord olderRecord = GetCurrentRecord(recordToUndo.Character);
+            CharacterRecord olderRecord = GetLastRecordedState(recordToUndo.Character);
             yield return olderRecord.GetApplySequence();
         }
         SetCurrentTurn();
@@ -151,7 +151,7 @@ public class BattleHistory : MonoBehaviour
         _currentStateIndex++;
     }
 
-    public CharacterRecord GetCurrentRecord(Character character)
+    public CharacterRecord GetLastRecordedState(Character character)
     {
         for (int i = _currentStateIndex; i >= 0; i--)
         {
