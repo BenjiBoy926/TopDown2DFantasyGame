@@ -37,7 +37,6 @@ public class Character : MonoBehaviour
         get => transform.position;
         set => transform.position = value;
     }
-    public Vector2Int HomeCell => _battle.GetLastRecordedState(this).State.Cell;
     public Vector2Int CurrentCell => _battle.WorldToCell(Position);
     public Vector2 CurrentCellCenter => _battle.SnapToGrid(Position);
     public float CellWidth => _battle.CellWidth;
@@ -430,6 +429,11 @@ public class Character : MonoBehaviour
     public bool ShouldRemoveFromBattlefield()
     {
         return IsDead && !_faction.CanBeRevived;
+    }
+
+    public CharacterRecord GetLastRecordedState()
+    {
+        return _battle.GetLastRecordedState(this);
     }
 
     // ── Setup ────────────────────────────────────────────────────────────

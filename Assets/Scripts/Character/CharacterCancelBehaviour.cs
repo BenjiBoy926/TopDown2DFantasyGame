@@ -17,8 +17,13 @@ public class CharacterCancelBehaviour : MonoBehaviour
         _character.SetIsActing(true);
         EazySoundManager.PlaySound(_clip);
 
-        Vector2 targetPosition = _character.CellToWorld(_character.HomeCell);
-        _character.LookAt(targetPosition);
+        CharacterRecord lastRecord = _character.GetLastRecordedState();
+        CharacterState lastState = lastRecord.State;
+        Vector2Int lastCell = lastState.Cell;
+        Vector2 lastDirection = lastState.Direction;
+        Vector2 targetPosition = _character.CellToWorld(lastCell);
+
+       _character.SetDirection(lastDirection);
         _character.SetIsRunning(true);
         yield return transform.DOMove(targetPosition, _moveDuration)
             .SetEase(_moveEase)
