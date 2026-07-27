@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
     public Character ActiveCharacter => _activeCharacter;
     public Faction Faction => _faction;
     public Transform CommanderTransform => _faction.CommanderTransform;
+    public Vector3 CommanderPosition => _faction.CommanderPosition;
 
     [SerializeField] private Faction _faction;
     [SerializeField] private AudioSource _cellHoverAudio;
@@ -315,11 +316,6 @@ public class Player : MonoBehaviour
     private void SetIsInputAllowed(bool isInputAllowed)
     {
         if (isInputAllowed == _isInputAllowed) return;
-
-        if (!isInputAllowed && _battle.CurrentFactionTurn != _faction)
-        {
-            SetPosition(_faction.CommanderPosition);
-        }
 
         _isInputAllowed = isInputAllowed;
         if (isInputAllowed)

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -14,6 +15,7 @@ public class Battle : MonoBehaviour
     public Faction CurrentFactionTurn => _turn.CurrentFaction;
     public Faction PlayerFaction => _player.Faction;
     public Transform PlayerCommanderTransform => _player.CommanderTransform;
+    public Vector3 PlayerCommanderPosition => _player.CommanderPosition;
     public IReadOnlyCollection<Character> AllCharacters => _allCharacters;
     public IReadOnlyCollection<Squad> AllSquads => _allSquads;
     public bool IsCameraGrabbed => _camera.IsGrabbed;
@@ -57,6 +59,13 @@ public class Battle : MonoBehaviour
     public void Register(Squad squad)
     {
         _allSquads.Add(squad);
+    }
+
+    // Player ===
+
+    public void SetPlayerPosition(Vector3 position)
+    {
+        _player.SetPosition(position);
     }
 
     // Battle Turn ===

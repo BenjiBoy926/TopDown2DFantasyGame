@@ -6,7 +6,6 @@ public class Faction : ScriptableObject
     public string Name => _name;
     public Color Color => _color;
     public bool CanBeRevived => _canBeRevived;
-    public Character Commander => _commander;
     public Transform CommanderTransform => _commander ? _commander.transform : null;
     public Vector3 CommanderPosition => CommanderTransform.position;
 

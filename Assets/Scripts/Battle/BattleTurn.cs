@@ -52,6 +52,8 @@ public class BattleTurn : MonoBehaviour
     public void StartNextTurn()
     {
         RestoreAllCharacterMoves();
+        // TODO: does not work because SetPlayerPosition is blocked if Player.isInputAllowed is false
+        _battle.SetPlayerPosition(_battle.PlayerCommanderPosition);
 
         GetCharactersInFaction(CurrentFaction, _characterListScratch);
         List<Character> charactersToRecord = new(_characterListScratch);
