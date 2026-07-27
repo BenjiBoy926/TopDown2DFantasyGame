@@ -261,7 +261,7 @@ public class Player : MonoBehaviour
 
     private void RefreshHoveredCharacter()
     {
-        if (!_activeCharacter)
+        if (!_activeCharacter && _isInputAllowed)
         {
             SetHoveredCharacter(GetCharacterAtCurrentCell());
         }
@@ -269,7 +269,8 @@ public class Player : MonoBehaviour
 
     private void RefreshMovePreview()
     {
-        if (!_activeCharacter) return;
+        if (!_activeCharacter) 
+            return;
 
         Character characterAtCell = GetCharacterAtCurrentCell();
         if (characterAtCell && characterAtCell != _activeCharacter)
@@ -284,7 +285,7 @@ public class Player : MonoBehaviour
 
     private bool CanMoveCharacter(Character character)
     {
-        return character && character.IsAbleToMove && character.Faction == _battle.CurrentFactionTurn;
+        return character && character.IsAbleToMove && character.Faction == _faction;
     }
 
     private void RefreshIsInputAllowed()
