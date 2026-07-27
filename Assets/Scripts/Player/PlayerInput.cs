@@ -31,6 +31,9 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
     private void Update()
     {
+        if (!_player.IsInputAllowed)
+            return;
+
         if (_moveDirection.sqrMagnitude > 0.01f)
         {
             Vector2 offsetThisFrame = _speed * Time.deltaTime * _moveDirection;
@@ -48,7 +51,11 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnAct(InputAction.CallbackContext context)
     {
-        if (!context.started) return;
+        if (!_player.IsInputAllowed) 
+            return;
+        if (!context.started) 
+            return;
+        
         if (!_player.ActiveCharacter)
         {
             _player.StartMove();
@@ -71,6 +78,9 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnCursorPosition(InputAction.CallbackContext context)
     {
+        if (!_player.IsInputAllowed)
+            return;
+
         Vector2 screenPosition = context.ReadValue<Vector2>();
         _player.SetScreenPosition(screenPosition);
         if (_player.ActiveCharacter)
@@ -81,6 +91,9 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnCursorPress(InputAction.CallbackContext context)
     {
+        if (!_player.IsInputAllowed)
+            return;
+
         if (context.started)
         {
             _player.Grab();
@@ -93,6 +106,9 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnZoomJump(InputAction.CallbackContext context)
     {
+        if (!_player.IsInputAllowed)
+            return;
+
         float direction = context.ReadValue<float>();
         if (direction < 0)
         {
@@ -106,7 +122,7 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnUndo(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && _player.IsInputAllowed)
         {
             _player.Undo();
         }
@@ -114,7 +130,7 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnRedo(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && _player.IsInputAllowed)
         {
             _player.Redo();
         }

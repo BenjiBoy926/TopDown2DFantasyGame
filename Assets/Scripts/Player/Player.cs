@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     public Faction Faction => _faction;
     public Transform CommanderTransform => _faction.CommanderTransform;
     public Vector3 CommanderPosition => _faction.CommanderPosition;
+    public bool IsInputAllowed => _isInputAllowed;
 
     [SerializeField] private Faction _faction;
     [SerializeField] private AudioSource _cellHoverAudio;
@@ -34,26 +35,17 @@ public class Player : MonoBehaviour
 
     public void StartNextTurn()
     {
-        if (_isInputAllowed)
-        {
-            _battle.StartNextTurn();
-        }
+        _battle.StartNextTurn();
     }
 
     public void Undo()
     {
-        if (_isInputAllowed)
-        {
-            _battle.Undo();
-        }
+        _battle.Undo();
     }
 
     public void Redo()
     {
-        if (_isInputAllowed)
-        {
-            _battle.Redo();
-        }
+        _battle.Redo();
     }
 
     public void IncludeInView()
@@ -84,8 +76,6 @@ public class Player : MonoBehaviour
 
     public void SetScreenPosition(Vector2 screenPosition)
     {
-        if (!_isInputAllowed) return;
-
         if (_battle.IsCameraGrabbed)
         {
             _battle.UpdateCameraGrab(screenPosition);
@@ -99,8 +89,6 @@ public class Player : MonoBehaviour
 
     public void SetPosition(Vector2 newPosition)
     {
-        if (!_isInputAllowed) return;
-
         SetActiveCharacterPosition(newPosition);
         SetCursorPosition(newPosition);
         RefreshCurrentCell();
@@ -108,8 +96,6 @@ public class Player : MonoBehaviour
 
     public void Grab()
     {
-        if (!_isInputAllowed) return;
-
         Character characterAtCursor = GetCharacterAtCurrentCell();
         if (characterAtCursor)
         {
@@ -135,8 +121,6 @@ public class Player : MonoBehaviour
 
     public void StartMove()
     {
-        if (!_isInputAllowed) return;
-
         Character characterAtCursor = GetCharacterAtCurrentCell();
         if (CanMoveCharacter(characterAtCursor))
         {
