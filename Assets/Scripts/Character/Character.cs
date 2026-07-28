@@ -339,15 +339,15 @@ public class Character : MonoBehaviour
         return occupant && occupant.Faction == _faction;
     }
 
-    public bool CanStayInCell(Vector2Int cell)
+    public bool CouldStayInCell(Vector2Int cell)
     {
         Character occupant = GetOccupant(cell);
         return !occupant || occupant == this;
     }
 
-    public bool IsPassable(Vector2Int cell)
+    public bool CouldWalkThroughCell(Vector2Int cell)
     {
-        return _range.IsPassable(cell);
+        return _range.CouldWalkThroughCell(cell);
     }
 
     public GridSearchResult SearchGrid(GridSearchStrategy strategy)

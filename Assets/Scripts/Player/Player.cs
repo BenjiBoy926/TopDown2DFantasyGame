@@ -1,13 +1,17 @@
 using Hellmade.Sound;
+using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(RangeWarningSystem))]
 public class Player : MonoBehaviour
 {
     public Character ActiveCharacter => _activeCharacter;
+    public int ActiveCharacterRange => _activeCharacter.TraversalRange;
     public Faction Faction => _faction;
     public Transform CommanderTransform => _faction.CommanderTransform;
     public Vector3 CommanderPosition => _faction.CommanderPosition;
     public bool IsInputAllowed => _isInputAllowed;
+    public IReadOnlyCollection<Character> AllCharacters => _battle.AllCharacters;
 
     [SerializeField] private Faction _faction;
     [SerializeField] private AudioSource _cellHoverAudio;
@@ -16,6 +20,7 @@ public class Player : MonoBehaviour
     private Battle _battle;
     private PlayerCursor _cursor;
     private PlayerGridReticle _gridReticle;
+    private RangeWarningSystem _rangeWarning;
     private Character _activeCharacter;
     private Character _hoveredCharacter;
     private Vector2Int _currentCell;
@@ -26,6 +31,7 @@ public class Player : MonoBehaviour
         _battle = GetComponentInParent<Battle>();
         _cursor = GetComponentInChildren<PlayerCursor>();
         _gridReticle = GetComponentInChildren<PlayerGridReticle>();
+        _rangeWarning = GetComponent<RangeWarningSystem>();
     }
 
     private void Update()
@@ -134,7 +140,7 @@ public class Player : MonoBehaviour
         if (!_activeCharacter) 
             return;
 
-        bool shouldConfirm = _activeCharacter.CanStayInCell(_activeCharacter.CurrentCell);
+        bool shouldConfirm = _activeCharacter.CouldStayInCell(_activeCharacter.CurrentCell);
         if (shouldConfirm)
         {
             ConfirmMove();
@@ -229,6 +235,12 @@ public class Player : MonoBehaviour
             _activeCharacter.Position = _cursor.Position;
             _activeCharacter.SetIsRunning(true);
             _activeCharacter.ShowOpaqueRange();
+            _rangeWarning.Begin();
+            _rangeWarning.Refresh();
+        }
+        else
+        {
+            _rangeWarning.End();
         }
     }
 
@@ -257,6 +269,7 @@ public class Player : MonoBehaviour
         }
         RefreshHoveredCharacter();
         RefreshMovePreview();
+        _rangeWarning.Refresh();
     }
 
     private void RefreshHoveredCharacter()

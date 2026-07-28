@@ -68,7 +68,7 @@ public class CharacterRange : MonoBehaviour
         _stayableCells.Clear();
         foreach (var traversibleCell in _traversibleCells)
         {
-            if (_character.CanStayInCell(traversibleCell))
+            if (_character.CouldStayInCell(traversibleCell))
             {
                 _stayableCells.Add(traversibleCell);
             }
@@ -98,7 +98,7 @@ public class CharacterRange : MonoBehaviour
         return ClampToCells(position, _reachableCells);
     }
 
-    public bool IsPassable(Vector2Int cell)
+    public bool CouldWalkThroughCell(Vector2Int cell)
     {
         TileBase tile = _character.GetTile(cell);
         return tile && !_wallTiles.Contains(tile) && !_character.IsEnemyInCell(cell);

@@ -61,7 +61,7 @@ public class GridSearch : MonoBehaviour
 
     private bool ShouldEnqueue(Node node)
     {
-        return !_visited.Contains(node.Cell) && _character.IsPassable(node.Cell) && _strategy.PassesCustomEnqueueConditions(_state, node);
+        return !_visited.Contains(node.Cell) && _character.CouldWalkThroughCell(node.Cell) && _strategy.PassesCustomEnqueueConditions(_state, node);
     }
 
     private void Enqueue(Node node)

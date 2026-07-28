@@ -61,7 +61,7 @@ public class CharacterWalker : MonoBehaviour
     private void TrimOccupiedCellsInPath(List<Vector2Int> path)
     {
         Vector2Int finalCell = path[^1];
-        while (path.Count > 0 && !_character.CanStayInCell(finalCell))
+        while (path.Count > 0 && !_character.CouldStayInCell(finalCell))
         {
             path.RemoveAt(path.Count - 1);
             finalCell = path[^1];

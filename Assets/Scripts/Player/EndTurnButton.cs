@@ -25,6 +25,9 @@ public class EndTurnButton : MonoBehaviour
 
     private void OnButtonClicked()
     {
-        _player.StartNextTurn();
+        if (_player.IsInputAllowed)
+        {
+            _player.StartNextTurn();
+        }
     }
 }
