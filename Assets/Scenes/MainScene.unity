@@ -296,7 +296,6 @@ Transform:
   - {fileID: 619394802}
   - {fileID: 569914770}
   - {fileID: 1583248040}
-  - {fileID: 2094598090}
   - {fileID: 2085619560}
   - {fileID: 469424232}
   m_Father: {fileID: 0}
@@ -3904,37 +3903,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7095416772414518370, guid: 20ad5e644c0da144da412113093c2ab1, type: 3}
   m_PrefabInstance: {fileID: 2436307089721992732}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2094598089
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2094598090}
-  m_Layer: 0
-  m_Name: Squads
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2094598090
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2094598089}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 390487296}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1354460773230326315
 PrefabInstance:
   m_ObjectHideFlags: 0

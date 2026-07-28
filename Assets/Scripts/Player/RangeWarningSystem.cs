@@ -5,8 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(Player))]
 public class RangeWarningSystem : MonoBehaviour
 {
+    [SerializeField] private RangeWarning _warningPrefab;
     private Player _player;
-    private readonly HashSet<Character> _enemiesWithinPossibleRange = new();
+    private readonly List<RangeWarning> _activeWarnings = new();
 
     private void Awake()
     {
@@ -15,33 +16,30 @@ public class RangeWarningSystem : MonoBehaviour
 
     public void Begin()
     {
-        _enemiesWithinPossibleRange.Clear();
         foreach (var character in _player.AllCharacters)
         {
             if (IsEnemyInPossibleRange(character))
             {
-                _enemiesWithinPossibleRange.Add(character);
+                AddNewWarning(character);
             }
         }
     }
 
     public void Refresh()
     {
-        foreach (var enemy in _enemiesWithinPossibleRange)
+        foreach (var warning in _activeWarnings)
         {
-            enemy.RefreshRange();
-            enemy.HideRange();
-            enemy.ShowTransparentRange();
+            warning.Refresh();
         }
     }
 
     public void End()
     {
-        foreach (var enemy in _enemiesWithinPossibleRange)
+        foreach (var warning in _activeWarnings)
         {
-            enemy.HideRange();
+            warning.End();
         }
-        _enemiesWithinPossibleRange.Clear();
+        _activeWarnings.Clear();
     }
 
     private bool IsEnemyInPossibleRange(Character enemy)
@@ -54,5 +52,12 @@ public class RangeWarningSystem : MonoBehaviour
         int distance = CharacterRange.RectangularDistance(a.CurrentCell, b.CurrentCell);
         int range = a.TraversalRange + b.TraversalRange;
         return distance <= range;
+    }
+
+    private void AddNewWarning(Character attacker)
+    {
+        RangeWarning warning = Instantiate(_warningPrefab);
+        warning.Begin(attacker, _player.ActiveCharacter);
+        _activeWarnings.Add(warning);
     }
 }
