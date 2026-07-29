@@ -31,7 +31,7 @@ public class RangeWarning : MonoBehaviour
         Vector2 targetPosition = _target.Position;
         float distance = Vector2.Distance(attackerPosition, targetPosition);
 
-        transform.position = (attackerPosition + targetPosition) / 2;
+        transform.position = attackerPosition;
         transform.up = targetPosition - attackerPosition;
         transform.localScale = new(1, distance, 1);
     }
