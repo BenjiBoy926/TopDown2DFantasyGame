@@ -1,17 +1,17 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class RangeWarning : MonoBehaviour
 {
-    [SerializeField] private float _fadeDuration = 0.2f;
     private Character _attacker;
     private Character _target;
     private Vector2Int _cellOfTarget;
     private bool _isVisible = false;
-    private SpriteRenderer[] _sprites;
+    private RangeWarningSprite[] _sprites;
 
     private void Awake()
     {
-        _sprites = GetComponentsInChildren<SpriteRenderer>();
+        _sprites = GetComponentsInChildren<RangeWarningSprite>();
     }
 
     public void Begin(Character attacker, Character target)
@@ -77,7 +77,7 @@ public class RangeWarning : MonoBehaviour
     {
         foreach (var sprite in _sprites)
         {
-            sprite.enabled = true;
+            sprite.FadeIn();
         }
     }
 
@@ -85,7 +85,7 @@ public class RangeWarning : MonoBehaviour
     {
         foreach (var sprite in _sprites)
         {
-            sprite.enabled = false;
+            sprite.FadeOut();
         }
     }
 

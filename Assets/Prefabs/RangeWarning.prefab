@@ -108,6 +108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3518063031931004020}
   - component: {fileID: 4135128531772938416}
+  - component: {fileID: 7318503733427735915}
   m_Layer: 0
   m_Name: ArrowBackground
   m_TagString: Untagged
@@ -182,6 +183,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7318503733427735915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7047960962208056708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46cec70944633904799cbdcf34076082, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fadeDuration: 0.2
 --- !u!1 &7958703420645851557
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,6 +206,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6328691421038399961}
   - component: {fileID: 8462801355166374556}
+  - component: {fileID: 3117183053919678290}
   m_Layer: 0
   m_Name: ArrowBody
   m_TagString: Untagged
@@ -266,6 +281,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 1
   m_SpriteSortPoint: 0
+--- !u!114 &3117183053919678290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7958703420645851557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46cec70944633904799cbdcf34076082, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fadeDuration: 0.2
 --- !u!1 &8144774598631335768
 GameObject:
   m_ObjectHideFlags: 0
