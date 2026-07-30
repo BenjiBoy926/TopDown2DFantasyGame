@@ -42,6 +42,11 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
         }
         float zoomChangeThisFrame = _zoomChangeSpeed * Time.deltaTime * _zoomDirection;
         _player.ChangeZoom(zoomChangeThisFrame);
+
+        if (Keyboard.current.pKey.wasPressedThisFrame)
+        {
+            Debug.Break();
+        }
     }
 
     public void OnMove(InputAction.CallbackContext context)
