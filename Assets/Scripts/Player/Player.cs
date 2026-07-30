@@ -236,7 +236,6 @@ public class Player : MonoBehaviour
             _activeCharacter.SetIsRunning(true);
             _activeCharacter.ShowOpaqueRange();
             _rangeWarning.Begin();
-            _rangeWarning.Refresh();
         }
         else
         {
@@ -269,10 +268,6 @@ public class Player : MonoBehaviour
         }
         RefreshHoveredCharacter();
         RefreshMovePreview();
-        // TODO: there is a bug where the cell of the CHARACTER changes without the cell of the cursor changing,
-        // as when the cursor is over a target and moves to a different side. We need to make sure the warning
-        // refreshes every time the cell of the target changes, not the cell of the cursor
-        _rangeWarning.Refresh();
     }
 
     private void RefreshHoveredCharacter()

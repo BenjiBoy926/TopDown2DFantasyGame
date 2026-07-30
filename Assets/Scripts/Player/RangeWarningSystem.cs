@@ -25,14 +25,6 @@ public class RangeWarningSystem : MonoBehaviour
         }
     }
 
-    public void Refresh()
-    {
-        foreach (var warning in _activeWarnings)
-        {
-            warning.Refresh();
-        }
-    }
-
     public void End()
     {
         foreach (var warning in _activeWarnings)
