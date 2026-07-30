@@ -43,7 +43,7 @@ public class RangeWarningSystem : MonoBehaviour
     {
         int distance = CharacterRange.RectangularDistance(a.CurrentCell, b.CurrentCell);
         int range = a.TraversalRange + b.TraversalRange;
-        return distance <= range;
+        return range >= (distance - 1);
     }
 
     private void AddNewWarning(Character attacker)

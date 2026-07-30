@@ -1,4 +1,3 @@
-using DG.Tweening;
 using UnityEngine;
 
 public class RangeWarning : MonoBehaviour
@@ -6,7 +5,7 @@ public class RangeWarning : MonoBehaviour
     private Character _attacker;
     private Character _target;
     private Vector2Int _cellOfTarget;
-    private bool _isVisible = false;
+    private bool _isVisible = true;
     private RangeWarningSprite[] _sprites;
 
     private void Awake()
