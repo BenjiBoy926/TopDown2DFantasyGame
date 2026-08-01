@@ -44,7 +44,7 @@ public class Squad : MonoBehaviour
         member.RefreshRange();
         foreach (var cell in member.ReachableCells)
         {
-            if (member.IsEnemyInCell(cell))
+            if (member.IsEnemyInCell(cell, out _))
             {
                 return true;
             }

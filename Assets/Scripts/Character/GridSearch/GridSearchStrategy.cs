@@ -63,7 +63,7 @@ public abstract class GridSearchStrategy
             CellNeighbors neighbors = CellNeighbors.Get(node.Cell);
             foreach (var cell in neighbors)
             {
-                if (state.Character.IsEnemyInCell(cell))
+                if (state.Character.IsEnemyInCell(cell, out Character enemy) && !enemy.IsDead)
                 {
                     return true;
                 }

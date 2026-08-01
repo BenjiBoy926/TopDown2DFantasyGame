@@ -101,7 +101,7 @@ public class CharacterRange : MonoBehaviour
     public bool CouldWalkThroughCell(Vector2Int cell)
     {
         TileBase tile = _character.GetTile(cell);
-        return tile && !_wallTiles.Contains(tile) && !_character.IsEnemyInCell(cell);
+        return tile && !_wallTiles.Contains(tile) && !_character.IsEnemyInCell(cell, out _);
     }
 
     public bool IsReachable(Vector2Int cell)

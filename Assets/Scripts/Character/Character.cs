@@ -327,10 +327,10 @@ public class Character : MonoBehaviour
         return _battle.GetOccupant(cell);
     }
 
-    public bool IsEnemyInCell(Vector2Int cell)
+    public bool IsEnemyInCell(Vector2Int cell, out Character enemy)
     {
-        Character occupant = GetOccupant(cell);
-        return occupant && occupant.Faction != _faction;
+        enemy = GetOccupant(cell);
+        return enemy && enemy.Faction != _faction;
     }
 
     public bool IsAllyInCell(Vector2Int cell)
