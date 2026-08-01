@@ -10,7 +10,6 @@ public class CharacterRange : MonoBehaviour
 
     public IReadOnlyCollection<Vector2Int> StayableCells => _stayableCells;
     public IReadOnlyCollection<Vector2Int> EdgeCells => _edgeCells;
-    public IReadOnlyCollection<Vector2Int> ReachableCells => _reachableCells;
     public IReadOnlyCollection<Vector2Int> AllCells => _allCells;
 
     [SerializeField] private List<TileBase> _wallTiles = new();
