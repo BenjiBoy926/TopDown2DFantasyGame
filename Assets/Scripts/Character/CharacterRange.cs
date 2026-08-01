@@ -9,7 +9,7 @@ public class CharacterRange : MonoBehaviour
     private const float ClampMargin = 0.1f;
 
     public IReadOnlyCollection<Vector2Int> StayableCells => _stayableCells;
-    public IReadOnlyCollection<Vector2Int> InteractableEdgeCells => _interactableEdgeCells;
+    public IReadOnlyCollection<Vector2Int> EdgeCells => _edgeCells;
     public IReadOnlyCollection<Vector2Int> ReachableCells => _reachableCells;
 
     [SerializeField] private List<TileBase> _wallTiles = new();
@@ -17,7 +17,7 @@ public class CharacterRange : MonoBehaviour
     private CharacterRangeDisplay _display;
     private readonly HashSet<Vector2Int> _traversibleCells = new();
     private readonly HashSet<Vector2Int> _stayableCells = new();
-    private readonly HashSet<Vector2Int> _interactableEdgeCells = new();
+    private readonly HashSet<Vector2Int> _edgeCells = new();
     private readonly HashSet<Vector2Int> _reachableCells = new();
 
     private void Awake()
@@ -30,11 +30,11 @@ public class CharacterRange : MonoBehaviour
     {
         RecalculateTraversibleCells();
         RecalculateStayableCells();
-        RecalculateInteractableEdgeCells();
+        RecalculateEdgeCells();
 
         _reachableCells.Clear();
         _reachableCells.UnionWith(_traversibleCells);
-        _reachableCells.UnionWith(_interactableEdgeCells);
+        _reachableCells.UnionWith(_edgeCells);
         _display.Refresh();
     }
 
@@ -75,15 +75,18 @@ public class CharacterRange : MonoBehaviour
         }
     }
 
-    private void RecalculateInteractableEdgeCells()
+    private void RecalculateEdgeCells()
     {
-        _interactableEdgeCells.Clear();
+        _edgeCells.Clear();
         foreach (var traversibleCell in _traversibleCells)
         {
             CellNeighbors neighbors = CellNeighbors.Get(traversibleCell);
             foreach (var neighborCell in neighbors)
             {
-                CheckInteractableEdgeCell(neighborCell);
+                if (!_stayableCells.Contains(neighborCell))
+                {
+                    _edgeCells.Add(neighborCell);
+                }
             }
         }
     }
@@ -112,14 +115,6 @@ public class CharacterRange : MonoBehaviour
     public bool IsStayable(Vector2Int cell)
     {
         return _stayableCells.Contains(cell);
-    }
-
-    private void CheckInteractableEdgeCell(Vector2Int cell)
-    {
-        if (!_stayableCells.Contains(cell))
-        {
-            _interactableEdgeCells.Add(cell);
-        }
     }
 
     private Vector2 ClampToCells(Vector2 position, HashSet<Vector2Int> cells)

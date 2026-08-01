@@ -28,10 +28,10 @@ public class CharacterRangeDisplay : MonoBehaviour
             SpriteRenderer cell = AddCell(stayableCell);
             cell.color = _stayableCellColor;
         }
-        foreach (var interactableEdgeCell in _character.InteractableEdgeCells)
+        foreach (var edgeCell in _character.EdgeCells)
         {
-            SpriteRenderer cell = AddCell(interactableEdgeCell);
-            cell.color = GetInteractableEdgeCellColor(interactableEdgeCell);
+            SpriteRenderer cell = AddCell(edgeCell);
+            cell.color = GetEdgeCellColor(edgeCell);
         }
         ReflectCurrentAlpha();
     }
@@ -68,7 +68,7 @@ public class CharacterRangeDisplay : MonoBehaviour
         return cellObj;
     }
 
-    private Color GetInteractableEdgeCellColor(Vector2Int cell)
+    private Color GetEdgeCellColor(Vector2Int cell)
     {
         return _character.IsAllyInCell(cell) ? _allyInteractionCellColor : _attackableCellColor;
     }
