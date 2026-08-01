@@ -12,13 +12,12 @@ public class RangeWarningSprite : MonoBehaviour
     {
         _renderer = GetComponent<SpriteRenderer>();
         _originalAlpha = _renderer.color.a;
-        Debug.Log($"{this} got original alpha {_originalAlpha}", this);
     }
 
     public void FadeIn()
     {
         _renderer.DOKill();
-        _renderer.DOFade(_originalAlpha * 1, _fadeDuration);
+        _renderer.DOFade(_originalAlpha, _fadeDuration);
     }
 
     public void FadeOut()
