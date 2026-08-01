@@ -11,6 +11,7 @@ public class CharacterRange : MonoBehaviour
     public IReadOnlyCollection<Vector2Int> StayableCells => _stayableCells;
     public IReadOnlyCollection<Vector2Int> EdgeCells => _edgeCells;
     public IReadOnlyCollection<Vector2Int> ReachableCells => _reachableCells;
+    public IReadOnlyCollection<Vector2Int> AllCells => _allCells;
 
     [SerializeField] private List<TileBase> _wallTiles = new();
     private Character _character;
@@ -19,6 +20,7 @@ public class CharacterRange : MonoBehaviour
     private readonly HashSet<Vector2Int> _stayableCells = new();
     private readonly HashSet<Vector2Int> _edgeCells = new();
     private readonly HashSet<Vector2Int> _reachableCells = new();
+    private readonly HashSet<Vector2Int> _allCells = new();
 
     private void Awake()
     {
@@ -31,10 +33,8 @@ public class CharacterRange : MonoBehaviour
         RecalculateTraversibleCells();
         RecalculateStayableCells();
         RecalculateEdgeCells();
-
-        _reachableCells.Clear();
-        _reachableCells.UnionWith(_traversibleCells);
-        _reachableCells.UnionWith(_edgeCells);
+        RecalculateReachableCells();
+        RecalculateAllCells();
         _display.Refresh();
     }
 
@@ -91,6 +91,23 @@ public class CharacterRange : MonoBehaviour
         }
     }
 
+    private void RecalculateReachableCells()
+    {
+        _reachableCells.Clear();
+        foreach (var stayableCell in _stayableCells)
+        {
+            CellNeighbors neighbors = CellNeighbors.Get(stayableCell);
+            _reachableCells.UnionWith(neighbors);
+        }
+    }
+
+    private void RecalculateAllCells()
+    {
+        _allCells.Clear();
+        _allCells.UnionWith(_traversibleCells);
+        _allCells.UnionWith(_edgeCells);
+    }
+
     public Vector2 ClampToStayableCells(Vector2 position)
     {
         return ClampToCells(position, _stayableCells);
@@ -105,6 +122,11 @@ public class CharacterRange : MonoBehaviour
     {
         TileBase tile = _character.GetTile(cell);
         return tile && !_wallTiles.Contains(tile) && !_character.IsEnemyInCell(cell, out _);
+    }
+
+    public bool Contains(Vector2Int cell)
+    {
+        return _allCells.Contains(cell);
     }
 
     public bool IsReachable(Vector2Int cell)

@@ -53,7 +53,7 @@ public class RangeWarning : MonoBehaviour
     private void Refresh()
     {
         _attacker.RefreshRange();
-        SetIsVisible(_attacker.IsReachable(_target.CurrentCell));
+        SetIsVisible(_attacker.IsInRange(_target.CurrentCell));
     }
 
     private void SetIsVisible(bool isVisible)

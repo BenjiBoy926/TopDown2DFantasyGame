@@ -58,7 +58,7 @@ public class Character : MonoBehaviour
     // Range
     public IReadOnlyCollection<Vector2Int> StayableCells => _range.StayableCells;
     public IReadOnlyCollection<Vector2Int> EdgeCells => _range.EdgeCells;
-    public IReadOnlyCollection<Vector2Int> ReachableCells => _range.ReachableCells;
+    public IReadOnlyCollection<Vector2Int> AllCellsInRange => _range.AllCells;
 
     // ── Fields ───────────────────────────────────────────────────────────
 
@@ -263,6 +263,8 @@ public class Character : MonoBehaviour
         PerformSpriteFade(_usedMoveFadeDuration);
     }
 
+    // ── Range ────────────────────────────────────────────────────
+
     public Vector2 ClampToReachableCells(Vector2 input)
     {
         return _range.ClampToReachableCells(input);
@@ -272,8 +274,6 @@ public class Character : MonoBehaviour
     {
         return _range.ClampToStayableCells(position);
     }
-
-    // ── Range Display ────────────────────────────────────────────────────
 
     public void RefreshRange()
     {
@@ -293,6 +293,11 @@ public class Character : MonoBehaviour
     public void HideRange()
     {
         _range.Hide();
+    }
+
+    public bool IsInRange(Vector2Int cell)
+    {
+        return _range.Contains(cell);
     }
 
     public bool IsReachable(Vector2Int cell)
