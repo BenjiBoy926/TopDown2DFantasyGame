@@ -17,7 +17,7 @@ public class RangeWarning : MonoBehaviour
     {
         _attacker = attacker;
         _target = target;
-        RefreshAttackerRange();
+        Refresh();
     }
 
     public void End()
@@ -47,10 +47,10 @@ public class RangeWarning : MonoBehaviour
             return;
 
         _cellOfTarget = cell;
-        RefreshAttackerRange();
+        Refresh();
     }
 
-    private void RefreshAttackerRange()
+    private void Refresh()
     {
         _attacker.RefreshRange();
         SetIsVisible(_attacker.IsReachable(_target.CurrentCell));
