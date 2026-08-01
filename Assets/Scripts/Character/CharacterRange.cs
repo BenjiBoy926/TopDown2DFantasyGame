@@ -30,7 +30,7 @@ public class CharacterRange : MonoBehaviour
     {
         RecalculateTraversibleCells();
         RecalculateStayableCells();
-        RecalculateAttackableEdgeCells();
+        RecalculateInteractableEdgeCells();
 
         _reachableCells.Clear();
         _reachableCells.UnionWith(_traversibleCells);
@@ -75,12 +75,12 @@ public class CharacterRange : MonoBehaviour
         }
     }
 
-    private void RecalculateAttackableEdgeCells()
+    private void RecalculateInteractableEdgeCells()
     {
         _interactableEdgeCells.Clear();
-        foreach (var stayableCell in _stayableCells)
+        foreach (var traversibleCell in _traversibleCells)
         {
-            CellNeighbors neighbors = CellNeighbors.Get(stayableCell);
+            CellNeighbors neighbors = CellNeighbors.Get(traversibleCell);
             foreach (var neighborCell in neighbors)
             {
                 CheckInteractableEdgeCell(neighborCell);
