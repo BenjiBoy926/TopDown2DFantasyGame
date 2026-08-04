@@ -56,8 +56,6 @@ public class Character : MonoBehaviour
     public static bool IsAnyCharacterActing => _actingCharacters.Count > 0;
 
     // Range
-    public IReadOnlyCollection<Vector2Int> StayableCells => _range.StayableCells;
-    public IReadOnlyCollection<Vector2Int> EdgeCells => _range.EdgeCells;
     public IReadOnlyCollection<Vector2Int> AllCellsInRange => _range.AllCells;
 
     // ── Fields ───────────────────────────────────────────────────────────

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -8,18 +9,15 @@ public class CharacterRange : MonoBehaviour
 {
     private const float ClampMargin = 0.1f;
 
-    public IReadOnlyCollection<Vector2Int> StayableCells => _stayableCells;
-    public IReadOnlyCollection<Vector2Int> EdgeCells => _edgeCells;
     public IReadOnlyCollection<Vector2Int> AllCells => _allCells;
 
     [SerializeField] private List<TileBase> _wallTiles = new();
     private Character _character;
     private CharacterRangeDisplay _display;
-    private readonly HashSet<Vector2Int> _traversibleCells = new();
-    private readonly HashSet<Vector2Int> _stayableCells = new();
-    private readonly HashSet<Vector2Int> _edgeCells = new();
-    private readonly HashSet<Vector2Int> _reachableCells = new();
-    private readonly HashSet<Vector2Int> _allCells = new();
+    private HashSet<Vector2Int> _traversibleCells = new();
+    private HashSet<Vector2Int> _stayableCells = new();
+    private HashSet<Vector2Int> _reachableCells = new();
+    private HashSet<Vector2Int> _allCells = new();
 
     private void Awake()
     {
@@ -29,12 +27,21 @@ public class CharacterRange : MonoBehaviour
 
     public void Refresh()
     {
-        RecalculateTraversibleCells();
-        RecalculateStayableCells();
-        RecalculateEdgeCells();
-        RecalculateReachableCells();
-        RecalculateAllCells();
+        GridSearchResult result = _character.SearchGrid(new GridSearchStrategy.FindAllCellsInRange());
+
+        _traversibleCells = new(result.VisitedCells);
+        _stayableCells = _traversibleCells.Where(cell => _character.CouldStayInCell(cell)).ToHashSet();
+        _reachableCells = ExtendToNeighbors(_stayableCells).ToHashSet();
+        _allCells = ExtendToNeighbors(_traversibleCells).ToHashSet();
+
         _display.Refresh();
+    }
+
+    private IEnumerable<Vector2Int> ExtendToNeighbors(IEnumerable<Vector2Int> cells)
+    {
+        return cells
+            .Select(cell => CellNeighbors.Get(cell))
+            .SelectMany(neighbors => neighbors);
     }
 
     public void ShowTransparentRange()
@@ -50,61 +57,6 @@ public class CharacterRange : MonoBehaviour
     public void Hide()
     {
         _display.Hide();
-    }
-
-    private void RecalculateTraversibleCells()
-    {
-        GridSearchResult result = _character.SearchGrid(new GridSearchStrategy.FindAllCellsInRange());
-        _traversibleCells.Clear();
-        foreach (var cell in result.VisitedCells)
-        {
-            _traversibleCells.Add(cell);
-        }
-    }
-
-    private void RecalculateStayableCells()
-    {
-        _stayableCells.Clear();
-        foreach (var traversibleCell in _traversibleCells)
-        {
-            if (_character.CouldStayInCell(traversibleCell))
-            {
-                _stayableCells.Add(traversibleCell);
-            }
-        }
-    }
-
-    private void RecalculateEdgeCells()
-    {
-        _edgeCells.Clear();
-        foreach (var traversibleCell in _traversibleCells)
-        {
-            CellNeighbors neighbors = CellNeighbors.Get(traversibleCell);
-            foreach (var neighborCell in neighbors)
-            {
-                if (!_stayableCells.Contains(neighborCell))
-                {
-                    _edgeCells.Add(neighborCell);
-                }
-            }
-        }
-    }
-
-    private void RecalculateReachableCells()
-    {
-        _reachableCells.Clear();
-        foreach (var stayableCell in _stayableCells)
-        {
-            CellNeighbors neighbors = CellNeighbors.Get(stayableCell);
-            _reachableCells.UnionWith(neighbors);
-        }
-    }
-
-    private void RecalculateAllCells()
-    {
-        _allCells.Clear();
-        _allCells.UnionWith(_traversibleCells);
-        _allCells.UnionWith(_edgeCells);
     }
 
     public Vector2 ClampToStayableCells(Vector2 position)

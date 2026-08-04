@@ -23,15 +23,9 @@ public class CharacterRangeDisplay : MonoBehaviour
     public void Refresh()
     {
         Clear();
-        foreach (var stayableCell in _character.StayableCells)
+        foreach (var cell in _character.AllCellsInRange)
         {
-            SpriteRenderer cell = AddCell(stayableCell);
-            cell.color = _stayableCellColor;
-        }
-        foreach (var edgeCell in _character.EdgeCells)
-        {
-            SpriteRenderer cell = AddCell(edgeCell);
-            cell.color = GetEdgeCellColor(edgeCell);
+            AddCell(cell);
         }
         ReflectCurrentAlpha();
     }
@@ -64,13 +58,25 @@ public class CharacterRangeDisplay : MonoBehaviour
     {
         Vector2 position = _character.CellToWorld(cell);
         SpriteRenderer cellObj = Instantiate(_cellPrefab, position, Quaternion.identity, _cellParent);
+        cellObj.color = GetCellColor(cell);
         _cells.Add(cellObj);
         return cellObj;
     }
 
-    private Color GetEdgeCellColor(Vector2Int cell)
+    private Color GetCellColor(Vector2Int cell)
     {
-        return _character.IsAllyInCell(cell) ? _allyInteractionCellColor : _attackableCellColor;
+        if (_character.IsAllyInCell(cell))
+        {
+            return _allyInteractionCellColor;
+        }
+        else if (_character.IsStayable(cell))
+        {
+            return _stayableCellColor;
+        }
+        else
+        {
+            return _attackableCellColor;
+        }
     }
 
     private void SetCurrentAlpha(float alpha)
