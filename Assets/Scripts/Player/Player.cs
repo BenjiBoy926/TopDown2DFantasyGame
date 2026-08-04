@@ -218,6 +218,7 @@ public class Player : MonoBehaviour
             _hoveredCharacter.RefreshRange();
             _hoveredCharacter.ShowTransparentRange();
         }
+        RefreshWarningSystem();
     }
 
     private void SetActiveCharacter(Character activeCharacter)
@@ -229,17 +230,29 @@ public class Player : MonoBehaviour
         }        
         _activeCharacter = activeCharacter;
         _cursor.SetSelectionTarget(_activeCharacter ? _activeCharacter.transform : null);
+        RefreshWarningSystem();
         if (_activeCharacter)
         {
             SetHoveredCharacter(null);
             _activeCharacter.Position = _cursor.Position;
             _activeCharacter.SetIsRunning(true);
             _activeCharacter.ShowOpaqueRange();
-            _rangeWarning.Begin();
+        }
+    }
+
+    private void RefreshWarningSystem()
+    {
+        if (_hoveredCharacter)
+        {
+            _rangeWarning.SetTarget(_hoveredCharacter);
+        }
+        else if (_activeCharacter)
+        {
+            _rangeWarning.SetTarget(_activeCharacter);
         }
         else
         {
-            _rangeWarning.End();
+            _rangeWarning.SetTarget(null);
         }
     }
 

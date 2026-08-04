@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +6,7 @@ public class RangeWarningSystem : MonoBehaviour
 {
     [SerializeField] private RangeWarning _warningPrefab;
     private Player _player;
+    private Character _target;
     private readonly List<RangeWarning> _activeWarnings = new();
 
     private void Awake()
@@ -14,7 +14,20 @@ public class RangeWarningSystem : MonoBehaviour
         _player = GetComponent<Player>();
     }
 
-    public void Begin()
+    public void SetTarget(Character target)
+    {
+        if (target == _target)
+            return;
+
+        RemoveAllWarnings();
+        _target = target;
+        if (_target)
+        {
+            AddAllWarnings();
+        }
+    }
+
+    private void AddAllWarnings()
     {
         foreach (var character in _player.AllCharacters)
         {
@@ -25,7 +38,7 @@ public class RangeWarningSystem : MonoBehaviour
         }
     }
 
-    public void End()
+    private void RemoveAllWarnings()
     {
         foreach (var warning in _activeWarnings)
         {
@@ -36,7 +49,7 @@ public class RangeWarningSystem : MonoBehaviour
 
     private bool IsEnemyInPossibleRange(Character enemy)
     {
-        return enemy && enemy.Faction != _player.Faction && IsWithinPossibleRange(_player.ActiveCharacter, enemy);
+        return enemy && enemy.Faction != _target.Faction && IsWithinPossibleRange(_target, enemy);
     }
 
     private static bool IsWithinPossibleRange(Character a, Character b)
@@ -49,7 +62,7 @@ public class RangeWarningSystem : MonoBehaviour
     private void AddNewWarning(Character attacker)
     {
         RangeWarning warning = Instantiate(_warningPrefab);
-        warning.Begin(attacker, _player.ActiveCharacter);
+        warning.Begin(attacker, _target);
         _activeWarnings.Add(warning);
     }
 }
