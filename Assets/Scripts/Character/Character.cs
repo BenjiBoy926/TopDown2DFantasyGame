@@ -339,7 +339,7 @@ public class Character : MonoBehaviour
     public bool IsAllyInCell(Vector2Int cell)
     {
         Character occupant = GetOccupant(cell);
-        return occupant && occupant.Faction == _faction;
+        return occupant && occupant != this && occupant.Faction == _faction;
     }
 
     public bool CouldStayInCell(Vector2Int cell)
