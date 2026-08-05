@@ -2,8 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct CellNeighbors : IEnumerable<Vector2Int>
+public struct CellNeighbors
 {
+    public const int Count = 4;
+
+    public readonly Vector2Int this[int index] => index switch
+    {
+        0 => Up,
+        1 => Right,
+        2 => Down,
+        3 => Left,
+        _ => throw new System.IndexOutOfRangeException()
+    };
+
     public Vector2Int Left, Right, Up, Down;
 
     public static CellNeighbors Get(Vector2Int center)
@@ -15,18 +26,5 @@ public struct CellNeighbors : IEnumerable<Vector2Int>
             Up = center + Vector2Int.up,
             Down = center + Vector2Int.down
         };
-    }
-
-    public readonly IEnumerator<Vector2Int> GetEnumerator()
-    {
-        yield return Up;
-        yield return Right;
-        yield return Down;
-        yield return Left;
-    }
-
-    readonly IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
     }
 }

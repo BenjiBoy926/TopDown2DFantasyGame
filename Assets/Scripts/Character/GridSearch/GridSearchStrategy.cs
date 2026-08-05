@@ -61,8 +61,9 @@ public abstract class GridSearchStrategy
         public override bool IsExitNode(GridSearchState state, Node node)
         {
             CellNeighbors neighbors = CellNeighbors.Get(node.Cell);
-            foreach (var cell in neighbors)
+            for (int i = 0; i < CellNeighbors.Count; i++)
             {
+                Vector2Int cell = neighbors[i];
                 if (state.Character.IsEnemyInCell(cell, out Character enemy) && !enemy.IsDead)
                 {
                     return true;

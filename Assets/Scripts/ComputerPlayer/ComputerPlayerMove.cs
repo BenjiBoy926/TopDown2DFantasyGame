@@ -141,7 +141,7 @@ public class ComputerPlayerMove : MonoBehaviour
     private Vector2Int GetBestAdjacentTile(Character target)
     {
         CellNeighbors neighbors = CellNeighbors.Get(target.CurrentCell);
-        return GetBestStayableCell(neighbors);
+        return GetBestStayableCell(ToEnumerable(neighbors));
     }
 
     private bool IsStayable(Vector2Int cell)
@@ -164,5 +164,13 @@ public class ComputerPlayerMove : MonoBehaviour
     private bool IsAlly(Character other)
     {
         return other != _character && other.Faction == _character.Faction;
+    }
+
+    private IEnumerable<Vector2Int> ToEnumerable(CellNeighbors cells)
+    {
+        for (int i = 0; i < CellNeighbors.Count; i++)
+        {
+            yield return cells[i];
+        }
     }
 }

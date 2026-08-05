@@ -45,9 +45,9 @@ public class GridSearch : MonoBehaviour
     private void VisitNeighbors(Node node)
     {
         NodeNeighbors neighbors = NodeNeighbors.Get(node);
-        foreach (var neighbor in neighbors)
+        for (int i = 0; i < NodeNeighbors.Count; i++)
         {
-            Visit(neighbor);
+            Visit(neighbors[i]);
         }
     }
 
