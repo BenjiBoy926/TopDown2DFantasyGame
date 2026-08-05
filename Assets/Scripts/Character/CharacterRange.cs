@@ -14,10 +14,10 @@ public class CharacterRange : MonoBehaviour
     [SerializeField] private List<TileBase> _wallTiles = new();
     private Character _character;
     private CharacterRangeDisplay _display;
-    private HashSet<Vector2Int> _traversibleCells = new();
-    private HashSet<Vector2Int> _stayableCells = new();
-    private HashSet<Vector2Int> _reachableCells = new();
-    private HashSet<Vector2Int> _allCells = new();
+    private readonly HashSet<Vector2Int> _traversibleCells = new();
+    private readonly HashSet<Vector2Int> _stayableCells = new();
+    private readonly HashSet<Vector2Int> _reachableCells = new();
+    private readonly HashSet<Vector2Int> _allCells = new();
 
     private void Awake()
     {
@@ -25,23 +25,39 @@ public class CharacterRange : MonoBehaviour
         _display = GetComponent<CharacterRangeDisplay>();
     }
 
+    // TODO: this method has become very expensive, need to reduce GC alloc here and in SearchGrid
     public void Refresh()
     {
         GridSearchResult result = _character.SearchGrid(new GridSearchStrategy.FindAllCellsInRange());
+        _traversibleCells.Clear();
+        _traversibleCells.UnionWith(result.VisitedCells);
 
-        _traversibleCells = new(result.VisitedCells);
-        _stayableCells = _traversibleCells.Where(cell => _character.CouldStayInCell(cell)).ToHashSet();
-        _reachableCells = ExtendToNeighbors(_stayableCells).ToHashSet();
-        _allCells = ExtendToNeighbors(_traversibleCells).ToHashSet();
+        _stayableCells.Clear();
+        foreach (var traversibleCell in _traversibleCells)
+        {
+            if (_character.CouldStayInCell(traversibleCell))
+            {
+                _stayableCells.Add(traversibleCell);
+            }
+        }
+
+        ExtendToNeighbors(_stayableCells, _reachableCells);
+        ExtendToNeighbors(_traversibleCells, _allCells);
 
         _display.Refresh();
     }
 
-    private IEnumerable<Vector2Int> ExtendToNeighbors(IEnumerable<Vector2Int> cells)
+    private void ExtendToNeighbors(HashSet<Vector2Int> source, HashSet<Vector2Int> destination)
     {
-        return cells
-            .Select(cell => CellNeighbors.Get(cell))
-            .SelectMany(neighbors => neighbors);
+        destination.Clear();
+        foreach (var sourceCell in source)
+        {
+            CellNeighbors neighbors = CellNeighbors.Get(sourceCell);
+            foreach (var neighbor in neighbors)
+            {
+                destination.Add(neighbor);
+            }
+        }
     }
 
     public void ShowTransparentRange()
