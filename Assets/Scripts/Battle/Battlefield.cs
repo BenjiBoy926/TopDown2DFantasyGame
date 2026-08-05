@@ -38,6 +38,7 @@ public class Battlefield : MonoBehaviour
         return (Vector2Int)_tilemap.WorldToCell(position);
     }
 
+    // ALLOCATES: change to concrete type
     public Character GetOccupant(Vector2Int cell)
     {
         foreach (var character in _battle.AllCharacters)
