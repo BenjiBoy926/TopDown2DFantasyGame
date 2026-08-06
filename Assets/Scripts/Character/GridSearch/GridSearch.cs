@@ -98,6 +98,14 @@ public class GridSearch : MonoBehaviour
 
     private int FindNodeInNext(Vector2Int cell)
     {
-        return _searchQueue.FindIndex(n => n.Cell == cell);
+        for (int i = 0; i < _searchQueue.Count; i++)
+        {
+            Node node = _searchQueue[i];
+            if (node.Cell == cell)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 }
