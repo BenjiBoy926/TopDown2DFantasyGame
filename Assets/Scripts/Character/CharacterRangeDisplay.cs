@@ -20,29 +20,30 @@ public class CharacterRangeDisplay : MonoBehaviour
         _cellParent = new GameObject($"{_character.name} Range Display").transform;
     }
 
-    public void Refresh()
+    public void Hide()
+    {
+        Clear();
+    }
+
+    public void ShowTransparent()
+    {
+        Refresh();
+        SetCurrentAlpha(_transparentAlpha);
+    }
+
+    public void ShowOpaque()
+    {
+        Refresh();
+        SetCurrentAlpha(_opaqueAlpha);
+    }
+
+    private void Refresh()
     {
         Clear();
         foreach (var cell in _character.AllCellsInRange)
         {
             AddCell(cell);
         }
-        ReflectCurrentAlpha();
-    }
-
-    public void Hide()
-    {
-        SetCurrentAlpha(0);
-    }
-
-    public void ShowTransparent()
-    {
-        SetCurrentAlpha(_transparentAlpha);
-    }
-
-    public void ShowOpaque()
-    {
-        SetCurrentAlpha(_opaqueAlpha);
     }
 
     private void Clear()

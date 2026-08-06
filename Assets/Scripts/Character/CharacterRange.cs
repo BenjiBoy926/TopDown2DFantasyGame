@@ -14,6 +14,7 @@ public class CharacterRange : MonoBehaviour
     [SerializeField] private List<TileBase> _wallTiles = new();
     private Character _character;
     private CharacterRangeDisplay _display;
+    private HashSet<TileBase> _wallTilesSet;
     private readonly HashSet<Vector2Int> _traversibleCells = new();
     private readonly HashSet<Vector2Int> _stayableCells = new();
     private readonly HashSet<Vector2Int> _reachableCells = new();
@@ -23,6 +24,7 @@ public class CharacterRange : MonoBehaviour
     {
         _character = GetComponent<Character>();
         _display = GetComponent<CharacterRangeDisplay>();
+        _wallTilesSet = new(_wallTiles);
     }
 
     // TODO: this method has become very expensive, need to reduce GC alloc here and in SearchGrid
@@ -43,8 +45,6 @@ public class CharacterRange : MonoBehaviour
 
         ExtendToNeighbors(_stayableCells, _reachableCells);
         ExtendToNeighbors(_traversibleCells, _allCells);
-
-        _display.Refresh();
     }
 
     private void ExtendToNeighbors(HashSet<Vector2Int> source, HashSet<Vector2Int> destination)
@@ -89,7 +89,7 @@ public class CharacterRange : MonoBehaviour
     public bool CouldWalkThroughCell(Vector2Int cell)
     {
         TileBase tile = _character.GetTile(cell);
-        return tile && !_wallTiles.Contains(tile) && !_character.IsEnemyInCell(cell, out _);
+        return tile && !_wallTilesSet.Contains(tile) && !_character.IsEnemyInCell(cell, out _);
     }
 
     public bool Contains(Vector2Int cell)
