@@ -98,6 +98,7 @@ public class GridSearch : MonoBehaviour
 
     private int FindNodeInNext(Vector2Int cell)
     {
+        // Don't use "FindIndex" because you have to allocate a delegate
         for (int i = 0; i < _searchQueue.Count; i++)
         {
             Node node = _searchQueue[i];
