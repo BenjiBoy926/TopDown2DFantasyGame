@@ -243,11 +243,11 @@ public class Player : MonoBehaviour
 
     private void RefreshWarningSystem()
     {
-        if (_hoveredCharacter)
+        if (ShouldShowRangeWarnings(_hoveredCharacter))
         {
             _rangeWarning.SetTarget(_hoveredCharacter);
         }
-        else if (_activeCharacter)
+        else if (ShouldShowRangeWarnings(_activeCharacter))
         {
             _rangeWarning.SetTarget(_activeCharacter);
         }
@@ -255,6 +255,11 @@ public class Player : MonoBehaviour
         {
             _rangeWarning.SetTarget(null);
         }
+    }
+
+    private bool ShouldShowRangeWarnings(Character character)
+    {
+        return character && character.Faction == _faction;
     }
 
     public Character GetCharacterAtCurrentCell()
