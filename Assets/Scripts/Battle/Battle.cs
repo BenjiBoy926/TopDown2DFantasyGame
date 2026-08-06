@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -46,6 +45,7 @@ public class Battle : MonoBehaviour
 
     public void Register(Character character)
     {
+        _field.Register(character);
         _turn.AddFaction(character);
         _allCharacters.Add(character);
         character.SetBattle(this);
@@ -53,6 +53,7 @@ public class Battle : MonoBehaviour
 
     public void Unregister(Character character)
     {
+        _field.Unregister(character);
         _allCharacters.Remove(character);
     }
 
@@ -115,6 +116,16 @@ public class Battle : MonoBehaviour
     public Character GetOccupant(Vector2Int cell)
     {
         return _field.GetOccupant(cell);
+    }
+
+    public Vector2Int GetCell(Character occupant)
+    {
+        return _field.GetCell(occupant);
+    }
+
+    public void RefreshCell(Character character)
+    {
+        _field.RefreshCell(character);
     }
 
     public TileBase GetTile(Vector2Int cell)

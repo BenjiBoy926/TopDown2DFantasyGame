@@ -17,8 +17,7 @@ public class CharacterCancelBehaviour : MonoBehaviour
         _character.SetIsActing(true);
         EazySoundManager.PlaySound(_clip);
 
-        CharacterRecord lastRecord = _character.GetLastRecordedState();
-        CharacterState lastState = lastRecord.State;
+        CharacterState lastState = _character.GetLastRecordedState();
         Vector2Int lastCell = lastState.Cell;
         Vector2 lastDirection = lastState.Direction;
         Vector2 targetPosition = _character.CellToWorld(lastCell);
@@ -30,6 +29,7 @@ public class CharacterCancelBehaviour : MonoBehaviour
             .WaitForCompletion();
         _character.SetIsRunning(false);
         _character.SetIsActing(false);
+        _character.RefreshCell();
     }
 
     private void Awake()

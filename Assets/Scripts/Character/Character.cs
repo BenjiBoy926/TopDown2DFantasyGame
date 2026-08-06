@@ -244,6 +244,7 @@ public class Character : MonoBehaviour
 
     public void BeginMove()
     {
+        RefreshCell();
         SetHasMovedThisTurn(true);
         ClearMovePreview();
         SetIsActing(true);
@@ -328,6 +329,11 @@ public class Character : MonoBehaviour
     public Character GetOccupant(Vector2Int cell)
     {
         return _battle.GetOccupant(cell);
+    }
+
+    public void RefreshCell()
+    {
+        _battle.RefreshCell(this);
     }
 
     public bool IsEnemyInCell(Vector2Int cell, out Character enemy)
@@ -434,9 +440,9 @@ public class Character : MonoBehaviour
         return IsDead && !_faction.CanBeRevived;
     }
 
-    public CharacterRecord GetLastRecordedState()
+    public CharacterState GetLastRecordedState()
     {
-        return _battle.GetLastRecordedState(this);
+        return _battle.GetLastRecordedState(this).State;
     }
 
     // ── Setup ────────────────────────────────────────────────────────────

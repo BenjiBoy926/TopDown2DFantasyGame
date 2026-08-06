@@ -203,6 +203,7 @@ public class Player : MonoBehaviour
 
         _activeCharacter.LookAt(newPosition);
         _activeCharacter.Position = _activeCharacter.ClampToStayableCells(newPosition);
+        _activeCharacter.RefreshCell();
     }
 
     private void SetHoveredCharacter(Character hoveredCharacter)

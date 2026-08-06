@@ -53,6 +53,7 @@ public class CharacterUndoRedoBehaviour : MonoBehaviour
     {
         Vector2 position = _character.CellToWorld(state.Cell);
         yield return transform.DOMove(position, _stepDuration).WaitForCompletion();
+        _character.RefreshCell();
     }
 
     private IEnumerator ShowDeath()
