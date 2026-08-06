@@ -7,7 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(ComputerPlayerMove))]
 public class ComputerPlayer : MonoBehaviour
 {
-    public IReadOnlyCollection<Character> AllCharacters => _battle.AllCharacters;
+    public HashSet<Character> AllCharacters => _battle.AllCharacters;
 
     [SerializeField] private float _initialStartDelay = 1f;
     [SerializeField, ReadOnly] private List<Character> _characters = new();

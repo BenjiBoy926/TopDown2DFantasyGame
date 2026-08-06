@@ -16,8 +16,8 @@ public class Battle : MonoBehaviour
     public Faction PlayerFaction => _player.Faction;
     public Transform PlayerCommanderTransform => _player.CommanderTransform;
     public Vector3 PlayerCommanderPosition => _player.CommanderPosition;
-    public IReadOnlyCollection<Character> AllCharacters => _allCharacters;
-    public IReadOnlyCollection<Squad> AllSquads => _allSquads;
+    public HashSet<Character> AllCharacters => _allCharacters;
+    public HashSet<Squad> AllSquads => _allSquads;
     public bool IsCameraGrabbed => _camera.IsGrabbed;
 
     private BattleSetup _setup;
@@ -129,7 +129,7 @@ public class Battle : MonoBehaviour
         _history.RecordInitialState();
     }
 
-    public void RecordTurnChange(IReadOnlyCollection<Character> characters, Faction faction)
+    public void RecordTurnChange(HashSet<Character> characters, Faction faction)
     {
         _history.RecordTurnChange(characters, faction);
     }

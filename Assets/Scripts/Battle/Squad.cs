@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Squad : MonoBehaviour
 {
-    public IReadOnlyList<Character> Members => _members;
+    public List<Character> Members => _members;
     public bool IsAwake => _isAwake;
 
     [SerializeField, ReadOnly] private List<Character> _members = new();

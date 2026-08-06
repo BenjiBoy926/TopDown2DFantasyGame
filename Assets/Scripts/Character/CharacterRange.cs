@@ -9,7 +9,7 @@ public class CharacterRange : MonoBehaviour
 {
     private const float ClampMargin = 0.1f;
 
-    public IReadOnlyCollection<Vector2Int> AllCells => _allCells;
+    public HashSet<Vector2Int> AllCells => _allCells;
 
     [SerializeField] private List<TileBase> _wallTiles = new();
     private Character _character;

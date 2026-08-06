@@ -52,11 +52,10 @@ public class BattleTurn : MonoBehaviour
     public void StartNextTurn()
     {
         RestoreAllCharacterMoves();
-        // TODO: does not work because SetPlayerPosition is blocked if Player.isInputAllowed is false
         _battle.SetPlayerPosition(_battle.PlayerCommanderPosition);
 
         GetCharactersInFaction(CurrentFaction, _characterListScratch);
-        List<Character> charactersToRecord = new(_characterListScratch);
+        HashSet<Character> charactersToRecord = new(_characterListScratch);
 
         int nextFactionIndex = GetNextFactionWithMoveableCharacters();
         SetCurrentTurn(nextFactionIndex);
@@ -66,6 +65,7 @@ public class BattleTurn : MonoBehaviour
         {
             _battle.CameraGlide(_battle.PlayerCommanderTransform);
         }
+        // NOTE: eventually this should just record all characters when we change to energy system
         _battle.RecordTurnChange(charactersToRecord, CurrentFaction);
         NextTurnStarted.Invoke(CurrentFaction);
     }

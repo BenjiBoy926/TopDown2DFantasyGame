@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     public Transform CommanderTransform => _faction.CommanderTransform;
     public Vector3 CommanderPosition => _faction.CommanderPosition;
     public bool IsInputAllowed => _isInputAllowed;
-    public IReadOnlyCollection<Character> AllCharacters => _battle.AllCharacters;
+    public HashSet<Character> AllCharacters => _battle.AllCharacters;
 
     [SerializeField] private Faction _faction;
     [SerializeField] private AudioSource _cellHoverAudio;

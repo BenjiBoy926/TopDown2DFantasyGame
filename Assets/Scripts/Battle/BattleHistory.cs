@@ -27,7 +27,7 @@ public class BattleHistory : MonoBehaviour
         _currentStateIndex = 0;
     }
 
-    public void RecordTurnChange(IReadOnlyCollection<Character> characters, Faction faction)
+    public void RecordTurnChange(HashSet<Character> characters, Faction faction)
     {
         BattleState state = new BattleState_TurnChange();
         state.SetCurrentTurn(faction);
