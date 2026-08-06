@@ -56,7 +56,7 @@ public class Character : MonoBehaviour
     public static bool IsAnyCharacterActing => _actingCharacters.Count > 0;
 
     // Range
-    public IReadOnlyCollection<Vector2Int> AllCellsInRange => _range.AllCells;
+    public HashSet<Vector2Int> AllCellsInRange => _range.AllCells;
 
     // ── Fields ───────────────────────────────────────────────────────────
 
