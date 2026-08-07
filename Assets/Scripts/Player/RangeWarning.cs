@@ -7,10 +7,12 @@ public class RangeWarning : MonoBehaviour
     private Vector2Int _cellOfTarget;
     private bool _isVisible = true;
     private RangeWarningSprite[] _sprites;
+    private RangeWarningScrollingMask _mask;
 
     private void Awake()
     {
         _sprites = GetComponentsInChildren<RangeWarningSprite>();
+        _mask = GetComponentInChildren<RangeWarningScrollingMask>();
     }
 
     public void Begin(Character attacker, Character target)
@@ -62,6 +64,7 @@ public class RangeWarning : MonoBehaviour
             return;
 
         _isVisible = isVisible;
+        _mask.gameObject.SetActive(isVisible);
         if (isVisible)
         {
             FadeIn();
