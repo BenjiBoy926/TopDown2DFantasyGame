@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -90,15 +89,34 @@ public class GridSearch : MonoBehaviour
         if (_searchQueue.Count == 0)
             return null;
 
-        _searchQueue.Sort(_strategy.NodeComparison);
-        Node node = _searchQueue[0];
-        _searchQueue.RemoveAt(0);
+        int index = FindIndexOfLowestCostNode();
+        Node node = _searchQueue[index];
+        _searchQueue.RemoveAt(index);
         return node;
+    }
+
+    private int FindIndexOfLowestCostNode()
+    {
+        if (_searchQueue.Count == 0)
+            return -1;
+
+        int bestIndex = 0;
+        int bestCost = _strategy.GetNodeCost(_state, _searchQueue[bestIndex]);
+        for (int i = 1; i < _searchQueue.Count; i++)
+        {
+            int currentCost = _strategy.GetNodeCost(_state, _searchQueue[i]);
+            if (currentCost < bestCost)
+            {
+                bestIndex = i;
+                bestCost = currentCost;
+            }
+        }
+        return bestIndex;
     }
 
     private int FindNodeInNext(Vector2Int cell)
     {
-        // Don't use "FindIndex" because you have to allocate a delegate
+        // Can't use "FindIndex" because you have to allocate a delegate
         for (int i = 0; i < _searchQueue.Count; i++)
         {
             Node node = _searchQueue[i];

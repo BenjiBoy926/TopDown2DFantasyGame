@@ -3,13 +3,9 @@ using UnityEngine;
 
 public abstract class GridSearchStrategy
 {
-    public Comparison<Node> NodeComparison => _nodeComparison ??= CompareNodes;
-
-    private Comparison<Node> _nodeComparison;
-
     public abstract bool IsExitNode(GridSearchState state, Node node);
     public abstract bool PassesCustomEnqueueConditions(GridSearchState state, Node node);
-    protected abstract int CompareNodes(Node a, Node b);
+    public abstract int GetNodeCost(GridSearchState state, Node node);
 
     public class FindAllCellsInRange : GridSearchStrategy
     {
@@ -23,9 +19,9 @@ public abstract class GridSearchStrategy
             return node.StepsFromStart <= state.Character.TraversalRange;
         }
 
-        protected override int CompareNodes(Node a, Node b)
+        public override int GetNodeCost(GridSearchState state, Node node)
         {
-            return a.StepsFromStart.CompareTo(b.StepsFromStart);
+            return node.StepsFromStart;
         }
     }
 
@@ -48,11 +44,9 @@ public abstract class GridSearchStrategy
             return true;
         }
 
-        protected override int CompareNodes(Node a, Node b)
+        public override int GetNodeCost(GridSearchState state, Node node)
         {
-            int aCost = a.GetPathfindingCost(_target);
-            int bCost = b.GetPathfindingCost(_target);
-            return aCost.CompareTo(bCost);
+            return node.GetPathfindingCost(_target);
         }
     }
 
@@ -77,9 +71,9 @@ public abstract class GridSearchStrategy
             return true;
         }
 
-        protected override int CompareNodes(Node a, Node b)
+        public override int GetNodeCost(GridSearchState state, Node node)
         {
-            return a.StepsFromStart.CompareTo(b.StepsFromStart);
+            return node.StepsFromStart;
         }
     }
 }
