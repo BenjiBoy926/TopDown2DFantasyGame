@@ -89,13 +89,13 @@ public class GridSearch : MonoBehaviour
         if (_searchQueue.Count == 0)
             return null;
 
-        int index = FindIndexOfLowestCostNode();
+        int index = IndexOfLowestCostNode();
         Node node = _searchQueue[index];
         _searchQueue.RemoveAt(index);
         return node;
     }
 
-    private int FindIndexOfLowestCostNode()
+    private int IndexOfLowestCostNode()
     {
         if (_searchQueue.Count == 0)
             return -1;
