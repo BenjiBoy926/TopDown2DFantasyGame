@@ -19,6 +19,7 @@ public class RangeWarning : MonoBehaviour
     {
         _attacker = attacker;
         _target = target;
+        // NOTE: set all sprite alpha to 0 immediately so we do not see a fade out, only fade ins
         Refresh();
     }
 
