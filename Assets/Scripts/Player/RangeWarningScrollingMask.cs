@@ -6,7 +6,7 @@ public class RangeWarningScrollingMask : MonoBehaviour
     [SerializeField] private float _duration = 1;
     [SerializeField] private Ease _ease = Ease.InQuad;
 
-    private void OnEnable()
+    private void Awake()
     {
         transform.localPosition = Vector3.zero;
         transform.DOLocalMoveY(1, _duration)
@@ -14,7 +14,7 @@ public class RangeWarningScrollingMask : MonoBehaviour
             .SetLoops(-1, LoopType.Restart);
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         transform.DOKill();
     }
