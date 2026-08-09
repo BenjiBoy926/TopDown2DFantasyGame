@@ -10,14 +10,29 @@ public class CharacterRangeDisplay : MonoBehaviour
     [SerializeField] private float _transparentAlpha = 0.2f;
     [SerializeField] private float _opaqueAlpha = 0.5f;
     private Character _character;
-    private Transform _cellParent;
     private readonly HashSet<SpriteRenderer> _cells = new();
     private float _currentAlpha = 0;
+
+    private static Transform _cellParent;
+    private static int _instanceCount = 0;
 
     private void Awake()
     {
         _character = GetComponentInParent<Character>();
-        _cellParent = new GameObject($"{_character.name} Range Display").transform;
+        _instanceCount++;
+        if (_instanceCount == 1)
+        {
+            _cellParent = new GameObject($"Cell Highlight Parent").transform;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        _instanceCount--;
+        if (_instanceCount == 0)
+        {
+            Destroy(_cellParent.gameObject);
+        }
     }
 
     public void Hide()
