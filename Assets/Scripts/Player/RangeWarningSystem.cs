@@ -9,9 +9,26 @@ public class RangeWarningSystem : MonoBehaviour
     private Character _target;
     private readonly List<RangeWarning> _activeWarnings = new();
 
+    private static int _instanceCount = 0;
+    private static Transform _warningParent;
+
     private void Awake()
     {
         _player = GetComponent<Player>();
+        _instanceCount++;
+        if (_instanceCount == 1)
+        {
+            _warningParent = new GameObject($"Range Warning Parent").transform;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        _instanceCount--;
+        if (_instanceCount == 0 && _warningParent)
+        {
+            Destroy(_warningParent.gameObject);
+        }
     }
 
     public void SetTarget(Character target)
@@ -61,7 +78,7 @@ public class RangeWarningSystem : MonoBehaviour
 
     private void AddNewWarning(Character attacker)
     {
-        RangeWarning warning = Instantiate(_warningPrefab);
+        RangeWarning warning = Instantiate(_warningPrefab, _warningParent);
         warning.Begin(attacker, _target);
         _activeWarnings.Add(warning);
     }

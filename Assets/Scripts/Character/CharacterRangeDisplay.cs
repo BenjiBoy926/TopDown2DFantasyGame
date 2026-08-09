@@ -29,7 +29,7 @@ public class CharacterRangeDisplay : MonoBehaviour
     private void OnDestroy()
     {
         _instanceCount--;
-        if (_instanceCount == 0)
+        if (_instanceCount == 0 && _cellParent)
         {
             Destroy(_cellParent.gameObject);
         }
