@@ -19,6 +19,13 @@ public class RangeWarningSprite : MonoBehaviour
         _renderer.DOKill();
     }
 
+    public void SetAlpha(float alpha)
+    {
+        Color color = _renderer.color;
+        color.a = alpha;
+        _renderer.color = color;
+    }
+
     public void FadeIn()
     {
         _renderer.DOKill();

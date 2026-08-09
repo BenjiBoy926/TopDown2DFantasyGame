@@ -19,7 +19,13 @@ public class RangeWarning : MonoBehaviour
     {
         _attacker = attacker;
         _target = target;
-        // NOTE: set all sprite alpha to 0 immediately so we do not see a fade out, only fade ins
+
+        _isVisible = false;
+        ReflectIsVisible();
+        foreach (var sprite in _sprites)
+        {
+            sprite.SetAlpha(0);
+        }
         Refresh();
     }
 
@@ -65,8 +71,18 @@ public class RangeWarning : MonoBehaviour
             return;
 
         _isVisible = isVisible;
-        _mask.gameObject.SetActive(isVisible);
-        if (isVisible)
+        ReflectIsVisible();
+        AnimateIsVisible();
+    }
+
+    private void ReflectIsVisible()
+    {
+        _mask.gameObject.SetActive(_isVisible);
+    }
+
+    private void AnimateIsVisible()
+    {
+        if (_isVisible)
         {
             FadeIn();
         }
