@@ -24,6 +24,10 @@ public class ActionDirectionIndicator : MonoBehaviour
     public void SetTarget(Character target)
     {
         _target = target;
+        if (target)
+        {
+            transform.position = target.transform.position;
+        }
         RefreshIsActive();
         RefreshColor();
     }
@@ -53,6 +57,7 @@ public class ActionDirectionIndicator : MonoBehaviour
 
     private void Update()
     {
-        // orientation!
+        Vector2 toTarget = _target.CurrentCellCenter - _targeter.CurrentCellCenter;
+        transform.up = toTarget;
     }
 }
