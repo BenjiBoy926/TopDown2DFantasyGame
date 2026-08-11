@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     private RangeWarningSystem _rangeWarning;
     private Character _activeCharacter;
     private Character _hoveredCharacter;
+    private ActionDirectionIndicator _actionDirectionIndicator;
     private Vector2Int _currentCell;
     private bool _isInputAllowed = true;
 
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour
         _cursor = GetComponentInChildren<PlayerCursor>();
         _gridReticle = GetComponentInChildren<PlayerGridReticle>();
         _rangeWarning = GetComponent<RangeWarningSystem>();
+        _actionDirectionIndicator = GetComponentInChildren<ActionDirectionIndicator>(true);
     }
 
     private void Update()
@@ -231,6 +233,7 @@ public class Player : MonoBehaviour
         }        
         _activeCharacter = activeCharacter;
         _cursor.SetSelectionTarget(_activeCharacter ? _activeCharacter.transform : null);
+        _actionDirectionIndicator.SetTargeter(_activeCharacter);
         RefreshWarningSystem();
         if (_activeCharacter)
         {
@@ -281,6 +284,7 @@ public class Player : MonoBehaviour
 
         Vector2 worldPosition = _battle.CellToWorld(_currentCell);
         _gridReticle.MoveToPosition(worldPosition);
+        _actionDirectionIndicator.SetTarget(GetCharacterAtCurrentCell());
         if (_isInputAllowed)
         {
             _cellHoverAudio.Play();
