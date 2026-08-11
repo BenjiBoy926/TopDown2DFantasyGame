@@ -44,14 +44,14 @@ TagManager:
   - name: RangeHighlight
     uniqueID: 2581706581
     locked: 0
-  - name: ActionDirectionIndicator
-    uniqueID: 2817226921
-    locked: 0
   - name: GridReticle
     uniqueID: 2224523165
     locked: 0
   - name: UI
     uniqueID: 1409985309
+    locked: 0
+  - name: ActionDirectionIndicator
+    uniqueID: 2817226921
     locked: 0
   - name: Default
     uniqueID: 0
