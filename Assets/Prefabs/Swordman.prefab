@@ -816,7 +816,7 @@ GameObject:
   - component: {fileID: 8001920313868612009}
   - component: {fileID: 6619403375622979677}
   m_Layer: 0
-  m_Name: Frame
+  m_Name: EnergyNotch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
