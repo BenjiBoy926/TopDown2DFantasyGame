@@ -5,6 +5,7 @@ using UnityEngine;
 public class CharacterStats : MonoBehaviour
 {
     public int BaseHealth => _baseHealth;
+    public int BaseEnergy => _baseEnergy;
     public int TraversalRange => _traversalRange;
     public int CurrentHealth => _currentHealth;
     public int CurrentEnergy => _currentEnergy;
@@ -32,6 +33,7 @@ public class CharacterStats : MonoBehaviour
     {
         _ui.ShowCurrentHealth();
         _ui.ShowPower();
+        _ui.ShowCurrentEnergy();
     }
 
     public void TakeDamageFrom(Character other)
@@ -83,23 +85,27 @@ public class CharacterStats : MonoBehaviour
         _ui.ShowCurrentHealth();
     }
 
-    public void SetEnergy(int energy)
-    {
-        _currentEnergy = energy;
-    }
-
     public void ChangeEnergy(int delta)
     {
-        _currentEnergy += delta;
+        SetEnergy(_currentEnergy + delta);
     }
 
     public void ZeroEnergy()
     {
-        _currentEnergy = Mathf.Min(_currentEnergy, 0);
+        SetEnergy(Mathf.Min(_currentEnergy, 0));
     }
 
     public void RefillEnergy()
     {
-        _currentEnergy = Mathf.Min(_currentEnergy + _baseEnergy, _baseEnergy);
+        SetEnergy(Mathf.Min(_currentEnergy + _baseEnergy, _baseEnergy));
+    }
+
+    public void SetEnergy(int energy)
+    {
+        if (energy == _currentEnergy)
+            return;
+
+        _currentEnergy = energy;
+        _ui.AnimateCurrentEnergy();
     }
 }

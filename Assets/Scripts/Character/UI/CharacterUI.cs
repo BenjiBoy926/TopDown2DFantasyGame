@@ -4,11 +4,13 @@ public class CharacterUI : MonoBehaviour
 {
     private CharacterHealthUI _healthUI;
     private CharacterPowerUI _powerUI;
+    private CharacterEnergyUI _energyUI;
 
     private void Awake()
     {
         _healthUI = GetComponentInChildren<CharacterHealthUI>();
         _powerUI = GetComponentInChildren<CharacterPowerUI>();
+        _energyUI = GetComponentInChildren<CharacterEnergyUI>();
     }
 
     public void PreviewHealth(int health)
@@ -24,6 +26,16 @@ public class CharacterUI : MonoBehaviour
     public void ShowCurrentHealth()
     {
         _healthUI.ShowCurrentHealth();
+    }
+
+    public void AnimateCurrentEnergy()
+    {
+        _energyUI.AnimateCurrentEnergy();
+    }
+
+    public void ShowCurrentEnergy()
+    {
+        _energyUI.ShowCurrentEnergy();
     }
 
     public void ShowPower()

@@ -46,6 +46,8 @@ public class Character : MonoBehaviour
     // Stats
     public int BaseHealth => _stats.BaseHealth;
     public int CurrentHealth => _stats.CurrentHealth;
+    public int BaseEnergy => _stats.BaseEnergy;
+    public int CurrentEnergy => _stats.CurrentEnergy;
     public int Power => _stats.Power;
     public int TraversalRange => _stats.TraversalRange;
 
