@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterHealthColor))]
@@ -6,14 +7,17 @@ public class CharacterStats : MonoBehaviour
     public int BaseHealth => _baseHealth;
     public int TraversalRange => _traversalRange;
     public int CurrentHealth => _currentHealth;
+    public int CurrentEnergy => _currentEnergy;
     public bool IsDead => _currentHealth <= 0;
     public int Power => _basePower;
 
     [SerializeField] private int _baseHealth = 10;
     [SerializeField] private int _basePower = 3;
+    [SerializeField] private int _baseEnergy = 1;
     [SerializeField] private int _traversalRange = 3;
 
     private int _currentHealth;
+    private int _currentEnergy = 0;
     private CharacterHealthColor _healthColor;
     private CharacterUI _ui;
 
@@ -77,5 +81,25 @@ public class CharacterStats : MonoBehaviour
     {
         _currentHealth = Mathf.Max(health, 0);
         _ui.ShowCurrentHealth();
+    }
+
+    public void SetEnergy(int energy)
+    {
+        _currentEnergy = energy;
+    }
+
+    public void ChangeEnergy(int delta)
+    {
+        _currentEnergy += delta;
+    }
+
+    public void ZeroEnergy()
+    {
+        _currentEnergy = Mathf.Min(_currentEnergy, 0);
+    }
+
+    public void RefillEnergy()
+    {
+        _currentEnergy = Mathf.Min(_currentEnergy + _baseEnergy, _baseEnergy);
     }
 }

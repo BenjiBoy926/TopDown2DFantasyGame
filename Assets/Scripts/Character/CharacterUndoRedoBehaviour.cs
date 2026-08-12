@@ -29,7 +29,7 @@ public class CharacterUndoRedoBehaviour : MonoBehaviour
         }
 
         _character.SetDirection(state.Direction);
-        _character.SetHasMovedThisTurn(state.HasMoved);
+        _character.SetEnergy(state.Energy);
 
         if (isDead)
         {

@@ -50,7 +50,7 @@ public class Character : MonoBehaviour
     public int TraversalRange => _stats.TraversalRange;
 
     // State
-    public bool IsAbleToMove => !IsDead && !_hasMovedThisTurn;
+    public bool IsAbleToMove => !IsDead && _stats.CurrentEnergy > 0;
     public bool IsDead => _stats.IsDead;
     public bool IsOneShotAnimationPlaying => _animator.IsOneShotAnimationPlaying;
     public static bool IsAnyCharacterActing => _actingCharacters.Count > 0;
@@ -79,7 +79,6 @@ public class Character : MonoBehaviour
     private CharacterCancelBehaviour _cancelBehaviour;
     private CharacterUndoRedoBehaviour _undoRedoBehaviour;
     private Battle _battle;
-    private bool _hasMovedThisTurn = false;
     // NOTE: static — must not carry state across scene reloads. Clear on scene unload if needed.
     private static readonly HashSet<Character> _actingCharacters = new();
 
@@ -245,20 +244,20 @@ public class Character : MonoBehaviour
     public void BeginMove()
     {
         RefreshCell();
-        SetHasMovedThisTurn(true);
         ClearMovePreview();
         SetIsActing(true);
     }
 
     public void EndMove()
     {
+        ChangeEnergy(-1);
         SetIsActing(false);
         MoveFinished.Invoke(this);
     }
 
     public void RestoreMove()
     {
-        SetHasMovedThisTurn(false);
+        RefillEnergy();
         PerformSpriteFade(_usedMoveFadeDuration);
     }
 
@@ -369,7 +368,7 @@ public class Character : MonoBehaviour
         return _walker.WalkToNodeClamped(node);
     }
 
-    // ── Health ───────────────────────────────────────────────────────────
+    // ── Stats ───────────────────────────────────────────────────────────
 
     public void TakeDamageFrom(Character other)
     {
@@ -401,6 +400,26 @@ public class Character : MonoBehaviour
         return _stats.CalculateHealthAfterHitFrom(other);
     }
 
+    public void SetEnergy(int energy)
+    {
+        _stats.SetEnergy(energy);
+    }
+
+    public void ChangeEnergy(int delta)
+    {
+        _stats.ChangeEnergy(delta);
+    }
+
+    public void ZeroEnergy()
+    {
+        _stats.ZeroEnergy();
+    }
+
+    public void RefillEnergy()
+    {
+        _stats.RefillEnergy();
+    }
+
     // ── Move Preview ─────────────────────────────────────────────────────
 
     public void PreviewMove(Character other)
@@ -427,7 +446,7 @@ public class Character : MonoBehaviour
 
     public CharacterState ReadState()
     {
-        return new(_animator.GetDirection(), CurrentCell, _hasMovedThisTurn, _stats.CurrentHealth);
+        return new(_animator.GetDirection(), CurrentCell, _stats.CurrentHealth, _stats.CurrentEnergy);
     }
 
     public IEnumerator GetApplyStateSequence(CharacterState state)
@@ -450,11 +469,6 @@ public class Character : MonoBehaviour
     public void SetBattle(Battle battle)
     {
         _battle = battle;
-    }
-
-    public void SetHasMovedThisTurn(bool hasMovedThisTurn)
-    {
-        _hasMovedThisTurn = hasMovedThisTurn;
     }
 
     public void SetIsActing(bool isActing)
@@ -483,6 +497,6 @@ public class Character : MonoBehaviour
 
     private Color GetMoveFadeColor()
     {
-        return _hasMovedThisTurn ? _usedMoveFadeColor : Color.white;
+        return IsAbleToMove ? Color.white : _usedMoveFadeColor;
     }
 }

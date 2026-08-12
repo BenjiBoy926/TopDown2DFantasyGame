@@ -51,13 +51,9 @@ public class BattleTurn : MonoBehaviour
 
     public void StartNextTurn()
     {
-        RestoreAllCharacterMoves();
         _battle.SetPlayerPosition(_battle.PlayerCommanderPosition);
 
-        GetCharactersInFaction(CurrentFaction, _characterListScratch);
-        HashSet<Character> charactersToRecord = new(_characterListScratch);
-
-        int nextFactionIndex = GetNextFactionWithMoveableCharacters();
+        int nextFactionIndex = GetNextFactionWithLivingCharacters();
         SetCurrentTurn(nextFactionIndex);
         PlayTurnChangeAnimation();
 
@@ -65,8 +61,7 @@ public class BattleTurn : MonoBehaviour
         {
             _battle.CameraGlide(_battle.PlayerCommanderTransform);
         }
-        // NOTE: eventually this should just record all characters when we change to energy system
-        _battle.RecordTurnChange(charactersToRecord, CurrentFaction);
+        _battle.RecordTurnChange(_battle.AllCharacters, CurrentFaction);
         NextTurnStarted.Invoke(CurrentFaction);
     }
 
@@ -87,7 +82,7 @@ public class BattleTurn : MonoBehaviour
         SetCurrentTurn(index);
     }
 
-    private int GetNextFactionWithMoveableCharacters()
+    private int GetNextFactionWithLivingCharacters()
     {
         int nextFactionIndex = GetNextFactionIndex(_currentFactionIndex);
         Faction nextFaction = _factions[nextFactionIndex];
@@ -95,7 +90,7 @@ public class BattleTurn : MonoBehaviour
         int iterations = 0;
         int maxIterations = 5;
 
-        while (CountMoveableCharacters(nextFaction) <= 0 && iterations < maxIterations)
+        while (CountLivingCharacters(nextFaction) <= 0 && iterations < maxIterations)
         {
             nextFactionIndex = GetNextFactionIndex(nextFactionIndex);
             nextFaction = _factions[nextFactionIndex];
@@ -116,32 +111,66 @@ public class BattleTurn : MonoBehaviour
 
     private void SetCurrentTurn(int factionIndex)
     {
-        if (_currentFactionIndex == factionIndex) return;
+        if (_currentFactionIndex == factionIndex) 
+            return;
+        
+        ZeroEnergyOfCharactersInFaction(_currentFactionIndex);
         _currentFactionIndex = factionIndex;
+        RefillEnergyOfCharactersInFaction(_currentFactionIndex);
     }
 
-    private void RestoreAllCharacterMoves()
+    private void ZeroEnergyOfCharactersInFaction(int factionIndex)
     {
-        foreach (Character character in _battle.AllCharacters)
+        if (factionIndex < 0 || factionIndex >= _factions.Count) 
+            return;
+
+        Faction faction = _factions[factionIndex];
+        GetCharactersInFaction(faction, _characterListScratch);
+        for (int i = 0; i < _characterListScratch.Count; i++)
         {
-            character.RestoreMove();
+            Character character = _characterListScratch[i];
+            character.ZeroEnergy();
+        }
+    }
+
+    private void RefillEnergyOfCharactersInFaction(int factionIndex)
+    {
+        if (factionIndex < 0 || factionIndex >= _factions.Count)
+            return;
+
+        Faction faction = _factions[factionIndex];
+        GetCharactersInFaction(faction, _characterListScratch);
+        for (int i = 0; i < _characterListScratch.Count; i++)
+        {
+            Character character = _characterListScratch[i];
+            character.RefillEnergy();
         }
     }
 
     public int CountMoveableCharacters(Faction faction)
     {
+        return CountCharacters(faction, character => character.IsAbleToMove);
+    }
+
+    public int CountLivingCharacters(Faction faction)
+    {
+        return CountCharacters(faction, character => !character.IsDead);
+    }
+
+    private int CountCharacters(Faction faction, Predicate<Character> predicate)
+    {
         GetCharactersInFaction(faction, _characterListScratch);
 
-        int canStillMove = 0;
+        int count = 0;
         for (int i = 0; i < _characterListScratch.Count; i++)
         {
             Character character = _characterListScratch[i];
-            if (character.IsAbleToMove)
+            if (predicate(character))
             {
-                canStillMove++;
+                count++;
             }
         }
-        return canStillMove;
+        return count;
     }
 
     public void GetCharactersInFaction(Faction faction, List<Character> characters)

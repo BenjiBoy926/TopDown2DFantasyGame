@@ -6,19 +6,19 @@ public struct CharacterState
 {
     public readonly Vector2 Direction => _direction;
     public readonly Vector2Int Cell => _cell;
-    public readonly bool HasMoved => _hasMoved;
     public readonly int Health => _health;
+    public readonly int Energy => _energy;
 
     [SerializeField] private Vector2 _direction;
     [SerializeField] private Vector2Int _cell;
-    [SerializeField] private bool _hasMoved;
     [SerializeField] private int _health;
+    [SerializeField] private int _energy;
 
-    public CharacterState(Vector2 direction, Vector2Int cell, bool hasMoved, int health)
+    public CharacterState(Vector2 direction, Vector2Int cell, int health, int energy)
     {
         _direction = direction;
         _cell = cell;
-        _hasMoved = hasMoved;
         _health = health;
+        _energy = energy;
     }
 }
