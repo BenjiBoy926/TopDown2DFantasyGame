@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CharacterEnergyUI : MonoBehaviour
 {
@@ -9,6 +10,14 @@ public class CharacterEnergyUI : MonoBehaviour
     {
         _character = GetComponentInParent<Character>();
         _energyNotches = GetComponentsInChildren<CharacterEnergyNotch>();
+    }
+
+    private void Update()
+    {
+        if (Keyboard.current.nKey.wasPressedThisFrame)
+        {
+            _character.SetEnergy(-2);
+        }
     }
 
     public void AnimateCurrentEnergy()
