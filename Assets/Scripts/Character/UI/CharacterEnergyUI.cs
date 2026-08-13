@@ -18,7 +18,8 @@ public class CharacterEnergyUI : MonoBehaviour
 
     public void AnimateEnergy(int energy)
     {
-        Debug.Log("Animating energy: " + energy);
+        // No animations yet
+        SetEnergy(energy);
     }
 
     public void ShowCurrentEnergy()
@@ -28,6 +29,16 @@ public class CharacterEnergyUI : MonoBehaviour
 
     public void SetEnergy(int energy)
     {
-        Debug.Log("Setting energy: " + energy);
+        for (int i = 0; i < _energyNotches.Length; i++)
+        {
+            CharacterEnergyNotch notch = _energyNotches[i];
+            CharacterEnergyNotch.State targetState = GetTargetState(energy, i);
+            notch.SetState(targetState);
+        }
+    }
+
+    private CharacterEnergyNotch.State GetTargetState(int energy, int notchIndex)
+    {
+        return CharacterEnergyNotch.State.Invisible;
     }
 }
