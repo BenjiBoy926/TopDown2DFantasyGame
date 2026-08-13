@@ -43,9 +43,38 @@ public class CharacterEnergyUI : MonoBehaviour
         {
             return CharacterEnergyNotch.State.Invisible;
         }
+        else if (energy < 0)
+        {
+            return GetNegativeState(energy, notchIndex);
+        }
         else
         {
+            return GetPositiveState(energy, notchIndex);
+        }
+    }
+
+    private CharacterEnergyNotch.State GetPositiveState(int energy, int notchIndex)
+    {
+        if (notchIndex < energy)
+        {
             return CharacterEnergyNotch.State.Filled;
+        }
+        else
+        {
+            return CharacterEnergyNotch.State.Empty;
+        }
+    }
+
+    private CharacterEnergyNotch.State GetNegativeState(int energy, int notchIndex)
+    {
+        energy = Mathf.Abs(energy);
+        if (notchIndex < energy)
+        {
+            return CharacterEnergyNotch.State.Negative;
+        }
+        else
+        {
+            return CharacterEnergyNotch.State.Empty;
         }
     }
 }
