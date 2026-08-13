@@ -39,7 +39,7 @@ public class CharacterEnergyUI : MonoBehaviour
 
     private CharacterEnergyNotch.State GetTargetState(int energy, int notchIndex)
     {
-        if (notchIndex < _character.BaseEnergy)
+        if (notchIndex >= _character.BaseEnergy)
         {
             return CharacterEnergyNotch.State.Invisible;
         }
