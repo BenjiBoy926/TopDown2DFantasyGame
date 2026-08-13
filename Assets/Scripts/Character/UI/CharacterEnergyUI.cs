@@ -3,10 +3,12 @@ using UnityEngine;
 public class CharacterEnergyUI : MonoBehaviour
 {
     private Character _character;
+    private CharacterEnergyNotch[] _energyNotches;
 
     private void Awake()
     {
         _character = GetComponentInParent<Character>();
+        _energyNotches = GetComponentsInChildren<CharacterEnergyNotch>();
     }
 
     public void AnimateCurrentEnergy()
