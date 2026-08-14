@@ -18,6 +18,14 @@ public class CharacterEnergyUI : MonoBehaviour
         {
             _character.SetEnergy(-2);
         }
+        if (Keyboard.current.rKey.wasPressedThisFrame)
+        {
+            _character.SetEnergy(2);
+        }
+        if (Keyboard.current.zKey.wasPressedThisFrame)
+        {
+            _character.SetEnergy(0);
+        }
     }
 
     public void AnimateCurrentEnergy()
@@ -48,7 +56,7 @@ public class CharacterEnergyUI : MonoBehaviour
 
     private CharacterEnergyNotch.State GetTargetState(int energy, int notchIndex)
     {
-        if (notchIndex >= _character.BaseEnergy)
+        if (notchIndex >= _character.BaseEnergy && notchIndex >= Mathf.Abs(energy))
         {
             return CharacterEnergyNotch.State.Invisible;
         }
