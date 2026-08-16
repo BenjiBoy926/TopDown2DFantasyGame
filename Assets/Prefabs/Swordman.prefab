@@ -111,7 +111,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.01, z: 0}
-  m_LocalScale: {x: 0.14, y: 0.09, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6600376762483341022}
@@ -161,8 +161,8 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_DrawMode: 1
+  m_Size: {x: 0.14, y: 0.09}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -835,7 +835,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.01, z: 0}
-  m_LocalScale: {x: 0.14, y: 0.09, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6821955354039073129}
@@ -885,8 +885,8 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_DrawMode: 1
+  m_Size: {x: 0.14, y: 0.09}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -919,7 +919,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.01, z: 0}
-  m_LocalScale: {x: 0.14, y: 0.09, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3333553658136239272}
@@ -969,8 +969,8 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_DrawMode: 1
+  m_Size: {x: 0.14, y: 0.09}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1084,6 +1084,7 @@ GameObject:
   - component: {fileID: 8001920313868612009}
   - component: {fileID: 6619403375622979677}
   - component: {fileID: 3115512913023287680}
+  - component: {fileID: 1157009387333830190}
   m_Layer: 0
   m_Name: EnergyNotch
   m_TagString: Untagged
@@ -1174,6 +1175,20 @@ MonoBehaviour:
   _innerSprite: {fileID: 6761184223017611799}
   _filledColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _negativeColor: {r: 1, g: 0, b: 0, a: 1}
+  _currentState: 0
+--- !u!114 &1157009387333830190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5437719793672711844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f4577dddc6a44a47817a62d87d9f216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _state: 0
 --- !u!1 &5480445590614092435
 GameObject:
   m_ObjectHideFlags: 0
@@ -1267,7 +1282,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.01, z: 0}
-  m_LocalScale: {x: 0.14, y: 0.09, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8001920313868612009}
@@ -1317,8 +1332,8 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_DrawMode: 1
+  m_Size: {x: 0.14, y: 0.09}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1335,6 +1350,7 @@ GameObject:
   - component: {fileID: 6821955354039073129}
   - component: {fileID: 1379156126440706714}
   - component: {fileID: 2557546952920991632}
+  - component: {fileID: 6508383081574737080}
   m_Layer: 0
   m_Name: EnergyNotch (3)
   m_TagString: Untagged
@@ -1425,6 +1441,20 @@ MonoBehaviour:
   _innerSprite: {fileID: 4062101667665881847}
   _filledColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _negativeColor: {r: 1, g: 0, b: 0, a: 1}
+  _currentState: 0
+--- !u!114 &6508383081574737080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5852887937167203522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f4577dddc6a44a47817a62d87d9f216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _state: 0
 --- !u!1 &6162740893489638416
 GameObject:
   m_ObjectHideFlags: 0
@@ -1639,6 +1669,7 @@ GameObject:
   - component: {fileID: 6600376762483341022}
   - component: {fileID: 7748286625824984241}
   - component: {fileID: 6648322890577125921}
+  - component: {fileID: 2895808537489735611}
   m_Layer: 0
   m_Name: EnergyNotch (1)
   m_TagString: Untagged
@@ -1729,6 +1760,20 @@ MonoBehaviour:
   _innerSprite: {fileID: 2594060191794067284}
   _filledColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _negativeColor: {r: 1, g: 0, b: 0, a: 1}
+  _currentState: 0
+--- !u!114 &2895808537489735611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6699119290893305796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f4577dddc6a44a47817a62d87d9f216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _state: 0
 --- !u!1 &7249605361034890463
 GameObject:
   m_ObjectHideFlags: 0
@@ -1740,6 +1785,7 @@ GameObject:
   - component: {fileID: 3333553658136239272}
   - component: {fileID: 6549961784419580541}
   - component: {fileID: 1984194874088756796}
+  - component: {fileID: 5394061405944955654}
   m_Layer: 0
   m_Name: EnergyNotch (2)
   m_TagString: Untagged
@@ -1830,6 +1876,20 @@ MonoBehaviour:
   _innerSprite: {fileID: 7575703338212229589}
   _filledColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _negativeColor: {r: 1, g: 0, b: 0, a: 1}
+  _currentState: 0
+--- !u!114 &5394061405944955654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7249605361034890463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f4577dddc6a44a47817a62d87d9f216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _state: 0
 --- !u!1 &8274708557482635198
 GameObject:
   m_ObjectHideFlags: 0

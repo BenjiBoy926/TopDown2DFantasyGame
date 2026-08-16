@@ -43,7 +43,6 @@ public class CharacterEnergyNotch : MonoBehaviour
     {
         if (previous == State.Invisible)
         {
-            gameObject.SetActive(true);
             _innerSprite.color = Color.clear;
             yield return transform.DOScale(1, .2f).WaitForCompletion();
         }
@@ -58,7 +57,6 @@ public class CharacterEnergyNotch : MonoBehaviour
         if (next == State.Invisible)
         {
             yield return transform.DOScale(0, .2f).WaitForCompletion();
-            gameObject.SetActive(false);
         }
         else if (next != State.Empty)
         {
@@ -72,12 +70,9 @@ public class CharacterEnergyNotch : MonoBehaviour
 
     private void ReflectCurrentState()
     {
-        gameObject.SetActive(_currentState != State.Invisible);
+        transform.localScale = _currentState == State.Invisible ? Vector3.zero : Vector3.one;
+        _innerSprite.transform.localScale = Vector3.one;
         _innerSprite.color = GetStateColor(_currentState);
-        if (_currentState != State.Empty)
-        {
-            _innerSprite.transform.localScale = Vector3.one;
-        }
     }
 
     private Color GetStateColor(State state)
