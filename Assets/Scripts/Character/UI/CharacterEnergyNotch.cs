@@ -24,8 +24,13 @@ public class CharacterEnergyNotch : MonoBehaviour
     {
         if (state == _currentState)
             return null;
-        gameObject.SetActive(state != State.Invisible);
-        return null;
+
+        State previous = _currentState;
+        State next = state;
+        _currentState = next;
+
+        StopAllCoroutines();
+        return StartCoroutine(GetAnimationCoroutine(previous, next));
     }
 
     public void SetState(State state)
@@ -34,49 +39,52 @@ public class CharacterEnergyNotch : MonoBehaviour
         ReflectCurrentState();
     }
 
-    private void ReflectCurrentState()
+    private IEnumerator GetAnimationCoroutine(State previous, State next)
     {
-        gameObject.SetActive(_currentState != State.Invisible);
-        switch (_currentState)
-        {
-            case State.Filled:
-                _innerSprite.transform.localScale = Vector3.one;
-                _innerSprite.color = _filledColor;
-                break;
-            case State.Empty:
-                _innerSprite.color = Color.clear;
-                break;
-            case State.Negative:
-                _innerSprite.transform.localScale = Vector3.one;
-                _innerSprite.color = _negativeColor;
-                break;
-        }
-    }
-
-    private IEnumerator GetAnimationCoroutine(State state)
-    {
-        State previous = _currentState;
-        State next = state;
-
         if (previous == State.Invisible)
         {
+            gameObject.SetActive(true);
             _innerSprite.color = Color.clear;
             yield return transform.DOScale(1, .2f).WaitForCompletion();
         }
-        else if (previous == State.Filled || previous == State.Negative)
+        else if (previous != State.Empty)
         {
             _innerSprite.DOFade(0, .2f);
+            _innerSprite.transform.localScale = Vector3.one;
             yield return _innerSprite.transform.DOScale(2, .2f).WaitForCompletion();
+        }
+
+        _innerSprite.color = GetStateColor(next);
+        if (next == State.Invisible)
+        {
+            yield return transform.DOScale(0, .2f).WaitForCompletion();
+            gameObject.SetActive(false);
+        }
+        else if (next != State.Empty)
+        {
+            _innerSprite.DOFade(1, .2f);
+            _innerSprite.transform.localScale = Vector3.one * 2;
+            yield return _innerSprite.transform.DOScale(1, .2f).WaitForCompletion();
         }
 
         ReflectCurrentState();
     }
 
+    private void ReflectCurrentState()
+    {
+        gameObject.SetActive(_currentState != State.Invisible);
+        _innerSprite.color = GetStateColor(_currentState);
+        if (_currentState != State.Empty)
+        {
+            _innerSprite.transform.localScale = Vector3.one;
+        }
+    }
+
     private Color GetStateColor(State state)
     {
-        return state == State.Filled ? 
-            _filledColor : 
-            state == State.Negative ? 
+        return state == State.Filled ?
+            _filledColor :
+            state == State.Negative ?
             _negativeColor : Color.clear;
     }
 }
