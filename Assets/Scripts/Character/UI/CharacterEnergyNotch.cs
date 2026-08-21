@@ -10,6 +10,9 @@ public class CharacterEnergyNotch : MonoBehaviour
         Invisible, Filled, Empty, Negative
     }
 
+    private const float AnimationDuration = .35f;
+    private const float DisappearScale = 5;
+
     [SerializeField] private SpriteRenderer _innerSprite;
     [SerializeField] private Color _filledColor = Color.yellow;
     [SerializeField] private Color _negativeColor = Color.red;
@@ -41,31 +44,44 @@ public class CharacterEnergyNotch : MonoBehaviour
 
     private IEnumerator GetAnimationCoroutine(State previous, State next)
     {
+        yield return ExitStateTween(previous);
+        yield return EnterStateTween(next);
+        ReflectCurrentState();
+    }
+
+    private YieldInstruction ExitStateTween(State previous)
+    {
         if (previous == State.Invisible)
         {
             _innerSprite.color = Color.clear;
-            yield return transform.DOScale(1, .2f).WaitForCompletion();
+            return transform.DOScale(1, AnimationDuration).WaitForCompletion();
         }
         else if (previous != State.Empty)
         {
-            _innerSprite.DOFade(0, .2f);
+            _innerSprite.DOFade(0, AnimationDuration);
             _innerSprite.transform.localScale = Vector3.one;
-            yield return _innerSprite.transform.DOScale(2, .2f).WaitForCompletion();
+            return _innerSprite.transform.DOScale(DisappearScale, AnimationDuration).WaitForCompletion();
         }
+        return null;
+    }
 
-        _innerSprite.color = GetStateColor(next);
+    private YieldInstruction EnterStateTween(State next)
+    {
+        Color color = GetStateColor(next);
+        color.a = 0;
+        _innerSprite.color = color;
+
         if (next == State.Invisible)
         {
-            yield return transform.DOScale(0, .2f).WaitForCompletion();
+            return transform.DOScale(0, AnimationDuration).WaitForCompletion();
         }
         else if (next != State.Empty)
         {
-            _innerSprite.DOFade(1, .2f);
-            _innerSprite.transform.localScale = Vector3.one * 2;
-            yield return _innerSprite.transform.DOScale(1, .2f).WaitForCompletion();
+            _innerSprite.DOFade(1, AnimationDuration);
+            _innerSprite.transform.localScale = Vector3.one * DisappearScale;
+            return _innerSprite.transform.DOScale(1, AnimationDuration).WaitForCompletion();
         }
-
-        ReflectCurrentState();
+        return null;
     }
 
     private void ReflectCurrentState()
