@@ -35,8 +35,12 @@ public class CharacterEnergyUI : MonoBehaviour
 
     public void AnimateEnergy(int energy)
     {
-        // No animations yet
-        SetEnergy(energy);
+        for (int i = 0; i < _energyNotches.Length; i++)
+        {
+            CharacterEnergyNotch notch = _energyNotches[i];
+            CharacterEnergyNotch.State targetState = GetTargetState(energy, i);
+            notch.AnimateState(targetState);
+        }
     }
 
     public void ShowCurrentEnergy()
