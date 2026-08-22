@@ -3,12 +3,8 @@ using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-[RequireComponent(typeof(SortingGroup))]
 public class CharacterHealthUI : MonoBehaviour
 {
-    [SortingLayer, SerializeField] private int _previewLayer;
-
-    [Space]
     [SerializeField] private float _shakeDuration = 0.3f;
     [SerializeField] private float _shakeStrength = 0.5f;
     [SerializeField] private int _shakeVibrato = 100;
@@ -20,7 +16,6 @@ public class CharacterHealthUI : MonoBehaviour
     private CharacterHealthbar _healthBar;
     private CharacterHealthbarPreview _healthBarPreview;
     private CharacterHeartIcon _heartIcon;
-    private SortingGroup _sortingGroup;
 
     private void Awake()
     {
@@ -28,7 +23,6 @@ public class CharacterHealthUI : MonoBehaviour
         _healthBar = GetComponentInChildren<CharacterHealthbar>();
         _healthBarPreview = GetComponentInChildren<CharacterHealthbarPreview>(true);
         _heartIcon = GetComponentInChildren<CharacterHeartIcon>();
-        _sortingGroup = GetComponent<SortingGroup>();
     }
 
     public void Preview(int health)
@@ -41,7 +35,6 @@ public class CharacterHealthUI : MonoBehaviour
 
         _healthBarPreview.Show();
         _healthBarPreview.SetFill(higher);
-        _sortingGroup.sortingLayerID = _previewLayer;
     }
 
     public void ClearPreview()

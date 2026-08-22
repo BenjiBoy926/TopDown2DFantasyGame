@@ -1,11 +1,19 @@
+using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Rendering;
 
+[RequireComponent(typeof(SortingGroup))]
 public class CharacterUI : MonoBehaviour
 {
+    [SerializeField, SortingLayer] private int _previewSortingLayer;
+
     private Character _character;
     private CharacterHealthUI _healthUI;
     private CharacterPowerUI _powerUI;
     private CharacterEnergyUI _energyUI;
+    
+    private SortingGroup _sortingGroup;
+    private int _defaultSortingLayer;
     private bool _isPreviewing = false;
 
     private void Awake()
@@ -14,6 +22,9 @@ public class CharacterUI : MonoBehaviour
         _healthUI = GetComponentInChildren<CharacterHealthUI>();
         _powerUI = GetComponentInChildren<CharacterPowerUI>();
         _energyUI = GetComponentInChildren<CharacterEnergyUI>();
+
+        _sortingGroup = GetComponent<SortingGroup>();
+        _defaultSortingLayer = _sortingGroup.sortingLayerID;
     }
 
     private void Update()
@@ -28,6 +39,7 @@ public class CharacterUI : MonoBehaviour
     public void Preview(int health)
     {
         _healthUI.Preview(health);
+        _sortingGroup.sortingLayerID = _previewSortingLayer;
         _isPreviewing = true;
     }
 
@@ -36,6 +48,7 @@ public class CharacterUI : MonoBehaviour
         _healthUI.ClearPreview();
         _isPreviewing = false;
         transform.localPosition = Vector3.zero;
+        _sortingGroup.sortingLayerID = _defaultSortingLayer;
     }
 
     public void ShowCurrentHealth()

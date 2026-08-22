@@ -1199,7 +1199,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3170882940050481792}
   - component: {fileID: 6709859178161647709}
-  - component: {fileID: 5520794535252203687}
   m_Layer: 0
   m_Name: HealthUI
   m_TagString: Untagged
@@ -1236,25 +1235,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 802ef3d848c906f4b9b8fea82b7f42de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _previewLayer: -164997813
   _shakeDuration: 0.3
   _shakeStrength: 0.5
   _shakeVibrato: 100
   _shakeRandomness: 90
   _shakeFadeOut: 0
   _shakeRandomnessMode: 0
---- !u!210 &5520794535252203687
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5480445590614092435}
-  m_Enabled: 1
-  m_SortingLayerID: 1409985309
-  m_SortingLayer: -3
-  m_SortingOrder: 0
-  m_SortAtRoot: 1
 --- !u!1 &5835265669295113419
 GameObject:
   m_ObjectHideFlags: 0
@@ -2172,3 +2158,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d14f0e239bf323428d03057e99bd6d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _previewSortingLayer: -164997813
