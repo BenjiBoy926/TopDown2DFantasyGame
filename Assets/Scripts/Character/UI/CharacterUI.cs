@@ -2,25 +2,40 @@ using UnityEngine;
 
 public class CharacterUI : MonoBehaviour
 {
+    private Character _character;
     private CharacterHealthUI _healthUI;
     private CharacterPowerUI _powerUI;
     private CharacterEnergyUI _energyUI;
+    private bool _isPreviewing = false;
 
     private void Awake()
     {
+        _character = GetComponentInParent<Character>();
         _healthUI = GetComponentInChildren<CharacterHealthUI>();
         _powerUI = GetComponentInChildren<CharacterPowerUI>();
         _energyUI = GetComponentInChildren<CharacterEnergyUI>();
     }
 
-    public void PreviewHealth(int health)
+    private void Update()
     {
-        _healthUI.Preview(health);
+        if (_isPreviewing)
+        {
+            Vector2 cellCenter = _character.CurrentCellCenter;
+            transform.position = cellCenter;
+        }
     }
 
-    public void ClearHealthPreview()
+    public void Preview(int health)
+    {
+        _healthUI.Preview(health);
+        _isPreviewing = true;
+    }
+
+    public void ClearPreview()
     {
         _healthUI.ClearPreview();
+        _isPreviewing = false;
+        transform.localPosition = Vector3.zero;
     }
 
     public void ShowCurrentHealth()

@@ -21,9 +21,6 @@ public class CharacterHealthUI : MonoBehaviour
     private CharacterHealthbarPreview _healthBarPreview;
     private CharacterHeartIcon _heartIcon;
     private SortingGroup _sortingGroup;
-    private bool _isPreviewing = false;
-    private Vector3 _originalLocalPosition;
-    private int _originalSortingLayer;
 
     private void Awake()
     {
@@ -32,19 +29,6 @@ public class CharacterHealthUI : MonoBehaviour
         _healthBarPreview = GetComponentInChildren<CharacterHealthbarPreview>(true);
         _heartIcon = GetComponentInChildren<CharacterHeartIcon>();
         _sortingGroup = GetComponent<SortingGroup>();
-        _originalLocalPosition = transform.localPosition;
-        _originalSortingLayer = _sortingGroup.sortingLayerID;
-    }
-
-    private void Update()
-    {
-        if (_isPreviewing)
-        {
-            Vector2 cellPosition = _character.CurrentCellCenter;
-            Vector2 originalWorldPosition = transform.parent.TransformPoint(_originalLocalPosition);
-            Vector2 originalWorldOffset = originalWorldPosition - (Vector2)transform.parent.position;
-            transform.position = cellPosition - originalWorldOffset;
-        }
     }
 
     public void Preview(int health)
@@ -58,16 +42,12 @@ public class CharacterHealthUI : MonoBehaviour
         _healthBarPreview.Show();
         _healthBarPreview.SetFill(higher);
         _sortingGroup.sortingLayerID = _previewLayer;
-        _isPreviewing = true;
     }
 
     public void ClearPreview()
     {
         _healthBarPreview.Hide();
         ShowCurrentHealth();
-        transform.localPosition = _originalLocalPosition;
-        _sortingGroup.sortingLayerID = _originalSortingLayer;
-        _isPreviewing = false;
     }
 
     public void ShowCurrentHealth()

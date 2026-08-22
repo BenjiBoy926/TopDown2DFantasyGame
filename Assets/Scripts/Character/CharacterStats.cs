@@ -60,12 +60,12 @@ public class CharacterStats : MonoBehaviour
 
     public void PreviewHealth(int health)
     {
-        _ui.PreviewHealth(health);
+        _ui.Preview(health);
     }
 
     public void ClearHealthPreview()
     {
-        _ui.ClearHealthPreview();
+        _ui.ClearPreview();
     }
 
     public int CalculateHealthAfterHitFrom(Character other)
