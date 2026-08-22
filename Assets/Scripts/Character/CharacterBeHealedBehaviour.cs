@@ -25,6 +25,7 @@ public class CharacterBeHealedBehaviour : MonoBehaviour
 
     public IEnumerator GetSequence(Character other)
     {
+        bool wasDead = _character.IsDead;
         if (_character.IsDead)
         {
             yield return GetReviveTwitchSequence(other);
@@ -35,6 +36,11 @@ public class CharacterBeHealedBehaviour : MonoBehaviour
 
         Vector2 punch = _character.CellHeight * _hopHeight * Vector2.up;
         yield return transform.DOPunchPosition(punch, _hopDuration, _hopVibrato, _hopElasticity).WaitForCompletion();
+        
+        if (wasDead)
+        {
+            _character.ChangeEnergy(-1);
+        }
     }
 
     private void Awake()
