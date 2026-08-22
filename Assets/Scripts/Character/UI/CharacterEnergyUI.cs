@@ -12,22 +12,6 @@ public class CharacterEnergyUI : MonoBehaviour
         _energyNotches = GetComponentsInChildren<CharacterEnergyNotch>();
     }
 
-    private void Update()
-    {
-        if (Keyboard.current.nKey.wasPressedThisFrame)
-        {
-            _character.SetEnergy(-2);
-        }
-        if (Keyboard.current.rKey.wasPressedThisFrame)
-        {
-            _character.SetEnergy(2);
-        }
-        if (Keyboard.current.zKey.wasPressedThisFrame)
-        {
-            _character.SetEnergy(0);
-        }
-    }
-
     public void AnimateCurrentEnergy()
     {
         AnimateEnergy(_character.CurrentEnergy);
