@@ -48,7 +48,7 @@ public class Character : MonoBehaviour
     public int CurrentHealth => _stats.CurrentHealth;
     public int BaseEnergy => _stats.BaseEnergy;
     public int CurrentEnergy => _stats.CurrentEnergy;
-    public int Power => _stats.Power;
+    public int CurrentPower => _stats.CurrentPower;
     public int TraversalRange => _stats.TraversalRange;
 
     // State
@@ -464,6 +464,11 @@ public class Character : MonoBehaviour
     public CharacterState GetLastRecordedState()
     {
         return _battle.GetLastRecordedState(this).State;
+    }
+
+    public InteractionResult PredictInteractionResult(Character other)
+    {
+        return default;
     }
 
     // ── Setup ────────────────────────────────────────────────────────────

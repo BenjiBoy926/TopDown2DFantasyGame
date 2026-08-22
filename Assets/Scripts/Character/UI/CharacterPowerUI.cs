@@ -8,7 +8,7 @@ public class CharacterPowerUI : MonoBehaviour
 
     public void ShowPower()
     {
-        _label.text = _stats.Power.ToString();
+        _label.text = _stats.CurrentPower.ToString();
     }
 
     private void Awake()

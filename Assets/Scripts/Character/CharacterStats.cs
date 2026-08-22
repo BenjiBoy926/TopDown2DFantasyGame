@@ -6,11 +6,11 @@ public class CharacterStats : MonoBehaviour
 {
     public int BaseHealth => _baseHealth;
     public int BaseEnergy => _baseEnergy;
-    public int TraversalRange => _traversalRange;
     public int CurrentHealth => _currentHealth;
+    public int CurrentPower => _basePower;
     public int CurrentEnergy => _currentEnergy;
+    public int TraversalRange => _traversalRange;
     public bool IsDead => _currentHealth <= 0;
-    public int Power => _basePower;
 
     [SerializeField] private int _baseHealth = 10;
     [SerializeField] private int _basePower = 3;
@@ -76,7 +76,7 @@ public class CharacterStats : MonoBehaviour
 
     private int CalculateDamageTakenFrom(Character other)
     {
-        return other.Power;
+        return other.CurrentPower;
     }
 
     public void SetHealth(int health)
