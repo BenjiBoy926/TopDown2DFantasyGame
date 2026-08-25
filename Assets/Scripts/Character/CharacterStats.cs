@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(Character))]
 [RequireComponent(typeof(CharacterHealthColor))]
 public class CharacterStats : MonoBehaviour
 {
@@ -19,28 +20,28 @@ public class CharacterStats : MonoBehaviour
 
     private int _currentHealth;
     private int _currentEnergy = 0;
+    private Character _character;
     private CharacterHealthColor _healthColor;
-    private CharacterUI _ui;
 
     private void Awake()
     {
         _currentHealth = _baseHealth;
+        _character = GetComponent<Character>();
         _healthColor = GetComponent<CharacterHealthColor>();
-        _ui = GetComponentInChildren<CharacterUI>();
     }
 
     private void Start()
     {
-        _ui.ShowCurrentHealth();
-        _ui.ShowPower();
-        _ui.ShowCurrentEnergy();
+        _character.ShowCurrentHealth();
+        _character.ShowPower();
+        _character.ShowCurrentEnergy();
     }
 
     public void TakeDamageFrom(Character other)
     {
         int newHealth = CalculateHealthAfterHitFrom(other);
         SetHealth(newHealth);
-        _ui.ShakeHealthUI();
+        _character.ShakeHealthUI();
     }
 
     public void RestoreHealth()
@@ -58,16 +59,6 @@ public class CharacterStats : MonoBehaviour
         return _healthColor.GetColor(health, _baseHealth);
     }
 
-    public void Preview(CharacterInfo info)
-    {
-        _ui.Preview(info);
-    }
-
-    public void ClearPreview()
-    {
-        _ui.ClearPreview();
-    }
-
     public int CalculateHealthAfterHitFrom(Character other)
     {
         int newHealth = _currentHealth - CalculateDamageTakenFrom(other);
@@ -82,7 +73,7 @@ public class CharacterStats : MonoBehaviour
     public void SetHealth(int health)
     {
         _currentHealth = Mathf.Max(health, 0);
-        _ui.ShowCurrentHealth();
+        _character.ShowCurrentHealth();
     }
 
     public void ChangeEnergy(int delta)
@@ -106,6 +97,6 @@ public class CharacterStats : MonoBehaviour
             return;
 
         _currentEnergy = energy;
-        _ui.AnimateCurrentEnergy();
+        _character.AnimateCurrentEnergy();
     }
 }

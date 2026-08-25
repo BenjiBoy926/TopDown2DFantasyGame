@@ -68,6 +68,7 @@ public class Character : MonoBehaviour
     [SerializeField] private bool _isRanged;
 
     private CharacterAnimator _animator;
+    private CharacterUI _ui;
     private CharacterStats _stats;
     private CharacterRange _range;
     private GridSearch _gridSearch;
@@ -89,6 +90,7 @@ public class Character : MonoBehaviour
     private void Awake()
     {
         _animator = GetComponentInChildren<CharacterAnimator>();
+        _ui = GetComponentInChildren<CharacterUI>();
         _stats = GetComponent<CharacterStats>();
         _range = GetComponent<CharacterRange>();
         _gridSearch = GetComponent<GridSearch>();
@@ -389,12 +391,12 @@ public class Character : MonoBehaviour
 
     public void Preview(CharacterInfo info)
     {
-        _stats.Preview(info);
+        _ui.Preview(info);
     }
 
     public void ClearPreview()
     {
-        _stats.ClearPreview();
+        _ui.ClearPreview();
     }
 
     public int CalculateHealthAfterHitFrom(Character other)
@@ -498,6 +500,33 @@ public class Character : MonoBehaviour
     public void UnregisterAsCommander()
     {
         _faction.UnregisterCommander(this);
+    }
+
+    // -- UI ------------------------------------------------
+
+    public void ShowCurrentHealth()
+    {
+        _ui.ShowCurrentHealth();
+    }
+
+    public void ShowPower()
+    {
+        _ui.ShowPower();
+    }
+
+    public void ShowCurrentEnergy()
+    {
+        _ui.ShowCurrentEnergy();
+    }
+
+    public void ShakeHealthUI()
+    {
+        _ui.ShakeHealthUI();
+    }
+
+    public void AnimateCurrentEnergy()
+    {
+        _ui.AnimateCurrentEnergy();
     }
 
     // ── Private ──────────────────────────────────────────────────────────
