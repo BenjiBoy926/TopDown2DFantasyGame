@@ -15,14 +15,13 @@ public class CharacterMovePreview : MonoBehaviour
     public void PreviewMove(Character other)
     {
         Clear();
-        if (_character.Faction == other.Faction)
-        {
-            PreviewHeal(other);
-        }
-        else
-        {
-            PreviewAttack(other);
-        }
+
+        InteractionResult result = PredictInteractionResult(other);
+        _character.Preview(result.Interactor);
+        other.Preview(result.Target);
+
+        _activePreviews.Add(_character);
+        _activePreviews.Add(other);
     }
 
     public void Clear()
@@ -30,28 +29,41 @@ public class CharacterMovePreview : MonoBehaviour
         for (int i = 0; i < _activePreviews.Count; i++)
         {
             Character character = _activePreviews[i];
-            character.ClearHealthPreview();
+            character.ClearPreview();
         }
         _activePreviews.Clear();
     }
 
-    private void PreviewHeal(Character other)
+    private InteractionResult PredictInteractionResult(Character other)
     {
-        other.PreviewHealth(other.BaseHealth);
-        _activePreviews.Add(other);
+        if (other.Faction == _character.Faction)
+        {
+            return PredictHealResult(other);
+        }
+        else
+        {
+            return PredictAttackResult(other);
+        }
+    }
+    
+    private InteractionResult PredictHealResult(Character other)
+    {
+        CharacterInfo selfInfo = new(_character.CurrentHealth, _character.CurrentEnergy);
+        int otherHealth = other.BaseHealth;
+        int otherEnergy = other.IsDead ? other.CurrentEnergy - 1 : other.CurrentEnergy;
+        CharacterInfo otherInfo = new(otherHealth, otherEnergy);
+        return new(selfInfo, otherInfo);
     }
 
-    private void PreviewAttack(Character other)
+    private InteractionResult PredictAttackResult(Character other)
     {
-        int otherHealth = other.CalculateHealthAfterHitFrom(_character);
-        other.PreviewHealth(otherHealth);
-        _activePreviews.Add(other);
-
+        CharacterInfo otherInfo = new(other.CurrentHealth - _character.CurrentPower, other.CurrentEnergy);
+        int selfHealth = _character.CurrentHealth;
         if (!_character.IsRanged && !other.IsRanged)
         {
-            int thisHealth = _character.CalculateHealthAfterHitFrom(other);
-            _character.PreviewHealth(thisHealth);
-            _activePreviews.Add(_character);
+            selfHealth -= other.CurrentPower;
         }
+        CharacterInfo selfInfo = new(selfHealth, _character.CurrentEnergy - 1);
+        return new(selfInfo, otherInfo);
     }
 }

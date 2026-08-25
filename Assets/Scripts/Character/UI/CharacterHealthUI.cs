@@ -25,12 +25,12 @@ public class CharacterHealthUI : MonoBehaviour
         _heartIcon = GetComponentInChildren<CharacterHeartIcon>();
     }
 
-    public void Preview(int health)
+    public void Preview(CharacterInfo info)
     {
-        int higher = Mathf.Max(health, _character.CurrentHealth);
-        int lower = Mathf.Min(health, _character.CurrentHealth);
+        int higher = Mathf.Max(info.Health, _character.CurrentHealth);
+        int lower = Mathf.Min(info.Health, _character.CurrentHealth);
         
-        ShowHealth(health);
+        ShowHealth(info.Health);
         _healthBar.ShowHealth(lower);
 
         _healthBarPreview.Show();

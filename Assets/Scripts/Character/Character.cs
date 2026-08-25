@@ -246,7 +246,7 @@ public class Character : MonoBehaviour
     public void BeginMove()
     {
         RefreshCell();
-        ClearMovePreview();
+        ClearInteractionPreview();
         SetIsActing(true);
     }
 
@@ -387,14 +387,14 @@ public class Character : MonoBehaviour
         _stats.RestoreHealth();
     }
 
-    public void PreviewHealth(int health)
+    public void Preview(CharacterInfo info)
     {
-        _stats.PreviewHealth(health);
+        _stats.Preview(info);
     }
 
-    public void ClearHealthPreview()
+    public void ClearPreview()
     {
-        _stats.ClearHealthPreview();
+        _stats.ClearPreview();
     }
 
     public int CalculateHealthAfterHitFrom(Character other)
@@ -424,12 +424,12 @@ public class Character : MonoBehaviour
 
     // ── Move Preview ─────────────────────────────────────────────────────
 
-    public void PreviewMove(Character other)
+    public void PreviewInteraction(Character other)
     {
         _preview.PreviewMove(other);
     }
 
-    public void ClearMovePreview()
+    public void ClearInteractionPreview()
     {
         _preview.Clear();
     }

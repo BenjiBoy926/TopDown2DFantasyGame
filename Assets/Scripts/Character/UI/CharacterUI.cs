@@ -36,9 +36,9 @@ public class CharacterUI : MonoBehaviour
         }
     }
 
-    public void Preview(int health)
+    public void Preview(CharacterInfo info)
     {
-        _healthUI.Preview(health);
+        _healthUI.Preview(info);
         _sortingGroup.sortingLayerID = _previewSortingLayer;
         _isPreviewing = true;
     }

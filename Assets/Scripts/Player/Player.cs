@@ -309,11 +309,11 @@ public class Player : MonoBehaviour
         Character characterAtCell = GetCharacterAtCurrentCell();
         if (characterAtCell && characterAtCell != _activeCharacter)
         {
-            _activeCharacter.PreviewMove(characterAtCell);
+            _activeCharacter.PreviewInteraction(characterAtCell);
         }
         else
         {
-            _activeCharacter.ClearMovePreview();
+            _activeCharacter.ClearInteractionPreview();
         } 
     }
 

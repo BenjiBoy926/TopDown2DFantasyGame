@@ -1,15 +1,11 @@
 public readonly struct InteractionResult
 {
-    public readonly int InteractorHealth;
-    public readonly int InteractorEnergy;
-    public readonly int TargetHealth;
-    public readonly int TargetEnergy;
+    public readonly CharacterInfo Interactor;
+    public readonly CharacterInfo Target;
 
-    public InteractionResult(int interactorHealth, int interactorEnergy, int targetHealth, int targetEnergy)
+    public InteractionResult(CharacterInfo interactor, CharacterInfo target)
     {
-        InteractorHealth = interactorHealth;
-        InteractorEnergy = interactorEnergy;
-        TargetHealth = targetHealth;
-        TargetEnergy = targetEnergy;
+        Interactor = interactor;
+        Target = target;
     }
 }

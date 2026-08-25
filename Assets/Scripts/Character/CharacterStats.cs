@@ -58,12 +58,12 @@ public class CharacterStats : MonoBehaviour
         return _healthColor.GetColor(health, _baseHealth);
     }
 
-    public void PreviewHealth(int health)
+    public void Preview(CharacterInfo info)
     {
-        _ui.Preview(health);
+        _ui.Preview(info);
     }
 
-    public void ClearHealthPreview()
+    public void ClearPreview()
     {
         _ui.ClearPreview();
     }
