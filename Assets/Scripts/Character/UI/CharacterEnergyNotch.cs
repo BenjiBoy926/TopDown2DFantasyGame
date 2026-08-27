@@ -3,6 +3,7 @@ using NaughtyAttributes;
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
 public class CharacterEnergyNotch : MonoBehaviour
 {
     public enum State
@@ -10,7 +11,6 @@ public class CharacterEnergyNotch : MonoBehaviour
         Invisible, Filled, Empty, Negative
     }
 
-    [SerializeField] private SpriteRenderer _frameSprite;
     [SerializeField] private SpriteRenderer _innerSprite;
 
     [Space]
@@ -23,9 +23,11 @@ public class CharacterEnergyNotch : MonoBehaviour
     [SerializeField] private Color _emptyPreviewColor = Color.gray;
     [SerializeField] private float _previewFadeDuration = .3f;
     [SerializeField, ReadOnly] private State _currentState = State.Invisible;
+    private SpriteRenderer _frameSprite;
 
     private void Awake()
     {
+        _frameSprite = GetComponent<SpriteRenderer>();
         ReflectCurrentState();
     }
 
@@ -37,6 +39,12 @@ public class CharacterEnergyNotch : MonoBehaviour
         KillAllTweens();
         _innerSprite.color = GetPreviewStateColor(state);
         _innerSprite.DOFade(0, _previewFadeDuration).SetLoops(-1, LoopType.Yoyo);
+        if (state == State.Invisible || _currentState == State.Invisible)
+        {
+            _frameSprite.transform.localScale = Vector3.one;
+            _frameSprite.color = Color.white;
+            _frameSprite.DOFade(0, _previewFadeDuration).SetLoops(-1, LoopType.Yoyo);
+        }
     }
 
     public void ClearPreview()
@@ -109,6 +117,7 @@ public class CharacterEnergyNotch : MonoBehaviour
     private void ReflectCurrentState()
     {
         KillAllTweens();
+        _frameSprite.color = Color.white;
         transform.localScale = _currentState == State.Invisible ? Vector3.zero : Vector3.one;
         _innerSprite.transform.localScale = Vector3.one;
         _innerSprite.color = GetStateColor(_currentState);
@@ -117,6 +126,7 @@ public class CharacterEnergyNotch : MonoBehaviour
     private void KillAllTweens()
     {
         transform.DOKill();
+        _frameSprite.DOKill();
         _innerSprite.DOKill();
         _innerSprite.transform.DOKill();
     }
