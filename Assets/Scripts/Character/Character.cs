@@ -25,40 +25,42 @@ public class Character : MonoBehaviour
 
     // ── Properties ───────────────────────────────────────────────────────
 
-    // Identity
-    public Faction Faction => _faction;
-    public bool IsRanged => _isRanged;
-    public bool CanBeRevived => _faction.CanBeRevived;
+    // Self
     public bool IsInBattle => gameObject.activeSelf;
-
-    // Spatial
+    public bool IsRanged => _isRanged;
     public Vector2 Position
     {
         get => transform.position;
         set => transform.position = value;
     }
-    public Vector2Int CurrentCell => _battle.WorldToCell(Position);
-    public Vector2 CurrentCellCenter => _battle.SnapToGrid(Position);
-    public float CellWidth => _battle.CellWidth;
-    public float CellHeight => _battle.CellHeight;
-    public Vector2 CellSize => new(_battle.CellWidth, _battle.CellHeight);
+    public static bool IsAnyCharacterActing => _actingCharacters.Count > 0;
+    public bool IsAbleToMove => !IsDead && _stats.CurrentEnergy > 0;
+
+    // Faction
+    public Faction Faction => _faction;
+    public bool CanBeRevived => _faction.CanBeRevived;
+
+    // Animator
+    public bool IsOneShotAnimationPlaying => _animator.IsOneShotAnimationPlaying;
 
     // Stats
     public int BaseHealth => _stats.BaseHealth;
-    public int CurrentHealth => _stats.CurrentHealth;
     public int BaseEnergy => _stats.BaseEnergy;
-    public int CurrentEnergy => _stats.CurrentEnergy;
+    public int CurrentHealth => _stats.CurrentHealth;
     public int CurrentPower => _stats.CurrentPower;
+    public int CurrentEnergy => _stats.CurrentEnergy;
     public int TraversalRange => _stats.TraversalRange;
-
-    // State
-    public bool IsAbleToMove => !IsDead && _stats.CurrentEnergy > 0;
     public bool IsDead => _stats.IsDead;
-    public bool IsOneShotAnimationPlaying => _animator.IsOneShotAnimationPlaying;
-    public static bool IsAnyCharacterActing => _actingCharacters.Count > 0;
 
     // Range
     public HashSet<Vector2Int> AllCellsInRange => _range.AllCells;
+
+    // Battle
+    public float CellWidth => _battle.CellWidth;
+    public float CellHeight => _battle.CellHeight;
+    public Vector2 CellSize => new(_battle.CellWidth, _battle.CellHeight);
+    public Vector2 CurrentCellCenter => _battle.SnapToGrid(Position);
+    public Vector2Int CurrentCell => _battle.WorldToCell(Position);
 
     // ── Fields ───────────────────────────────────────────────────────────
 
@@ -122,77 +124,24 @@ public class Character : MonoBehaviour
         _actingCharacters.Remove(this);
     }
 
-    // ── Animation ────────────────────────────────────────────────────────
+    // ── Self ─────────────────────────────────────────────────────────────
 
-    public void LookAt(Vector2 position)
+    public void SetBattle(Battle battle)
     {
-        Vector2 direction = position - Position;
-        SetDirection(direction);
+        _battle = battle;
     }
 
-    public void SetDirection(Vector2 direction)
+    public void SetIsActing(bool isActing)
     {
-        _animator.SetDirection(direction);
+        if (isActing)
+        {
+            _actingCharacters.Add(this);
+        }
+        else
+        {
+            _actingCharacters.Remove(this);
+        }
     }
-
-    public void SetIsRunning(bool isRunning)
-    {
-        _animator.SetIsRunning(isRunning);
-    }
-
-    public void PauseAnimation()
-    {
-        _animator.Pause();
-    }
-
-    public void ResumeAnimation()
-    {
-        _animator.Resume();
-    }
-
-    public void PlayIdleAnimation()
-    {
-        SetIsRunning(false);
-        _animator.PlayLoopingAnimation();
-    }
-
-    public Coroutine PlayAttackAnimation()
-    {
-        return _animator.Attack();
-    }
-
-    public Coroutine PlayHurtAnimation()
-    {
-        return _animator.Hurt();
-    }
-
-    public Coroutine PlayDieAnimation()
-    {
-        return _animator.Die(); 
-    }
-
-    public YieldInstruction PlayAttackConnectShake()
-    {
-        return _hurtBehaviour.PlayAttackConnectShake();
-    }
-
-    public YieldInstruction FadeAlpha(float alpha, float duration, Ease ease)
-    {
-        return _animator.FadeAlpha(alpha, duration, ease);
-    }
-
-    public YieldInstruction PerformSpriteFade()
-    {
-        return PerformSpriteFade(_usedMoveFadeDuration);
-    }
-
-    public YieldInstruction PerformSpriteFade(float duration)
-    {
-        Color fadeColor = GetMoveFadeColor();
-        return _animator.FadeColor(fadeColor, duration);
-    }
-
-    // ── Actions ──────────────────────────────────────────────────────────
 
     public Coroutine Attack(Character other)
     {
@@ -229,22 +178,6 @@ public class Character : MonoBehaviour
         return StartCoroutine(sequence);
     }
 
-    // ── Combat Sequences ─────────────────────────────────────────────────
-    // These exist so sibling behaviours can drive each other without
-    // holding direct references to one another.
-
-    public IEnumerator GetMeleeSwipeSequence(Character other)
-    {
-        return _attackBehaviour.GetMeleeSwipeSequence(other);
-    }
-
-    public IEnumerator GetHurtSequence(Character attacker)
-    {
-        return _hurtBehaviour.GetHurtSequence(attacker);
-    }
-
-    // ── Movement ─────────────────────────────────────────────────────────
-
     public void BeginMove()
     {
         RefreshCell();
@@ -265,17 +198,196 @@ public class Character : MonoBehaviour
         PerformSpriteFade(_usedMoveFadeDuration);
     }
 
-    // ── Range ────────────────────────────────────────────────────
-
-    public Vector2 ClampToReachableCells(Vector2 input)
+    public void LookAt(Vector2 position)
     {
-        return _range.ClampToReachableCells(input);
+        Vector2 direction = position - Position;
+        SetDirection(direction);
     }
 
-    public Vector2 ClampToStayableCells(Vector2 position)
+    public void PlayIdleAnimation()
     {
-        return _range.ClampToStayableCells(position);
+        SetIsRunning(false);
+        _animator.PlayLoopingAnimation();
     }
+
+    public YieldInstruction PerformSpriteFade()
+    {
+        return PerformSpriteFade(_usedMoveFadeDuration);
+    }
+
+    public YieldInstruction PerformSpriteFade(float duration)
+    {
+        Color fadeColor = GetMoveFadeColor();
+        return _animator.FadeColor(fadeColor, duration);
+    }
+
+    public bool IsEnemyInCell(Vector2Int cell, out Character enemy)
+    {
+        enemy = GetOccupant(cell);
+        return enemy && enemy.Faction != _faction;
+    }
+
+    public bool IsAllyInCell(Vector2Int cell)
+    {
+        Character occupant = GetOccupant(cell);
+        return occupant && occupant != this && occupant.Faction == _faction;
+    }
+
+    public bool CouldStayInCell(Vector2Int cell)
+    {
+        Character occupant = GetOccupant(cell);
+        return !occupant || occupant == this;
+    }
+
+    public bool ShouldRemoveFromBattlefield()
+    {
+        return IsDead && !_faction.CanBeRevived;
+    }
+
+    public CharacterState ReadState()
+    {
+        return new(_animator.GetDirection(), CurrentCell, new(_stats.CurrentHealth, _stats.CurrentEnergy));
+    }
+
+    private Color GetMoveFadeColor()
+    {
+        return IsAbleToMove ? Color.white : _usedMoveFadeColor;
+    }
+
+    // ── Faction ──────────────────────────────────────────────────────────
+
+    public void RegisterAsCommander()
+    {
+        _faction.RegisterCommander(this);
+    }
+
+    public void UnregisterAsCommander()
+    {
+        _faction.UnregisterCommander(this);
+    }
+
+    // ── Animator ─────────────────────────────────────────────────────────
+
+    public void PauseAnimation()
+    {
+        _animator.Pause();
+    }
+
+    public void ResumeAnimation()
+    {
+        _animator.Resume();
+    }
+
+    public Coroutine PlayAttackAnimation()
+    {
+        return _animator.Attack();
+    }
+
+    public Coroutine PlayHurtAnimation()
+    {
+        return _animator.Hurt();
+    }
+
+    public Coroutine PlayDieAnimation()
+    {
+        return _animator.Die(); 
+    }
+
+    public void SetDirection(Vector2 direction)
+    {
+        _animator.SetDirection(direction);
+    }
+
+    public void SetIsRunning(bool isRunning)
+    {
+        _animator.SetIsRunning(isRunning);
+    }
+
+    public YieldInstruction FadeAlpha(float alpha, float duration, Ease ease)
+    {
+        return _animator.FadeAlpha(alpha, duration, ease);
+    }
+
+    // ── UI ───────────────────────────────────────────────────────────────
+
+    public void Preview(CharacterInfo info)
+    {
+        _ui.Preview(info);
+    }
+
+    public void ClearPreview()
+    {
+        _ui.ClearPreview();
+    }
+
+    public void ShowCurrentHealth()
+    {
+        _ui.ShowCurrentHealth();
+    }
+
+    public void AnimateCurrentEnergy()
+    {
+        _ui.AnimateCurrentEnergy();
+    }
+
+    public void ShowCurrentEnergy()
+    {
+        _ui.ShowCurrentEnergy();
+    }
+
+    public void ShowPower()
+    {
+        _ui.ShowPower();
+    }
+
+    public void ShakeHealthUI()
+    {
+        _ui.ShakeHealthUI();
+    }
+
+    // ── Stats ────────────────────────────────────────────────────────────
+
+    public void TakeDamageFrom(Character other)
+    {
+        _stats.TakeDamageFrom(other);
+    }
+
+    public void RestoreHealth()
+    {
+        _stats.RestoreHealth();
+    }
+
+    public int CalculateHealthAfterHitFrom(Character other)
+    {
+        return _stats.CalculateHealthAfterHitFrom(other);
+    }
+
+    public void SetHealth(int health)
+    {
+        _stats.SetHealth(health);
+    }
+
+    public void ChangeEnergy(int delta)
+    {
+        _stats.ChangeEnergy(delta);
+    }
+
+    public void ZeroEnergy()
+    {
+        _stats.ZeroEnergy();
+    }
+
+    public void RefillEnergy()
+    {
+        _stats.RefillEnergy();
+    }
+
+    public void SetEnergy(int energy)
+    {
+        _stats.SetEnergy(energy);
+    }
+
+    // ── Range ────────────────────────────────────────────────────────────
 
     public void RefreshRange()
     {
@@ -297,6 +409,21 @@ public class Character : MonoBehaviour
         _range.Hide();
     }
 
+    public Vector2 ClampToStayableCells(Vector2 position)
+    {
+        return _range.ClampToStayableCells(position);
+    }
+
+    public Vector2 ClampToReachableCells(Vector2 input)
+    {
+        return _range.ClampToReachableCells(input);
+    }
+
+    public bool CouldWalkThroughCell(Vector2Int cell)
+    {
+        return _range.CouldWalkThroughCell(cell);
+    }
+
     public bool IsInRange(Vector2Int cell)
     {
         return _range.Contains(cell);
@@ -312,116 +439,18 @@ public class Character : MonoBehaviour
         return _range.IsStayable(cell);
     }
 
-    // ── Grid ─────────────────────────────────────────────────────────────
-
-    public Vector2 CellToWorld(Vector2Int cell)
-    {
-        return _battle.CellToWorld(cell);
-    }
-
-    public Vector2Int WorldToCell(Vector2 position)
-    {
-        return _battle.WorldToCell(position);
-    }
-
-    public TileBase GetTile(Vector2Int cell)
-    {
-        return _battle.GetTile(cell);
-    }
-
-    public Character GetOccupant(Vector2Int cell)
-    {
-        return _battle.GetOccupant(cell);
-    }
-
-    public void RefreshCell()
-    {
-        _battle.RefreshCell(this);
-    }
-
-    public bool IsEnemyInCell(Vector2Int cell, out Character enemy)
-    {
-        enemy = GetOccupant(cell);
-        return enemy && enemy.Faction != _faction;
-    }
-
-    public bool IsAllyInCell(Vector2Int cell)
-    {
-        Character occupant = GetOccupant(cell);
-        return occupant && occupant != this && occupant.Faction == _faction;
-    }
-
-    public bool CouldStayInCell(Vector2Int cell)
-    {
-        Character occupant = GetOccupant(cell);
-        return !occupant || occupant == this;
-    }
-
-    public bool CouldWalkThroughCell(Vector2Int cell)
-    {
-        return _range.CouldWalkThroughCell(cell);
-    }
+    // ── Grid Search ──────────────────────────────────────────────────────
 
     public GridSearchResult SearchGrid(GridSearchStrategy strategy)
     {
         return _gridSearch.Search(strategy);
     }
 
+    // ── Walker ───────────────────────────────────────────────────────────
+
     public Coroutine WalkToNodeClamped(Node node)
     {
         return _walker.WalkToNodeClamped(node);
-    }
-
-    // ── Stats ───────────────────────────────────────────────────────────
-
-    public void TakeDamageFrom(Character other)
-    {
-        _stats.TakeDamageFrom(other);
-    }
-
-    public void SetHealth(int health)
-    {
-        _stats.SetHealth(health);
-    }
-
-    public void RestoreHealth()
-    {
-        _stats.RestoreHealth();
-    }
-
-    public void Preview(CharacterInfo info)
-    {
-        _ui.Preview(info);
-    }
-
-    public void ClearPreview()
-    {
-        _ui.ClearPreview();
-    }
-
-    public int CalculateHealthAfterHitFrom(Character other)
-    {
-        return _stats.CalculateHealthAfterHitFrom(other);
-    }
-
-    public void SetEnergy(int energy)
-    {
-        _stats.SetEnergy(energy);
-    }
-
-    public void ChangeEnergy(int delta)
-    {
-        _stats.ChangeEnergy(delta);
-    }
-
-    public void ZeroEnergy()
-    {
-        _stats.ZeroEnergy();
-    }
-
-    public void RefillEnergy()
-    {
-        _stats.RefillEnergy();
     }
 
     // ── Move Preview ─────────────────────────────────────────────────────
@@ -436,7 +465,58 @@ public class Character : MonoBehaviour
         _preview.Clear();
     }
 
-    // ── History ──────────────────────────────────────────────────────────
+    // ── Attack Behaviour ─────────────────────────────────────────────────
+
+    public IEnumerator GetMeleeSwipeSequence(Character other)
+    {
+        return _attackBehaviour.GetMeleeSwipeSequence(other);
+    }
+
+    // ── Hurt Behaviour ───────────────────────────────────────────────────
+
+    public YieldInstruction PlayAttackConnectShake()
+    {
+        return _hurtBehaviour.PlayAttackConnectShake();
+    }
+
+    public IEnumerator GetHurtSequence(Character attacker)
+    {
+        return _hurtBehaviour.GetHurtSequence(attacker);
+    }
+
+    // ── Undo Redo Behaviour ──────────────────────────────────────────────
+
+    public IEnumerator GetApplyStateSequence(CharacterState state)
+    {
+        return _undoRedoBehaviour.GetApplyStateSequence(state);
+    }
+
+    // ── Battle ───────────────────────────────────────────────────────────
+
+    public Vector2 CellToWorld(Vector2Int cell)
+    {
+        return _battle.CellToWorld(cell);
+    }
+
+    public Vector2Int WorldToCell(Vector2 position)
+    {
+        return _battle.WorldToCell(position);
+    }
+
+    public Character GetOccupant(Vector2Int cell)
+    {
+        return _battle.GetOccupant(cell);
+    }
+
+    public void RefreshCell()
+    {
+        _battle.RefreshCell(this);
+    }
+
+    public TileBase GetTile(Vector2Int cell)
+    {
+        return _battle.GetTile(cell);
+    }
 
     public void RecordMoveWith(Character other)
     {
@@ -448,86 +528,8 @@ public class Character : MonoBehaviour
         _battle.Record(this);
     }
 
-    public CharacterState ReadState()
-    {
-        return new(_animator.GetDirection(), CurrentCell, new(_stats.CurrentHealth, _stats.CurrentEnergy));
-    }
-
-    public IEnumerator GetApplyStateSequence(CharacterState state)
-    {
-        return _undoRedoBehaviour.GetApplyStateSequence(state);
-    }
-
-    public bool ShouldRemoveFromBattlefield()
-    {
-        return IsDead && !_faction.CanBeRevived;
-    }
-
     public CharacterState GetLastRecordedState()
     {
         return _battle.GetLastRecordedState(this).State;
-    }
-
-    // ── Setup ────────────────────────────────────────────────────────────
-
-    public void SetBattle(Battle battle)
-    {
-        _battle = battle;
-    }
-
-    public void SetIsActing(bool isActing)
-    {
-        if (isActing)
-        {
-            _actingCharacters.Add(this);
-        }
-        else
-        {
-            _actingCharacters.Remove(this);
-        }
-    }
-
-    public void RegisterAsCommander()
-    {
-        _faction.RegisterCommander(this);
-    }
-
-    public void UnregisterAsCommander()
-    {
-        _faction.UnregisterCommander(this);
-    }
-
-    // -- UI ------------------------------------------------
-
-    public void ShowCurrentHealth()
-    {
-        _ui.ShowCurrentHealth();
-    }
-
-    public void ShowPower()
-    {
-        _ui.ShowPower();
-    }
-
-    public void ShowCurrentEnergy()
-    {
-        _ui.ShowCurrentEnergy();
-    }
-
-    public void ShakeHealthUI()
-    {
-        _ui.ShakeHealthUI();
-    }
-
-    public void AnimateCurrentEnergy()
-    {
-        _ui.AnimateCurrentEnergy();
-    }
-
-    // ── Private ──────────────────────────────────────────────────────────
-
-    private Color GetMoveFadeColor()
-    {
-        return IsAbleToMove ? Color.white : _usedMoveFadeColor;
     }
 }
