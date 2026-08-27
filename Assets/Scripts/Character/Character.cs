@@ -450,7 +450,7 @@ public class Character : MonoBehaviour
 
     public CharacterState ReadState()
     {
-        return new(_animator.GetDirection(), CurrentCell, _stats.CurrentHealth, _stats.CurrentEnergy);
+        return new(_animator.GetDirection(), CurrentCell, new(_stats.CurrentHealth, _stats.CurrentEnergy));
     }
 
     public IEnumerator GetApplyStateSequence(CharacterState state)
@@ -466,11 +466,6 @@ public class Character : MonoBehaviour
     public CharacterState GetLastRecordedState()
     {
         return _battle.GetLastRecordedState(this).State;
-    }
-
-    public InteractionResult PredictInteractionResult(Character other)
-    {
-        return default;
     }
 
     // ── Setup ────────────────────────────────────────────────────────────
