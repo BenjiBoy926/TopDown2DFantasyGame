@@ -22,14 +22,18 @@ public class CharacterEnergyUI : MonoBehaviour
         {
             CharacterEnergyNotch notch = _energyNotches[i];
             CharacterEnergyNotch.State targetState = GetTargetState(energy, i);
-            notch.AnimateState(targetState);
+            notch.Animate(targetState);
         }
     }
 
     public void Preview(CharacterInfo info)
     {
-        // TODO: later, add methods to the notch to do a preview flash animation
-        SetEnergy(info.Energy);
+        for (int i = 0; i < _energyNotches.Length; i++)
+        {
+            CharacterEnergyNotch notch = _energyNotches[i];
+            CharacterEnergyNotch.State targetState = GetTargetState(info.Energy, i);
+            notch.Preview(targetState);
+        }
     }
 
     public void ClearPreview()

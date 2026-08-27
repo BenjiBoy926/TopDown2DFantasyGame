@@ -10,12 +10,18 @@ public class CharacterEnergyNotch : MonoBehaviour
         Invisible, Filled, Empty, Negative
     }
 
-    private const float AnimationDuration = .35f;
-    private const float DisappearScale = 5;
-
+    [SerializeField] private SpriteRenderer _frameSprite;
     [SerializeField] private SpriteRenderer _innerSprite;
+
+    [Space]
     [SerializeField] private Color _filledColor = Color.yellow;
     [SerializeField] private Color _negativeColor = Color.red;
+    [SerializeField] private float _animationDuration = .35f;
+    [SerializeField] private float _disappearScale = 5;
+
+    [Space]
+    [SerializeField] private Color _emptyPreviewColor = Color.gray;
+    [SerializeField] private float _previewFadeDuration = .3f;
     [SerializeField, ReadOnly] private State _currentState = State.Invisible;
 
     private void Awake()
@@ -23,7 +29,19 @@ public class CharacterEnergyNotch : MonoBehaviour
         ReflectCurrentState();
     }
 
-    public Coroutine AnimateState(State state)
+    public void Preview(State state)
+    {
+        KillAllTweens();
+        _innerSprite.color = GetPreviewStateColor(state);
+        _innerSprite.DOFade(0, _previewFadeDuration).SetLoops(-1, LoopType.Yoyo);
+    }
+
+    public void ClearPreview()
+    {
+        ReflectCurrentState();
+    }
+
+    public Coroutine Animate(State state)
     {
         if (state == _currentState)
             return null;
@@ -32,6 +50,7 @@ public class CharacterEnergyNotch : MonoBehaviour
         State next = state;
         _currentState = next;
 
+        KillAllTweens();
         StopAllCoroutines();
         return StartCoroutine(GetAnimationCoroutine(previous, next));
     }
@@ -54,13 +73,13 @@ public class CharacterEnergyNotch : MonoBehaviour
         if (previous == State.Invisible)
         {
             _innerSprite.color = Color.clear;
-            return transform.DOScale(1, AnimationDuration).WaitForCompletion();
+            return transform.DOScale(1, _animationDuration).WaitForCompletion();
         }
         else if (previous != State.Empty)
         {
-            _innerSprite.DOFade(0, AnimationDuration);
+            _innerSprite.DOFade(0, _animationDuration);
             _innerSprite.transform.localScale = Vector3.one;
-            return _innerSprite.transform.DOScale(DisappearScale, AnimationDuration).WaitForCompletion();
+            return _innerSprite.transform.DOScale(_disappearScale, _animationDuration).WaitForCompletion();
         }
         return null;
     }
@@ -73,22 +92,35 @@ public class CharacterEnergyNotch : MonoBehaviour
 
         if (next == State.Invisible)
         {
-            return transform.DOScale(0, AnimationDuration).WaitForCompletion();
+            return transform.DOScale(0, _animationDuration).WaitForCompletion();
         }
         else if (next != State.Empty)
         {
-            _innerSprite.DOFade(1, AnimationDuration);
-            _innerSprite.transform.localScale = Vector3.one * DisappearScale;
-            return _innerSprite.transform.DOScale(1, AnimationDuration).WaitForCompletion();
+            _innerSprite.DOFade(1, _animationDuration);
+            _innerSprite.transform.localScale = Vector3.one * _disappearScale;
+            return _innerSprite.transform.DOScale(1, _animationDuration).WaitForCompletion();
         }
         return null;
     }
 
     private void ReflectCurrentState()
     {
+        KillAllTweens();
         transform.localScale = _currentState == State.Invisible ? Vector3.zero : Vector3.one;
         _innerSprite.transform.localScale = Vector3.one;
         _innerSprite.color = GetStateColor(_currentState);
+    }
+
+    private void KillAllTweens()
+    {
+        transform.DOKill();
+        _innerSprite.DOKill();
+        _innerSprite.transform.DOKill();
+    }
+
+    private Color GetPreviewStateColor(State state)
+    {
+        return state != State.Empty ? GetStateColor(state) : _emptyPreviewColor;
     }
 
     private Color GetStateColor(State state)

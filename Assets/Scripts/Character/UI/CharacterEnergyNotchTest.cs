@@ -15,12 +15,18 @@ public class CharacterEnergyNotchTest : MonoBehaviour
     [Button]
     private void Animate()
     {
-        _notch.AnimateState(_state);
+        _notch.Animate(_state);
     }
 
     [Button]
     private void Set()
     {
         _notch.SetState(_state);
+    }
+
+    [Button]
+    private void Preview()
+    {
+        _notch.Preview(_state);
     }
 }
