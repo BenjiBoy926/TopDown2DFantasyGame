@@ -48,7 +48,7 @@ public class CharacterMovePreview : MonoBehaviour
     
     private InteractionResult PredictHealResult(Character other)
     {
-        CharacterInfo selfInfo = new(_character.CurrentHealth, _character.CurrentEnergy);
+        CharacterInfo selfInfo = new(_character.CurrentHealth, _character.CurrentEnergy - 1);
         int otherHealth = other.BaseHealth;
         int otherEnergy = other.IsDead ? other.CurrentEnergy - 1 : other.CurrentEnergy;
         CharacterInfo otherInfo = new(otherHealth, otherEnergy);
