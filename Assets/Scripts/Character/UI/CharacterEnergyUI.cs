@@ -26,6 +26,17 @@ public class CharacterEnergyUI : MonoBehaviour
         }
     }
 
+    public void Preview(CharacterInfo info)
+    {
+        // TODO: later, add methods to the notch to do a preview flash animation
+        SetEnergy(info.Energy);
+    }
+
+    public void ClearPreview()
+    {
+        ShowCurrentEnergy();
+    }
+
     public void ShowCurrentEnergy()
     {
         SetEnergy(_character.CurrentEnergy);

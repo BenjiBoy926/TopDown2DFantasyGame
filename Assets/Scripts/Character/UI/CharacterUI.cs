@@ -39,6 +39,7 @@ public class CharacterUI : MonoBehaviour
     public void Preview(CharacterInfo info)
     {
         _healthUI.Preview(info);
+        _energyUI.Preview(info);
         _sortingGroup.sortingLayerID = _previewSortingLayer;
         _isPreviewing = true;
     }
@@ -46,6 +47,7 @@ public class CharacterUI : MonoBehaviour
     public void ClearPreview()
     {
         _healthUI.ClearPreview();
+        _energyUI.ClearPreview();
         _isPreviewing = false;
         transform.localPosition = Vector3.zero;
         _sortingGroup.sortingLayerID = _defaultSortingLayer;
