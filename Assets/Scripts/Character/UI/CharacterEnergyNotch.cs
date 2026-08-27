@@ -31,6 +31,9 @@ public class CharacterEnergyNotch : MonoBehaviour
 
     public void Preview(State state)
     {
+        if (state == _currentState)
+            return;
+
         KillAllTweens();
         _innerSprite.color = GetPreviewStateColor(state);
         _innerSprite.DOFade(0, _previewFadeDuration).SetLoops(-1, LoopType.Yoyo);
