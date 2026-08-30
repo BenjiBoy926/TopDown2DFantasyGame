@@ -188,7 +188,7 @@ public class Character : MonoBehaviour
     public IEnumerator EndMove()
     {
         ChangeEnergy(-1);
-        yield return PerformSpriteFade();
+        yield return FadeRenderer();
         SetIsActing(false);
         MoveFinished.Invoke(this);
     }
@@ -205,14 +205,14 @@ public class Character : MonoBehaviour
         _animator.PlayLoopingAnimation();
     }
 
-    public YieldInstruction PerformSpriteFade()
+    public YieldInstruction FadeRenderer()
     {
-        return PerformSpriteFade(_usedMoveFadeDuration);
+        return FadeRenderer(_usedMoveFadeDuration);
     }
 
-    public YieldInstruction PerformSpriteFade(float duration)
+    public YieldInstruction FadeRenderer(float duration)
     {
-        Color fadeColor = GetMoveFadeColor();
+        Color fadeColor = GetTargetRendererColor();
         return _animator.FadeColor(fadeColor, duration);
     }
 
@@ -244,9 +244,20 @@ public class Character : MonoBehaviour
         return new(_animator.GetDirection(), CurrentCell, new(_stats.CurrentHealth, _stats.CurrentEnergy));
     }
 
-    private Color GetMoveFadeColor()
+    private Color GetTargetRendererColor()
     {
-        return _faction == _battle.CurrentFactionTurn && !IsAbleToMove ? _usedMoveFadeColor : Color.white;
+        if (IsDead && !CanBeRevived)
+        {
+            return new(1, 1, 1, 0);
+        }
+        else if (_faction == _battle.CurrentFactionTurn && !IsAbleToMove)
+        {
+            return _usedMoveFadeColor;
+        }
+        else
+        {
+            return Color.white;
+        }
     }
 
     // ── Faction ──────────────────────────────────────────────────────────

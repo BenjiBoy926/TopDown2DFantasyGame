@@ -119,10 +119,7 @@ public class BattleTurn : MonoBehaviour
         RefillEnergyOfCharactersInFaction(_currentFactionIndex);
         foreach (var character in _battle.AllCharacters)
         {
-            if (!character.IsDead)
-            {
-                character.PerformSpriteFade();
-            }
+            character.FadeRenderer();
         }
     }
 
