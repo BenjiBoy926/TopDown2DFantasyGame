@@ -37,7 +37,7 @@ public class CharacterUndoRedoBehaviour : MonoBehaviour
         }
         else
         {
-            yield return _character.PerformSpriteFade(.1f);
+            yield return _character.PerformSpriteFade(_stepDuration);
         }
     }
 

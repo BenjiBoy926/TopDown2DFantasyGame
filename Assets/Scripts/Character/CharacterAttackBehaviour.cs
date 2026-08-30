@@ -148,14 +148,8 @@ public class CharacterAttackBehaviour : MonoBehaviour
     private IEnumerator EndSequence(Character other)
     {
         _character.RecordMoveWith(other);
-        bool shouldDisappear = _character.IsDead && !_character.CanBeRevived;
-        if (!shouldDisappear)
-        {
-            yield return _character.PerformSpriteFade();
-        }
-
         _isAttackInitiator = false;
-        _character.EndMove();
+        return _character.EndMove();
     }
 
     private void RemoveDeadCombatantsFromBattlefield(Character other)

@@ -185,17 +185,12 @@ public class Character : MonoBehaviour
         SetIsActing(true);
     }
 
-    public void EndMove()
+    public IEnumerator EndMove()
     {
         ChangeEnergy(-1);
+        yield return PerformSpriteFade();
         SetIsActing(false);
         MoveFinished.Invoke(this);
-    }
-
-    public void RestoreMove()
-    {
-        RefillEnergy();
-        PerformSpriteFade(_usedMoveFadeDuration);
     }
 
     public void LookAt(Vector2 position)
@@ -251,7 +246,7 @@ public class Character : MonoBehaviour
 
     private Color GetMoveFadeColor()
     {
-        return IsAbleToMove ? Color.white : _usedMoveFadeColor;
+        return _faction == _battle.CurrentFactionTurn && !IsAbleToMove ? _usedMoveFadeColor : Color.white;
     }
 
     // ── Faction ──────────────────────────────────────────────────────────
