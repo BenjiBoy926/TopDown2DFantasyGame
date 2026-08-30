@@ -17,19 +17,20 @@ public class CharacterUndoRedoBehaviour : MonoBehaviour
     {
         bool wasDead = _character.IsDead;
         bool isDead = state.Health <= 0;
+
+        _character.SetHealth(state.Health);
+        _character.SetEnergy(state.Energy);
+        
         if (wasDead && !isDead)
         {
             yield return ShowRevival();
         }
-
-        _character.SetHealth(state.Health);
         if (_character.CurrentCell != state.Cell)
         {
             yield return ShowCellChange(state);
         }
 
         _character.SetDirection(state.Direction);
-        _character.SetEnergy(state.Energy);
 
         if (isDead)
         {
@@ -44,7 +45,7 @@ public class CharacterUndoRedoBehaviour : MonoBehaviour
     private IEnumerator ShowRevival()
     {
         gameObject.SetActive(true);
-        yield return _character.FadeAlpha(1, _stepDuration, Ease.Linear);
+        yield return _character.FadeRenderer();
         _character.PlayIdleAnimation();
         yield return transform.DOPunchPosition(Vector3.up * .49f, _stepDuration, 0, 0).WaitForCompletion();
     }
@@ -61,7 +62,7 @@ public class CharacterUndoRedoBehaviour : MonoBehaviour
         yield return _character.PlayDieAnimation();
         if (!_character.CanBeRevived)
         {
-            yield return _character.FadeAlpha(0, _stepDuration, Ease.Linear);
+            yield return _character.FadeRenderer();
             gameObject.SetActive(false);
         }
     }

@@ -78,10 +78,7 @@ public class CharacterHurtBehaviour : MonoBehaviour
         EazySoundManager.PlaySound(_deathClip);
         yield return _character.PlayDieAnimation();
         yield return _afterDeathWait;
-        if (!_character.CanBeRevived)
-        {
-            yield return _character.FadeAlpha(0, _fadeAwayDuration, _fadeAwayEase);
-        }
+        yield return _character.FadeRenderer();
     }
 
     private void Awake()

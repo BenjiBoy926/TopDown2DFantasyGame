@@ -185,11 +185,19 @@ public class Character : MonoBehaviour
         SetIsActing(true);
     }
 
-    public IEnumerator EndMove()
+    public IEnumerator EndMove(Character other)
     {
         ChangeEnergy(-1);
         yield return FadeRenderer();
         SetIsActing(false);
+        if (other)
+        {
+            RecordMoveWith(other);
+        }
+        else
+        {
+            RecordMove();
+        }
         MoveFinished.Invoke(this);
     }
 
@@ -307,11 +315,6 @@ public class Character : MonoBehaviour
     public void SetIsRunning(bool isRunning)
     {
         _animator.SetIsRunning(isRunning);
-    }
-
-    public YieldInstruction FadeAlpha(float alpha, float duration, Ease ease)
-    {
-        return _animator.FadeAlpha(alpha, duration, ease);
     }
 
     // ── UI ───────────────────────────────────────────────────────────────
