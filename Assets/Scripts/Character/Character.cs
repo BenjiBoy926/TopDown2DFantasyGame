@@ -366,11 +366,6 @@ public class Character : MonoBehaviour
         _stats.RestoreHealth();
     }
 
-    public int CalculateHealthAfterHitFrom(Character other)
-    {
-        return _stats.CalculateHealthAfterHitFrom(other);
-    }
-
     public void SetHealth(int health)
     {
         _stats.SetHealth(health);
@@ -472,6 +467,11 @@ public class Character : MonoBehaviour
     public void ClearInteractionPreview()
     {
         _preview.Clear();
+    }
+
+    public InteractionResult PredictInteractionResult(Character other)
+    {
+        return _preview.PredictInteractionResult(other);
     }
 
     // ── Attack Behaviour ─────────────────────────────────────────────────

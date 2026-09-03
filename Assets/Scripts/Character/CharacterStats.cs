@@ -39,7 +39,7 @@ public class CharacterStats : MonoBehaviour
 
     public void TakeDamageFrom(Character other)
     {
-        int newHealth = CalculateHealthAfterHitFrom(other);
+        int newHealth = _currentHealth - other.CurrentPower;
         SetHealth(newHealth);
         _character.ShakeHealthUI();
     }
@@ -49,25 +49,9 @@ public class CharacterStats : MonoBehaviour
         SetHealth(_baseHealth);
     }
 
-    public Color GetCurrentHealthColor()
-    {
-        return GetHealthColor(_currentHealth);
-    }
-
     public Color GetHealthColor(int health)
     {
         return _healthColor.GetColor(health, _baseHealth);
-    }
-
-    public int CalculateHealthAfterHitFrom(Character other)
-    {
-        int newHealth = _currentHealth - CalculateDamageTakenFrom(other);
-        return Mathf.Max(0, newHealth);
-    }
-
-    private int CalculateDamageTakenFrom(Character other)
-    {
-        return other.CurrentPower;
     }
 
     public void SetHealth(int health)

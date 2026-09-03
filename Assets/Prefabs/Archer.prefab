@@ -73,6 +73,14 @@ PrefabInstance:
       value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 8511498810787689882, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
+      propertyPath: _basePower
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8511498810787689882, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
+      propertyPath: _baseEnergy
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8511498810787689882, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
       propertyPath: _baseHealth
       value: 4
       objectReference: {fileID: 0}

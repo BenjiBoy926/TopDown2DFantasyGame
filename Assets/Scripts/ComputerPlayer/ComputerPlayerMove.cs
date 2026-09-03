@@ -100,7 +100,7 @@ public class ComputerPlayerMove : MonoBehaviour
     private float GetAttackDamageScore(Character target)
     {
         int healthBeforeAttack = target.CurrentHealth;
-        int healthAfterAttack = target.CalculateHealthAfterHitFrom(_character);
+        int healthAfterAttack = healthBeforeAttack - _character.CurrentPower;
         int damageDealt = healthBeforeAttack - healthAfterAttack;
         return (float)damageDealt / healthBeforeAttack;
     }
@@ -112,7 +112,7 @@ public class ComputerPlayerMove : MonoBehaviour
         {
             return 1;
         }
-        int healthAfterHit = _character.CalculateHealthAfterHitFrom(target);
+        int healthAfterHit = target.CurrentHealth - _character.CurrentPower;
         float percentHealthLoss = (_character.CurrentHealth - healthAfterHit) / _character.CurrentHealth;
         return 1 - percentHealthLoss;
     }

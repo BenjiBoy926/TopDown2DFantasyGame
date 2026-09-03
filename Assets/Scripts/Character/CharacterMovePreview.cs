@@ -34,7 +34,7 @@ public class CharacterMovePreview : MonoBehaviour
         _activePreviews.Clear();
     }
 
-    private InteractionResult PredictInteractionResult(Character other)
+    public InteractionResult PredictInteractionResult(Character other)
     {
         if (other.Faction == _character.Faction)
         {
