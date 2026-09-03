@@ -20,8 +20,6 @@ public class CharacterHurtBehaviour : MonoBehaviour
 
     [Space]
     [SerializeField] private float _afterDeathWaitDuration = 1;
-    [SerializeField] private float _fadeAwayDuration = 0.5f;
-    [SerializeField] private Ease _fadeAwayEase = Ease.OutQuad;
 
     [Space]
     [SerializeField] private AudioClip _deathClip;

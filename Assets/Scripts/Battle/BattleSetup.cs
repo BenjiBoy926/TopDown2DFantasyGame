@@ -9,8 +9,8 @@ public class BattleSetup : MonoBehaviour
     {
         RegisterAllCharacters();
         RegisterAllSquads();
-        RecordInitialState();
         _battle.StartPlayerTurn();
+        RecordInitialState();
     }
 
     private void Awake()
