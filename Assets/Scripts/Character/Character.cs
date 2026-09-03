@@ -61,6 +61,7 @@ public class Character : MonoBehaviour
     public Vector2 CellSize => new(_battle.CellWidth, _battle.CellHeight);
     public Vector2 CurrentCellCenter => _battle.SnapToGrid(Position);
     public Vector2Int CurrentCell => _battle.WorldToCell(Position);
+    public Faction CurrentFactionTurn => _battle.CurrentFactionTurn;
 
     // ── Fields ───────────────────────────────────────────────────────────
 
