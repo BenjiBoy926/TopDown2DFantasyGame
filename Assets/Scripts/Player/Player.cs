@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
         _gridReticle = GetComponentInChildren<PlayerGridReticle>();
         _rangeWarning = GetComponent<RangeWarningSystem>();
         _actionDirectionIndicator = GetComponentInChildren<ActionDirectionIndicator>(true);
+        RefreshDetailPanel();
     }
 
     private void Update()
