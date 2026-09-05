@@ -669,6 +669,7 @@ GameObject:
   - component: {fileID: 2031888477823668218}
   - component: {fileID: 3876880043631926226}
   - component: {fileID: 9197458082073058963}
+  - component: {fileID: 7262512040316438750}
   m_Layer: 0
   m_Name: DefaultDetailPanel
   m_TagString: Untagged
@@ -736,6 +737,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7262512040316438750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2586470074918148362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ef46162b35547c4b80849f990e18a24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthLabel: {fileID: 5502710948595328877}
+  _powerLabel: {fileID: 2215640077638572290}
+  _energyLabel: {fileID: 1739083928705118347}
+  _rangeLabel: {fileID: 683889417441949344}
 --- !u!1 &2738537428174018425
 GameObject:
   m_ObjectHideFlags: 0
@@ -2187,6 +2204,7 @@ MonoBehaviour:
   _faction: {fileID: 11400000, guid: 1f60f3d9c8dbcb04cb0f0112ee02ca2e, type: 2}
   _cellHoverAudio: {fileID: 7090440810606284232}
   _moveStartClip: {fileID: 8300000, guid: 35cf7766e9e2aa542811e896fde57989, type: 3}
+  _detailPanel: {fileID: 7262512040316438750}
 --- !u!114 &3656688436091672680
 MonoBehaviour:
   m_ObjectHideFlags: 0

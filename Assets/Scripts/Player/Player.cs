@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Faction _faction;
     [SerializeField] private AudioSource _cellHoverAudio;
     [SerializeField] private AudioClip _moveStartClip;
+    [SerializeField] private CharacterDetailPanel _detailPanel;
 
     private Battle _battle;
     private PlayerCursor _cursor;
@@ -222,6 +223,7 @@ public class Player : MonoBehaviour
             _hoveredCharacter.ShowTransparentRange();
         }
         RefreshWarningSystem();
+        RefreshDetailPanel();
     }
 
     private void SetActiveCharacter(Character activeCharacter)
@@ -235,6 +237,7 @@ public class Player : MonoBehaviour
         _cursor.SetSelectionTarget(_activeCharacter ? _activeCharacter.transform : null);
         _actionDirectionIndicator.SetTargeter(_activeCharacter);
         RefreshWarningSystem();
+        RefreshDetailPanel();
         if (_activeCharacter)
         {
             SetHoveredCharacter(null);
@@ -263,6 +266,18 @@ public class Player : MonoBehaviour
     private bool ShouldShowRangeWarnings(Character character)
     {
         return character && character.Faction == _faction;
+    }
+
+    private void RefreshDetailPanel()
+    {
+        if (_activeCharacter)
+        {
+            _detailPanel.Populate(_activeCharacter);
+        }
+        else if (_hoveredCharacter)
+        {
+            _detailPanel.Populate(_hoveredCharacter);
+        }
     }
 
     public Character GetCharacterAtCurrentCell()
