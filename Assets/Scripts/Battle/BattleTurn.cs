@@ -119,7 +119,7 @@ public class BattleTurn : MonoBehaviour
         RefillEnergyOfCharactersInFaction(_currentFactionIndex);
         foreach (var character in _battle.AllCharacters)
         {
-            character.FadeRenderer();
+            character.FadeAppearanceToTargetState();
         }
     }
 

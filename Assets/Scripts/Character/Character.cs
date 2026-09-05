@@ -71,6 +71,7 @@ public class Character : MonoBehaviour
     [SerializeField] private bool _isRanged;
 
     private CharacterAnimator _animator;
+    private CharacterAppearance _appearance;
     private CharacterUI _ui;
     private CharacterStats _stats;
     private CharacterRange _range;
@@ -93,6 +94,7 @@ public class Character : MonoBehaviour
     private void Awake()
     {
         _animator = GetComponentInChildren<CharacterAnimator>();
+        _appearance = GetComponentInChildren<CharacterAppearance>();
         _ui = GetComponentInChildren<CharacterUI>();
         _stats = GetComponent<CharacterStats>();
         _range = GetComponent<CharacterRange>();
@@ -189,7 +191,7 @@ public class Character : MonoBehaviour
     public IEnumerator EndMove(Character other)
     {
         ChangeEnergy(-1);
-        yield return FadeRenderer();
+        yield return FadeAppearanceToTargetState();
         SetIsActing(false);
         if (other)
         {
@@ -212,17 +214,6 @@ public class Character : MonoBehaviour
     {
         SetIsRunning(false);
         _animator.PlayLoopingAnimation();
-    }
-
-    public YieldInstruction FadeRenderer()
-    {
-        return FadeRenderer(_usedMoveFadeDuration);
-    }
-
-    public YieldInstruction FadeRenderer(float duration)
-    {
-        Color fadeColor = GetTargetRendererColor();
-        return _animator.FadeColor(fadeColor, duration);
     }
 
     public bool IsEnemyInCell(Vector2Int cell, out Character enemy)
@@ -251,22 +242,6 @@ public class Character : MonoBehaviour
     public CharacterState ReadState()
     {
         return new(_animator.GetDirection(), CurrentCell, new(_stats.CurrentHealth, _stats.CurrentEnergy));
-    }
-
-    private Color GetTargetRendererColor()
-    {
-        if (IsDead && !CanBeRevived)
-        {
-            return new(1, 1, 1, 0);
-        }
-        else if (_faction == _battle.CurrentFactionTurn && !IsAbleToMove)
-        {
-            return _usedMoveFadeColor;
-        }
-        else
-        {
-            return Color.white;
-        }
     }
 
     // ── Faction ──────────────────────────────────────────────────────────
@@ -316,6 +291,18 @@ public class Character : MonoBehaviour
     public void SetIsRunning(bool isRunning)
     {
         _animator.SetIsRunning(isRunning);
+    }
+
+    // -- Appearance -------------------------------------------------------
+
+    public YieldInstruction FadeAppearanceToTargetState()
+    {
+        return _appearance.FadeToTargetState();
+    }
+
+    public YieldInstruction FadeAppearanceToTargetState(float duration)
+    {
+        return _appearance.FadeToTargetState(duration);
     }
 
     // ── UI ───────────────────────────────────────────────────────────────

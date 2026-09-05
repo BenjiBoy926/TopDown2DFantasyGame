@@ -41,7 +41,7 @@ public class CharacterBeHealedBehaviour : MonoBehaviour
         {
             _character.ChangeEnergy(-1);
         }
-        _character.FadeRenderer();
+        _character.FadeAppearanceToTargetState();
     }
 
     private void Awake()

@@ -38,14 +38,14 @@ public class CharacterUndoRedoBehaviour : MonoBehaviour
         }
         else
         {
-            yield return _character.FadeRenderer(_stepDuration);
+            yield return _character.FadeAppearanceToTargetState(_stepDuration);
         }
     }
 
     private IEnumerator ShowRevival()
     {
         gameObject.SetActive(true);
-        yield return _character.FadeRenderer();
+        yield return _character.FadeAppearanceToTargetState();
         _character.PlayIdleAnimation();
         yield return transform.DOPunchPosition(Vector3.up * .49f, _stepDuration, 0, 0).WaitForCompletion();
     }
@@ -62,7 +62,7 @@ public class CharacterUndoRedoBehaviour : MonoBehaviour
         yield return _character.PlayDieAnimation();
         if (!_character.CanBeRevived)
         {
-            yield return _character.FadeRenderer();
+            yield return _character.FadeAppearanceToTargetState();
             gameObject.SetActive(false);
         }
     }
