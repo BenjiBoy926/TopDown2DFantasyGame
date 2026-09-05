@@ -110,10 +110,7 @@ public class BattleTurn : MonoBehaviour
     }
 
     private void SetCurrentTurn(int factionIndex)
-    {
-        if (_currentFactionIndex == factionIndex) 
-            return;
-        
+    {        
         ZeroEnergyOfCharactersInFaction(_currentFactionIndex);
         _currentFactionIndex = factionIndex;
         RefillEnergyOfCharactersInFaction(_currentFactionIndex);
