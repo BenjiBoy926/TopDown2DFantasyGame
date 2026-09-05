@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(Character))]
-[RequireComponent(typeof(CharacterHealthColor))]
+[RequireComponent(typeof(CharacterUITheme))]
 public class CharacterStats : MonoBehaviour
 {
     public int BaseHealth => _baseHealth;
@@ -21,13 +21,13 @@ public class CharacterStats : MonoBehaviour
     private int _currentHealth;
     private int _currentEnergy = 0;
     private Character _character;
-    private CharacterHealthColor _healthColor;
+    private CharacterUITheme _healthColor;
 
     private void Awake()
     {
         _currentHealth = _baseHealth;
         _character = GetComponent<Character>();
-        _healthColor = GetComponent<CharacterHealthColor>();
+        _healthColor = GetComponent<CharacterUITheme>();
     }
 
     private void Start()
@@ -51,7 +51,7 @@ public class CharacterStats : MonoBehaviour
 
     public Color GetHealthColor(int health)
     {
-        return _healthColor.GetColor(health, _baseHealth);
+        return _healthColor.GetHealthColor(health, _baseHealth);
     }
 
     public void SetHealth(int health)

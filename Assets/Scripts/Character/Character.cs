@@ -1,10 +1,10 @@
-using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+[RequireComponent(typeof(CharacterUITheme))]
 [RequireComponent(typeof(CharacterStats))]
 [RequireComponent(typeof(CharacterRange))]
 [RequireComponent(typeof(GridSearch))]
@@ -71,6 +71,7 @@ public class Character : MonoBehaviour
     private CharacterAnimator _animator;
     private CharacterAppearance _appearance;
     private CharacterUI _ui;
+    private CharacterUITheme _uiTheme;
     private CharacterStats _stats;
     private CharacterRange _range;
     private GridSearch _gridSearch;
@@ -94,6 +95,7 @@ public class Character : MonoBehaviour
         _animator = GetComponentInChildren<CharacterAnimator>();
         _appearance = GetComponentInChildren<CharacterAppearance>();
         _ui = GetComponentInChildren<CharacterUI>();
+        _uiTheme = GetComponent<CharacterUITheme>();
         _stats = GetComponent<CharacterStats>();
         _range = GetComponent<CharacterRange>();
         _gridSearch = GetComponent<GridSearch>();
@@ -349,6 +351,9 @@ public class Character : MonoBehaviour
     {
         _ui.ShakeHealthUI();
     }
+
+    // -- UI Theme -------------------------------------------------------
+
 
     // ── Stats ────────────────────────────────────────────────────────────
 
