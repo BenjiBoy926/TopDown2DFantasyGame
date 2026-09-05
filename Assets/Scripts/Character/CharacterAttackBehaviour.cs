@@ -148,7 +148,7 @@ public class CharacterAttackBehaviour : MonoBehaviour
     private IEnumerator EndSequence(Character other)
     {
         _isAttackInitiator = false;
-        return _character.EndMove(other);
+        return _character.EndMoveSequence(other);
     }
 
     private void RemoveDeadCombatantsFromBattlefield(Character other)

@@ -24,7 +24,7 @@ public class CharacterDefendBehaviour : MonoBehaviour
             .WaitForCompletion();
         _character.SetIsRunning(false);
 
-        yield return _character.EndMove(null);
+        yield return _character.EndMoveSequence(null);
     }
 
     private void Awake()

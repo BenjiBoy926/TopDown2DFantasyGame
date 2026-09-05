@@ -318,8 +318,6 @@ MonoBehaviour:
   _recoilDuration: 0.3
   _recoilDistance: 0.49
   _afterDeathWaitDuration: 0.3
-  _fadeAwayDuration: 0.5
-  _fadeAwayEase: 6
   _deathClip: {fileID: 8300000, guid: 566d2ea6240b489479a6e9fd608c2621, type: 3}
 --- !u!114 &7638847843088813906
 MonoBehaviour:
@@ -1175,6 +1173,10 @@ MonoBehaviour:
   _innerSprite: {fileID: 6761184223017611799}
   _filledColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _negativeColor: {r: 1, g: 0, b: 0, a: 1}
+  _animationDuration: 0.35
+  _disappearScale: 5
+  _emptyPreviewColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  _previewFadeDuration: 0.3
   _currentState: 0
 --- !u!114 &1157009387333830190
 MonoBehaviour:
@@ -1427,6 +1429,10 @@ MonoBehaviour:
   _innerSprite: {fileID: 4062101667665881847}
   _filledColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _negativeColor: {r: 1, g: 0, b: 0, a: 1}
+  _animationDuration: 0.35
+  _disappearScale: 5
+  _emptyPreviewColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  _previewFadeDuration: 0.3
   _currentState: 0
 --- !u!114 &6508383081574737080
 MonoBehaviour:
@@ -1746,6 +1752,10 @@ MonoBehaviour:
   _innerSprite: {fileID: 2594060191794067284}
   _filledColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _negativeColor: {r: 1, g: 0, b: 0, a: 1}
+  _animationDuration: 0.35
+  _disappearScale: 5
+  _emptyPreviewColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  _previewFadeDuration: 0.3
   _currentState: 0
 --- !u!114 &2895808537489735611
 MonoBehaviour:
@@ -1862,6 +1872,10 @@ MonoBehaviour:
   _innerSprite: {fileID: 7575703338212229589}
   _filledColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _negativeColor: {r: 1, g: 0, b: 0, a: 1}
+  _animationDuration: 0.35
+  _disappearScale: 5
+  _emptyPreviewColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  _previewFadeDuration: 0.3
   _currentState: 0
 --- !u!114 &5394061405944955654
 MonoBehaviour:
@@ -1888,6 +1902,7 @@ GameObject:
   - component: {fileID: 2349978431418077769}
   - component: {fileID: 5407144191760060124}
   - component: {fileID: 4112215730828138586}
+  - component: {fileID: 8666588300980394408}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -1999,6 +2014,19 @@ MonoBehaviour:
   _verticalDirection: 1
   _isRunning: 0
   _hurtAnimationLoopCount: 4
+--- !u!114 &8666588300980394408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8274708557482635198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4a07fed99054ed4fa06569baa605fc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fadeDuration: 0.35
 --- !u!1 &8307848150230456728
 GameObject:
   m_ObjectHideFlags: 0

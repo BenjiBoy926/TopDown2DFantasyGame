@@ -188,7 +188,7 @@ public class Character : MonoBehaviour
         SetIsActing(true);
     }
 
-    public IEnumerator EndMove(Character other)
+    public IEnumerator EndMoveSequence(Character other)
     {
         ChangeEnergy(-1);
         yield return FadeAppearanceToTargetState();
@@ -306,6 +306,16 @@ public class Character : MonoBehaviour
     }
 
     // ── UI ───────────────────────────────────────────────────────────────
+
+    public void ShowUI()
+    {
+        _ui.Show();
+    }
+
+    public void HideUI()
+    {
+        _ui.Hide();
+    }
 
     public void Preview(CharacterInfo info)
     {

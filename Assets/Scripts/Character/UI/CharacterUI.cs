@@ -1,3 +1,4 @@
+using DG.Tweening;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -34,6 +35,18 @@ public class CharacterUI : MonoBehaviour
             Vector2 cellCenter = _character.CurrentCellCenter;
             transform.position = cellCenter;
         }
+    }
+
+    public void Show()
+    {
+        transform.DOKill();
+        transform.DOScaleX(1, .35f);
+    }
+
+    public void Hide()
+    {
+        transform.DOKill();
+        transform.DOScaleX(0, .35f);
     }
 
     public void Preview(CharacterInfo info)

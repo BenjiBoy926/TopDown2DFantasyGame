@@ -38,9 +38,17 @@ public class CharacterAppearance : MonoBehaviour
         if (state == _currentState)
             return null;
 
+        if (_currentState == State.DeadAndGone)
+        {
+            _character.ShowUI();
+        }
         _currentState = state;
-        Color color = GetColor(state);
+        if (_currentState == State.DeadAndGone)
+        {
+            _character.HideUI();
+        }
 
+        Color color = GetColor(state);
         _renderer.DOKill();
         return _renderer.DOColor(color, duration).WaitForCompletion();
     }
