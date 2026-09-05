@@ -354,6 +354,32 @@ public class Character : MonoBehaviour
 
     // -- UI Theme -------------------------------------------------------
 
+    public Sprite GetHeartSprite(int currentHealth)
+    {
+        return _uiTheme.GetHeartSprite(currentHealth, BaseHealth);
+    }
+
+    public Sprite GetXSprite(int currentHealth)
+    {
+        return _uiTheme.GetXSprite(currentHealth);
+    }
+
+    public Color GetHealthColor(int currentHealth)
+    {
+        return _uiTheme.GetHealthColor(currentHealth, BaseHealth);
+    }
+
+    public Color GetPowerColor(int currentPower)
+    {
+        // NOTE: don't actually distinguish current and base power yet because
+        // we haven't implemented any mechanics that would change the current power of a character.
+        return _uiTheme.GetPowerColor(currentPower, _stats.CurrentPower);
+    }
+
+    public Color GetEnergyColor(int currentEnergy)
+    {
+        return _uiTheme.GetEnergyColor(currentEnergy);
+    }
 
     // ── Stats ────────────────────────────────────────────────────────────
 
