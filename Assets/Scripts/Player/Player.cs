@@ -278,6 +278,10 @@ public class Player : MonoBehaviour
         {
             _detailPanel.Populate(_hoveredCharacter);
         }
+        else
+        {
+            _detailPanel.Clear();
+        }
     }
 
     public Character GetCharacterAtCurrentCell()
