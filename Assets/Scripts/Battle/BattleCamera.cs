@@ -69,9 +69,9 @@ public class BattleCamera : MonoBehaviour
 
     // Follow
     
-    public void Follow(Transform target)
+    public Coroutine Follow(Transform target)
     {
-        _follow.Begin(target);
+        return _follow.Begin(target);
     }
 
     public void Unfollow()
@@ -81,9 +81,9 @@ public class BattleCamera : MonoBehaviour
 
     // Glide
 
-    public void Glide(Transform transform)
+    public Coroutine Glide(Transform transform)
     {
-        _glide.Begin(transform);
+        return _glide.Begin(transform);
     }
 
     public void EndGlide()

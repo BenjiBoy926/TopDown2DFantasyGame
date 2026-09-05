@@ -17,11 +17,12 @@ public class BattleCameraGlide : MonoBehaviour
         _camera = GetComponent<BattleCamera>();
     }
 
-    public void Begin(Transform target)
+    public Coroutine Begin(Transform target)
     {
         _target = target;
         StopAllCoroutines();
-        _coroutine = StartCoroutine(GetInitialFollowRoutine());
+        _coroutine = StartCoroutine(GetGlideToTargetSequence());
+        return _coroutine;
     }
 
     public void End()
@@ -31,7 +32,7 @@ public class BattleCameraGlide : MonoBehaviour
         _coroutine = null;
     }
 
-    private IEnumerator GetInitialFollowRoutine()
+    private IEnumerator GetGlideToTargetSequence()
     {
         Vector3 startPosition = transform.position;
 

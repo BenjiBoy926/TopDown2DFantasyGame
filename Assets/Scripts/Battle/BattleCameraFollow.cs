@@ -13,10 +13,10 @@ public class BattleCameraFollow : MonoBehaviour
         _camera = GetComponent<BattleCamera>();
     }
 
-    public void Begin(Transform target)
+    public Coroutine Begin(Transform target)
     {
         _target = target;
-        _camera.Glide(target);
+        return _camera.Glide(target);
     }
 
     private void Update()

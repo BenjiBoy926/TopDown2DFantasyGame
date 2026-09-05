@@ -187,9 +187,9 @@ public class Battle : MonoBehaviour
         _camera.Release();
     }
 
-    public void CameraFollow(Transform target)
+    public Coroutine CameraFollow(Transform target)
     {
-        _camera.Follow(target);
+        return _camera.Follow(target);
     }
 
     public void CameraUnfollow()
