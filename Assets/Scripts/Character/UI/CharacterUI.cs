@@ -7,6 +7,7 @@ using UnityEngine.Rendering;
 public class CharacterUI : MonoBehaviour
 {
     [SerializeField, SortingLayer] private int _previewSortingLayer;
+    [SerializeField] private float _showHideTweenDuration = .35f;
 
     private Character _character;
     private CharacterHealthUI _healthUI;
@@ -40,13 +41,13 @@ public class CharacterUI : MonoBehaviour
     public void Show()
     {
         transform.DOKill();
-        transform.DOScaleX(1, .35f);
+        transform.DOScaleX(1, _showHideTweenDuration);
     }
 
     public void Hide()
     {
         transform.DOKill();
-        transform.DOScaleX(0, .35f);
+        transform.DOScaleX(0, _showHideTweenDuration);
     }
 
     public void Preview(CharacterInfo info)

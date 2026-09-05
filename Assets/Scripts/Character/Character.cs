@@ -66,8 +66,6 @@ public class Character : MonoBehaviour
     // ── Fields ───────────────────────────────────────────────────────────
 
     [SerializeField] private Faction _faction;
-    [SerializeField] private Color _usedMoveFadeColor = Color.gray;
-    [SerializeField] private float _usedMoveFadeDuration = 0.35f;
     [SerializeField] private bool _isRanged;
 
     private CharacterAnimator _animator;
