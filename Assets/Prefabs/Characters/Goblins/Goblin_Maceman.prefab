@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &5531017737082501773
+--- !u!1001 &5975778341146740599
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -8,17 +8,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 384918300480114987, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
+      propertyPath: _name
+      value: Goblin Maceman
+      objectReference: {fileID: 0}
     - target: {fileID: 1109634835707249660, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 22100000, guid: 1884d633f6b965b4fa926b49607e7287, type: 2}
+      objectReference: {fileID: 22100000, guid: 7b57fa39099bf7946bc109c396746681, type: 2}
     - target: {fileID: 3635201967518578874, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       propertyPath: _basePower
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3635201967518578874, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       propertyPath: _baseHealth
-      value: 3
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4670501730928340677, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       propertyPath: m_LocalPosition.x
@@ -62,12 +66,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6805258466287101109, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       propertyPath: m_Name
-      value: Goblin_Spearman
+      value: Goblin_Maceman
+      objectReference: {fileID: 0}
+    - target: {fileID: 7273580655648644969, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
+      propertyPath: m_Size.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7273580655648644969, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
+      propertyPath: m_Size.y
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7273580655648644969, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 328225788, guid: c53e88e53cc245b41820069e4466c03d, type: 3}
+      objectReference: {fileID: 637660883, guid: cae0cfbd3d1bd894382e02fd3695ca73, type: 3}
+    - target: {fileID: 7273580655648644969, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

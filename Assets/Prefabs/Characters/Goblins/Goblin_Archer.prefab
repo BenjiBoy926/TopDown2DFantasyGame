@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &5975778341146740599
+--- !u!1001 &8398867001093451807
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -8,17 +8,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 384918300480114987, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
+      propertyPath: _name
+      value: Goblin Archer
+      objectReference: {fileID: 0}
+    - target: {fileID: 384918300480114987, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
+      propertyPath: _isRanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1109634835707249660, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 22100000, guid: 7b57fa39099bf7946bc109c396746681, type: 2}
-    - target: {fileID: 3635201967518578874, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
-      propertyPath: _basePower
-      value: 6
+      objectReference: {fileID: 22100000, guid: 5771b8438c3c52347bab9a0275525d76, type: 2}
+    - target: {fileID: 1646850569144737969, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.941
+      objectReference: {fileID: 0}
+    - target: {fileID: 2643144280113648396, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
+      propertyPath: _chargeDuration
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 3635201967518578874, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       propertyPath: _baseHealth
-      value: 9
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4670501730928340677, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       propertyPath: m_LocalPosition.x
@@ -62,24 +74,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6805258466287101109, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       propertyPath: m_Name
-      value: Goblin_Maceman
-      objectReference: {fileID: 0}
-    - target: {fileID: 7273580655648644969, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
-      propertyPath: m_Size.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7273580655648644969, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
-      propertyPath: m_Size.y
-      value: 2
+      value: Goblin_Archer
       objectReference: {fileID: 0}
     - target: {fileID: 7273580655648644969, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 637660883, guid: cae0cfbd3d1bd894382e02fd3695ca73, type: 3}
-    - target: {fileID: 7273580655648644969, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 1
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2117853932, guid: 279636f0730f2884b80370680e85b61b, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
