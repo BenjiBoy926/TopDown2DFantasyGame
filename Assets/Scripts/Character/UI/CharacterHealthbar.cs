@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class CharacterHealthbar : MonoBehaviour
 {
-    private CharacterStats _stats;
+    private Character _character;
     private SpriteRenderer _barSprite;
 
     public void ShowCurrentHealth()
     {
-        ShowHealth(_stats.CurrentHealth);
+        ShowHealth(_character.CurrentHealth);
     }
 
     public void ShowHealth(int health)
@@ -18,12 +18,12 @@ public class CharacterHealthbar : MonoBehaviour
 
     public void SetColor(int currentHealth)
     {
-        _barSprite.color = _stats.GetHealthColor(currentHealth);
+        _barSprite.color = _character.GetHealthColor(currentHealth);
     }
 
     public void SetFill(int currentHealth)
     {
-        int baseHealth = _stats.BaseHealth;
+        int baseHealth = _character.BaseHealth;
         float healthPercent = (float)currentHealth / baseHealth;
         Vector3 scale = transform.localScale;
         scale.x = healthPercent;
@@ -32,7 +32,7 @@ public class CharacterHealthbar : MonoBehaviour
 
     private void Awake()
     {
-        _stats = GetComponentInParent<CharacterStats>();
+        _character = GetComponentInParent<Character>();
         _barSprite = GetComponentInChildren<SpriteRenderer>();
     }
 }

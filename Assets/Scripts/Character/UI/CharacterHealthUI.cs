@@ -1,7 +1,5 @@
 using DG.Tweening;
-using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class CharacterHealthUI : MonoBehaviour
 {
@@ -56,9 +54,7 @@ public class CharacterHealthUI : MonoBehaviour
 
     public void ShowHealthOnHeartIcon(int health)
     {
-        int baseHealth = _character.BaseHealth;
-        float healthPercentage = (float)health / baseHealth;
-        _heartIcon.ShowHealthPercent(healthPercentage);
+        _heartIcon.ShowHealth(_character.UIStyle, health, _character.BaseHealth);
     }
 
     public void Shake()

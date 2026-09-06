@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[RequireComponent(typeof(CharacterUITheme))]
 [RequireComponent(typeof(CharacterStats))]
 [RequireComponent(typeof(CharacterRange))]
 [RequireComponent(typeof(GridSearch))]
@@ -35,6 +34,7 @@ public class Character : MonoBehaviour
     }
     public static bool IsAnyCharacterActing => _actingCharacters.Count > 0;
     public bool IsAbleToMove => !IsDead && _stats.CurrentEnergy > 0;
+    public CharacterUIStyle UIStyle => _uiStyle;
 
     // Faction
     public Faction Faction => _faction;
@@ -66,12 +66,12 @@ public class Character : MonoBehaviour
     // ── Fields ───────────────────────────────────────────────────────────
 
     [SerializeField] private Faction _faction;
+    [SerializeField] private CharacterUIStyle _uiStyle;
     [SerializeField] private bool _isRanged;
 
     private CharacterAnimator _animator;
     private CharacterAppearance _appearance;
     private CharacterUI _ui;
-    private CharacterUITheme _uiTheme;
     private CharacterStats _stats;
     private CharacterRange _range;
     private GridSearch _gridSearch;
@@ -95,7 +95,6 @@ public class Character : MonoBehaviour
         _animator = GetComponentInChildren<CharacterAnimator>();
         _appearance = GetComponentInChildren<CharacterAppearance>();
         _ui = GetComponentInChildren<CharacterUI>();
-        _uiTheme = GetComponent<CharacterUITheme>();
         _stats = GetComponent<CharacterStats>();
         _range = GetComponent<CharacterRange>();
         _gridSearch = GetComponent<GridSearch>();
@@ -356,29 +355,29 @@ public class Character : MonoBehaviour
 
     public Sprite GetHeartSprite(int currentHealth)
     {
-        return _uiTheme.GetHeartSprite(currentHealth, BaseHealth);
+        return _uiStyle.GetHeartSprite(currentHealth, BaseHealth);
     }
 
     public Sprite GetXSprite(int currentHealth)
     {
-        return _uiTheme.GetXSprite(currentHealth);
+        return _uiStyle.GetXSprite(currentHealth);
     }
 
     public Color GetHealthColor(int currentHealth)
     {
-        return _uiTheme.GetHealthColor(currentHealth, BaseHealth);
+        return _uiStyle.GetHealthColor(currentHealth, BaseHealth);
     }
 
     public Color GetPowerColor(int currentPower)
     {
         // NOTE: don't actually distinguish current and base power yet because
         // we haven't implemented any mechanics that would change the current power of a character.
-        return _uiTheme.GetPowerColor(currentPower, _stats.CurrentPower);
+        return _uiStyle.GetPowerColor(currentPower, _stats.CurrentPower);
     }
 
     public Color GetEnergyColor(int currentEnergy)
     {
-        return _uiTheme.GetEnergyColor(currentEnergy);
+        return _uiStyle.GetEnergyColor(currentEnergy);
     }
 
     // ── Stats ────────────────────────────────────────────────────────────

@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class CharacterUITheme : MonoBehaviour
+[CreateAssetMenu]
+public class CharacterUIStyle : ScriptableObject
 {
     [SerializeField] private Sprite _heartFullSprite;
     [SerializeField] private Sprite _heartDamageSprite;

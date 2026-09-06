@@ -8,20 +8,10 @@ public class CharacterHeartIcon : MonoBehaviour
     [SerializeField] private Sprite _healthDepletedSprite;
     private SpriteRenderer _renderer;
 
-    public void ShowHealthPercent(float percent)
+    public void ShowHealth(CharacterUIStyle style, int currentHealth, int baseHealth)
     {
-        if (percent >= 1f)
-        {
-            _renderer.sprite = _healthFullSprite;
-        }
-        else if (percent > 0f)
-        {
-            _renderer.sprite = _healthDamagedSprite;
-        }
-        else
-        {
-            _renderer.sprite = _healthDepletedSprite;
-        }
+        Sprite heartSprite = style.GetHeartSprite(currentHealth, baseHealth);
+        _renderer.sprite = heartSprite;
     }
 
     private void Awake()
