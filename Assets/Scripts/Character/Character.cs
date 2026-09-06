@@ -25,6 +25,8 @@ public class Character : MonoBehaviour
     // ── Properties ───────────────────────────────────────────────────────
 
     // Self
+    public string Name => _name;
+    public Sprite Icon => _icon;
     public bool IsInBattle => gameObject.activeSelf;
     public bool IsRanged => _isRanged;
     public Vector2 Position
@@ -71,6 +73,8 @@ public class Character : MonoBehaviour
 
     // ── Fields ───────────────────────────────────────────────────────────
 
+    [SerializeField] private string _name;
+    [SerializeField] private Sprite _icon;
     [SerializeField] private Faction _faction;
     [SerializeField] private CharacterUIStyle _uiStyle;
     [SerializeField] private bool _isRanged;
