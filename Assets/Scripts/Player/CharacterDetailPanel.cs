@@ -17,9 +17,16 @@ public class CharacterDetailPanel : MonoBehaviour
     public void Populate(Character character)
     {
         _allElements.SetActive(true);
+
         _healthLabel.text = character.CurrentHealth.ToString();
+        _healthLabel.color = character.GetHealthColor(character.CurrentHealth);
+
         _powerLabel.text = character.CurrentPower.ToString();
+        _powerLabel.color = character.GetPowerColor(character.CurrentPower);
+
         _energyLabel.text = character.CurrentEnergy.ToString();
+        _energyLabel.color = character.GetEnergyColor(character.CurrentEnergy);
+
         _rangeLabel.text = character.TraversalRange.ToString();
     }
 
