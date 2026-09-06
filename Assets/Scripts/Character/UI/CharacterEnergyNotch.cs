@@ -14,19 +14,18 @@ public class CharacterEnergyNotch : MonoBehaviour
     [SerializeField] private SpriteRenderer _innerSprite;
 
     [Space]
-    [SerializeField] private Color _filledColor = Color.yellow;
-    [SerializeField] private Color _negativeColor = Color.red;
     [SerializeField] private float _animationDuration = .35f;
     [SerializeField] private float _disappearScale = 5;
 
     [Space]
-    [SerializeField] private Color _emptyPreviewColor = Color.gray;
     [SerializeField] private float _previewFadeDuration = .3f;
     [SerializeField, ReadOnly] private State _currentState = State.Invisible;
+    private Character _character;
     private SpriteRenderer _frameSprite;
 
     private void Awake()
     {
+        _character = GetComponentInParent<Character>();
         _frameSprite = GetComponent<SpriteRenderer>();
         ReflectCurrentState();
     }
@@ -133,14 +132,14 @@ public class CharacterEnergyNotch : MonoBehaviour
 
     private Color GetPreviewStateColor(State state)
     {
-        return state != State.Empty ? GetStateColor(state) : _emptyPreviewColor;
+        return state != State.Empty ? GetStateColor(state) : _character.EnergyEmptyColor;
     }
 
     private Color GetStateColor(State state)
     {
         return state == State.Filled ?
-            _filledColor :
+            _character.EnergyNormalColor :
             state == State.Negative ?
-            _negativeColor : Color.clear;
+            _character.EnergyNegativeColor : Color.clear;
     }
 }

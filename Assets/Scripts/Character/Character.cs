@@ -34,11 +34,17 @@ public class Character : MonoBehaviour
     }
     public static bool IsAnyCharacterActing => _actingCharacters.Count > 0;
     public bool IsAbleToMove => !IsDead && _stats.CurrentEnergy > 0;
-    public CharacterUIStyle UIStyle => _uiStyle;
 
     // Faction
     public Faction Faction => _faction;
     public bool CanBeRevived => _faction.CanBeRevived;
+
+    // UIStyle
+    public CharacterUIStyle UIStyle => _uiStyle;
+    public Color EnergyNormalColor => _uiStyle.EnergyNormalColor;
+    public Color EnergyEmptyColor => _uiStyle.EnergyEmptyColor;
+    public Color EnergyNegativeColor => _uiStyle.EnergyNegativeColor;
+
 
     // Animator
     public bool IsOneShotAnimationPlaying => _animator.IsOneShotAnimationPlaying;

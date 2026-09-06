@@ -3,6 +3,10 @@ using UnityEngine;
 [CreateAssetMenu]
 public class CharacterUIStyle : ScriptableObject
 {
+    public Color EnergyNormalColor => _energyNormalColor;
+    public Color EnergyEmptyColor => _energyEmptyColor;
+    public Color EnergyNegativeColor => _energyNegativeColor;
+
     [SerializeField] private Sprite _heartFullSprite;
     [SerializeField] private Sprite _heartDamageSprite;
     [SerializeField] private Sprite _heartEmptySprite;
