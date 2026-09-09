@@ -111,15 +111,6 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ZoomMove"",
-                    ""type"": ""Value"",
-                    ""id"": ""df8bf33b-8ef9-4301-82a6-340382387b34"",
-                    ""expectedControlType"": ""Axis"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
                     ""name"": ""Cancel"",
                     ""type"": ""Button"",
                     ""id"": ""195412fc-bdf5-49f0-8e85-1c7026d84df8"",
@@ -145,6 +136,15 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ZoomMove"",
+                    ""type"": ""Value"",
+                    ""id"": ""df8bf33b-8ef9-4301-82a6-340382387b34"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""ZoomJump"",
@@ -484,42 +484,20 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""CtrlZ"",
-                    ""id"": ""5acc4e2e-0ead-40c8-922d-5eaae8263fe9"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Undo"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""51a1a857-dc25-4030-973d-79f654f3ec71"",
-                    ""path"": ""<Keyboard>/ctrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Undo"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""65f85f31-14ab-49b0-83ea-40bebc452a39"",
-                    ""path"": ""<Keyboard>/z"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Undo"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": """",
                     ""id"": ""63e67d73-1853-4ef0-bbaa-f4ab57faebf9"",
                     ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Undo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""66446d62-baa4-4b87-a702-a61e61fc9dc4"",
+                    ""path"": ""<Keyboard>/z"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -539,8 +517,8 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""CtrlY"",
-                    ""id"": ""c47df664-6ea6-493d-bcef-e638a9402457"",
+                    ""name"": ""CtrlShiftZ"",
+                    ""id"": ""6cb33a31-8b10-4e70-9cb6-df9267e18fa5"",
                     ""path"": ""OneModifier"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -550,52 +528,8 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""modifier"",
-                    ""id"": ""e374819f-f904-414d-8a7c-079fba52f245"",
-                    ""path"": ""<Keyboard>/ctrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Redo"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""702ffb5b-e4ae-4252-b9ea-f7cf5ee95e43"",
-                    ""path"": ""<Keyboard>/y"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Redo"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""CtrlShiftZ"",
-                    ""id"": ""6cb33a31-8b10-4e70-9cb6-df9267e18fa5"",
-                    ""path"": ""TwoModifiers"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Redo"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier1"",
+                    ""name"": ""Modifier"",
                     ""id"": ""5ef06a36-1daa-4aef-95e5-6ba297420319"",
-                    ""path"": ""<Keyboard>/ctrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Redo"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""modifier2"",
-                    ""id"": ""98424c5e-ebf1-4b22-aa3d-9e7cef379bdd"",
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -605,8 +539,8 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""binding"",
-                    ""id"": ""9c6045a9-01d0-48f3-9366-959a4b3f0b41"",
+                    ""name"": ""Binding"",
+                    ""id"": ""98424c5e-ebf1-4b22-aa3d-9e7cef379bdd"",
                     ""path"": ""<Keyboard>/z"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -614,6 +548,17 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""action"": ""Redo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b7b64c7c-9a61-4740-b7cd-0862afde2106"",
+                    ""path"": ""<Keyboard>/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Redo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -624,10 +569,10 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Act = m_Player.FindAction("Act", throwIfNotFound: true);
-        m_Player_ZoomMove = m_Player.FindAction("ZoomMove", throwIfNotFound: true);
         m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
         m_Player_CursorPosition = m_Player.FindAction("CursorPosition", throwIfNotFound: true);
         m_Player_CursorPress = m_Player.FindAction("CursorPress", throwIfNotFound: true);
+        m_Player_ZoomMove = m_Player.FindAction("ZoomMove", throwIfNotFound: true);
         m_Player_ZoomJump = m_Player.FindAction("ZoomJump", throwIfNotFound: true);
         m_Player_Undo = m_Player.FindAction("Undo", throwIfNotFound: true);
         m_Player_Redo = m_Player.FindAction("Redo", throwIfNotFound: true);
@@ -713,10 +658,10 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Act;
-    private readonly InputAction m_Player_ZoomMove;
     private readonly InputAction m_Player_Cancel;
     private readonly InputAction m_Player_CursorPosition;
     private readonly InputAction m_Player_CursorPress;
+    private readonly InputAction m_Player_ZoomMove;
     private readonly InputAction m_Player_ZoomJump;
     private readonly InputAction m_Player_Undo;
     private readonly InputAction m_Player_Redo;
@@ -740,10 +685,6 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Act => m_Wrapper.m_Player_Act;
         /// <summary>
-        /// Provides access to the underlying input action "Player/ZoomMove".
-        /// </summary>
-        public InputAction @ZoomMove => m_Wrapper.m_Player_ZoomMove;
-        /// <summary>
         /// Provides access to the underlying input action "Player/Cancel".
         /// </summary>
         public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
@@ -755,6 +696,10 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/CursorPress".
         /// </summary>
         public InputAction @CursorPress => m_Wrapper.m_Player_CursorPress;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/ZoomMove".
+        /// </summary>
+        public InputAction @ZoomMove => m_Wrapper.m_Player_ZoomMove;
         /// <summary>
         /// Provides access to the underlying input action "Player/ZoomJump".
         /// </summary>
@@ -799,9 +744,6 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
             @Act.started += instance.OnAct;
             @Act.performed += instance.OnAct;
             @Act.canceled += instance.OnAct;
-            @ZoomMove.started += instance.OnZoomMove;
-            @ZoomMove.performed += instance.OnZoomMove;
-            @ZoomMove.canceled += instance.OnZoomMove;
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
@@ -811,6 +753,9 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
             @CursorPress.started += instance.OnCursorPress;
             @CursorPress.performed += instance.OnCursorPress;
             @CursorPress.canceled += instance.OnCursorPress;
+            @ZoomMove.started += instance.OnZoomMove;
+            @ZoomMove.performed += instance.OnZoomMove;
+            @ZoomMove.canceled += instance.OnZoomMove;
             @ZoomJump.started += instance.OnZoomJump;
             @ZoomJump.performed += instance.OnZoomJump;
             @ZoomJump.canceled += instance.OnZoomJump;
@@ -837,9 +782,6 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
             @Act.started -= instance.OnAct;
             @Act.performed -= instance.OnAct;
             @Act.canceled -= instance.OnAct;
-            @ZoomMove.started -= instance.OnZoomMove;
-            @ZoomMove.performed -= instance.OnZoomMove;
-            @ZoomMove.canceled -= instance.OnZoomMove;
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
@@ -849,6 +791,9 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
             @CursorPress.started -= instance.OnCursorPress;
             @CursorPress.performed -= instance.OnCursorPress;
             @CursorPress.canceled -= instance.OnCursorPress;
+            @ZoomMove.started -= instance.OnZoomMove;
+            @ZoomMove.performed -= instance.OnZoomMove;
+            @ZoomMove.canceled -= instance.OnZoomMove;
             @ZoomJump.started -= instance.OnZoomJump;
             @ZoomJump.performed -= instance.OnZoomJump;
             @ZoomJump.canceled -= instance.OnZoomJump;
@@ -913,13 +858,6 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnAct(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "ZoomMove" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnZoomMove(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "Cancel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -940,6 +878,13 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCursorPress(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ZoomMove" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnZoomMove(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "ZoomJump" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

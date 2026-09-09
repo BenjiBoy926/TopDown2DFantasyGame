@@ -25,15 +25,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ZoomMove",
-                    "type": "Value",
-                    "id": "df8bf33b-8ef9-4301-82a6-340382387b34",
-                    "expectedControlType": "Axis",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "Cancel",
                     "type": "Button",
                     "id": "195412fc-bdf5-49f0-8e85-1c7026d84df8",
@@ -59,6 +50,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ZoomMove",
+                    "type": "Value",
+                    "id": "df8bf33b-8ef9-4301-82a6-340382387b34",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "ZoomJump",
@@ -398,42 +398,20 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "CtrlZ",
-                    "id": "5acc4e2e-0ead-40c8-922d-5eaae8263fe9",
-                    "path": "OneModifier",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Undo",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier",
-                    "id": "51a1a857-dc25-4030-973d-79f654f3ec71",
-                    "path": "<Keyboard>/ctrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Undo",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "binding",
-                    "id": "65f85f31-14ab-49b0-83ea-40bebc452a39",
-                    "path": "<Keyboard>/z",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Undo",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "",
                     "id": "63e67d73-1853-4ef0-bbaa-f4ab57faebf9",
                     "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Undo",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "66446d62-baa4-4b87-a702-a61e61fc9dc4",
+                    "path": "<Keyboard>/z",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -453,8 +431,8 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "CtrlY",
-                    "id": "c47df664-6ea6-493d-bcef-e638a9402457",
+                    "name": "CtrlShiftZ",
+                    "id": "6cb33a31-8b10-4e70-9cb6-df9267e18fa5",
                     "path": "OneModifier",
                     "interactions": "",
                     "processors": "",
@@ -464,52 +442,8 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "modifier",
-                    "id": "e374819f-f904-414d-8a7c-079fba52f245",
-                    "path": "<Keyboard>/ctrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Redo",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "binding",
-                    "id": "702ffb5b-e4ae-4252-b9ea-f7cf5ee95e43",
-                    "path": "<Keyboard>/y",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Redo",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "CtrlShiftZ",
-                    "id": "6cb33a31-8b10-4e70-9cb6-df9267e18fa5",
-                    "path": "TwoModifiers",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Redo",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier1",
+                    "name": "Modifier",
                     "id": "5ef06a36-1daa-4aef-95e5-6ba297420319",
-                    "path": "<Keyboard>/ctrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Redo",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "modifier2",
-                    "id": "98424c5e-ebf1-4b22-aa3d-9e7cef379bdd",
                     "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
@@ -519,8 +453,8 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "binding",
-                    "id": "9c6045a9-01d0-48f3-9366-959a4b3f0b41",
+                    "name": "Binding",
+                    "id": "98424c5e-ebf1-4b22-aa3d-9e7cef379bdd",
                     "path": "<Keyboard>/z",
                     "interactions": "",
                     "processors": "",
@@ -528,6 +462,17 @@
                     "action": "Redo",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "b7b64c7c-9a61-4740-b7cd-0862afde2106",
+                    "path": "<Keyboard>/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Redo",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
