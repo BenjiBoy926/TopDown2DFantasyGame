@@ -8,6 +8,7 @@ public class CharacterDetailPanel : MonoBehaviour
 {
     [SerializeField] private TMP_Text _nameLabel;
     [SerializeField] private Image _iconImage;
+    [SerializeField] private Image _healthImage;
     [SerializeField] private TMP_Text _healthLabel;
     [SerializeField] private TMP_Text _powerLabel;
     [SerializeField] private TMP_Text _energyLabel;
@@ -113,6 +114,7 @@ public class CharacterDetailPanel : MonoBehaviour
 
     private void ShowHealth(int health)
     {
+        _healthImage.sprite = _target.GetHeartSprite(health);
         _healthLabel.text = health.ToString();
         _healthLabel.color = _target.GetHealthColor(health);
     }

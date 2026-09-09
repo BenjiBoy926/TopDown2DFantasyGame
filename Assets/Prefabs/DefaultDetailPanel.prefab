@@ -628,6 +628,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nameLabel: {fileID: 4430391912888460878}
   _iconImage: {fileID: 3717031402152553612}
+  _healthImage: {fileID: 6823104753173628746}
   _healthLabel: {fileID: 4643435776080181943}
   _powerLabel: {fileID: 3017941026632438825}
   _energyLabel: {fileID: 1768832492087357573}
