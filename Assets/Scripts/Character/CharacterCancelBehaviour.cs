@@ -13,7 +13,6 @@ public class CharacterCancelBehaviour : MonoBehaviour
 
     public IEnumerator GetSequence()
     {
-        _character.ClearInteractionPreview();
         _character.SetIsActing(true);
         EazySoundManager.PlaySound(_clip);
 
