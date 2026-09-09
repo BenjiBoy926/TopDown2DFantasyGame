@@ -9,6 +9,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 384918300480114987, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
+      propertyPath: _icon
+      value: 
+      objectReference: {fileID: 1232025245, guid: cae0cfbd3d1bd894382e02fd3695ca73, type: 3}
+    - target: {fileID: 384918300480114987, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       propertyPath: _name
       value: Goblin Maceman
       objectReference: {fileID: 0}

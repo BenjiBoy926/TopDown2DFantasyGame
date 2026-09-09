@@ -73,6 +73,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4700560474708384779, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
+      propertyPath: _icon
+      value: 
+      objectReference: {fileID: 33183897, guid: 9d942db3a02f87d4b9082a49fede0e8e, type: 3}
+    - target: {fileID: 4700560474708384779, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
       propertyPath: _name
       value: Goblin Thief
       objectReference: {fileID: 0}

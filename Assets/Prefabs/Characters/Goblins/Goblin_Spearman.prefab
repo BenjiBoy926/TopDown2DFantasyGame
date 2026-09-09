@@ -9,6 +9,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 384918300480114987, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
+      propertyPath: _icon
+      value: 
+      objectReference: {fileID: 329254865, guid: c53e88e53cc245b41820069e4466c03d, type: 3}
+    - target: {fileID: 384918300480114987, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
       propertyPath: _name
       value: Goblin Spearman
       objectReference: {fileID: 0}
