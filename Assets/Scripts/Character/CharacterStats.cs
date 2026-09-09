@@ -72,6 +72,7 @@ public class CharacterStats : MonoBehaviour
         if (energy == _currentEnergy)
             return;
 
+        Debug.Log($"{name} Setting energy to {energy}", this);
         _currentEnergy = energy;
         _character.AnimateCurrentEnergy();
     }

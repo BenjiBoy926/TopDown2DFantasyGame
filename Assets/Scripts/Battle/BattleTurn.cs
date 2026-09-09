@@ -54,8 +54,7 @@ public class BattleTurn : MonoBehaviour
         _battle.SetPlayerPosition(_battle.PlayerCommanderPosition);
 
         int nextFactionIndex = GetNextFactionWithLivingCharacters();
-        SetCurrentTurn(nextFactionIndex);
-        PlayTurnChangeAnimation();
+        StartTurn(nextFactionIndex);
 
         if (CurrentFaction == _battle.PlayerFaction)
         {
@@ -67,7 +66,19 @@ public class BattleTurn : MonoBehaviour
 
     public void StartTurn(Faction faction)
     {
-        SetCurrentTurn(faction);
+        int index = _factions.IndexOf(faction);
+        StartTurn(index);
+    }
+
+    private void StartTurn(int factionIndex)
+    {
+        ZeroEnergyOfCharactersInFaction(_currentFactionIndex);
+        SetCurrentTurn(factionIndex);
+        RefillEnergyOfCharactersInFaction(_currentFactionIndex);
+        foreach (var character in _battle.AllCharacters)
+        {
+            character.FadeAppearanceToTargetState();
+        }
         PlayTurnChangeAnimation();
     }
 
@@ -111,13 +122,7 @@ public class BattleTurn : MonoBehaviour
 
     private void SetCurrentTurn(int factionIndex)
     {        
-        ZeroEnergyOfCharactersInFaction(_currentFactionIndex);
         _currentFactionIndex = factionIndex;
-        RefillEnergyOfCharactersInFaction(_currentFactionIndex);
-        foreach (var character in _battle.AllCharacters)
-        {
-            character.FadeAppearanceToTargetState();
-        }
     }
 
     private void ZeroEnergyOfCharactersInFaction(int factionIndex)
