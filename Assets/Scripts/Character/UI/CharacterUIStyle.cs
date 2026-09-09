@@ -10,7 +10,6 @@ public class CharacterUIStyle : ScriptableObject
     [SerializeField] private Sprite _heartFullSprite;
     [SerializeField] private Sprite _heartDamageSprite;
     [SerializeField] private Sprite _heartEmptySprite;
-    [SerializeField] private Sprite _xSprite;
     [SerializeField] private float _healthHalfThreshold = .5f;
     [SerializeField] private float _healthLowThreashold = .2f;
     [SerializeField] private Color _healthFullColor = Color.green;
@@ -41,11 +40,6 @@ public class CharacterUIStyle : ScriptableObject
         {
             return _heartEmptySprite;
         }
-    }
-
-    public Sprite GetXSprite(int currentHealth)
-    {
-        return currentHealth <= 0 ? _xSprite : null;
     }
 
     public Color GetHealthColor(int currentHealth, int baseHealth)

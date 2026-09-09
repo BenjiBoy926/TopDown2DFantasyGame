@@ -367,11 +367,6 @@ public class Character : MonoBehaviour
         return _uiStyle.GetHeartSprite(currentHealth, BaseHealth);
     }
 
-    public Sprite GetXSprite(int currentHealth)
-    {
-        return _uiStyle.GetXSprite(currentHealth);
-    }
-
     public Color GetHealthColor(int currentHealth)
     {
         return _uiStyle.GetHealthColor(currentHealth, BaseHealth);
