@@ -1,9 +1,6 @@
 using DG.Tweening;
-using System.Diagnostics.Tracing;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class CharacterDetailPanel : MonoBehaviour
@@ -14,6 +11,7 @@ public class CharacterDetailPanel : MonoBehaviour
     [SerializeField] private TMP_Text _powerLabel;
     [SerializeField] private TMP_Text _energyLabel;
     [SerializeField] private TMP_Text _rangeLabel;
+    [SerializeField] private float _previewFadeDuration = .35f;
     private GameObject _allElements;
     private Character _target;
 
@@ -39,11 +37,11 @@ public class CharacterDetailPanel : MonoBehaviour
 
         if (info.Health != _target.CurrentHealth)
         {
-            _healthLabel.DOFade(0, .35f).SetLoops(-1, LoopType.Yoyo);
+            _healthLabel.DOFade(0, _previewFadeDuration).SetLoops(-1, LoopType.Yoyo);
         }
         if (info.Energy != _target.CurrentEnergy)
         {
-            _energyLabel.DOFade(0, .35f).SetLoops(-1, LoopType.Yoyo);
+            _energyLabel.DOFade(0, _previewFadeDuration).SetLoops(-1, LoopType.Yoyo);
         }
     }
 
