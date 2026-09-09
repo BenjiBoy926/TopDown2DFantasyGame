@@ -39,18 +39,16 @@ public class CharacterDetailPanel : MonoBehaviour
 
         if (info.Health != _target.CurrentHealth)
         {
-
+            _healthLabel.DOFade(0, .35f).SetLoops(-1, LoopType.Yoyo);
         }
         if (info.Energy != _target.CurrentEnergy)
         {
-
+            _energyLabel.DOFade(0, .35f).SetLoops(-1, LoopType.Yoyo);
         }
     }
 
     public void ClearPreview()
     {
-        _healthLabel.DOKill();
-        _energyLabel.DOKill();
         Refresh();
     }
 
@@ -62,6 +60,8 @@ public class CharacterDetailPanel : MonoBehaviour
 
     private void Refresh()
     {
+        _healthLabel.DOKill();
+        _energyLabel.DOKill();
         _allElements.SetActive(_target);
 
         if (_target)
