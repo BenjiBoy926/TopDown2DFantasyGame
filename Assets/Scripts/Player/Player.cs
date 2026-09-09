@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioSource _cellHoverAudio;
     [SerializeField] private AudioClip _moveStartClip;
     [SerializeField] private CharacterDetailPanel _detailPanel;
+    [SerializeField] private CharacterDetailPanel _previewDetailPanel;
 
     private Battle _battle;
     private PlayerCursor _cursor;
@@ -36,6 +37,7 @@ public class Player : MonoBehaviour
         _rangeWarning = GetComponent<RangeWarningSystem>();
         _actionDirectionIndicator = GetComponentInChildren<ActionDirectionIndicator>(true);
         RefreshDetailPanel();
+        _previewDetailPanel.Clear();
     }
 
     private void Update()
@@ -333,11 +335,14 @@ public class Player : MonoBehaviour
 
             InteractionResult result = _activeCharacter.PredictInteractionResult(characterAtCell);
             _detailPanel.Preview(result.Interactor);
+            _previewDetailPanel.Populate(characterAtCell);
+            _previewDetailPanel.Preview(result.Target);
         }
         else
         {
             _activeCharacter.ClearInteractionPreview();
             _detailPanel.ClearPreview();
+            _previewDetailPanel.Clear();
         }
     }
 
