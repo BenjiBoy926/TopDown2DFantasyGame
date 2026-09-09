@@ -193,7 +193,6 @@ public class Character : MonoBehaviour
     public void BeginMove()
     {
         RefreshCell();
-        ClearInteractionPreview();
         SetIsActing(true);
     }
 

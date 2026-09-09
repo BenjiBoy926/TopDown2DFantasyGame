@@ -189,6 +189,7 @@ public class Player : MonoBehaviour
 
     private void Deselect()
     {
+        ClearPreview();
         SetHoveredCharacter(null);
         SetActiveCharacter(null);
     }
@@ -340,10 +341,18 @@ public class Player : MonoBehaviour
         }
         else
         {
-            _activeCharacter.ClearInteractionPreview();
-            _detailPanel.ClearPreview();
-            _previewDetailPanel.Clear();
+            ClearPreview();
         }
+    }
+
+    private void ClearPreview()
+    {
+        if (_activeCharacter)
+        {
+            _activeCharacter.ClearInteractionPreview();
+        }
+        _detailPanel.ClearPreview();
+        _previewDetailPanel.Clear();
     }
 
     private bool CanMoveCharacter(Character character)
