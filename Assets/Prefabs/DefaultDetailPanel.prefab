@@ -633,6 +633,9 @@ MonoBehaviour:
   _energyLabel: {fileID: 1768832492087357573}
   _rangeLabel: {fileID: 134029140470010533}
   _previewFadeDuration: 0.35
+  _shownYPosition: -10
+  _hiddenYPosition: -130
+  _hideShowDuration: 0.2
 --- !u!1 &3520123375604128714
 GameObject:
   m_ObjectHideFlags: 0

@@ -37,7 +37,11 @@ public class Player : MonoBehaviour
         _rangeWarning = GetComponent<RangeWarningSystem>();
         _actionDirectionIndicator = GetComponentInChildren<ActionDirectionIndicator>(true);
         RefreshDetailPanel();
-        _previewDetailPanel.Clear();
+    }
+
+    private void Start()
+    {
+        _previewDetailPanel.HideImmediately();
     }
 
     private void Update()
@@ -338,6 +342,7 @@ public class Player : MonoBehaviour
             _detailPanel.Preview(result.Interactor);
             _previewDetailPanel.Populate(characterAtCell);
             _previewDetailPanel.Preview(result.Target);
+            _previewDetailPanel.Show();
         }
         else
         {
@@ -352,7 +357,7 @@ public class Player : MonoBehaviour
             _activeCharacter.ClearInteractionPreview();
         }
         _detailPanel.ClearPreview();
-        _previewDetailPanel.Clear();
+        _previewDetailPanel.Hide();
     }
 
     private bool CanMoveCharacter(Character character)
