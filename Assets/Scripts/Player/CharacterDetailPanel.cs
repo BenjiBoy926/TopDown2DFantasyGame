@@ -1,5 +1,9 @@
+using DG.Tweening;
+using System.Diagnostics.Tracing;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class CharacterDetailPanel : MonoBehaviour
@@ -11,6 +15,7 @@ public class CharacterDetailPanel : MonoBehaviour
     [SerializeField] private TMP_Text _energyLabel;
     [SerializeField] private TMP_Text _rangeLabel;
     private GameObject _allElements;
+    private Character _target;
 
     private void Awake()
     {
@@ -19,26 +24,75 @@ public class CharacterDetailPanel : MonoBehaviour
 
     public void Populate(Character character)
     {
-        _allElements.SetActive(true);
-
-        _nameLabel.text = character.Name;
-        _iconImage.sprite = character.Icon;
-
-        _healthLabel.text = character.CurrentHealth.ToString();
-        _healthLabel.color = character.GetHealthColor(character.CurrentHealth);
-
-        _powerLabel.text = character.CurrentPower.ToString();
-        _powerLabel.color = character.GetPowerColor(character.CurrentPower);
-
-        _energyLabel.text = character.CurrentEnergy.ToString();
-        _energyLabel.color = character.GetEnergyColor(character.CurrentEnergy);
-
-        _rangeLabel.text = character.TraversalRange.ToString();
+        SetTarget(character);
     }
 
     public void Clear()
     {
-        _nameLabel.text = string.Empty;
-        _allElements.SetActive(false);
+        SetTarget(null);
+    }
+
+    public void Preview(CharacterInfo info)
+    {
+        ShowHealth(info.Health);
+        ShowEnergy(info.Energy);
+
+        if (info.Health != _target.CurrentHealth)
+        {
+
+        }
+        if (info.Energy != _target.CurrentEnergy)
+        {
+
+        }
+    }
+
+    public void ClearPreview()
+    {
+        _healthLabel.DOKill();
+        _energyLabel.DOKill();
+        Refresh();
+    }
+
+    private void SetTarget(Character target)
+    {
+        _target = target;
+        Refresh();
+    }
+
+    private void Refresh()
+    {
+        _allElements.SetActive(_target);
+
+        if (_target)
+        {
+            _nameLabel.text = _target.Name;
+            _iconImage.sprite = _target.Icon;
+
+            ShowHealth(_target.CurrentHealth);
+
+            _powerLabel.text = _target.CurrentPower.ToString();
+            _powerLabel.color = _target.GetPowerColor(_target.CurrentPower);
+
+            ShowEnergy(_target.CurrentEnergy);
+
+            _rangeLabel.text = _target.TraversalRange.ToString();
+        }
+        else
+        {
+            _nameLabel.text = string.Empty;
+        }
+    }
+
+    private void ShowHealth(int health)
+    {
+        _healthLabel.text = health.ToString();
+        _healthLabel.color = _target.GetHealthColor(health);
+    }
+
+    private void ShowEnergy(int energy)
+    {
+        _energyLabel.text = energy.ToString();
+        _energyLabel.color = _target.GetEnergyColor(energy);
     }
 }

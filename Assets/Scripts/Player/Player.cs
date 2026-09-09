@@ -330,11 +330,15 @@ public class Player : MonoBehaviour
         if (characterAtCell && characterAtCell != _activeCharacter)
         {
             _activeCharacter.PreviewInteraction(characterAtCell);
+
+            InteractionResult result = _activeCharacter.PredictInteractionResult(characterAtCell);
+            _detailPanel.Preview(result.Interactor);
         }
         else
         {
             _activeCharacter.ClearInteractionPreview();
-        } 
+            _detailPanel.ClearPreview();
+        }
     }
 
     private bool CanMoveCharacter(Character character)
