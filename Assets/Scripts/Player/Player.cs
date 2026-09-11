@@ -36,11 +36,11 @@ public class Player : MonoBehaviour
         _gridReticle = GetComponentInChildren<PlayerGridReticle>();
         _rangeWarning = GetComponent<RangeWarningSystem>();
         _actionDirectionIndicator = GetComponentInChildren<ActionDirectionIndicator>(true);
-        RefreshDetailPanel();
     }
 
     private void Start()
     {
+        _detailPanel.HideImmediately();
         _previewDetailPanel.HideImmediately();
     }
 
@@ -281,14 +281,16 @@ public class Player : MonoBehaviour
         if (_activeCharacter)
         {
             _detailPanel.Populate(_activeCharacter);
+            _detailPanel.Show();
         }
         else if (_hoveredCharacter)
         {
             _detailPanel.Populate(_hoveredCharacter);
+            _detailPanel.Show();
         }
         else
         {
-            _detailPanel.Clear();
+            _detailPanel.Hide();
         }
     }
 

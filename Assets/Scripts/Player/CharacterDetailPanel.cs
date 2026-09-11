@@ -55,11 +55,6 @@ public class CharacterDetailPanel : MonoBehaviour
         SetTarget(character);
     }
 
-    public void Clear()
-    {
-        SetTarget(null);
-    }
-
     public void Preview(CharacterInfo info)
     {
         ShowHealth(info.Health);
