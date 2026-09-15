@@ -16,15 +16,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Act",
-                    "type": "Button",
-                    "id": "b47cf610-6644-4eb7-b97f-91e9e26355e5",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Cancel",
                     "type": "Button",
                     "id": "195412fc-bdf5-49f0-8e85-1c7026d84df8",
@@ -212,28 +203,6 @@
                 },
                 {
                     "name": "",
-                    "id": "fc66d7ee-3311-462e-8133-80608480fbf0",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Act",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "082f46e6-1c13-4a7e-9e77-0fe4376d5a31",
-                    "path": "<Gamepad>/buttonEast",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Act",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "f1432eee-c2dc-43a8-a0f9-862faf194735",
                     "path": "<Pointer>/position",
                     "interactions": "",
@@ -291,6 +260,28 @@
                     "name": "",
                     "id": "1e737633-20fa-44cb-ac25-ebc6c04504dc",
                     "path": "<Pointer>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CursorPress",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fc66d7ee-3311-462e-8133-80608480fbf0",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CursorPress",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "082f46e6-1c13-4a7e-9e77-0fe4376d5a31",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

@@ -76,6 +76,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 328225788, guid: c53e88e53cc245b41820069e4466c03d, type: 3}
+    - target: {fileID: 9042587672276555130, guid: c5a411f1aa0d5ca4eb136bdcfbb95549, type: 3}
+      propertyPath: _hurtAnimationLoopCount
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
