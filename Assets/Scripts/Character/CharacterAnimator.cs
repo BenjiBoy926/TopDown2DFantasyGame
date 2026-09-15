@@ -42,14 +42,9 @@ public class CharacterAnimator : MonoBehaviour
         PlayLoopingAnimation();
     }
 
-    public void Pause()
+    public void SetSpeed(float speed)
     {
-        _animator.speed = 0;
-    }
-
-    public void Resume()
-    {
-        _animator.speed = 1;
+        _animator.speed = speed;
     }
 
     [Button]

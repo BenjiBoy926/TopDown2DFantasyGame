@@ -184,7 +184,7 @@ public class Character : MonoBehaviour
     }
 
     public Coroutine Cancel()
-    { 
+    {
         StopAllCoroutines();
         IEnumerator sequence = _cancelBehaviour.GetSequence();
         return StartCoroutine(sequence);
@@ -266,14 +266,9 @@ public class Character : MonoBehaviour
 
     // ── Animator ─────────────────────────────────────────────────────────
 
-    public void PauseAnimation()
+    public void SetAnimationSpeed(float speed)
     {
-        _animator.Pause();
-    }
-
-    public void ResumeAnimation()
-    {
-        _animator.Resume();
+        _animator.SetSpeed(speed);
     }
 
     public Coroutine PlayAttackAnimation()

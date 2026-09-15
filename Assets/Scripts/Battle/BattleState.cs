@@ -29,7 +29,7 @@ public class BattleState
         return _records[i];
     }
 
-    public IEnumerator GetAllApplySequences()
+    public IEnumerable<IEnumerator> GetAllApplySequences()
     {
         foreach (var record in _records)
         {

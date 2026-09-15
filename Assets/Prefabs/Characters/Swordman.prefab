@@ -402,7 +402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24818f4f7d5b5ac418e87cb7dca46c24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stepDuration: 0.2
+  _stepDuration: 0.1
 --- !u!114 &8511498810787689882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2095,9 +2095,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 751b011bc14a9794b91022caad618fbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthFullSprite: {fileID: 21300000, guid: 6e7d122d6ac1b23498b9e167949965d3, type: 3}
-  _healthDamagedSprite: {fileID: 21300000, guid: 0cfadd3fb79603249b3c0a016fb9acbb, type: 3}
-  _healthDepletedSprite: {fileID: 21300000, guid: d1960d2e7c1e7c1458c8d0d3947538a4, type: 3}
 --- !u!1 &8824524866655695547
 GameObject:
   m_ObjectHideFlags: 0

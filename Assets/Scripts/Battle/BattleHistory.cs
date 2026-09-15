@@ -14,6 +14,7 @@ public class BattleHistory : MonoBehaviour
     private Battle _battle;
     private BattleUndoOverlay _overlay;
     private static readonly HashSet<BattleHistory> _playingHistories = new();
+    private static readonly List<Coroutine> _undoRedoRoutines = new();
 
     private void Awake()
     {
@@ -105,19 +106,38 @@ public class BattleHistory : MonoBehaviour
     {
         int previousStateIndex = _currentStateIndex + 1;
         BattleState previousState = _states[previousStateIndex];
+        
+        _undoRedoRoutines.Clear();
         for (int i = 0; i < previousState.RecordCount; i++)
         {
             CharacterRecord recordToUndo = previousState.GetRecord(i);
             CharacterRecord olderRecord = GetLastRecordedState(recordToUndo.Character);
-            yield return olderRecord.GetApplySequence();
+            Coroutine undoRoutine = StartCoroutine(olderRecord.GetApplySequence());
+            _undoRedoRoutines.Add(undoRoutine);
         }
+        foreach (var routine in _undoRedoRoutines)
+        {
+            yield return routine;
+        }
+
         SetCurrentTurn();
     }
 
     private IEnumerator RedoOnceSequence()
     {
         BattleState currentState = _states[_currentStateIndex];
-        yield return currentState.GetAllApplySequences();
+
+        _undoRedoRoutines.Clear();
+        foreach (var applySequence in currentState.GetAllApplySequences())
+        {
+            Coroutine routine = StartCoroutine(applySequence);
+            _undoRedoRoutines.Add(routine);
+        }
+        foreach (var routine in _undoRedoRoutines)
+        {
+            yield return routine;
+        }
+
         SetCurrentTurn();
     }
 

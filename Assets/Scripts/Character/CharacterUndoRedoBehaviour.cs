@@ -45,7 +45,7 @@ public class CharacterUndoRedoBehaviour : MonoBehaviour
     private IEnumerator ShowRevival()
     {
         gameObject.SetActive(true);
-        yield return _character.FadeAppearanceToTargetState();
+        yield return _character.FadeAppearanceToTargetState(_stepDuration);
         _character.PlayIdleAnimation();
         yield return transform.DOPunchPosition(Vector3.up * .49f, _stepDuration, 0, 0).WaitForCompletion();
     }
@@ -59,7 +59,10 @@ public class CharacterUndoRedoBehaviour : MonoBehaviour
 
     private IEnumerator ShowDeath()
     {
+        _character.SetAnimationSpeed(3);
         yield return _character.PlayDieAnimation();
+        _character.SetAnimationSpeed(1);
+
         if (!_character.CanBeRevived)
         {
             yield return _character.FadeAppearanceToTargetState();

@@ -134,9 +134,9 @@ public class CharacterAttackBehaviour : MonoBehaviour
         {
             EazySoundManager.PlaySound(_attackConnectClip);
         }
-        _character.PauseAnimation();
+        _character.SetAnimationSpeed(0);
         yield return other.PlayAttackConnectShake();
-        _character.ResumeAnimation();
+        _character.SetAnimationSpeed(1);
     }
 
     private IEnumerator GetHurtSequence(Character other)
