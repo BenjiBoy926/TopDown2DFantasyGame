@@ -5,12 +5,15 @@ using UnityEngine.InputSystem;
 public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 {
     [SerializeField] private float _speed = 5;
+    [SerializeField] private float _fasterSpeed = 10;
     [SerializeField] private float _zoomChangeSpeed = 5;
 
     private Player _player;
     private DefaultActions _actions;
     private Vector2 _moveDirection;
+    private bool _isMovingFaster = false;
     private float _zoomDirection;
+
 
     private void Awake()
     {
@@ -36,7 +39,8 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
         if (_moveDirection.sqrMagnitude > 0.01f)
         {
-            Vector2 offsetThisFrame = _speed * Time.deltaTime * _moveDirection;
+            float speed = _isMovingFaster ? _fasterSpeed : _speed;
+            Vector2 offsetThisFrame = speed * Time.deltaTime * _moveDirection;
             _player.SlidePosition(offsetThisFrame);
             _player.IncludeInView();
         }
@@ -52,33 +56,6 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
     public void OnMove(InputAction.CallbackContext context)
     {
        _moveDirection = context.ReadValue<Vector2>();
-    }
-
-    public void OnAct(InputAction.CallbackContext context)
-    {
-        if (!_player.IsInputAllowed) 
-            return;
-        if (!context.started) 
-            return;
-        
-        if (!_player.ActiveCharacter)
-        {
-            _player.StartMove();
-        }
-        else
-        {
-            _player.FinishMove();
-        }
-    }
-
-    public void OnZoomMove(InputAction.CallbackContext context)
-    {
-        _zoomDirection = context.ReadValue<float>();
-    }
-
-    public void OnCancel(InputAction.CallbackContext context)
-    {
-        _player.CancelMove();
     }
 
     public void OnCursorPosition(InputAction.CallbackContext context)
@@ -107,6 +84,24 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
         {
             _player.Release();
         }
+    }
+
+    public void OnCancel(InputAction.CallbackContext context)
+    {
+        _player.CancelMove();
+        if (context.started)
+        {
+            _isMovingFaster = true;
+        }
+        if (context.canceled)
+        {
+            _isMovingFaster = false;
+        }
+    }
+
+    public void OnZoomMove(InputAction.CallbackContext context)
+    {
+        _zoomDirection = context.ReadValue<float>();
     }
 
     public void OnZoomJump(InputAction.CallbackContext context)
