@@ -16,15 +16,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Cancel",
-                    "type": "Button",
-                    "id": "195412fc-bdf5-49f0-8e85-1c7026d84df8",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "CursorPosition",
                     "type": "Value",
                     "id": "ad11b5f5-342c-4768-b455-7a228568cc7c",
@@ -34,9 +25,18 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "CursorPress",
+                    "name": "Confirm",
                     "type": "Button",
                     "id": "60b33438-c0ed-475e-9ad2-5ad358ad2714",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "195412fc-bdf5-49f0-8e85-1c7026d84df8",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -263,7 +263,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CursorPress",
+                    "action": "Confirm",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -274,7 +274,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CursorPress",
+                    "action": "Confirm",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -285,7 +285,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CursorPress",
+                    "action": "Confirm",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

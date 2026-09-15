@@ -102,15 +102,6 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Cancel"",
-                    ""type"": ""Button"",
-                    ""id"": ""195412fc-bdf5-49f0-8e85-1c7026d84df8"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""CursorPosition"",
                     ""type"": ""Value"",
                     ""id"": ""ad11b5f5-342c-4768-b455-7a228568cc7c"",
@@ -120,9 +111,18 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""CursorPress"",
+                    ""name"": ""Confirm"",
                     ""type"": ""Button"",
                     ""id"": ""60b33438-c0ed-475e-9ad2-5ad358ad2714"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""195412fc-bdf5-49f0-8e85-1c7026d84df8"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -349,7 +349,7 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CursorPress"",
+                    ""action"": ""Confirm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -360,7 +360,7 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CursorPress"",
+                    ""action"": ""Confirm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -371,7 +371,7 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CursorPress"",
+                    ""action"": ""Confirm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -559,9 +559,9 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
-        m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
         m_Player_CursorPosition = m_Player.FindAction("CursorPosition", throwIfNotFound: true);
-        m_Player_CursorPress = m_Player.FindAction("CursorPress", throwIfNotFound: true);
+        m_Player_Confirm = m_Player.FindAction("Confirm", throwIfNotFound: true);
+        m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
         m_Player_ZoomMove = m_Player.FindAction("ZoomMove", throwIfNotFound: true);
         m_Player_ZoomJump = m_Player.FindAction("ZoomJump", throwIfNotFound: true);
         m_Player_Undo = m_Player.FindAction("Undo", throwIfNotFound: true);
@@ -647,9 +647,9 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
-    private readonly InputAction m_Player_Cancel;
     private readonly InputAction m_Player_CursorPosition;
-    private readonly InputAction m_Player_CursorPress;
+    private readonly InputAction m_Player_Confirm;
+    private readonly InputAction m_Player_Cancel;
     private readonly InputAction m_Player_ZoomMove;
     private readonly InputAction m_Player_ZoomJump;
     private readonly InputAction m_Player_Undo;
@@ -670,17 +670,17 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Move => m_Wrapper.m_Player_Move;
         /// <summary>
-        /// Provides access to the underlying input action "Player/Cancel".
-        /// </summary>
-        public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
-        /// <summary>
         /// Provides access to the underlying input action "Player/CursorPosition".
         /// </summary>
         public InputAction @CursorPosition => m_Wrapper.m_Player_CursorPosition;
         /// <summary>
-        /// Provides access to the underlying input action "Player/CursorPress".
+        /// Provides access to the underlying input action "Player/Confirm".
         /// </summary>
-        public InputAction @CursorPress => m_Wrapper.m_Player_CursorPress;
+        public InputAction @Confirm => m_Wrapper.m_Player_Confirm;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Cancel".
+        /// </summary>
+        public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
         /// <summary>
         /// Provides access to the underlying input action "Player/ZoomMove".
         /// </summary>
@@ -726,15 +726,15 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @Cancel.started += instance.OnCancel;
-            @Cancel.performed += instance.OnCancel;
-            @Cancel.canceled += instance.OnCancel;
             @CursorPosition.started += instance.OnCursorPosition;
             @CursorPosition.performed += instance.OnCursorPosition;
             @CursorPosition.canceled += instance.OnCursorPosition;
-            @CursorPress.started += instance.OnCursorPress;
-            @CursorPress.performed += instance.OnCursorPress;
-            @CursorPress.canceled += instance.OnCursorPress;
+            @Confirm.started += instance.OnConfirm;
+            @Confirm.performed += instance.OnConfirm;
+            @Confirm.canceled += instance.OnConfirm;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
             @ZoomMove.started += instance.OnZoomMove;
             @ZoomMove.performed += instance.OnZoomMove;
             @ZoomMove.canceled += instance.OnZoomMove;
@@ -761,15 +761,15 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @Cancel.started -= instance.OnCancel;
-            @Cancel.performed -= instance.OnCancel;
-            @Cancel.canceled -= instance.OnCancel;
             @CursorPosition.started -= instance.OnCursorPosition;
             @CursorPosition.performed -= instance.OnCursorPosition;
             @CursorPosition.canceled -= instance.OnCursorPosition;
-            @CursorPress.started -= instance.OnCursorPress;
-            @CursorPress.performed -= instance.OnCursorPress;
-            @CursorPress.canceled -= instance.OnCursorPress;
+            @Confirm.started -= instance.OnConfirm;
+            @Confirm.performed -= instance.OnConfirm;
+            @Confirm.canceled -= instance.OnConfirm;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
             @ZoomMove.started -= instance.OnZoomMove;
             @ZoomMove.performed -= instance.OnZoomMove;
             @ZoomMove.canceled -= instance.OnZoomMove;
@@ -830,13 +830,6 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMove(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Cancel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnCancel(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "CursorPosition" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -844,12 +837,19 @@ public partial class @DefaultActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCursorPosition(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "CursorPress" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Confirm" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnCursorPress(InputAction.CallbackContext context);
+        void OnConfirm(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Cancel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCancel(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "ZoomMove" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

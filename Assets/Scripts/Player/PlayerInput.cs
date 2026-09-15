@@ -71,7 +71,7 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
         }
     }
 
-    public void OnCursorPress(InputAction.CallbackContext context)
+    public void OnConfirm(InputAction.CallbackContext context)
     {
         if (!_player.IsInputAllowed)
             return;
