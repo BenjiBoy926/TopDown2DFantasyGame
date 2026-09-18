@@ -75,10 +75,7 @@ public class BattleTurn : MonoBehaviour
         ZeroEnergyOfCharactersInFaction(_currentFactionIndex);
         SetCurrentTurn(factionIndex);
         RefillEnergyOfCharactersInFaction(_currentFactionIndex);
-        foreach (var character in _battle.AllCharacters)
-        {
-            character.FadeAppearanceToTargetState();
-        }
+        FadeAppearanceOfAllCharacters();
         PlayTurnChangeAnimation();
     }
 
@@ -123,6 +120,17 @@ public class BattleTurn : MonoBehaviour
     private void SetCurrentTurn(int factionIndex)
     {        
         _currentFactionIndex = factionIndex;
+        // NOTE: double-jeopardy on starting a new turn
+        // but is needed when undo triggers a turn being directly set
+        FadeAppearanceOfAllCharacters();
+    }
+
+    private void FadeAppearanceOfAllCharacters()
+    {
+        foreach (var character in _battle.AllCharacters)
+        {
+            character.FadeAppearanceToTargetState();
+        }
     }
 
     private void ZeroEnergyOfCharactersInFaction(int factionIndex)
