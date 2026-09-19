@@ -48,8 +48,13 @@ public class CharacterStats : MonoBehaviour
 
     public void SetHealth(int health)
     {
+        bool wasDead = IsDead;
         _currentHealth = Mathf.Max(health, 0);
         _character.ShowCurrentHealth();
+        if (wasDead && !IsDead)
+        {
+            gameObject.SetActive(true);
+        }
     }
 
     public void ChangeEnergy(int delta)
