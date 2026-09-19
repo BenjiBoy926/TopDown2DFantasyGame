@@ -1,9 +1,10 @@
 using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Graphic))]
-public class BattleUndoOverlay : MonoBehaviour
+public class Overlay : MonoBehaviour
 {
     [SerializeField] private float _fadeDuration = .2f;
     [SerializeField] private float _fadeAlpha = .1f;
@@ -21,9 +22,10 @@ public class BattleUndoOverlay : MonoBehaviour
         return FadeTo(_fadeAlpha);
     }
 
-    public YieldInstruction FadeOut()
+    public IEnumerator FadeOut()
     {
-        return FadeTo(0f);
+        yield return FadeTo(0f);
+        gameObject.SetActive(false);
     }
 
     private YieldInstruction FadeTo(float alpha)

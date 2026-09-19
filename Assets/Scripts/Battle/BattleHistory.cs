@@ -12,14 +12,14 @@ public class BattleHistory : MonoBehaviour
     [SerializeField, ReadOnly] private List<BattleState> _states = new();
     [SerializeField, ReadOnly] private int _currentStateIndex = 0;
     private Battle _battle;
-    private BattleUndoOverlay _overlay;
+    private Overlay _overlay;
     private static readonly HashSet<BattleHistory> _playingHistories = new();
     private static readonly List<Coroutine> _undoRedoRoutines = new();
 
     private void Awake()
     {
         _battle = GetComponent<Battle>();
-        _overlay = GetComponentInChildren<BattleUndoOverlay>();
+        _overlay = GetComponentInChildren<Overlay>();
     }
 
     // BUG: the initial state recored all characters as having 0 energy, when it should record
