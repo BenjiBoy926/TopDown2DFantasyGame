@@ -90,9 +90,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2122ecfb16a6dd94cbce78adf5f55e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animationDuration: 0.35
+  _transitionDuration: 0.35
+  _holdDuration: 1.5
   _overlayAlpha: 0.2
-  _bannerAlpha: 0.5
 --- !u!1 &2074615179168628247
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 7984957374265790628}
   - component: {fileID: 4008698773348927662}
   - component: {fileID: 8150965872289613937}
+  - component: {fileID: 1509880348516081891}
   m_Layer: 0
   m_Name: Banner
   m_TagString: Untagged
@@ -168,6 +169,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1509880348516081891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074615179168628247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 587354b0a117ffc459274159ada531a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animationDuration: 0.35
 --- !u!1 &2658952773716326641
 GameObject:
   m_ObjectHideFlags: 0
