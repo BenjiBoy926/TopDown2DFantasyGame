@@ -8,20 +8,16 @@ public class BattleTurnChangeAnimation : MonoBehaviour
 
     public bool IsPlaying => _isPlaying;
 
-    [SerializeField] private float _transitionDuration = .35f;
-    [SerializeField] private float _holdDuration = 1.5f;
-
     private Overlay _overlay;
     private BattleTurnChangeBanner _banner;
-    private TMP_Text _label;
+    private BattleTurnChangeLabel _label;
     private bool _isPlaying = false;
 
     private void Awake()
     {
         _overlay = GetComponentInChildren<Overlay>();
         _banner = GetComponentInChildren<BattleTurnChangeBanner>();
-        _label = GetComponentInChildren<TMP_Text>();
-        _label.enabled = false;
+        _label = GetComponentInChildren<BattleTurnChangeLabel>();
     }
 
     public void Play(Faction faction)
@@ -37,19 +33,10 @@ public class BattleTurnChangeAnimation : MonoBehaviour
 
         yield return _overlay.FadeIn();
         yield return _banner.AnimateIn(faction);
-
-        _label.text = $"{faction.Name} Turn";
-        _label.enabled = true;
-        yield return new WaitForSeconds(_transitionDuration);
-
-        yield return new WaitForSeconds(_holdDuration);
-
-        _label.enabled = false;
-        yield return new WaitForSeconds(_transitionDuration);
+        yield return _label.Animate(faction);
         yield return _banner.AnimateOut();
         yield return _overlay.FadeOut();
 
-        _label.enabled = false;
         _isPlaying = false;
     }
 }
