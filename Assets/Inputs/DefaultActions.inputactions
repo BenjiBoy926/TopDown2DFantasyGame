@@ -258,6 +258,17 @@
                 },
                 {
                     "name": "",
+                    "id": "bc31c0f0-ce8a-447d-9321-a7167324c42c",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "1e737633-20fa-44cb-ac25-ebc6c04504dc",
                     "path": "<Pointer>/press",
                     "interactions": "",

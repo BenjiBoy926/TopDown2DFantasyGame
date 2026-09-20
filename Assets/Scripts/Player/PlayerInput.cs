@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Player))]
 public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 {
+    private bool ShouldMoveFaster => (_isConfirmPressed && !_player.ActiveCharacter) || _isCancelPressed;
+
     [SerializeField] private float _speed = 5;
     [SerializeField] private float _fasterSpeed = 10;
     [SerializeField] private float _zoomChangeSpeed = 5;
@@ -11,7 +13,8 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
     private Player _player;
     private DefaultActions _actions;
     private Vector2 _moveDirection;
-    private bool _isMovingFaster = false;
+    private bool _isConfirmPressed = false;
+    private bool _isCancelPressed = false;
     private float _zoomDirection;
 
 
@@ -39,7 +42,7 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
         if (_moveDirection.sqrMagnitude > 0.01f)
         {
-            float speed = _isMovingFaster ? _fasterSpeed : _speed;
+            float speed = ShouldMoveFaster ? _fasterSpeed : _speed;
             Vector2 offsetThisFrame = speed * Time.deltaTime * _moveDirection;
             _player.SlidePosition(offsetThisFrame);
             _player.IncludeInView();
@@ -79,10 +82,12 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
         if (context.started)
         {
             _player.Grab();
+            _isConfirmPressed = true;
         }
         else if (context.canceled)
         {
             _player.Release();
+            _isConfirmPressed = false;
         }
     }
 
@@ -91,11 +96,11 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
         _player.CancelMove();
         if (context.started)
         {
-            _isMovingFaster = true;
+            _isCancelPressed = true;
         }
         if (context.canceled)
         {
-            _isMovingFaster = false;
+            _isCancelPressed = false;
         }
     }
 
