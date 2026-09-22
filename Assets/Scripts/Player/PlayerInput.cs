@@ -76,18 +76,25 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnConfirm(InputAction.CallbackContext context)
     {
+        if (context.started)
+        {
+            _isConfirmPressed = true;
+        }
+        else if (context.canceled)
+        {
+            _isConfirmPressed = false;
+        }
+
         if (!_player.IsInputAllowed)
             return;
 
         if (context.started)
         {
             _player.Grab();
-            _isConfirmPressed = true;
         }
         else if (context.canceled)
         {
             _player.Release();
-            _isConfirmPressed = false;
         }
     }
 
