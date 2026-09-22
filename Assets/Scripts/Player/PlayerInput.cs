@@ -134,17 +134,31 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnUndo(InputAction.CallbackContext context)
     {
-        if (context.started && _player.IsInputAllowed)
+        if (!_player.IsInputAllowed)
+            return;
+
+        if (context.started)
         {
-            _player.Undo();
+            _player.StartUndo();
+        }
+        else if (context.canceled)
+        {
+            _player.StopUndo();
         }
     }
 
     public void OnRedo(InputAction.CallbackContext context)
     {
-        if (context.started && _player.IsInputAllowed)
+        if (!_player.IsInputAllowed)
+            return;
+
+        if (context.started)
         {
-            _player.Redo();
+            _player.StartRedo();
+        }
+        else if (context.canceled)
+        {
+            _player.StopRedo();
         }
     }
 }

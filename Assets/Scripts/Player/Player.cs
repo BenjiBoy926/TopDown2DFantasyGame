@@ -54,14 +54,24 @@ public class Player : MonoBehaviour
         _battle.StartNextTurn();
     }
 
-    public void Undo()
+    public void StartUndo()
     {
         _battle.Undo();
     }
 
-    public void Redo()
+    public void StopUndo()
+    {
+
+    }
+
+    public void StartRedo()
     {
         _battle.Redo();
+    }
+
+    public void StopRedo()
+    {
+
     }
 
     public void IncludeInView()
