@@ -487,11 +487,13 @@ public class Character : MonoBehaviour
     public void PreviewInteraction(Character other)
     {
         _preview.PreviewMove(other);
+        _range.ShowTransparentRange();
     }
 
     public void ClearInteractionPreview()
     {
         _preview.Clear();
+        _range.ShowOpaqueRange();
     }
 
     public InteractionResult PredictInteractionResult(Character other)
