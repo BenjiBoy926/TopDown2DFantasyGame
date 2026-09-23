@@ -55,9 +55,11 @@ public abstract class PlayerTimedAction : MonoBehaviour
         _ui.PlayConfirmAnimation();
         yield return Execute();
 
-        if (_isTriggered)
-        {
-            Begin(QuickRepeatDuration);
-        }
+        // TODO: this does not work because "_isTriggered" is not set back to false
+        // if the Player has inputs disabled (such as during an undo/redo)
+        //if (_isTriggered)
+        //{
+        //    Begin(QuickRepeatDuration);
+        //}
     }
 }
