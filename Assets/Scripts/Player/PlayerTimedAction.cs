@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public abstract class PlayerTimedAction : MonoBehaviour
@@ -11,6 +12,8 @@ public abstract class PlayerTimedAction : MonoBehaviour
     [SerializeField] private float _duration;
     private Battle _battle;
     private PlayerActionTimerUI _ui;
+    private bool _isScheduled;
+    private bool _isRunning;
 
     protected virtual void Awake()
     {
@@ -23,24 +26,33 @@ public abstract class PlayerTimedAction : MonoBehaviour
         if (!IsAvailable())
             return false;
 
-        Invoke(nameof(Confirm), Duration);
+        StartCoroutine(ExecutionSequence());
         _ui.Begin(this);
         return true;
     }
 
     public void Cancel()
     {
-        CancelInvoke();
+        StopAllCoroutines();
         _ui.CancelAnimation();
-    }
 
-    private void Confirm()
-    {
-        // TODO: wait on coroutine to check for rapid repeat
-        Execute();
-        _ui.PlayConfirmAnimation();
+        _isScheduled = false;
+        _isRunning = false; // Not perfectly accurate because we do not stop THAT coroutine, but not a bug right now either
     }
 
     public virtual bool IsAvailable() => true;
     public abstract Coroutine Execute();
+
+    private IEnumerator ExecutionSequence()
+    {
+        _isScheduled = true;
+        yield return new WaitForSeconds(_duration);
+        _isScheduled = false;
+
+        _ui.PlayConfirmAnimation();
+
+        _isRunning = true;
+        yield return Execute();
+        _isRunning = false;
+    }
 }
