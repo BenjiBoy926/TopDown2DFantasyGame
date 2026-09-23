@@ -1,5 +1,4 @@
 using DG.Tweening;
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,10 +20,10 @@ public class PlayerActionTimerUI : MonoBehaviour
         _label.color = new(_label.color.r, _label.color.g, _label.color.b, 0f);
     }
 
-    public void Begin(PlayerActionTimer.TimedAction action)
+    public void Begin(PlayerTimedAction action)
     {
-        _icon.sprite = action.DisplayInfo.Sprite;
-        _label.text = action.DisplayInfo.Label;
+        _icon.sprite = action.Sprite;
+        _label.text = action.Label;
         Animate(action.Duration);
     }
 

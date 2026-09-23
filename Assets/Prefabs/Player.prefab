@@ -998,6 +998,9 @@ GameObject:
   - component: {fileID: 7245667630192242835}
   - component: {fileID: 3656688436091672680}
   - component: {fileID: 7385932141547810232}
+  - component: {fileID: 5261092033870524227}
+  - component: {fileID: 1064187996658969247}
+  - component: {fileID: 5761849213994155780}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1083,17 +1086,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68b6a8c7f65ed2a458546e4d2235f66d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _undoInfo:
-    Sprite: {fileID: 21300000, guid: c3b88840441000c4bb2ef8f6bccc7ac8, type: 3}
-    Label: Undo
-  _redoInfo:
-    Sprite: {fileID: 21300000, guid: bd4ad3893c1fb564bbe44c7983d07b92, type: 3}
-    Label: Redo
-  _endTurnInfo:
-    Sprite: {fileID: 0}
-    Label: End Turn
-  _undoRedoDuration: 0.5
-  _endTurnDuration: 1
+--- !u!114 &5261092033870524227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7649388802242260027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dce73cbfcc08d6d488cef9bb019919f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sprite: {fileID: 21300000, guid: c3b88840441000c4bb2ef8f6bccc7ac8, type: 3}
+  _duration: 0.5
+--- !u!114 &1064187996658969247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7649388802242260027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88da851630099ff40bea8524e343f4e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sprite: {fileID: 21300000, guid: bd4ad3893c1fb564bbe44c7983d07b92, type: 3}
+  _duration: 0.5
+--- !u!114 &5761849213994155780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7649388802242260027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4511a63c00138b488bc65300be52145, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sprite: {fileID: 0}
+  _duration: 1
 --- !u!1 &7695488129941037061
 GameObject:
   m_ObjectHideFlags: 0
