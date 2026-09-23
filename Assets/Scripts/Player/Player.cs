@@ -131,6 +131,7 @@ public class Player : MonoBehaviour
         SetActiveCharacterPosition(newPosition);
         SetCursorPosition(newPosition);
         RefreshCurrentCell();
+        CancelEndTurn();
     }
 
     public void Grab()
