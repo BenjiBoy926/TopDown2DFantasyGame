@@ -155,9 +155,19 @@ public class Battle : MonoBehaviour
         return _history.Undo();
     }
 
+    public bool IsUndoAvailable()
+    {
+        return _history.IsUndoAvailable();
+    }
+
     public Coroutine Redo()
     {
         return _history.Redo();
+    }
+
+    public bool IsRedoAvailable()
+    {
+        return _history.IsRedoAvailable();
     }
 
     public CharacterRecord GetLastRecordedState(Character character)

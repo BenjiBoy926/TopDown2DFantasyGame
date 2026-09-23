@@ -65,13 +65,23 @@ public class BattleHistory : MonoBehaviour
     public Coroutine Undo()
     {
         StopAllCoroutines();
-        return _currentStateIndex > 0 ? StartCoroutine(UndoToLastPlayerMovePoint()) : null;
+        return IsUndoAvailable() ? StartCoroutine(UndoToLastPlayerMovePoint()) : null;
+    }
+
+    public bool IsUndoAvailable()
+    {
+        return _currentStateIndex > 0;
     }
 
     public Coroutine Redo()
     {
         StopAllCoroutines();
-        return _currentStateIndex < LatestStateIndex ? StartCoroutine(RedoToLastPlayerMovePoint()) : null;
+        return IsRedoAvailable() ? StartCoroutine(RedoToLastPlayerMovePoint()) : null;
+    }
+
+    public bool IsRedoAvailable()
+    {
+        return _currentStateIndex < LatestStateIndex;
     }
 
     private IEnumerator UndoToLastPlayerMovePoint()

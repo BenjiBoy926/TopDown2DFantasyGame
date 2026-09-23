@@ -20,6 +20,9 @@ public class PlayerActionTimer : MonoBehaviour
 
     public void BeginUndo()
     {
+        if (!_battle.IsUndoAvailable())
+            return;
+
         Begin(_undoAction);
         _ui.BeginUndo();
     }
@@ -31,6 +34,9 @@ public class PlayerActionTimer : MonoBehaviour
 
     public void BeginRedo()
     {
+        if (!_battle.IsRedoAvailable())
+            return;
+
         Begin(_redoAction);
         _ui.BeginRedo();
     }
