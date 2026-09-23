@@ -11,6 +11,7 @@ public class PlayerActionTimerUI : MonoBehaviour
     [SerializeField] private float _fadeDuration = .2f;
     [SerializeField] private float _confirmDuration = .35f;
     private TMP_Text _label;
+    private bool _isActive;
 
     private void Awake()
     {
@@ -30,31 +31,31 @@ public class PlayerActionTimerUI : MonoBehaviour
     private void Animate(float duration)
     {
         KillAllTweens();
-
         _icon.transform.localScale = Vector3.zero;
         _icon.transform.DOScale(1, duration).SetEase(Ease.OutQuint);
         _outline.transform.localScale = Vector3.one;
-
         Fade(_shownAlpha, duration);
+        _isActive = true;
     }
 
     public void CancelAnimation()
     {
+        if (!_isActive)
+            return;
+
         KillAllTweens();
-
         _icon.transform.DOScale(0, _fadeDuration);
-
         Fade(0, _fadeDuration);
+        _isActive = false;
     }
 
     public void PlayConfirmAnimation()
     {
         KillAllTweens();
-
         _icon.transform.DOScale(0, _confirmDuration).SetEase(Ease.InBack);
         _outline.transform.DOScale(2, _confirmDuration).SetEase(Ease.OutQuad);
-
         Fade(0, _confirmDuration);
+        _isActive = false;
     }
 
     private void Fade(float alpha, float duration)
