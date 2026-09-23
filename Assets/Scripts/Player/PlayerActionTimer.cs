@@ -24,7 +24,7 @@ public class PlayerActionTimer : MonoBehaviour
             return;
 
         Begin(_undoAction);
-        _ui.BeginUndo();
+        _ui.BeginUndo(_duration);
     }
 
     public void CancelUndo()
@@ -38,7 +38,7 @@ public class PlayerActionTimer : MonoBehaviour
             return;
 
         Begin(_redoAction);
-        _ui.BeginRedo();
+        _ui.BeginRedo(_duration);
     }
 
     public void CancelRedo()

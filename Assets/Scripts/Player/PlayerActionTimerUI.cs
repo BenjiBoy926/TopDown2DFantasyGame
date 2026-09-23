@@ -29,15 +29,15 @@ public class PlayerActionTimerUI : MonoBehaviour
         _label.color = new(_label.color.r, _label.color.g, _label.color.b, 0f);
     }
 
-    public void BeginUndo()
+    public void BeginUndo(float duration)
     {
-        Begin();
+        Begin(duration);
         Display(_undoInfo);
     }
 
-    public void BeginRedo()
+    public void BeginRedo(float duration)
     {
-        Begin();
+        Begin(duration);
         Display(_redoInfo);
     }
 
@@ -47,21 +47,27 @@ public class PlayerActionTimerUI : MonoBehaviour
         _label.text = info.Label;
     }
 
-    private void Begin()
+    private void Begin(float duration)
     {
-        transform.localScale = Vector3.one;
+        transform.localScale = Vector3.zero;
+        transform.DOScale(1, duration).SetEase(Ease.OutQuint);
+
         _image.DOFade(_shownAlpha, _fadeDuration);
         _label.DOFade(_shownAlpha, _fadeDuration);
     }
 
     public void Cancel()
     {
+        transform.DOKill();
+        transform.DOScale(0, _fadeDuration);
+
         _image.DOFade(0f, _fadeDuration);
         _label.DOFade(0f, _fadeDuration);
     }
 
     public void Confirm()
     {
+        transform.DOKill();
         transform.DOScale(0, _confirmDuration).SetEase(Ease.InBack);
     }
 }
