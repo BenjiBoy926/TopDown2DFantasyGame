@@ -7,11 +7,16 @@ public class PlayerActionTimer : MonoBehaviour
     {
         public float Duration;
         
+        public virtual bool IsAvailable(Battle battle) => true;
         public abstract Coroutine Execute(Battle battle);
     }
 
     private class TimedAction_Undo : TimedAction
     {
+        public override bool IsAvailable(Battle battle)
+        {
+            return battle.IsUndoAvailable();
+        }
         public override Coroutine Execute(Battle battle)
         {
             return battle.Undo();
@@ -20,6 +25,10 @@ public class PlayerActionTimer : MonoBehaviour
 
     private class TimedAction_Redo : TimedAction
     {
+        public override bool IsAvailable(Battle battle)
+        {
+            return battle.IsRedoAvailable();
+        }
         public override Coroutine Execute(Battle battle)
         {
             return battle.Redo();
@@ -55,18 +64,12 @@ public class PlayerActionTimer : MonoBehaviour
 
     public void BeginUndo()
     {
-        if (!_battle.IsUndoAvailable())
-            return;
-
         Begin(_undoAction);
         _ui.BeginUndo(_undoRedoDuration);
     }
 
     public void BeginRedo()
     {
-        if (!_battle.IsRedoAvailable())
-            return;
-
         Begin(_redoAction);
         _ui.BeginRedo(_undoRedoDuration);
     }
@@ -94,8 +97,12 @@ public class PlayerActionTimer : MonoBehaviour
 
     private void Begin(TimedAction action)
     {
+        if (!action.IsAvailable(_battle))
+            return;
+
         _pendingAction = action;
         Invoke(nameof(Confirm), action.Duration);
+        // generic "Begin" method for the UI
     }
 
     private void Cancel(TimedAction action)
