@@ -1,39 +1,62 @@
+using System;
 using UnityEngine;
 
 public class PlayerUndoTimer : MonoBehaviour
 {
     [SerializeField] private float _duration = 0.5f;
-    private float _startTime = 0;
     private Battle _battle;
+    private Action _undoAction;
+    private Action _redoAction;
+    private Action _pendingAction;
 
     private void Awake()
     {
         _battle = GetComponentInParent<Battle>();
+        _undoAction = () => _battle.Undo();
+        _redoAction = () => _battle.Redo();
     }
 
-    public void Begin()
+    public void BeginUndo()
     {
-        _startTime = Time.time;
-        enabled = true;
+        Begin(_undoAction);
     }
 
-    private void Update()
+    public void CancelUndo()
     {
-        float elapsedTime = Time.time - _startTime;
-        if (elapsedTime >= _duration)
+        Cancel(_undoAction);
+    }
+
+    public void BeginRedo()
+    {
+        Begin(_redoAction);
+    }
+
+    public void CancelRedo()
+    {
+        Cancel(_redoAction);
+    }
+
+    private void Begin(Action action)
+    {
+        _pendingAction = action;
+        Invoke(nameof(Trigger), _duration);
+    }
+
+    private void Cancel(Action action)
+    {
+        if (_pendingAction == action)
         {
-            Trigger();
+            Cancel();
         }
     }
 
-    public void End()
+    private void Cancel()
     {
-        enabled = false;
+        CancelInvoke();
     }
 
     private void Trigger()
     {
-        _battle.Undo();
-        enabled = false;
+        _pendingAction.Invoke();
     }
 }

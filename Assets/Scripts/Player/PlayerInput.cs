@@ -139,11 +139,11 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
         if (context.started)
         {
-            _player.StartUndo();
+            _player.BeginUndo();
         }
         else if (context.canceled)
         {
-            _player.StopUndo();
+            _player.CancelUndo();
         }
     }
 
@@ -154,11 +154,11 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
         if (context.started)
         {
-            _player.StartRedo();
+            _player.BeginRedo();
         }
         else if (context.canceled)
         {
-            _player.StopRedo();
+            _player.CancelRedo();
         }
     }
 }
