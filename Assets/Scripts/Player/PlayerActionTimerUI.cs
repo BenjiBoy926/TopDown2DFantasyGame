@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using TMPro;
 using UnityEngine;
@@ -14,6 +15,9 @@ public class PlayerActionTimerUI : MonoBehaviour
 
     [SerializeField] private DisplayInfo _undoInfo;
     [SerializeField] private DisplayInfo _redoInfo;
+    [SerializeField] private float _shownAlpha = .5f;
+    [SerializeField] private float _fadeDuration = .2f;
+    [SerializeField] private float _confirmDuration = .35f;
     private Image _image;
     private TMP_Text _label;
 
@@ -21,7 +25,8 @@ public class PlayerActionTimerUI : MonoBehaviour
     {
         _image = GetComponentInChildren<Image>(true);
         _label = GetComponentInChildren<TMP_Text>(true);
-        gameObject.SetActive(false);
+        _image.color = new(_image.color.r, _image.color.g, _image.color.b, 0f);
+        _label.color = new(_label.color.r, _label.color.g, _label.color.b, 0f);
     }
 
     public void BeginUndo()
@@ -44,16 +49,19 @@ public class PlayerActionTimerUI : MonoBehaviour
 
     private void Begin()
     {
-        gameObject.SetActive(true);
+        transform.localScale = Vector3.one;
+        _image.DOFade(_shownAlpha, _fadeDuration);
+        _label.DOFade(_shownAlpha, _fadeDuration);
     }
 
     public void Cancel()
     {
-        gameObject.SetActive(false);
+        _image.DOFade(0f, _fadeDuration);
+        _label.DOFade(0f, _fadeDuration);
     }
 
     public void Confirm()
     {
-        gameObject.SetActive(false);
+        transform.DOScale(0, _confirmDuration).SetEase(Ease.InBack);
     }
 }
