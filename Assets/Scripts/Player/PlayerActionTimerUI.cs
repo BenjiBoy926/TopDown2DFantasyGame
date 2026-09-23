@@ -53,36 +53,44 @@ public class PlayerActionTimerUI : MonoBehaviour
     {
         KillAllTweens();
 
-        transform.localScale = Vector3.zero;
-        transform.DOScale(1, duration).SetEase(Ease.OutQuint);
+        _icon.transform.localScale = Vector3.zero;
+        _icon.transform.DOScale(1, duration).SetEase(Ease.OutQuint);
         _outline.transform.localScale = Vector3.one;
 
-        _icon.DOFade(_shownAlpha, _fadeDuration);
-        _outline.DOFade(_shownAlpha, _fadeDuration);
-        _label.DOFade(_shownAlpha, _fadeDuration);
+        Fade(_shownAlpha, duration);
     }
 
     public void Cancel()
     {
         KillAllTweens();
-        transform.DOScale(0, _fadeDuration);
 
-        _icon.DOFade(0f, _fadeDuration);
-        _outline.DOFade(0f, _fadeDuration);
-        _label.DOFade(0f, _fadeDuration);
+        _icon.transform.DOScale(0, _fadeDuration);
+
+        Fade(0, _fadeDuration);
     }
 
     public void Confirm()
     {
         KillAllTweens();
-        transform.DOScale(0, _confirmDuration).SetEase(Ease.InBack);
-        _outline.transform.DOScale(2, _confirmDuration).SetEase(Ease.OutQuint);
+
+        _icon.transform.DOScale(0, _confirmDuration).SetEase(Ease.InBack);
+        _outline.transform.DOScale(2, _confirmDuration).SetEase(Ease.OutQuad);
+
+        Fade(0, _confirmDuration);
+    }
+
+    private void Fade(float alpha, float duration)
+    {
+        _icon.DOFade(alpha, duration);
+        _outline.DOFade(alpha, duration);
+        _label.DOFade(alpha, duration);
     }
 
     private void KillAllTweens()
     {
-        transform.DOKill();
+        _icon.transform.DOKill();
         _outline.transform.DOKill();
+
         _icon.DOKill();
         _outline.DOKill();
         _label.DOKill();
