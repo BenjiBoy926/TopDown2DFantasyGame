@@ -3,22 +3,54 @@ using UnityEngine;
 
 public class PlayerActionTimer : MonoBehaviour
 {
+    private abstract class TimedAction
+    {
+        public float Duration;
+        
+        public abstract Coroutine Execute(Battle battle);
+    }
+
+    private class TimedAction_Undo : TimedAction
+    {
+        public override Coroutine Execute(Battle battle)
+        {
+            return battle.Undo();
+        }
+    }
+
+    private class TimedAction_Redo : TimedAction
+    {
+        public override Coroutine Execute(Battle battle)
+        {
+            return battle.Redo();
+        }
+    }
+
+    private class TimedAction_EndTurn : TimedAction
+    {
+        public override Coroutine Execute(Battle battle)
+        {
+            battle.StartNextTurn();
+            return null;
+        }
+    }
+
     [SerializeField] private float _undoRedoDuration = 0.5f;
     [SerializeField] private float _endTurnDuration = 1.5f;
     private Battle _battle;
     private PlayerActionTimerUI _ui;
-    private Action _undoAction;
-    private Action _redoAction;
-    private Action _endTurnAction;
-    private Action _pendingAction;
+    private TimedAction_Undo _undoAction;
+    private TimedAction_Redo _redoAction;
+    private TimedAction_EndTurn _endTurnAction;
+    private TimedAction _pendingAction;
 
     private void Awake()
     {
         _battle = GetComponentInParent<Battle>();
         _ui = GetComponentInChildren<PlayerActionTimerUI>(true);
-        _undoAction = () => _battle.Undo();
-        _redoAction = () => _battle.Redo();
-        _endTurnAction = _battle.StartNextTurn;
+        _undoAction = new TimedAction_Undo() { Duration = _undoRedoDuration };
+        _redoAction = new TimedAction_Redo() { Duration = _undoRedoDuration };
+        _endTurnAction = new TimedAction_EndTurn() { Duration = _endTurnDuration };
     }
 
     public void BeginUndo()
@@ -26,7 +58,7 @@ public class PlayerActionTimer : MonoBehaviour
         if (!_battle.IsUndoAvailable())
             return;
 
-        Begin(_undoAction, _undoRedoDuration);
+        Begin(_undoAction);
         _ui.BeginUndo(_undoRedoDuration);
     }
 
@@ -35,13 +67,13 @@ public class PlayerActionTimer : MonoBehaviour
         if (!_battle.IsRedoAvailable())
             return;
 
-        Begin(_redoAction, _undoRedoDuration);
+        Begin(_redoAction);
         _ui.BeginRedo(_undoRedoDuration);
     }
 
     public void BeginEndTurn()
     {
-        Begin(_endTurnAction, _endTurnDuration);
+        Begin(_endTurnAction);
         _ui.BeginEndTurn(_endTurnDuration);
     }
 
@@ -60,13 +92,13 @@ public class PlayerActionTimer : MonoBehaviour
         Cancel(_endTurnAction);
     }
 
-    private void Begin(Action action, float duration)
+    private void Begin(TimedAction action)
     {
         _pendingAction = action;
-        Invoke(nameof(Confirm), duration);
+        Invoke(nameof(Confirm), action.Duration);
     }
 
-    private void Cancel(Action action)
+    private void Cancel(TimedAction action)
     {
         if (_pendingAction == action)
         {
@@ -82,7 +114,8 @@ public class PlayerActionTimer : MonoBehaviour
 
     private void Confirm()
     {
-        _pendingAction.Invoke();
+        // TODO: wait on the coroutine returned to see if we need to rapidly repeat the same action
+        _pendingAction.Execute(_battle);
         _ui.PlayConfirmAnimation();
     }
 }
