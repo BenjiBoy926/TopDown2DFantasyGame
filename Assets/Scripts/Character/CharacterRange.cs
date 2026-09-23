@@ -71,6 +71,11 @@ public class CharacterRange : MonoBehaviour
         _display.ShowOpaque();
     }
 
+    public void ShowNearInvisibleRange()
+    {
+        _display.ShowNearInvisible();
+    }
+
     public void Hide()
     {
         _display.Hide();

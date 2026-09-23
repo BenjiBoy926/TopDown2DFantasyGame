@@ -437,6 +437,7 @@ MonoBehaviour:
   _allyInteractionCellColor: {r: 0, g: 1, b: 0, a: 1}
   _transparentAlpha: 0.2
   _opaqueAlpha: 0.5
+  _nearInvisibleAlpha: 0.1
 --- !u!114 &6207368685314870910
 MonoBehaviour:
   m_ObjectHideFlags: 0

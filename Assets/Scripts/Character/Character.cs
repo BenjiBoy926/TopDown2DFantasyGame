@@ -487,7 +487,7 @@ public class Character : MonoBehaviour
     public void PreviewInteraction(Character other)
     {
         _preview.PreviewMove(other);
-        _range.ShowTransparentRange();
+        _range.ShowNearInvisibleRange();
     }
 
     public void ClearInteractionPreview()

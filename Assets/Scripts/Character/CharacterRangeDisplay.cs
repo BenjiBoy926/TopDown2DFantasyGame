@@ -9,6 +9,7 @@ public class CharacterRangeDisplay : MonoBehaviour
     [SerializeField] private Color _allyInteractionCellColor = Color.green;
     [SerializeField] private float _transparentAlpha = 0.2f;
     [SerializeField] private float _opaqueAlpha = 0.5f;
+    [SerializeField] private float _nearInvisibleAlpha = 0.05f;
     private Character _character;
     private readonly HashSet<SpriteRenderer> _cells = new();
     private float _currentAlpha = 0;
@@ -50,6 +51,12 @@ public class CharacterRangeDisplay : MonoBehaviour
     {
         Refresh();
         SetCurrentAlpha(_opaqueAlpha);
+    }
+
+    public void ShowNearInvisible()
+    {
+        Refresh();
+        SetCurrentAlpha(_nearInvisibleAlpha);
     }
 
     private void Refresh()
