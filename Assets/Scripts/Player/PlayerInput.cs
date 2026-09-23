@@ -100,7 +100,15 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnCancel(InputAction.CallbackContext context)
     {
-        _player.CancelMove();
+        if (_player.ActiveCharacter)
+        {
+            _player.CancelMove();
+        }
+        else
+        {
+            HandleEndTurn(context);
+        }
+
         if (context.started)
         {
             _isCancelPressed = true;
@@ -159,6 +167,21 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
         else if (context.canceled)
         {
             _player.CancelRedo();
+        }
+    }
+
+    private void HandleEndTurn(InputAction.CallbackContext context)
+    {
+        if (!_player.IsInputAllowed)
+            return;
+
+        if (context.started)
+        {
+            _player.BeginEndTurn();
+        }
+        else if (context.canceled)
+        {
+            _player.CancelEndTurn();
         }
     }
 }

@@ -18,6 +18,7 @@ public class PlayerActionTimerUI : MonoBehaviour
     [SerializeField] private Image _outline;
     [SerializeField] private DisplayInfo _undoInfo;
     [SerializeField] private DisplayInfo _redoInfo;
+    [SerializeField] private DisplayInfo _endTurnInfo;
     [SerializeField] private float _shownAlpha = .5f;
     [SerializeField] private float _fadeDuration = .2f;
     [SerializeField] private float _confirmDuration = .35f;
@@ -33,23 +34,27 @@ public class PlayerActionTimerUI : MonoBehaviour
 
     public void BeginUndo(float duration)
     {
-        Begin(duration);
-        Display(_undoInfo);
+        Begin(_undoInfo, duration);
     }
 
     public void BeginRedo(float duration)
     {
-        Begin(duration);
-        Display(_redoInfo);
+        Begin(_redoInfo, duration);
     }
 
-    private void Display(DisplayInfo info)
+    public void BeginEndTurn(float duration)
+    {
+        Begin(_endTurnInfo, duration);
+    }
+
+    private void Begin(DisplayInfo info, float duration)
     {
         _icon.sprite = info.Sprite;
         _label.text = info.Label;
+        Animate(duration);
     }
 
-    private void Begin(float duration)
+    private void Animate(float duration)
     {
         KillAllTweens();
 
@@ -60,7 +65,7 @@ public class PlayerActionTimerUI : MonoBehaviour
         Fade(_shownAlpha, duration);
     }
 
-    public void Cancel()
+    public void CancelAnimation()
     {
         KillAllTweens();
 
@@ -69,7 +74,7 @@ public class PlayerActionTimerUI : MonoBehaviour
         Fade(0, _fadeDuration);
     }
 
-    public void Confirm()
+    public void PlayConfirmAnimation()
     {
         KillAllTweens();
 

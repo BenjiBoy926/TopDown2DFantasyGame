@@ -57,6 +57,16 @@ public class Player : MonoBehaviour
         _battle.StartNextTurn();
     }
 
+    public void BeginEndTurn()
+    {
+        _actionTimer.BeginEndTurn();
+    }
+
+    public void CancelEndTurn()
+    {
+        _actionTimer.CancelEndTurn();
+    }
+
     public void BeginUndo()
     {
         _actionTimer.BeginUndo();

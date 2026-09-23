@@ -8,6 +8,7 @@ public class PlayerActionTimer : MonoBehaviour
     private PlayerActionTimerUI _ui;
     private Action _undoAction;
     private Action _redoAction;
+    private Action _endTurnAction;
     private Action _pendingAction;
 
     private void Awake()
@@ -16,6 +17,7 @@ public class PlayerActionTimer : MonoBehaviour
         _ui = GetComponentInChildren<PlayerActionTimerUI>(true);
         _undoAction = () => _battle.Undo();
         _redoAction = () => _battle.Redo();
+        _endTurnAction = _battle.StartNextTurn;
     }
 
     public void BeginUndo()
@@ -27,11 +29,6 @@ public class PlayerActionTimer : MonoBehaviour
         _ui.BeginUndo(_duration);
     }
 
-    public void CancelUndo()
-    {
-        Cancel(_undoAction);
-    }
-
     public void BeginRedo()
     {
         if (!_battle.IsRedoAvailable())
@@ -41,9 +38,26 @@ public class PlayerActionTimer : MonoBehaviour
         _ui.BeginRedo(_duration);
     }
 
+    public void BeginEndTurn()
+    {
+        Begin(_endTurnAction);
+        // TODO: longer duration for end turn
+        _ui.BeginEndTurn(_duration);
+    }
+
+    public void CancelUndo()
+    {
+        Cancel(_undoAction);
+    }
+
     public void CancelRedo()
     {
         Cancel(_redoAction);
+    }
+
+    public void CancelEndTurn()
+    {
+        Cancel(_endTurnAction);
     }
 
     private void Begin(Action action)
@@ -63,12 +77,12 @@ public class PlayerActionTimer : MonoBehaviour
     private void Cancel()
     {
         CancelInvoke();
-        _ui.Cancel();
+        _ui.CancelAnimation();
     }
 
     private void Confirm()
     {
         _pendingAction.Invoke();
-        _ui.Confirm();
+        _ui.PlayConfirmAnimation();
     }
 }
