@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,19 +14,20 @@ public class PlayerActionTimerUI : MonoBehaviour
         public string Label;
     }
 
+    [SerializeField] private Image _icon;
+    [SerializeField] private Image _outline;
     [SerializeField] private DisplayInfo _undoInfo;
     [SerializeField] private DisplayInfo _redoInfo;
     [SerializeField] private float _shownAlpha = .5f;
     [SerializeField] private float _fadeDuration = .2f;
     [SerializeField] private float _confirmDuration = .35f;
-    private Image _image;
     private TMP_Text _label;
 
     private void Awake()
     {
-        _image = GetComponentInChildren<Image>(true);
         _label = GetComponentInChildren<TMP_Text>(true);
-        _image.color = new(_image.color.r, _image.color.g, _image.color.b, 0f);
+        _icon.color = new(_icon.color.r, _icon.color.g, _icon.color.b, 0f);
+        _outline.color = new(_outline.color.r, _outline.color.g, _outline.color.b, 0f);
         _label.color = new(_label.color.r, _label.color.g, _label.color.b, 0f);
     }
 
@@ -43,31 +45,46 @@ public class PlayerActionTimerUI : MonoBehaviour
 
     private void Display(DisplayInfo info)
     {
-        _image.sprite = info.Sprite;
+        _icon.sprite = info.Sprite;
         _label.text = info.Label;
     }
 
     private void Begin(float duration)
     {
+        KillAllTweens();
+
         transform.localScale = Vector3.zero;
         transform.DOScale(1, duration).SetEase(Ease.OutQuint);
+        _outline.transform.localScale = Vector3.one;
 
-        _image.DOFade(_shownAlpha, _fadeDuration);
+        _icon.DOFade(_shownAlpha, _fadeDuration);
+        _outline.DOFade(_shownAlpha, _fadeDuration);
         _label.DOFade(_shownAlpha, _fadeDuration);
     }
 
     public void Cancel()
     {
-        transform.DOKill();
+        KillAllTweens();
         transform.DOScale(0, _fadeDuration);
 
-        _image.DOFade(0f, _fadeDuration);
+        _icon.DOFade(0f, _fadeDuration);
+        _outline.DOFade(0f, _fadeDuration);
         _label.DOFade(0f, _fadeDuration);
     }
 
     public void Confirm()
     {
-        transform.DOKill();
+        KillAllTweens();
         transform.DOScale(0, _confirmDuration).SetEase(Ease.InBack);
+        _outline.transform.DOScale(2, _confirmDuration).SetEase(Ease.OutQuint);
+    }
+
+    private void KillAllTweens()
+    {
+        transform.DOKill();
+        _outline.transform.DOKill();
+        _icon.DOKill();
+        _outline.DOKill();
+        _label.DOKill();
     }
 }
