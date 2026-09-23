@@ -3,9 +3,17 @@ using UnityEngine;
 
 public class PlayerActionTimer : MonoBehaviour
 {
-    private abstract class TimedAction
+    [Serializable]
+    public struct DisplayInfo
+    {
+        public Sprite Sprite;
+        public string Label;
+    }
+
+    public abstract class TimedAction
     {
         public float Duration;
+        public DisplayInfo DisplayInfo;
         
         public virtual bool IsAvailable(Battle battle) => true;
         public abstract Coroutine Execute(Battle battle);
@@ -44,6 +52,9 @@ public class PlayerActionTimer : MonoBehaviour
         }
     }
 
+    [SerializeField] private DisplayInfo _undoInfo;
+    [SerializeField] private DisplayInfo _redoInfo;
+    [SerializeField] private DisplayInfo _endTurnInfo;
     [SerializeField] private float _undoRedoDuration = 0.5f;
     [SerializeField] private float _endTurnDuration = 1.5f;
     private Battle _battle;
@@ -57,27 +68,24 @@ public class PlayerActionTimer : MonoBehaviour
     {
         _battle = GetComponentInParent<Battle>();
         _ui = GetComponentInChildren<PlayerActionTimerUI>(true);
-        _undoAction = new TimedAction_Undo() { Duration = _undoRedoDuration };
-        _redoAction = new TimedAction_Redo() { Duration = _undoRedoDuration };
-        _endTurnAction = new TimedAction_EndTurn() { Duration = _endTurnDuration };
+        _undoAction = new TimedAction_Undo() { Duration = _undoRedoDuration, DisplayInfo = _undoInfo };
+        _redoAction = new TimedAction_Redo() { Duration = _undoRedoDuration, DisplayInfo = _redoInfo };
+        _endTurnAction = new TimedAction_EndTurn() { Duration = _endTurnDuration, DisplayInfo = _endTurnInfo };
     }
 
     public void BeginUndo()
     {
         Begin(_undoAction);
-        _ui.BeginUndo(_undoRedoDuration);
     }
 
     public void BeginRedo()
     {
         Begin(_redoAction);
-        _ui.BeginRedo(_undoRedoDuration);
     }
 
     public void BeginEndTurn()
     {
         Begin(_endTurnAction);
-        _ui.BeginEndTurn(_endTurnDuration);
     }
 
     public void CancelUndo()
@@ -102,7 +110,7 @@ public class PlayerActionTimer : MonoBehaviour
 
         _pendingAction = action;
         Invoke(nameof(Confirm), action.Duration);
-        // generic "Begin" method for the UI
+        _ui.Begin(_pendingAction);
     }
 
     private void Cancel(TimedAction action)

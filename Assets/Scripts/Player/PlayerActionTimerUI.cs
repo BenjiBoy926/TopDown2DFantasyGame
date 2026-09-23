@@ -1,24 +1,13 @@
 using DG.Tweening;
 using System;
-using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerActionTimerUI : MonoBehaviour
 {
-    [Serializable]
-    private struct DisplayInfo
-    {
-        public Sprite Sprite;
-        public string Label;
-    }
-
     [SerializeField] private Image _icon;
     [SerializeField] private Image _outline;
-    [SerializeField] private DisplayInfo _undoInfo;
-    [SerializeField] private DisplayInfo _redoInfo;
-    [SerializeField] private DisplayInfo _endTurnInfo;
     [SerializeField] private float _shownAlpha = .5f;
     [SerializeField] private float _fadeDuration = .2f;
     [SerializeField] private float _confirmDuration = .35f;
@@ -32,26 +21,11 @@ public class PlayerActionTimerUI : MonoBehaviour
         _label.color = new(_label.color.r, _label.color.g, _label.color.b, 0f);
     }
 
-    public void BeginUndo(float duration)
+    public void Begin(PlayerActionTimer.TimedAction action)
     {
-        Begin(_undoInfo, duration);
-    }
-
-    public void BeginRedo(float duration)
-    {
-        Begin(_redoInfo, duration);
-    }
-
-    public void BeginEndTurn(float duration)
-    {
-        Begin(_endTurnInfo, duration);
-    }
-
-    private void Begin(DisplayInfo info, float duration)
-    {
-        _icon.sprite = info.Sprite;
-        _label.text = info.Label;
-        Animate(duration);
+        _icon.sprite = action.DisplayInfo.Sprite;
+        _label.text = action.DisplayInfo.Label;
+        Animate(action.Duration);
     }
 
     private void Animate(float duration)
