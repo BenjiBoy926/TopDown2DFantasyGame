@@ -3,6 +3,9 @@ using UnityEngine;
 
 public abstract class PlayerTimedAction : MonoBehaviour
 {
+    private const float QuickRepeatDuration = 0.01f;
+    private const float QuickRepeatWindow = .35f;
+
     public float Duration => _duration;
     public Sprite Sprite => _sprite;
     public abstract string Label { get; }
@@ -12,8 +15,7 @@ public abstract class PlayerTimedAction : MonoBehaviour
     [SerializeField] private float _duration;
     private Battle _battle;
     private PlayerActionTimerUI _ui;
-    private bool _isScheduled;
-    private bool _isRunning;
+    private bool _isTriggered;
 
     protected virtual void Awake()
     {
@@ -23,36 +25,39 @@ public abstract class PlayerTimedAction : MonoBehaviour
 
     public bool Begin()
     {
-        if (!IsAvailable())
-            return false;
-
-        StartCoroutine(ExecutionSequence());
-        _ui.Begin(this);
-        return true;
+        return Begin(_duration);
     }
 
     public void Cancel()
     {
         StopAllCoroutines();
         _ui.CancelAnimation();
-
-        _isScheduled = false;
-        _isRunning = false; // Not perfectly accurate because we do not stop THAT coroutine, but not a bug right now either
+        _isTriggered = false;
     }
 
     public virtual bool IsAvailable() => true;
     public abstract Coroutine Execute();
 
-    private IEnumerator ExecutionSequence()
+    private bool Begin(float duration)
     {
-        _isScheduled = true;
-        yield return new WaitForSeconds(_duration);
-        _isScheduled = false;
+        if (!IsAvailable())
+            return false;
 
+        StartCoroutine(ExecutionSequence(duration));
+        _ui.Begin(this, duration);
+        _isTriggered = true;
+        return true;
+    }
+
+    private IEnumerator ExecutionSequence(float duration)
+    {
+        yield return new WaitForSeconds(duration);
         _ui.PlayConfirmAnimation();
-
-        _isRunning = true;
         yield return Execute();
-        _isRunning = false;
+
+        if (_isTriggered)
+        {
+            Begin(QuickRepeatDuration);
+        }
     }
 }

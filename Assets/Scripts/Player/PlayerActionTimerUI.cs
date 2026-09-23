@@ -21,11 +21,11 @@ public class PlayerActionTimerUI : MonoBehaviour
         _label.color = new(_label.color.r, _label.color.g, _label.color.b, 0f);
     }
 
-    public void Begin(PlayerTimedAction action)
+    public void Begin(PlayerTimedAction action, float duration)
     {
         _icon.sprite = action.Sprite;
         _label.text = action.Label;
-        Animate(action.Duration);
+        Animate(duration);
     }
 
     private void Animate(float duration)
