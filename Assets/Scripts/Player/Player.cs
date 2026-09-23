@@ -2,7 +2,7 @@ using Hellmade.Sound;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerUndoTimer))]
+[RequireComponent(typeof(PlayerActionTimer))]
 [RequireComponent(typeof(RangeWarningSystem))]
 public class Player : MonoBehaviour
 {
@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     private Battle _battle;
     private PlayerCursor _cursor;
     private PlayerGridReticle _gridReticle;
-    private PlayerUndoTimer _undoTimer;
+    private PlayerActionTimer _actionTimer;
     private RangeWarningSystem _rangeWarning;
     private Character _activeCharacter;
     private Character _hoveredCharacter;
@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
         _battle = GetComponentInParent<Battle>();
         _cursor = GetComponentInChildren<PlayerCursor>();
         _gridReticle = GetComponentInChildren<PlayerGridReticle>();
-        _undoTimer = GetComponent<PlayerUndoTimer>();
+        _actionTimer = GetComponent<PlayerActionTimer>();
         _rangeWarning = GetComponent<RangeWarningSystem>();
         _actionDirectionIndicator = GetComponentInChildren<ActionDirectionIndicator>(true);
     }
@@ -59,22 +59,22 @@ public class Player : MonoBehaviour
 
     public void BeginUndo()
     {
-        _undoTimer.BeginUndo();
+        _actionTimer.BeginUndo();
     }
 
     public void CancelUndo()
     {
-        _undoTimer.CancelUndo();
+        _actionTimer.CancelUndo();
     }
 
     public void BeginRedo()
     {
-        _undoTimer.BeginRedo();
+        _actionTimer.BeginRedo();
     }
 
     public void CancelRedo()
     {
-        _undoTimer.CancelRedo();
+        _actionTimer.CancelRedo();
     }
 
     public void IncludeInView()

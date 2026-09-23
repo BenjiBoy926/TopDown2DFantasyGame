@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
 
-public class PlayerUndoTimer : MonoBehaviour
+public class PlayerActionTimer : MonoBehaviour
 {
     [SerializeField] private float _duration = 0.5f;
     private Battle _battle;
+    private PlayerActionTimerUI _ui;
     private Action _undoAction;
     private Action _redoAction;
     private Action _pendingAction;
@@ -12,6 +13,7 @@ public class PlayerUndoTimer : MonoBehaviour
     private void Awake()
     {
         _battle = GetComponentInParent<Battle>();
+        _ui = GetComponentInChildren<PlayerActionTimerUI>(true);
         _undoAction = () => _battle.Undo();
         _redoAction = () => _battle.Redo();
     }
@@ -19,6 +21,7 @@ public class PlayerUndoTimer : MonoBehaviour
     public void BeginUndo()
     {
         Begin(_undoAction);
+        _ui.BeginUndo();
     }
 
     public void CancelUndo()
@@ -29,6 +32,7 @@ public class PlayerUndoTimer : MonoBehaviour
     public void BeginRedo()
     {
         Begin(_redoAction);
+        _ui.BeginRedo();
     }
 
     public void CancelRedo()
@@ -39,7 +43,7 @@ public class PlayerUndoTimer : MonoBehaviour
     private void Begin(Action action)
     {
         _pendingAction = action;
-        Invoke(nameof(Trigger), _duration);
+        Invoke(nameof(Confirm), _duration);
     }
 
     private void Cancel(Action action)
@@ -53,10 +57,12 @@ public class PlayerUndoTimer : MonoBehaviour
     private void Cancel()
     {
         CancelInvoke();
+        _ui.Cancel();
     }
 
-    private void Trigger()
+    private void Confirm()
     {
         _pendingAction.Invoke();
+        _ui.Confirm();
     }
 }
