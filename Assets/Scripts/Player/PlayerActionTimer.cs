@@ -6,17 +6,13 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerTimedAction_EndTurn))]
 public class PlayerActionTimer : MonoBehaviour
 {
-    private Battle _battle;
-    private PlayerActionTimerUI _ui;
     private PlayerTimedAction_Undo _undoAction;
     private PlayerTimedAction_Redo _redoAction;
     private PlayerTimedAction_EndTurn _endTurnAction;
-    private PlayerTimedAction _pendingAction;
+    private PlayerTimedAction _currentlyRunningAction;
 
     private void Awake()
     {
-        _battle = GetComponentInParent<Battle>();
-        _ui = GetComponentInChildren<PlayerActionTimerUI>(true);
         _undoAction = GetComponent<PlayerTimedAction_Undo>();
         _redoAction = GetComponent<PlayerTimedAction_Redo>();
         _endTurnAction = GetComponent<PlayerTimedAction_EndTurn>();
@@ -54,32 +50,18 @@ public class PlayerActionTimer : MonoBehaviour
 
     private void Begin(PlayerTimedAction action)
     {
-        if (!action.IsAvailable())
-            return;
-
-        _pendingAction = action;
-        Invoke(nameof(Confirm), action.Duration);
-        _ui.Begin(_pendingAction);
+        if (action.Begin())
+        {
+            _currentlyRunningAction = action;
+        }
     }
 
     private void Cancel(PlayerTimedAction action)
     {
-        if (_pendingAction == action)
+        if (_currentlyRunningAction == action)
         {
-            Cancel();
+            action.Cancel();
+            _currentlyRunningAction = null;
         }
-    }
-
-    private void Cancel()
-    {
-        CancelInvoke();
-        _ui.CancelAnimation();
-    }
-
-    private void Confirm()
-    {
-        // TODO: wait on the coroutine returned to see if we need to rapidly repeat the same action
-        _pendingAction.Execute();
-        _ui.PlayConfirmAnimation();
     }
 }
