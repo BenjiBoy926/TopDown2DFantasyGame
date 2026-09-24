@@ -6,7 +6,7 @@ public class PlayerTimedAction_Redo : PlayerTimedAction
 
     public override bool IsAvailable()
     {
-        return Battle.IsRedoAvailable();
+        return base.IsAvailable() && Battle.IsRedoAvailable();
     }
     public override Coroutine Execute()
     {

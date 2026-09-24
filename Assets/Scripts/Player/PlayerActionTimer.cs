@@ -50,7 +50,7 @@ public class PlayerActionTimer : MonoBehaviour
 
     private void Begin(PlayerTimedAction action)
     {
-        if (action.Begin())
+        if (!_currentlyRunningAction && action.Begin())
         {
             _currentlyRunningAction = action;
         }
@@ -58,9 +58,9 @@ public class PlayerActionTimer : MonoBehaviour
 
     private void Cancel(PlayerTimedAction action)
     {
+        action.Cancel();
         if (_currentlyRunningAction == action)
         {
-            action.Cancel();
             _currentlyRunningAction = null;
         }
     }

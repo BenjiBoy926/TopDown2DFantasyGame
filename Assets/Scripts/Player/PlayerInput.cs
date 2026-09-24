@@ -142,9 +142,6 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnUndo(InputAction.CallbackContext context)
     {
-        if (!_player.IsInputAllowed)
-            return;
-
         if (context.started)
         {
             _player.BeginUndo();
@@ -157,9 +154,6 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
     public void OnRedo(InputAction.CallbackContext context)
     {
-        if (!_player.IsInputAllowed)
-            return;
-
         if (context.started)
         {
             _player.BeginRedo();
@@ -172,9 +166,6 @@ public class PlayerInput : MonoBehaviour, DefaultActions.IPlayerActions
 
     private void HandleEndTurn(InputAction.CallbackContext context)
     {
-        if (!_player.IsInputAllowed)
-            return;
-
         if (context.started)
         {
             _player.BeginEndTurn();

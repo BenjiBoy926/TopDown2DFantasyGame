@@ -6,7 +6,7 @@ public class PlayerTimedAction_Undo : PlayerTimedAction
 
     public override bool IsAvailable()
     {
-        return Battle.IsUndoAvailable();
+        return base.IsAvailable() && Battle.IsUndoAvailable();
     }
     public override Coroutine Execute()
     {
