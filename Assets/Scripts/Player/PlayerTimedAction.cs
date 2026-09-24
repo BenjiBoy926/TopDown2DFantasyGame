@@ -66,7 +66,6 @@ public abstract class PlayerTimedAction : MonoBehaviour
         yield return Execute();
 
         yield return null;
-        yield return null;
 
         if (_isTriggered)
         {
