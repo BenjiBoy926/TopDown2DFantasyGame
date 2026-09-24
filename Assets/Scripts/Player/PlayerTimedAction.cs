@@ -19,6 +19,7 @@ public abstract class PlayerTimedAction : MonoBehaviour
     private PlayerActionTimerUI _ui;
     private bool _isScheduled;
     private bool _isTriggered;
+    private float _timeOfExecutionFinished;
 
     protected virtual void Awake()
     {
@@ -29,7 +30,15 @@ public abstract class PlayerTimedAction : MonoBehaviour
 
     public bool Begin()
     {
-        return Begin(_duration);
+        bool isInQuickRepeatWindow = (Time.time - _timeOfExecutionFinished) <= QuickRepeatWindow;
+        if (isInQuickRepeatWindow)
+        {
+            return Begin(QuickRepeatDuration);
+        }
+        else
+        {
+            return Begin(_duration);
+        }
     }
 
     public void Cancel()
@@ -65,11 +74,13 @@ public abstract class PlayerTimedAction : MonoBehaviour
         _ui.PlayConfirmAnimation();
         yield return Execute();
 
+        // Wait for Player.IsInputAllowed to update during the frame after execution finishes
         yield return null;
 
+        _timeOfExecutionFinished = Time.time;
         if (_isTriggered)
         {
-            Begin(QuickRepeatDuration);
+            Begin();
         }
     }
 }
