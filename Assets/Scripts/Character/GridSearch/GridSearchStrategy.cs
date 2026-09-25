@@ -11,50 +11,33 @@ public abstract class GridSearchStrategy
 
     protected void BuildNeighborIndexTable(Vector2Int direction, int[] table)
     {
-        Vector2Int absoluteOffset = new(Mathf.Abs(direction.x), Mathf.Abs(direction.y));
+        const int first = 0;
+        const int second = 1;
+        const int third = 2;
+        const int fourth = 3;
 
-        int first = 0;
-        int second = 1;
-        int third = 2;
-        int fourth = 3;
+        const int up = 0;
+        const int right = 1;
+        const int down = 2;
+        const int left = 3;
 
-        int up = 0;
-        int right = 1;
-        int down = 2;
-        int left = 3;
-
-        if (absoluteOffset.x > absoluteOffset.y)
+        bool isRight = direction.x > 0;
+        bool isUp = direction.y > 0;
+        bool isHorizontal = Mathf.Abs(direction.x) > Mathf.Abs(direction.y);
+        
+        if (isHorizontal)
         {
-            if (direction.x > 0)
-            {
-                table[first] = right;
-                table[third] = left;
-                if (direction.y > 0)
-                {
-                    table[second] = up;
-                    table[fourth] = down;
-                }
-                else
-                {
-                    table[second] = down;
-                    table[fourth] = up;
-                }
-            }
-            else
-            {
-                table[first] = left;
-                table[third] = right;
-                if (direction.x > 0)
-                {
-                    table[second] = right;
-                    table[fourth] = left;
-                }
-                else
-                {
-                    table[second] = left;
-                    table[fourth] = right;
-                }
-            }
+            table[first] = isRight ? right : left;
+            table[second] = isUp ? up : down;
+            table[third] = isRight ? left : right;
+            table[fourth] = isUp ? down : up;
+        }
+        else
+        {
+            table[first] = isUp ? up : down;
+            table[second] = isRight ? right : left;
+            table[third] = isUp ? down : up;
+            table[fourth] = isRight ? left : right;
         }
     }
 
