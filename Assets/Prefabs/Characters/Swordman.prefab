@@ -333,7 +333,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveDuration: 0.35
   _moveEase: 9
-  _clip: {fileID: 8300000, guid: c5cb2ac29e89dbf43a9b644caaad45e6, type: 3}
+  _clip: {fileID: 8300000, guid: 0fcd0d28208384148bbf28a8ece66aea, type: 3}
 --- !u!114 &1280907208005117164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -450,6 +450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf4f565d7f9b45e4f8426e18ab0a8c9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _previewSound: {fileID: 8300000, guid: d505be3528a807547a2ef054e0a647ce, type: 3}
 --- !u!114 &8749608898271360545
 MonoBehaviour:
   m_ObjectHideFlags: 0

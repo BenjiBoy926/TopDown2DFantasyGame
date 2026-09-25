@@ -1,9 +1,11 @@
+using Hellmade.Sound;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Character))]
 public class CharacterMovePreview : MonoBehaviour
 {
+    [SerializeField] private AudioClip _previewSound;
     private Character _character;
     private readonly List<Character> _activePreviews = new();
 
@@ -22,6 +24,8 @@ public class CharacterMovePreview : MonoBehaviour
 
         _activePreviews.Add(_character);
         _activePreviews.Add(other);
+
+        EazySoundManager.PlaySound(_previewSound);
     }
 
     public void Clear()
