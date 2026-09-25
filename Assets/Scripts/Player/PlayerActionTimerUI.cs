@@ -13,9 +13,8 @@ public class PlayerActionTimerUI : MonoBehaviour
     [SerializeField] private float _fadeDuration = .2f;
     [SerializeField] private float _confirmDuration = .35f;
     [Space]
-    [SerializeField] private AudioClip _loadingSound;
+    [SerializeField] private AudioSource _loadingSource;
     [SerializeField] private AudioClip _confirmSound;
-    [SerializeField] private AudioClip _cancelSound;
     private TMP_Text _label;
     private bool _isActive;
 
@@ -42,7 +41,8 @@ public class PlayerActionTimerUI : MonoBehaviour
         _outline.transform.localScale = Vector3.one;
         Fade(_shownAlpha, duration);
         _isActive = true;
-        EazySoundManager.PlayUISound(_loadingSound);
+        _loadingSource.Play();
+        EazySoundManager.StopAllUISounds
     }
 
     public void CancelAnimation()
@@ -54,7 +54,7 @@ public class PlayerActionTimerUI : MonoBehaviour
         _icon.transform.DOScale(0, _fadeDuration);
         Fade(0, _fadeDuration);
         _isActive = false;
-        EazySoundManager.PlayUISound(_cancelSound);
+        _loadingSource.Stop();
     }
 
     public void PlayConfirmAnimation()
@@ -65,6 +65,7 @@ public class PlayerActionTimerUI : MonoBehaviour
         Fade(0, _confirmDuration);
         _isActive = false;
         EazySoundManager.PlayUISound(_confirmSound);
+        _loadingSource.Stop();
     }
 
     private void Fade(float alpha, float duration)
