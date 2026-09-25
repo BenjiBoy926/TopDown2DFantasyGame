@@ -1,14 +1,19 @@
-using System;
 using UnityEngine;
 
 public abstract class GridSearchStrategy
 {
+    public abstract Node GetNeighbor(GridSearchState state, NodeNeighbors neighbors, int i);
     public abstract bool IsExitNode(GridSearchState state, Node node);
     public abstract bool PassesCustomEnqueueConditions(GridSearchState state, Node node);
     public abstract int GetNodeCost(GridSearchState state, Node node);
 
-    public class FindAllCellsInRange : GridSearchStrategy
+    public sealed class FindAllCellsInRange : GridSearchStrategy
     {
+        public override Node GetNeighbor(GridSearchState state, NodeNeighbors neighbors, int i)
+        {
+            return neighbors[i];
+        }
+
         public override bool IsExitNode(GridSearchState state, Node node)
         {
             return false;
@@ -25,13 +30,19 @@ public abstract class GridSearchStrategy
         }
     }
 
-    public class FindPathToCell : GridSearchStrategy
+    public sealed class FindPathToCell : GridSearchStrategy
     {
         private Vector2Int _target;
 
         public FindPathToCell(Vector2Int target)
         {
             _target = target;
+        }
+
+        // TODO: prefer neighbors towards the target
+        public override Node GetNeighbor(GridSearchState state, NodeNeighbors neighbors, int i)
+        {
+            return neighbors[i];
         }
 
         public override bool IsExitNode(GridSearchState state, Node node)
@@ -50,8 +61,14 @@ public abstract class GridSearchStrategy
         }
     }
 
-    public class FindPathToNearestEnemy : GridSearchStrategy
+    public sealed class FindPathToNearestEnemy : GridSearchStrategy
     {
+        // TODO: prefer neighbors towards the enemies
+        public override Node GetNeighbor(GridSearchState state, NodeNeighbors neighbors, int i)
+        {
+            return neighbors[i];
+        }
+
         public override bool IsExitNode(GridSearchState state, Node node)
         {
             CellNeighbors neighbors = CellNeighbors.Get(node.Cell);

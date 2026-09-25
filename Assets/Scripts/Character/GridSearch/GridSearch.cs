@@ -46,7 +46,8 @@ public class GridSearch : MonoBehaviour
         NodeNeighbors neighbors = NodeNeighbors.Get(node);
         for (int i = 0; i < NodeNeighbors.Count; i++)
         {
-            Visit(neighbors[i]);
+            Node neighbor = _strategy.GetNeighbor(_state, neighbors, i);
+            Visit(neighbor);
         }
     }
 
