@@ -3090,6 +3090,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73dc562fcb327a549a8f408f55a9bd61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _undoSound: {fileID: 8300000, guid: bc5decd19e0dc1b43815b4663a362cb4, type: 3}
+  _redoSound: {fileID: 8300000, guid: a2e07ec65f86e31469195ba1d22b5bd6, type: 3}
   _states: []
   _currentStateIndex: 0
 --- !u!114 &390487303
