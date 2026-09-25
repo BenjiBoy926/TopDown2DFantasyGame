@@ -176,9 +176,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 35cf7766e9e2aa542811e896fde57989, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 8afcdcb05dc27924eb3e6a9f0da1c8f2, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.1
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -589,6 +589,9 @@ MonoBehaviour:
   _shownAlpha: 0.5
   _fadeDuration: 0.2
   _confirmDuration: 0.35
+  _loadingSound: {fileID: 8300000, guid: 2e9011c80f80a408ab695c5ca6807e78, type: 3}
+  _confirmSound: {fileID: 8300000, guid: a929c81e6fa1cc947a1de3699c27fc1a, type: 3}
+  _cancelSound: {fileID: 8300000, guid: 6cf335790178b7d47b9ab47092711aa6, type: 3}
 --- !u!1 &4614476369810779824
 GameObject:
   m_ObjectHideFlags: 0
@@ -1058,7 +1061,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _faction: {fileID: 11400000, guid: 1f60f3d9c8dbcb04cb0f0112ee02ca2e, type: 2}
   _cellHoverAudio: {fileID: 7090440810606284232}
-  _moveStartClip: {fileID: 8300000, guid: 35cf7766e9e2aa542811e896fde57989, type: 3}
+  _moveStartClip: {fileID: 8300000, guid: f8b2e1ca4efac664cb77d8c1ad3437cf, type: 3}
   _detailPanel: {fileID: 7262512040316438750}
   _previewDetailPanel: {fileID: 5941015209225193940}
 --- !u!114 &3656688436091672680
