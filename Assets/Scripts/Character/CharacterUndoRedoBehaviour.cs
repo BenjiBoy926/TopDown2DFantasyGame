@@ -6,6 +6,7 @@ using UnityEngine;
 public class CharacterUndoRedoBehaviour : MonoBehaviour
 {
     [SerializeField] private float _stepDuration = .2f;
+    [SerializeField] private float _minimumTotalDuration = .6f;
     private Character _character;
 
     private void Awake()
@@ -20,6 +21,8 @@ public class CharacterUndoRedoBehaviour : MonoBehaviour
 
         _character.SetHealth(state.Health);
         _character.SetEnergy(state.Energy);
+
+        float startTime = Time.time;
         
         if (wasDead && !isDead)
         {
@@ -39,6 +42,12 @@ public class CharacterUndoRedoBehaviour : MonoBehaviour
         else
         {
             yield return _character.FadeAppearanceToTargetState(_stepDuration);
+        }
+
+        float elapsedTime = Time.time - startTime;
+        if (elapsedTime < _minimumTotalDuration)
+        {
+            yield return new WaitForSeconds(_minimumTotalDuration - elapsedTime);
         }
     }
 
