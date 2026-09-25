@@ -70,6 +70,7 @@ public class Character : MonoBehaviour
     public Vector2 CurrentCellCenter => _battle.SnapToGrid(Position);
     public Vector2Int CurrentCell => _battle.WorldToCell(Position);
     public Faction CurrentFactionTurn => _battle.CurrentFactionTurn;
+    public HashSet<Character> AllCharactersInBattle => _battle.AllCharacters;
 
     // ── Fields ───────────────────────────────────────────────────────────
 

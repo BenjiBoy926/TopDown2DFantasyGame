@@ -17,10 +17,12 @@ public class GridSearch : MonoBehaviour
 
     public GridSearchResult Search(GridSearchStrategy strategy)
     {
-        _strategy = strategy;
         _visited.Clear();
         _searchQueue.Clear();
-        _state = new(_character, _strategy, _visited, _searchQueue);
+        _state = new(_character, strategy, _visited, _searchQueue);
+
+        _strategy = strategy;
+        _strategy.Start(_state);
 
         Node start = new() { Cell = _character.CurrentCell, Parent = null };
         Enqueue(start);
