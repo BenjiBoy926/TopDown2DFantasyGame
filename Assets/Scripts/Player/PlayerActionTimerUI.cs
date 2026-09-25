@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Hellmade.Sound;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,9 +8,14 @@ public class PlayerActionTimerUI : MonoBehaviour
 {
     [SerializeField] private Image _icon;
     [SerializeField] private Image _outline;
+    [Space]
     [SerializeField] private float _shownAlpha = .5f;
     [SerializeField] private float _fadeDuration = .2f;
     [SerializeField] private float _confirmDuration = .35f;
+    [Space]
+    [SerializeField] private AudioClip _loadingSound;
+    [SerializeField] private AudioClip _confirmSound;
+    [SerializeField] private AudioClip _cancelSound;
     private TMP_Text _label;
     private bool _isActive;
 
@@ -36,6 +42,7 @@ public class PlayerActionTimerUI : MonoBehaviour
         _outline.transform.localScale = Vector3.one;
         Fade(_shownAlpha, duration);
         _isActive = true;
+        EazySoundManager.PlayUISound(_loadingSound);
     }
 
     public void CancelAnimation()
@@ -47,6 +54,7 @@ public class PlayerActionTimerUI : MonoBehaviour
         _icon.transform.DOScale(0, _fadeDuration);
         Fade(0, _fadeDuration);
         _isActive = false;
+        EazySoundManager.PlayUISound(_cancelSound);
     }
 
     public void PlayConfirmAnimation()
@@ -56,6 +64,7 @@ public class PlayerActionTimerUI : MonoBehaviour
         _outline.transform.DOScale(2, _confirmDuration).SetEase(Ease.OutQuad);
         Fade(0, _confirmDuration);
         _isActive = false;
+        EazySoundManager.PlayUISound(_confirmSound);
     }
 
     private void Fade(float alpha, float duration)

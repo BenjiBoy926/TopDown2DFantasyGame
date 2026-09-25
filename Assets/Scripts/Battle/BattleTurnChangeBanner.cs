@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Hellmade.Sound;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +7,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class BattleTurnChangeBanner : MonoBehaviour
 {
+    [SerializeField] private AudioClip _animateInSound;
+    [SerializeField] private AudioClip _animateOutSound;
     [SerializeField] private float _animationDuration = .35f;
 
     private RectTransform _rectTransform;
@@ -21,6 +24,8 @@ public class BattleTurnChangeBanner : MonoBehaviour
 
     public YieldInstruction AnimateIn(Faction faction)
     {
+        EazySoundManager.PlayUISound(_animateInSound);
+
         Color color = faction.Color;
         color.a = _image.color.a;
         _image.color = color;
@@ -32,6 +37,8 @@ public class BattleTurnChangeBanner : MonoBehaviour
 
     public YieldInstruction AnimateOut()
     {
+        EazySoundManager.PlayUISound(_animateOutSound);
+
         _rectTransform.pivot = new(1, .5f);
         return _rectTransform.DOScaleX(0, _animationDuration).WaitForCompletion();
     }

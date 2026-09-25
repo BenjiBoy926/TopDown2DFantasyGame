@@ -1,3 +1,4 @@
+using Hellmade.Sound;
 using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ public class BattleHistory : MonoBehaviour
     private int LatestStateIndex => _states.Count - 1;
     public static bool IsAnySequencePlaying => _playingHistories.Count > 0;
 
+    [SerializeField] private AudioClip _undoSound;
+    [SerializeField] private AudioClip _redoSound;
     [SerializeField, ReadOnly] private List<BattleState> _states = new();
     [SerializeField, ReadOnly] private int _currentStateIndex = 0;
     private Battle _battle;
@@ -114,6 +117,8 @@ public class BattleHistory : MonoBehaviour
 
     private IEnumerator UndoOnceSequence()
     {
+        EazySoundManager.PlayUISound(_undoSound);
+
         int previousStateIndex = _currentStateIndex + 1;
         BattleState previousState = _states[previousStateIndex];
         
@@ -135,6 +140,8 @@ public class BattleHistory : MonoBehaviour
 
     private IEnumerator RedoOnceSequence()
     {
+        EazySoundManager.PlayUISound(_redoSound);
+
         BattleState currentState = _states[_currentStateIndex];
 
         _undoRedoRoutines.Clear();

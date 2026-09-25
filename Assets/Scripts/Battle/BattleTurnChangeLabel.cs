@@ -2,11 +2,13 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 using DG.Tweening;
+using Hellmade.Sound;
 
 [RequireComponent(typeof(RectTransform))]
 [RequireComponent(typeof(TMP_Text))]
 public class BattleTurnChangeLabel : MonoBehaviour
 {
+    [SerializeField] private AudioClip _arrivalSound;
     [SerializeField] private float _moveDuration = .35f;
     [SerializeField] private float _waitDuration = 1.5f;
     [SerializeField] private float _waitOffset = 30;
@@ -24,6 +26,8 @@ public class BattleTurnChangeLabel : MonoBehaviour
 
     public IEnumerator Animate(Faction faction)
     {
+        EazySoundManager.PlayUISound(_arrivalSound);
+
         _label.text = $"{faction.Name} Turn";
         _rectTransform.anchoredPosition = new(-Screen.width, 0);
         yield return _rectTransform.DOAnchorPosX(-_waitOffset, _moveDuration).WaitForCompletion();
