@@ -24,8 +24,7 @@ public class CharacterAnimator : MonoBehaviour
     private static readonly WaitForSeconds OneShotProgressCheckWait = new(OneShotProgressCheckInterval);
 
     public bool IsOneShotAnimationPlaying => _oneShotRoutine != null;
-    public HorizontalDirectionType HorizontalDirection => _horizontalDirection;
-    public VerticalDirectionType VerticalDirection => _verticalDirection;
+    public bool IsRunAnimationPlaying => _isRunning && !IsOneShotAnimationPlaying;
 
     [SerializeField] private HorizontalDirectionType _horizontalDirection;
     [SerializeField] private VerticalDirectionType _verticalDirection;
