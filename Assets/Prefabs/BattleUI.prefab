@@ -464,7 +464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8822e7d4c13a0f458e6c51df7c67348, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _arrivalSound: {fileID: 8300000, guid: 6d7ec7b4d6f0823488b4ad873db94b22, type: 3}
+  _arrivalSound: {fileID: 8300000, guid: 702993f0980b9a445be81cbecb24fd95, type: 3}
   _moveDuration: 0.2
   _waitDuration: 1.5
   _waitOffset: 30
