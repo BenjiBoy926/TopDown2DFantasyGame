@@ -42,7 +42,6 @@ public class PlayerActionTimerUI : MonoBehaviour
         Fade(_shownAlpha, duration);
         _isActive = true;
         _loadingSource.Play();
-        EazySoundManager.StopAllUISounds
     }
 
     public void CancelAnimation()

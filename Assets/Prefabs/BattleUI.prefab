@@ -139,6 +139,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 587354b0a117ffc459274159ada531a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animateInSound: {fileID: 8300000, guid: 7878b285d78137246a38bc755d0349a3, type: 3}
+  _animateOutSound: {fileID: 8300000, guid: 9436cc6cc67c74a48b365e300a131acc, type: 3}
   _animationDuration: 0.1
 --- !u!1 &2658952773716326641
 GameObject:
@@ -462,6 +464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8822e7d4c13a0f458e6c51df7c67348, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _arrivalSound: {fileID: 8300000, guid: c9baed5d4cd9bdf48ae921e5a9b5317f, type: 3}
   _moveDuration: 0.2
   _waitDuration: 1.5
   _waitOffset: 30
