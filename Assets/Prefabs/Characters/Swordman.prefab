@@ -491,6 +491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _timeBetweenSteps: 0.2
+  _volume: 0.3
   _clips:
   - {fileID: 8300000, guid: 46925b8a6b1250741b66fccb11e0b68b, type: 3}
   - {fileID: 8300000, guid: 8a3589ee78017eb42be93da76dc38c0a, type: 3}

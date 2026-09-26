@@ -6,6 +6,7 @@ using UnityEngine;
 public class CharacterFootfallAudio : MonoBehaviour
 {
     [SerializeField] private float _timeBetweenSteps = .2f;
+    [SerializeField] private float _volume = .3f;
     [SerializeField] private List<AudioClip> _clips = new();
     private Character _character;
     private float _timeOfLastStep;
@@ -46,7 +47,7 @@ public class CharacterFootfallAudio : MonoBehaviour
     {
         int index = Random.Range(0, _clips.Count);
         AudioClip clip = _clips[index];
-        EazySoundManager.PlaySound(clip);
+        EazySoundManager.PlaySound(clip, _volume);
         _timeOfLastStep = Time.time;
     }
 }
