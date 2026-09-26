@@ -50,6 +50,7 @@ public class Character : MonoBehaviour
 
     // Animator
     public bool IsOneShotAnimationPlaying => _animator.IsOneShotAnimationPlaying;
+    public bool IsRunAnimationPlaying => _animator.IsRunAnimationPlaying;
 
     // Stats
     public int BaseHealth => _stats.BaseHealth;
