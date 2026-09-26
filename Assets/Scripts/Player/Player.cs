@@ -43,7 +43,6 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        _detailPanel.HideImmediately();
         _previewDetailPanel.HideImmediately();
     }
 
@@ -305,16 +304,10 @@ public class Player : MonoBehaviour
         if (_activeCharacter)
         {
             _detailPanel.Populate(_activeCharacter);
-            _detailPanel.Show();
         }
         else if (_hoveredCharacter)
         {
             _detailPanel.Populate(_hoveredCharacter);
-            _detailPanel.Show();
-        }
-        else
-        {
-            _detailPanel.Hide();
         }
     }
 
