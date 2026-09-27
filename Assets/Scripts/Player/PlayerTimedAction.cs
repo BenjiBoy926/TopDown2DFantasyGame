@@ -4,16 +4,14 @@ using UnityEngine;
 [RequireComponent(typeof(Player))]
 public abstract class PlayerTimedAction : MonoBehaviour
 {
-    private const float QuickRepeatDuration = 0.01f;
-    private const float QuickRepeatScalar = .5f;
-    private const float QuickRepeatWindow = .35f;
-
     public Sprite Sprite => _sprite;
     public abstract string Label { get; }
     protected Battle Battle => _battle;
 
     [SerializeField] private Sprite _sprite;
     [SerializeField] private float _duration;
+    [SerializeField] private float _quickRepeatScalar = .5f;
+    [SerializeField] private float _quickRepeatWindow = .35f;
     private Battle _battle;
     private Player _player;
     private PlayerActionTimerUI _ui;
@@ -31,11 +29,11 @@ public abstract class PlayerTimedAction : MonoBehaviour
 
     public bool Begin()
     {
-        bool isInQuickRepeatWindow = (Time.time - _timeOfExecutionFinished) <= QuickRepeatWindow;
+        bool isInQuickRepeatWindow = (Time.time - _timeOfExecutionFinished) <= _quickRepeatWindow;
         if (isInQuickRepeatWindow)
         {
             _quickRepeatCount++;
-            float duration = _duration * Mathf.Pow(QuickRepeatScalar, _quickRepeatCount);
+            float duration = _duration * Mathf.Pow(_quickRepeatScalar, _quickRepeatCount);
             return Begin(duration);
         }
         else
