@@ -304,10 +304,12 @@ public class Player : MonoBehaviour
         if (_activeCharacter)
         {
             _detailPanel.Populate(_activeCharacter);
+            _detailPanel.Show();
         }
         else if (_hoveredCharacter)
         {
             _detailPanel.Populate(_hoveredCharacter);
+            _detailPanel.Show();
         }
     }
 
@@ -407,6 +409,7 @@ public class Player : MonoBehaviour
         else
         {
             _cursor.Hide();
+            _detailPanel.Hide();
             Deselect();
         }
     }
