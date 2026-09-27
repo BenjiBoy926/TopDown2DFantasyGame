@@ -4,6 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(Player))]
 public abstract class PlayerTimedAction : MonoBehaviour
 {
+    private const float QuickRepeatMinimumDuration = .01f;
+
     public Sprite Sprite => _sprite;
     public abstract string Label { get; }
     protected Battle Battle => _battle;
@@ -30,17 +32,24 @@ public abstract class PlayerTimedAction : MonoBehaviour
     public bool Begin()
     {
         bool isInQuickRepeatWindow = (Time.time - _timeOfExecutionFinished) <= _quickRepeatWindow;
-        if (isInQuickRepeatWindow)
+        bool shouldQuickRepeat = isInQuickRepeatWindow && IsQuickRepeatAvailable();
+        if (shouldQuickRepeat)
         {
-            _quickRepeatCount++;
-            float duration = _duration * Mathf.Pow(_quickRepeatScalar, _quickRepeatCount);
-            return Begin(duration);
+            return BeginQuickRepeat();
         }
         else
         {
             _quickRepeatCount = 0;
             return Begin(_duration);
         }
+    }
+
+    private bool BeginQuickRepeat()
+    {
+        _quickRepeatCount++;
+        float duration = _duration * Mathf.Pow(_quickRepeatScalar, _quickRepeatCount);
+        duration = Mathf.Max(duration, QuickRepeatMinimumDuration);
+        return Begin(duration);
     }
 
     public void Cancel()
@@ -52,9 +61,6 @@ public abstract class PlayerTimedAction : MonoBehaviour
             _ui.CancelAnimation();
         }
     }
-
-    public virtual bool IsAvailable() => _player.IsInputAllowed;
-    public abstract Coroutine Execute();
 
     private bool Begin(float duration)
     {
@@ -85,4 +91,8 @@ public abstract class PlayerTimedAction : MonoBehaviour
             Begin();
         }
     }
+
+    public virtual bool IsQuickRepeatAvailable() => false;
+    public virtual bool IsAvailable() => _player.IsInputAllowed;
+    public abstract Coroutine Execute();
 }

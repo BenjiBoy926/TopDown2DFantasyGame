@@ -4,6 +4,10 @@ public class PlayerTimedAction_Undo : PlayerTimedAction
 {
     public override string Label => "Undo";
 
+    public override bool IsQuickRepeatAvailable()
+    {
+        return true;
+    }
     public override bool IsAvailable()
     {
         return base.IsAvailable() && Battle.IsUndoAvailable();
