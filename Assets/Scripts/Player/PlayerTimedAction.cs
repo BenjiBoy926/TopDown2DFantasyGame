@@ -5,9 +5,9 @@ using UnityEngine;
 public abstract class PlayerTimedAction : MonoBehaviour
 {
     private const float QuickRepeatDuration = 0.01f;
+    private const float QuickRepeatScalar = .5f;
     private const float QuickRepeatWindow = .35f;
 
-    public float Duration => _duration;
     public Sprite Sprite => _sprite;
     public abstract string Label { get; }
     protected Battle Battle => _battle;
@@ -20,6 +20,7 @@ public abstract class PlayerTimedAction : MonoBehaviour
     private bool _isScheduled;
     private bool _isTriggered;
     private float _timeOfExecutionFinished;
+    private int _quickRepeatCount = 0;
 
     protected virtual void Awake()
     {
@@ -33,10 +34,13 @@ public abstract class PlayerTimedAction : MonoBehaviour
         bool isInQuickRepeatWindow = (Time.time - _timeOfExecutionFinished) <= QuickRepeatWindow;
         if (isInQuickRepeatWindow)
         {
-            return Begin(QuickRepeatDuration);
+            _quickRepeatCount++;
+            float duration = _duration * Mathf.Pow(QuickRepeatScalar, _quickRepeatCount);
+            return Begin(duration);
         }
         else
         {
+            _quickRepeatCount = 0;
             return Begin(_duration);
         }
     }
