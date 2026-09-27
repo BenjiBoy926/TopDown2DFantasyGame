@@ -6,7 +6,8 @@ public class PlayerTimedAction_Redo : PlayerTimedAction
 
     public override bool IsQuickRepeatAvailable()
     {
-        return true;
+        BattleState stateToRedo = Battle.GetRedoState();
+        return stateToRedo is not BattleState_TurnChange;
     }
     public override bool IsAvailable()
     {

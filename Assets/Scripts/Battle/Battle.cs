@@ -175,6 +175,16 @@ public class Battle : MonoBehaviour
         return _history.GetLastRecordedState(character);
     }
 
+    public BattleState GetUndoState()
+    {
+        return _history.GetUndoState();
+    }
+
+    public BattleState GetRedoState()
+    {
+        return _history.GetRedoState();
+    }
+
     // Camera ===
 
     public void GrabCamera(Vector2 worldPosition)

@@ -25,9 +25,6 @@ public class BattleHistory : MonoBehaviour
         _overlay = GetComponentInChildren<Overlay>();
     }
 
-    // BUG: the initial state recored all characters as having 0 energy, when it should record
-    // the characters in the first turn as having energy. Need to wait until after that 
-    // intial turn begins and the characters have energy refilled
     public void RecordInitialState()
     {
         RecordTurnChange(_battle.AllCharacters, _battle.PlayerFaction);
@@ -85,6 +82,16 @@ public class BattleHistory : MonoBehaviour
     public bool IsRedoAvailable()
     {
         return _currentStateIndex < LatestStateIndex;
+    }
+
+    public BattleState GetUndoState()
+    {
+        return IsUndoAvailable() ? _states[_currentStateIndex] : null;
+    }
+
+    public BattleState GetRedoState()
+    {
+        return IsRedoAvailable() ? _states[_currentStateIndex + 1] : null;
     }
 
     private IEnumerator UndoToLastPlayerMovePoint()
