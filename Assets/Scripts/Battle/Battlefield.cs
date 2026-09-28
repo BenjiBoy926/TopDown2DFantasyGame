@@ -8,15 +8,14 @@ public class Battlefield : MonoBehaviour
 {
     public float CellWidth => _tilemap.cellSize.x;
     public float CellHeight => _tilemap.cellSize.y;
+    public Rect Area => new(_tilemap.localBounds.min, _tilemap.localBounds.size);
 
-    private Battle _battle;
     private Tilemap _tilemap;
     private readonly Dictionary<Vector2Int, Character> _cellToOccupant = new();
     private readonly Dictionary<Character, Vector2Int> _occupantToCell = new();
     
     private void Awake()
     {
-        _battle = GetComponent<Battle>();
         _tilemap = GetComponent<Tilemap>();
     }
 
