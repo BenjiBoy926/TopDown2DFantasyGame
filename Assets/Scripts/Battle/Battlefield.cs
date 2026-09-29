@@ -4,22 +4,24 @@ using System.Collections.Generic;
 
 [RequireComponent(typeof(Battle))]
 [RequireComponent(typeof(Tilemap))]
-[RequireComponent(typeof(TilemapRenderer))]
 public class Battlefield : MonoBehaviour
 {
     public float CellWidth => _tilemap.cellSize.x;
     public float CellHeight => _tilemap.cellSize.y;
-    public Rect Area => new(_renderer.bounds.min, _renderer.bounds.size);
 
+    private Rect _area;
     private Tilemap _tilemap;
-    private TilemapRenderer _renderer;
     private readonly Dictionary<Vector2Int, Character> _cellToOccupant = new();
     private readonly Dictionary<Character, Vector2Int> _occupantToCell = new();
     
     private void Awake()
     {
         _tilemap = GetComponent<Tilemap>();
-        _renderer = GetComponent<TilemapRenderer>();
+
+        BoundsInt cellBounds = _tilemap.cellBounds;
+        Vector2 minWorldPosition = CellToWorld((Vector2Int)cellBounds.min);
+        Vector2 maxWorldPosition = CellToWorld((Vector2Int)cellBounds.max);
+        _area = Rect.MinMaxRect(minWorldPosition.x, minWorldPosition.y, maxWorldPosition.x, maxWorldPosition.y);
     }
 
     public void Register(Character character)
@@ -87,9 +89,8 @@ public class Battlefield : MonoBehaviour
 
     public Vector2 Clamp(Vector2 position)
     {
-        Rect area = Area;
-        position.x = Mathf.Clamp(position.x, area.xMin, area.xMax);
-        position.y = Mathf.Clamp(position.y, area.yMin, area.yMax);
+        position.x = Mathf.Clamp(position.x, _area.xMin, _area.xMax);
+        position.y = Mathf.Clamp(position.y, _area.yMin, _area.yMax);
         return position;
     }
 }
