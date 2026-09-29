@@ -18,6 +18,7 @@ public class Battlefield : MonoBehaviour
     {
         _tilemap = GetComponent<Tilemap>();
 
+        _tilemap.CompressBounds();
         BoundsInt cellBounds = _tilemap.cellBounds;
         Vector2 minWorldPosition = CellToWorld((Vector2Int)cellBounds.min);
         Vector2 maxWorldPosition = CellToWorld((Vector2Int)cellBounds.max);
