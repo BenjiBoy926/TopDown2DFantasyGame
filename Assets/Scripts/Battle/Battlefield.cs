@@ -4,19 +4,22 @@ using System.Collections.Generic;
 
 [RequireComponent(typeof(Battle))]
 [RequireComponent(typeof(Tilemap))]
+[RequireComponent(typeof(TilemapRenderer))]
 public class Battlefield : MonoBehaviour
 {
     public float CellWidth => _tilemap.cellSize.x;
     public float CellHeight => _tilemap.cellSize.y;
-    public Rect Area => new(_tilemap.localBounds.min, _tilemap.localBounds.size);
+    public Rect Area => new(_renderer.bounds.min, _renderer.bounds.size);
 
     private Tilemap _tilemap;
+    private TilemapRenderer _renderer;
     private readonly Dictionary<Vector2Int, Character> _cellToOccupant = new();
     private readonly Dictionary<Character, Vector2Int> _occupantToCell = new();
     
     private void Awake()
     {
         _tilemap = GetComponent<Tilemap>();
+        _renderer = GetComponent<TilemapRenderer>();
     }
 
     public void Register(Character character)
@@ -80,5 +83,13 @@ public class Battlefield : MonoBehaviour
     public TileBase GetTile(Vector2Int cell)
     {
         return _tilemap.GetTile((Vector3Int)cell);
+    }
+
+    public Vector2 Clamp(Vector2 position)
+    {
+        Rect area = Area;
+        position.x = Mathf.Clamp(position.x, area.xMin, area.xMax);
+        position.y = Mathf.Clamp(position.y, area.yMin, area.yMax);
+        return position;
     }
 }

@@ -18,7 +18,6 @@ public class Battle : MonoBehaviour
     public HashSet<Character> AllCharacters => _allCharacters;
     public HashSet<Squad> AllSquads => _allSquads;
     public bool IsCameraGrabbed => _camera.IsGrabbed;
-    public Rect Area => _field.Area;
 
     private BattleSetup _setup;
     private Battlefield _field;
@@ -127,6 +126,11 @@ public class Battle : MonoBehaviour
     public TileBase GetTile(Vector2Int cell)
     {
         return _field.GetTile(cell);
+    }
+
+    public Vector2 ClampToField(Vector2 position)
+    {
+        return _field.Clamp(position);
     }
 
     // History ===

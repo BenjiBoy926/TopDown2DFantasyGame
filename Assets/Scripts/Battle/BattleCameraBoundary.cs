@@ -14,10 +14,6 @@ public class BattleCameraBoundary : MonoBehaviour
 
     private void Update()
     {
-        Vector2 position = _camera.Position;
-        Rect battleArea = _battle.Area;
-        position.x = Mathf.Clamp(position.x, battleArea.xMin, battleArea.xMax);
-        position.y = Mathf.Clamp(position.y, battleArea.yMin, battleArea.yMax);
-        _camera.Position = position;
+        _camera.Position = _battle.ClampToField(_camera.Position);
     }
 }
