@@ -127,6 +127,7 @@ public class Player : MonoBehaviour
 
     public void SetPosition(Vector2 newPosition)
     {
+        newPosition = _battle.ClampToField(newPosition);
         SetActiveCharacterPosition(newPosition);
         SetCursorPosition(newPosition);
         RefreshCurrentCell();
