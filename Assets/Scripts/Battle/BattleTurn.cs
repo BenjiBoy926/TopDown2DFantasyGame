@@ -22,17 +22,7 @@ public class BattleTurn : MonoBehaviour
         _animation = GetComponentInChildren<BattleTurnChangeAnimation>();
     }
 
-    private void OnEnable()
-    {
-        Character.MoveFinished += OnCharacterMoveFinished;
-    }
-
-    private void OnDisable()
-    {
-        Character.MoveFinished -= OnCharacterMoveFinished;
-    }
-
-    private void OnCharacterMoveFinished(Character obj)
+    public void NotifyCharacterMoveFinished(Character character)
     {
         if (CountMoveableCharacters(CurrentFaction) == 0)
         {

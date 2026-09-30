@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,10 +17,6 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(CharacterUndoRedoBehaviour))]
 public class Character : MonoBehaviour
 {
-    // ── Events ───────────────────────────────────────────────────────────
-
-    public static event Action<Character> MoveFinished = delegate { };
-
     // ── Properties ───────────────────────────────────────────────────────
 
     // Self
@@ -211,7 +206,7 @@ public class Character : MonoBehaviour
         {
             RecordMove();
         }
-        MoveFinished.Invoke(this);
+        _battle.NotifyCharacterMoveFinished(this);
     }
 
     public void LookAt(Vector2 position)

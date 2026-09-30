@@ -62,6 +62,11 @@ public class Battle : MonoBehaviour
         _allSquads.Add(squad);
     }
 
+    public void NotifyCharacterMoveFinished(Character character)
+    {
+        _turn.NotifyCharacterMoveFinished(character);
+    }
+
     // Player ===
 
     public void SetPlayerPosition(Vector3 position)
