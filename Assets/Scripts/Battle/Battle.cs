@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -25,8 +26,10 @@ public class Battle : MonoBehaviour
     private BattleHistory _history;
     private BattleCamera _camera;
     private Player _player;
+    private ComputerPlayer _computerPlayer;
     private readonly HashSet<Character> _allCharacters = new();
     private readonly HashSet<Squad> _allSquads = new();
+    private readonly List<Character> _characterListScratch = new();
 
     private void Awake()
     {
@@ -36,6 +39,7 @@ public class Battle : MonoBehaviour
         _history = GetComponent<BattleHistory>();
         _camera = GetComponentInChildren<BattleCamera>();
         _player = GetComponentInChildren<Player>();
+        _computerPlayer = GetComponentInChildren<ComputerPlayer>();
     }
 
     private void Start()
@@ -64,7 +68,29 @@ public class Battle : MonoBehaviour
 
     public void NotifyCharacterMoveFinished(Character character)
     {
-        _turn.NotifyCharacterMoveFinished(character);
+        _turn.GetCharactersInFaction(PlayerFaction, _characterListScratch);
+        if (AreAllCharactersDead(_characterListScratch))
+        {
+            _computerPlayer.Stop();
+            _history.Undo();
+        }
+        else if (CountMoveableCharacters(CurrentFactionTurn) == 0)
+        {
+            _turn.StartNextTurn();
+        }
+    }
+
+    private bool AreAllCharactersDead(List<Character> characters)
+    {
+        for (int i = 0; i < characters.Count; i++)
+        {
+            Character character = characters[i];
+            if (!character.IsDead)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     // Player ===

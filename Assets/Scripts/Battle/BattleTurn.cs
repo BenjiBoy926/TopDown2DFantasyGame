@@ -22,13 +22,6 @@ public class BattleTurn : MonoBehaviour
         _animation = GetComponentInChildren<BattleTurnChangeAnimation>();
     }
 
-    public void NotifyCharacterMoveFinished(Character character)
-    {
-        if (CountMoveableCharacters(CurrentFaction) == 0)
-        {
-            StartNextTurn();
-        }
-    }
 
     public void AddFaction(Character obj)
     {

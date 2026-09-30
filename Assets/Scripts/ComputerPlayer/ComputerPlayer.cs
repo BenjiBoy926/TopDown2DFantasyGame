@@ -52,6 +52,11 @@ public class ComputerPlayer : MonoBehaviour
         }
     }
 
+    public void Stop()
+    {
+        StopAllCoroutines();
+    }
+
     private IEnumerator Move()
     {
         while (_battle.IsTurnChangeAnimationPlaying)
