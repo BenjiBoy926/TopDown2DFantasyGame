@@ -13,8 +13,6 @@ public class CharacterDefendBehaviour : MonoBehaviour
 
     public IEnumerator GetSequence()
     {
-        EazySoundManager.PlaySound(_clip);
-
         _character.BeginMove();
 
         Vector2 targetPosition = _character.CurrentCellCenter;
@@ -23,6 +21,8 @@ public class CharacterDefendBehaviour : MonoBehaviour
             .SetEase(_moveEase)
             .WaitForCompletion();
         _character.SetIsRunning(false);
+
+        EazySoundManager.PlaySound(_clip);
 
         yield return _character.EndMoveSequence(null);
     }

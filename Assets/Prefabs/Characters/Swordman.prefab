@@ -332,7 +332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62b40d5585b16fc46aa902087eee34cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveDuration: 0.35
+  _moveDuration: 0.2
   _moveEase: 9
   _clip: {fileID: 8300000, guid: 0fcd0d28208384148bbf28a8ece66aea, type: 3}
 --- !u!114 &1280907208005117164
