@@ -9,7 +9,7 @@ public class CharacterSpeech : MonoBehaviour
 
     private void Awake()
     {
-        _bubble = GetComponentInChildren<CharacterSpeechBubble>();
+        _bubble = GetComponentInChildren<CharacterSpeechBubble>(true);
     }
 
     public Coroutine Say(string text)

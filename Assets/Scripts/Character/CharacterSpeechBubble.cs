@@ -7,6 +7,7 @@ public class CharacterSpeechBubble : MonoBehaviour
     private void Awake()
     {
         _character = GetComponentInParent<Character>();
+        gameObject.SetActive(false);
     }
 
     public Coroutine Say(string text)
