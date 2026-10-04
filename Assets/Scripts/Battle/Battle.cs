@@ -42,7 +42,7 @@ public class Battle : MonoBehaviour
         _computerPlayer = GetComponentInChildren<ComputerPlayer>();
     }
 
-    private void Start()
+    public void Begin()
     {
         _setup.Begin();
     }

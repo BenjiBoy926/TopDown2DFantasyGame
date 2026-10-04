@@ -43,6 +43,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        _detailPanel.HideImmediately();
         _previewDetailPanel.HideImmediately();
     }
 

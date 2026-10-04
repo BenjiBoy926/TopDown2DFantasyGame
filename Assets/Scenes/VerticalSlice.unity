@@ -290,6 +290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 300a6e37212faf04896116246a102e94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _globalLight: {fileID: 619394801}
   _alfred: {fileID: 2051687325}
 --- !u!1001 &229716165
 PrefabInstance:
