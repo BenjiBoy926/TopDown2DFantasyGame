@@ -291,6 +291,11 @@ public class Character : MonoBehaviour
         _animator.SetDirection(direction);
     }
 
+    public Vector2 GetDirection()
+    {
+        return _animator.GetDirection();
+    }
+
     public void SetIsRunning(bool isRunning)
     {
         _animator.SetIsRunning(isRunning);
@@ -529,9 +534,9 @@ public class Character : MonoBehaviour
 
     // -- Speech -------------------------------------------------------
 
-    public IEnumerator Say(string text)
+    public Vector2 GetSpeechBubblePosition()
     {
-        return _speech.Say(text);
+        return _speech.GetSpeechBubblePosition();
     }
 
     // ── Battle ───────────────────────────────────────────────────────────

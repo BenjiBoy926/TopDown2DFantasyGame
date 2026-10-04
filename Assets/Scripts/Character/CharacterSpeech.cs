@@ -1,20 +1,25 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
+[RequireComponent(typeof(Character))]
 public class CharacterSpeech : MonoBehaviour
 {
-    [SerializeField] private float _timeBetweenCharacters = 0.05f;
-    [SerializeField] private float _pauseAtPunctuation = 0.3f;
-    private CharacterSpeechBubble _bubble;
+    [SerializeField] private Transform _speechBubbleAnchor;
+    private Character _character;
 
     private void Awake()
     {
-        _bubble = GetComponentInChildren<CharacterSpeechBubble>(true);
+        _character = GetComponent<Character>();
     }
 
-    public IEnumerator Say(string text)
+    public Vector2 GetSpeechBubblePosition()
     {
-        return _bubble.Say(text);
+        Vector2 localPosition = _speechBubbleAnchor.localPosition;
+        if (_character.GetDirection().x < 0)
+        {
+            localPosition.x *= -1;
+        }
+        Vector2 worldPosition = _speechBubbleAnchor.parent.TransformPoint(localPosition);
+        return worldPosition;
     }
 }

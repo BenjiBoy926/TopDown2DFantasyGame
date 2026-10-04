@@ -65,3 +65,6 @@ TagManager:
   - name: UIPreview
     uniqueID: 4129969483
     locked: 0
+  - name: Dialogue
+    uniqueID: 3997996457
+    locked: 0
