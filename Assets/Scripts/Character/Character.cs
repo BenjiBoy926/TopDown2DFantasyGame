@@ -15,6 +15,7 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(CharacterBeHealedBehaviour))]
 [RequireComponent(typeof(CharacterCancelBehaviour))]
 [RequireComponent(typeof(CharacterUndoRedoBehaviour))]
+[RequireComponent(typeof(CharacterSpeech))]
 public class Character : MonoBehaviour
 {
     // ── Properties ───────────────────────────────────────────────────────
@@ -91,6 +92,7 @@ public class Character : MonoBehaviour
     private CharacterBeHealedBehaviour _beHealedBehaviour;
     private CharacterCancelBehaviour _cancelBehaviour;
     private CharacterUndoRedoBehaviour _undoRedoBehaviour;
+    private CharacterSpeech _speech;
     private Battle _battle;
     // NOTE: static — must not carry state across scene reloads. Clear on scene unload if needed.
     private static readonly HashSet<Character> _actingCharacters = new();
@@ -114,6 +116,7 @@ public class Character : MonoBehaviour
         _beHealedBehaviour = GetComponent<CharacterBeHealedBehaviour>();
         _cancelBehaviour = GetComponent<CharacterCancelBehaviour>();
         _undoRedoBehaviour = GetComponent<CharacterUndoRedoBehaviour>();
+        _speech = GetComponent<CharacterSpeech>();
     }
 
     private void OnEnable()
@@ -522,6 +525,13 @@ public class Character : MonoBehaviour
     public IEnumerator GetApplyStateSequence(CharacterState state)
     {
         return _undoRedoBehaviour.GetApplyStateSequence(state);
+    }
+
+    // -- Speech -------------------------------------------------------
+
+    public Coroutine Say(string text)
+    {
+        return _speech.Say(text);
     }
 
     // ── Battle ───────────────────────────────────────────────────────────

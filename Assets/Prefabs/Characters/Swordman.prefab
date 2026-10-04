@@ -193,6 +193,7 @@ GameObject:
   - component: {fileID: 8749608898271360545}
   - component: {fileID: 7748070075994083017}
   - component: {fileID: 2548358452497967272}
+  - component: {fileID: 3567200524494841458}
   m_Layer: 0
   m_Name: Swordman
   m_TagString: Untagged
@@ -496,6 +497,20 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 46925b8a6b1250741b66fccb11e0b68b, type: 3}
   - {fileID: 8300000, guid: 8a3589ee78017eb42be93da76dc38c0a, type: 3}
   - {fileID: 8300000, guid: 41937e15ad4d50b4183dbde4fbb5673f, type: 3}
+--- !u!114 &3567200524494841458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881692635917527445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4105dd4817000c439aa19d1ec3bf98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeBetweenCharacters: 0.05
+  _pauseAtPunctuation: 0.3
 --- !u!1 &3026293565773508968
 GameObject:
   m_ObjectHideFlags: 0
@@ -895,6 +910,50 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &4262078968244211941
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9003926309434954904}
+  - component: {fileID: 2128719975388269542}
+  m_Layer: 0
+  m_Name: SpeechBubble
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9003926309434954904
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4262078968244211941}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2045490007209370340}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2128719975388269542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4262078968244211941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7602e97876528cc4da59741a5e767cf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4658844773822326104
 GameObject:
   m_ObjectHideFlags: 0
@@ -1647,6 +1706,7 @@ Transform:
   m_Children:
   - {fileID: 5960221780606168465}
   - {fileID: 1475799574654562418}
+  - {fileID: 9003926309434954904}
   m_Father: {fileID: 341371333424358373}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6699119290893305796
