@@ -253,6 +253,11 @@ public class Battle : MonoBehaviour
         _camera.Glide(target);
     }
 
+    public Vector2 WorldToScreen(Vector2 worldPoint)
+    {
+        return _camera.WorldToScreen(worldPoint);
+    }
+
     public Vector2 ScreenToWorld(Vector2 screenPosition)
     {
         return _camera.ScreenToWorld(screenPosition);
