@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -12,7 +13,7 @@ public class CharacterSpeech : MonoBehaviour
         _bubble = GetComponentInChildren<CharacterSpeechBubble>(true);
     }
 
-    public Coroutine Say(string text)
+    public IEnumerator Say(string text)
     {
         return _bubble.Say(text);
     }

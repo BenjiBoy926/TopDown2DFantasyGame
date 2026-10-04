@@ -1,7 +1,10 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class CharacterSpeechBubble : MonoBehaviour
 {
+    [SerializeField] private TMP_Text _body;
     private Character _character;
 
     private void Awake()
@@ -10,9 +13,11 @@ public class CharacterSpeechBubble : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public Coroutine Say(string text)
+    public IEnumerator Say(string text)
     {
-        Debug.Log($"{_character.Name} says: {text}");
-        return null;
+        gameObject.SetActive(true);
+        _body.text = text;
+        yield return new WaitForSeconds(2);
+        gameObject.SetActive(false);
     }
 }
