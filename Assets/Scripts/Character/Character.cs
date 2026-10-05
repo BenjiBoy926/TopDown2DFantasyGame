@@ -539,6 +539,11 @@ public class Character : MonoBehaviour
         return _speech.GetSpeechBubblePosition();
     }
 
+    public IEnumerator Say(string text)
+    {
+        return _speech.Say(text);
+    }
+
     // ── Battle ───────────────────────────────────────────────────────────
 
     public Vector2 CellToWorld(Vector2Int cell)
@@ -579,5 +584,10 @@ public class Character : MonoBehaviour
     public CharacterState GetLastRecordedState()
     {
         return _battle.GetLastRecordedState(this).State;
+    }
+
+    public Vector2 WorldToScreen(Vector2 worldPosition)
+    {
+        return _battle.WorldToScreen(worldPosition);
     }
 }

@@ -5,17 +5,17 @@ public class BattleSetup : MonoBehaviour
 {
     private Battle _battle;
 
-    public void Begin()
-    {
-        RegisterAllCharacters();
-        RegisterAllSquads();
-        _battle.StartPlayerTurn();
-        RecordInitialState();
-    }
-
     private void Awake()
     {
         _battle = GetComponent<Battle>();
+        RegisterAllCharacters();
+        RegisterAllSquads();
+    }
+
+    public void Begin()
+    {
+        _battle.StartPlayerTurn();
+        RecordInitialState();
     }
 
     private void RegisterAllCharacters()

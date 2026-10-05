@@ -6,10 +6,12 @@ public class CharacterSpeech : MonoBehaviour
 {
     [SerializeField] private Transform _speechBubbleAnchor;
     private Character _character;
+    private CharacterSpeechBubble _bubble;
 
     private void Awake()
     {
         _character = GetComponent<Character>();
+        _bubble = GetComponentInChildren<CharacterSpeechBubble>(true);
     }
 
     public Vector2 GetSpeechBubblePosition()
@@ -21,5 +23,10 @@ public class CharacterSpeech : MonoBehaviour
         }
         Vector2 worldPosition = _speechBubbleAnchor.parent.TransformPoint(localPosition);
         return worldPosition;
+    }
+
+    public IEnumerator Say(string text)
+    {
+        return _bubble.Say(text);
     }
 }
