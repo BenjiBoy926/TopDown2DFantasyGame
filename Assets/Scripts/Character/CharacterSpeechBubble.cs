@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(RectTransform))]
 public class CharacterSpeechBubble : MonoBehaviour
 {
+    [SerializeField] private TMP_Text _name;
     [SerializeField] private TMP_Text _body;
     [SerializeField] private Transform _anchor;
     private RectTransform _rectTransform;
@@ -14,6 +15,7 @@ public class CharacterSpeechBubble : MonoBehaviour
     {
         _rectTransform = GetComponent<RectTransform>();
         _character = GetComponentInParent<Character>();
+        _name.text = _character.Name;
         gameObject.SetActive(false);
     }
 
