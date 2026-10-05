@@ -223,7 +223,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 10000
@@ -570,7 +570,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4105dd4817000c439aa19d1ec3bf98f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speechBubbleAnchor: {fileID: 5422275556563700369}
 --- !u!1 &2717137500276350669
 GameObject:
   m_ObjectHideFlags: 0
@@ -1091,6 +1090,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _body: {fileID: 2381426003606157382}
+  _anchor: {fileID: 5422275556563700369}
 --- !u!1 &4658844773822326104
 GameObject:
   m_ObjectHideFlags: 0

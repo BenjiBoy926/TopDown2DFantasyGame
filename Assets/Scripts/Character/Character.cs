@@ -534,11 +534,6 @@ public class Character : MonoBehaviour
 
     // -- Speech -------------------------------------------------------
 
-    public Vector2 GetSpeechBubblePosition()
-    {
-        return _speech.GetSpeechBubblePosition();
-    }
-
     public IEnumerator Say(string text)
     {
         return _speech.Say(text);

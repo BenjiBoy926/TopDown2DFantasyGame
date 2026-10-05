@@ -6,6 +6,7 @@ using UnityEngine;
 public class CharacterSpeechBubble : MonoBehaviour
 {
     [SerializeField] private TMP_Text _body;
+    [SerializeField] private Transform _anchor;
     private RectTransform _rectTransform;
     private Character _character;
 
@@ -18,14 +19,28 @@ public class CharacterSpeechBubble : MonoBehaviour
 
     public IEnumerator Say(string text)
     {
-        // TODO: move GetSpeechBubblePosition into this class
-        Vector2 worldPos = _character.GetSpeechBubblePosition();
-        Vector2 screenPos = _character.WorldToScreen(worldPos);
-        _rectTransform.anchoredPosition = screenPos;
+        _rectTransform.anchoredPosition = GetTargetScreenPosition();
 
         gameObject.SetActive(true);
         _body.text = text;
         yield return new WaitForSeconds(2);
         gameObject.SetActive(false);
+    }
+
+    private Vector2 GetTargetScreenPosition()
+    {
+        Vector2 worldPos = GetTargetWorldPosition();
+        return _character.WorldToScreen(worldPos);
+    }
+
+    private Vector2 GetTargetWorldPosition()
+    {
+        Vector2 localPosition = _anchor.localPosition;
+        if (_character.GetDirection().x < 0)
+        {
+            localPosition.x *= -1;
+        }
+        Vector2 worldPosition = _anchor.parent.TransformPoint(localPosition);
+        return worldPosition;
     }
 }
