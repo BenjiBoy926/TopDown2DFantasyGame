@@ -24,7 +24,7 @@ public class CharacterSpeechBubble : MonoBehaviour
         _rectTransform.anchoredPosition = GetTargetScreenPosition();
 
         gameObject.SetActive(true);
-        _body.text = text;
+        _body.text = $"\t{text}";
         yield return new WaitForSeconds(2);
         gameObject.SetActive(false);
     }
