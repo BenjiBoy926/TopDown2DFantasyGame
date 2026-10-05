@@ -1248,6 +1248,7 @@ MonoBehaviour:
   _name: {fileID: 3077707186324972636}
   _anchor: {fileID: 5422275556563700369}
   _textPadding: {x: 25, y: 40}
+  _minWidth: 200
 --- !u!1 &4658844773822326104
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,6 +8,7 @@ public class CharacterSpeechBubble : MonoBehaviour
     [SerializeField] private TMP_Text _name;
     [SerializeField] private Transform _anchor;
     [SerializeField] private Vector2 _textPadding;
+    [SerializeField] private float _minWidth = 100;
     private RectTransform _rectTransform;
     private CharacterSpeechBodyText _body;
     private Character _character;
@@ -27,7 +28,11 @@ public class CharacterSpeechBubble : MonoBehaviour
 
         gameObject.SetActive(true);
         _body.SetText(text);
-        _rectTransform.sizeDelta = _body.Size + _textPadding;
+        
+        Vector2 size = _body.Size + _textPadding;
+        size.x = Mathf.Max(size.x, _minWidth);
+        _rectTransform.sizeDelta = size;
+
         yield return new WaitForSeconds(2);
         gameObject.SetActive(false);
     }
