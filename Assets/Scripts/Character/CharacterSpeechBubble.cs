@@ -6,14 +6,16 @@ using UnityEngine;
 public class CharacterSpeechBubble : MonoBehaviour
 {
     [SerializeField] private TMP_Text _name;
-    [SerializeField] private TMP_Text _body;
     [SerializeField] private Transform _anchor;
+    [SerializeField] private Vector2 _textPadding;
     private RectTransform _rectTransform;
+    private CharacterSpeechBodyText _body;
     private Character _character;
 
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
+        _body = GetComponentInChildren<CharacterSpeechBodyText>();
         _character = GetComponentInParent<Character>();
         _name.text = _character.Name;
         gameObject.SetActive(false);
@@ -24,7 +26,8 @@ public class CharacterSpeechBubble : MonoBehaviour
         _rectTransform.anchoredPosition = GetTargetScreenPosition();
 
         gameObject.SetActive(true);
-        _body.text = $"\t{text}";
+        _body.SetText(text);
+        _rectTransform.sizeDelta = _body.Size + _textPadding;
         yield return new WaitForSeconds(2);
         gameObject.SetActive(false);
     }
