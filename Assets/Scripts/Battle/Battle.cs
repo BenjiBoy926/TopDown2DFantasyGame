@@ -53,6 +53,7 @@ public class Battle : MonoBehaviour
         _turn.AddFaction(character);
         _allCharacters.Add(character);
         character.SetBattle(this);
+        UniqueCharacters.Register(character);
     }
 
     public void Unregister(Character character)

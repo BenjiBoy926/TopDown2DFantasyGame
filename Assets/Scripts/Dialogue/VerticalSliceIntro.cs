@@ -5,7 +5,6 @@ using UnityEngine.Rendering.Universal;
 public class VerticalSliceIntro : MonoBehaviour
 {
     [SerializeField] private Light2D _globalLight;
-    [SerializeField] private Character _alfred;
     private Battle _battle;
 
     private void Awake()
@@ -18,7 +17,7 @@ public class VerticalSliceIntro : MonoBehaviour
         Color color = _globalLight.color;
         _globalLight.color = Color.black;
 
-        yield return _alfred.Say("Okay, I can't see a thing.");
+        yield return UniqueCharacters.Alfred.Say("Okay, I can't see a thing.");
         yield return new WaitForSeconds(2);
 
         _globalLight.color = color;

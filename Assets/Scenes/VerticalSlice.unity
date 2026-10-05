@@ -3521,7 +3521,7 @@ MonoBehaviour:
   m_LightType: 4
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 0.4, g: 0.4, b: 0.4, a: 1}
+  m_Color: {r: 0.1, g: 0.1, b: 0.1, a: 1}
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
@@ -4264,7 +4264,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _globalLight: {fileID: 619394801}
-  _alfred: {fileID: 2051687325}
 --- !u!1001 &1785716537
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4589,17 +4588,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3231308658280431028, guid: a6e5764c2462efc449a3e52acc4981b6, type: 3}
   m_PrefabInstance: {fileID: 2051687308}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2051687325 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7588740921744441946, guid: a6e5764c2462efc449a3e52acc4981b6, type: 3}
-  m_PrefabInstance: {fileID: 2051687308}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9267994c5d6b7f045b3bd6cf60fb5d8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &2085619560 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7095416772414518370, guid: 20ad5e644c0da144da412113093c2ab1, type: 3}
