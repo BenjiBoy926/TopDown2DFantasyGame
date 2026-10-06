@@ -16,7 +16,7 @@ public class CharacterSpeechBubble : MonoBehaviour
     private RectTransform _rectTransform;
     private CharacterSpeechBodyText _body;
     private Character _character;
-    private bool _skip;
+    private bool _proceed;
 
     private void Awake()
     {
@@ -39,7 +39,7 @@ public class CharacterSpeechBubble : MonoBehaviour
 
     private void OnProceed(InputAction.CallbackContext obj)
     {
-        _skip = true;
+        _proceed = true;
     }
 
     public IEnumerator Say(string text)
@@ -48,23 +48,9 @@ public class CharacterSpeechBubble : MonoBehaviour
         _rectTransform.anchoredPosition = GetTargetScreenPosition();
         AdjustSize(text);
 
-        _body.Clear();
-        _audioSource.Play();
-        _skip = false;
-        for (int i = 0; i < text.Length && !_skip; i++)
-        {
-            char c = text[i];
-            _body.Append(c);
-            yield return YieldToCharacter(c);
-        }
-        _audioSource.Stop();
+        yield return ScrollText(text);
+        yield return WaitToProceed();
 
-        if (_skip)
-        {
-            _body.SetText(text);
-        }
-
-        yield return new WaitForSeconds(1);
         gameObject.SetActive(false);
     }
 
@@ -76,18 +62,46 @@ public class CharacterSpeechBubble : MonoBehaviour
         _rectTransform.sizeDelta = size;
     }
 
+    private IEnumerator ScrollText(string text)
+    {
+        _body.Clear();
+        _audioSource.Play();
+        _proceed = false;
+        for (int i = 0; i < text.Length && !_proceed; i++)
+        {
+            char c = text[i];
+            _body.Append(c);
+            yield return YieldToCharacter(c);
+        }
+        _audioSource.Stop();
+
+        if (_proceed)
+        {
+            _body.SetText(text);
+        }
+    }
+
     private IEnumerator YieldToCharacter(char c)
     {
         float startTime = Time.time;
         float elapsedTime = 0f;
         while (elapsedTime < _timeBetweenCharacters)
         {
-            if (_skip)
+            if (_proceed)
             {
                 break;
             }
             yield return null;
             elapsedTime = Time.time - startTime;
+        }
+    }
+
+    private IEnumerator WaitToProceed()
+    {
+        _proceed = false;
+        while (!_proceed)
+        {
+            yield return null;
         }
     }
 
