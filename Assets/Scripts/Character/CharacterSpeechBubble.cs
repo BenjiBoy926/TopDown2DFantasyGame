@@ -15,6 +15,7 @@ public class CharacterSpeechBubble : MonoBehaviour
     [SerializeField] private float _timeBetweenCharacters = 0.05f;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private InputActionReference _proceedAction;
+    [SerializeField] private float _resizeDuration = 0.1f;
     private RectTransform _rectTransform;
     private CharacterSpeechBodyText _body;
     private Character _character;
@@ -54,22 +55,22 @@ public class CharacterSpeechBubble : MonoBehaviour
         _rectTransform.anchoredPosition = GetTargetScreenPosition();
 
         transform.DOKill();
-        transform.DOScale(1, .2f);
-        AdjustSize(text);
+        transform.DOScale(1, _resizeDuration);
+        Resize(text);
         
         yield return ScrollText(text);
         yield return WaitToProceed();
 
         transform.DOKill();
-        transform.DOScale(0, .2f).OnComplete(_disableAction);
+        transform.DOScale(0, _resizeDuration).OnComplete(_disableAction);
     }
 
-    private void AdjustSize(string text)
+    private void Resize(string text)
     {
-        _body.AdjustSize(text);
+        _body.Resize(text);
         Vector2 size = _body.Size + _textPadding;
         size.x = Mathf.Max(size.x, _minWidth);
-        _rectTransform.DOSizeDelta(size, .2f);
+        _rectTransform.DOSizeDelta(size, _resizeDuration);
     }
 
     private IEnumerator ScrollText(string text)

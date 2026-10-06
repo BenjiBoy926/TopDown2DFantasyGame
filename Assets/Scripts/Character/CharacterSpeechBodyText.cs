@@ -17,7 +17,7 @@ public class CharacterSpeechBodyText : MonoBehaviour
         _text = GetComponent<TMP_Text>();
     }
 
-    public void AdjustSize(string text)
+    public void Resize(string text)
     {
         Vector2 preferredSize = _text.GetPreferredValues(text);
         float multipleOfMax = Mathf.Ceil(preferredSize.x / _maxWidth);
