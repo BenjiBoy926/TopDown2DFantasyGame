@@ -39,4 +39,9 @@ public class CharacterSpeechBodyText : MonoBehaviour
     {
         _text.text += c;
     }
+
+    public void SetText(string text)
+    {
+        _text.text = text;
+    }
 }

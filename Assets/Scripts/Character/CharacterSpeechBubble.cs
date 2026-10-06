@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(RectTransform))]
 public class CharacterSpeechBubble : MonoBehaviour
@@ -11,9 +12,11 @@ public class CharacterSpeechBubble : MonoBehaviour
     [SerializeField] private float _minWidth = 100;
     [SerializeField] private float _timeBetweenCharacters = 0.05f;
     [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private InputActionReference _proceedAction;
     private RectTransform _rectTransform;
     private CharacterSpeechBodyText _body;
     private Character _character;
+    private bool _skip;
 
     private void Awake()
     {
@@ -24,23 +27,43 @@ public class CharacterSpeechBubble : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void OnEnable()
+    {
+        _proceedAction.action.started += OnProceed;
+    }
+
+    private void OnDisable()
+    {
+        _proceedAction.action.started -= OnProceed;
+    }
+
+    private void OnProceed(InputAction.CallbackContext obj)
+    {
+        _skip = true;
+    }
+
     public IEnumerator Say(string text)
     {
         gameObject.SetActive(true);
         _rectTransform.anchoredPosition = GetTargetScreenPosition();
-
         AdjustSize(text);
 
-        WaitForSeconds charWait = new(_timeBetweenCharacters);
         _body.Clear();
         _audioSource.Play();
-        for (int i = 0; i < text.Length; i++)
+        _skip = false;
+        for (int i = 0; i < text.Length && !_skip; i++)
         {
             char c = text[i];
             _body.Append(c);
-            yield return charWait;
+            yield return YieldToCharacter(c);
         }
         _audioSource.Stop();
+
+        if (_skip)
+        {
+            _body.SetText(text);
+        }
+
         yield return new WaitForSeconds(1);
         gameObject.SetActive(false);
     }
@@ -51,6 +74,21 @@ public class CharacterSpeechBubble : MonoBehaviour
         Vector2 size = _body.Size + _textPadding;
         size.x = Mathf.Max(size.x, _minWidth);
         _rectTransform.sizeDelta = size;
+    }
+
+    private IEnumerator YieldToCharacter(char c)
+    {
+        float startTime = Time.time;
+        float elapsedTime = 0f;
+        while (elapsedTime < _timeBetweenCharacters)
+        {
+            if (_skip)
+            {
+                break;
+            }
+            yield return null;
+            elapsedTime = Time.time - startTime;
+        }
     }
 
     private Vector2 GetTargetScreenPosition()

@@ -1380,6 +1380,7 @@ MonoBehaviour:
   _minWidth: 200
   _timeBetweenCharacters: 0.025
   _audioSource: {fileID: 3085657531106816025}
+  _proceedAction: {fileID: -9195287876939935047, guid: 13df5c69850f8384f961ed91b17f62b0, type: 3}
 --- !u!1 &4658844773822326104
 GameObject:
   m_ObjectHideFlags: 0
