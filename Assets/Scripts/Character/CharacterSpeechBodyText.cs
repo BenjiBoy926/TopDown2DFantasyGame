@@ -7,6 +7,7 @@ public class CharacterSpeechBodyText : MonoBehaviour
 {
     public Vector2 Size => _rectTransform.sizeDelta;
 
+    [SerializeField] private float _maxWidth = 300f;
     private RectTransform _rectTransform;
     private TMP_Text _text;
 
@@ -19,6 +20,13 @@ public class CharacterSpeechBodyText : MonoBehaviour
     public void SetText(string text)
     {
         Vector2 preferredSize = _text.GetPreferredValues(text);
+        float multipleOfMax = Mathf.Ceil(preferredSize.x / _maxWidth);
+        if (multipleOfMax > 1)
+        {
+            float containerWidth = preferredSize.x / multipleOfMax;
+            preferredSize = _text.GetPreferredValues(text, containerWidth, float.MaxValue);
+            preferredSize.x = containerWidth;
+        }
         _rectTransform.sizeDelta = preferredSize;
         _text.text = text;
     }
