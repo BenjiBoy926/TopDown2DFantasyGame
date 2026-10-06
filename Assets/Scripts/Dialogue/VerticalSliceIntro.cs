@@ -7,17 +7,26 @@ public class VerticalSliceIntro : MonoBehaviour
 {
     [SerializeField] private Light2D _globalLight;
     private Battle _battle;
+    private PlayerCursor _cursor;
+    private Light2D _ember;
+    private Color _globalLightColor;
+    private float _emberIntensity;
 
     private void Awake()
     {
         _battle = GetComponentInParent<Battle>();
+        _cursor = _battle.GetComponentInChildren<PlayerCursor>(true);
+        _ember = _cursor.GetComponentInChildren<Light2D>(true);
+
+        _globalLightColor = _globalLight.color;
+        _emberIntensity = _ember.intensity;
+
+        _globalLight.color = Color.black;
+        _ember.intensity = 0;
     }
 
     private IEnumerator Start()
     {
-        Color color = _globalLight.color;
-        _globalLight.color = Color.black;
-
         yield return Alfred.Say("Okay, I can't see a thing.");
         yield return Gregory.Say("How much further, Hayden?");
         yield return Hayden.Say("It's just ahead. I'm sure of it.");
@@ -25,7 +34,7 @@ public class VerticalSliceIntro : MonoBehaviour
         yield return Gregory.Say("Nonesense! We must stick together!");
         yield return Hayden.Say("Shh!");
 
-        yield return LightFadeInSequence(color);
+        yield return LightFadeInSequence();
 
         yield return Hayden.Say("There! It's the Ember! Oh, thank Arkalux!");
         yield return Robin.Say("Don't thank him just yet. It's led us into a trap.");
@@ -40,9 +49,10 @@ public class VerticalSliceIntro : MonoBehaviour
         _battle.Begin();
     }
 
-    private IEnumerator LightFadeInSequence(Color formerLightColor)
+    private IEnumerator LightFadeInSequence()
     {
         yield return new WaitForSeconds(2f);
-        _globalLight.color = formerLightColor;
+        _globalLight.color = _globalLightColor;
+        _ember.intensity = _emberIntensity;
     }
 }
