@@ -10,6 +10,7 @@ public class CharacterSpeechBubble : MonoBehaviour
     [SerializeField] private Vector2 _textPadding;
     [SerializeField] private float _minWidth = 100;
     [SerializeField] private float _timeBetweenCharacters = 0.05f;
+    [SerializeField] private AudioSource _audioSource;
     private RectTransform _rectTransform;
     private CharacterSpeechBodyText _body;
     private Character _character;
@@ -32,12 +33,14 @@ public class CharacterSpeechBubble : MonoBehaviour
 
         WaitForSeconds charWait = new(_timeBetweenCharacters);
         _body.Clear();
+        _audioSource.Play();
         for (int i = 0; i < text.Length; i++)
         {
-            _body.Append(text[i]);
+            char c = text[i];
+            _body.Append(c);
             yield return charWait;
         }
-
+        _audioSource.Stop();
         yield return new WaitForSeconds(1);
         gameObject.SetActive(false);
     }
