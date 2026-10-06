@@ -1,3 +1,5 @@
+using DG.Tweening;
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -17,6 +19,7 @@ public class CharacterSpeechBubble : MonoBehaviour
     private CharacterSpeechBodyText _body;
     private Character _character;
     private bool _proceed;
+    private TweenCallback _disableAction;
 
     private void Awake()
     {
@@ -24,6 +27,7 @@ public class CharacterSpeechBubble : MonoBehaviour
         _body = GetComponentInChildren<CharacterSpeechBodyText>();
         _character = GetComponentInParent<Character>();
         _name.text = _character.Name;
+        _disableAction = () => gameObject.SetActive(false);
         gameObject.SetActive(false);
     }
 
@@ -46,12 +50,19 @@ public class CharacterSpeechBubble : MonoBehaviour
     {
         gameObject.SetActive(true);
         _rectTransform.anchoredPosition = GetTargetScreenPosition();
+
+        // The size needs to be tweened in case the same character speaks twice in a row
         AdjustSize(text);
 
+        // The scale needs to start at 0 so that we can see the first scale-in
+        transform.DOKill();
+        transform.DOScale(1, .2f);
+        
         yield return ScrollText(text);
         yield return WaitToProceed();
 
-        gameObject.SetActive(false);
+        transform.DOKill();
+        transform.DOScale(0, .2f).OnComplete(_disableAction);
     }
 
     private void AdjustSize(string text)
