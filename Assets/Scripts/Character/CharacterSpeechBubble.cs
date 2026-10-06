@@ -28,6 +28,8 @@ public class CharacterSpeechBubble : MonoBehaviour
         _character = GetComponentInParent<Character>();
         _name.text = _character.Name;
         _disableAction = () => gameObject.SetActive(false);
+
+        transform.localScale = Vector3.zero;
         gameObject.SetActive(false);
     }
 
@@ -51,12 +53,9 @@ public class CharacterSpeechBubble : MonoBehaviour
         gameObject.SetActive(true);
         _rectTransform.anchoredPosition = GetTargetScreenPosition();
 
-        // The size needs to be tweened in case the same character speaks twice in a row
-        AdjustSize(text);
-
-        // The scale needs to start at 0 so that we can see the first scale-in
         transform.DOKill();
         transform.DOScale(1, .2f);
+        AdjustSize(text);
         
         yield return ScrollText(text);
         yield return WaitToProceed();
@@ -70,7 +69,7 @@ public class CharacterSpeechBubble : MonoBehaviour
         _body.AdjustSize(text);
         Vector2 size = _body.Size + _textPadding;
         size.x = Mathf.Max(size.x, _minWidth);
-        _rectTransform.sizeDelta = size;
+        _rectTransform.DOSizeDelta(size, .2f);
     }
 
     private IEnumerator ScrollText(string text)
