@@ -9,6 +9,7 @@ public class CharacterSpeechBubble : MonoBehaviour
     [SerializeField] private Transform _anchor;
     [SerializeField] private Vector2 _textPadding;
     [SerializeField] private float _minWidth = 100;
+    [SerializeField] private float _timeBetweenCharacters = 0.05f;
     private RectTransform _rectTransform;
     private CharacterSpeechBodyText _body;
     private Character _character;
@@ -24,17 +25,29 @@ public class CharacterSpeechBubble : MonoBehaviour
 
     public IEnumerator Say(string text)
     {
+        gameObject.SetActive(true);
         _rectTransform.anchoredPosition = GetTargetScreenPosition();
 
-        gameObject.SetActive(true);
-        _body.SetText(text);
-        
+        AdjustSize(text);
+
+        WaitForSeconds charWait = new(_timeBetweenCharacters);
+        _body.Clear();
+        for (int i = 0; i < text.Length; i++)
+        {
+            _body.Append(text[i]);
+            yield return charWait;
+        }
+
+        yield return new WaitForSeconds(1);
+        gameObject.SetActive(false);
+    }
+
+    private void AdjustSize(string text)
+    {
+        _body.AdjustSize(text);
         Vector2 size = _body.Size + _textPadding;
         size.x = Mathf.Max(size.x, _minWidth);
         _rectTransform.sizeDelta = size;
-
-        yield return new WaitForSeconds(2);
-        gameObject.SetActive(false);
     }
 
     private Vector2 GetTargetScreenPosition()

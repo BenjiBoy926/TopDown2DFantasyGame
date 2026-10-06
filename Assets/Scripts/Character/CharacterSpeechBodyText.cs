@@ -17,7 +17,7 @@ public class CharacterSpeechBodyText : MonoBehaviour
         _text = GetComponent<TMP_Text>();
     }
 
-    public void SetText(string text)
+    public void AdjustSize(string text)
     {
         Vector2 preferredSize = _text.GetPreferredValues(text);
         float multipleOfMax = Mathf.Ceil(preferredSize.x / _maxWidth);
@@ -28,6 +28,15 @@ public class CharacterSpeechBodyText : MonoBehaviour
             preferredSize.x = containerWidth;
         }
         _rectTransform.sizeDelta = preferredSize;
-        _text.text = text;
+    }
+
+    public void Clear()
+    {
+        _text.text = "";
+    }
+
+    public void Append(char c)
+    {
+        _text.text += c;
     }
 }
