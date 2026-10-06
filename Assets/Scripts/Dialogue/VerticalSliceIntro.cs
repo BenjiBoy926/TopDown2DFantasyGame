@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -6,27 +7,36 @@ using static UniqueCharacters;
 public class VerticalSliceIntro : MonoBehaviour
 {
     [SerializeField] private Light2D _globalLight;
+    [SerializeField] private float _initialEmberRevealDelay = 2;
+    [SerializeField] private float _emberPulseDuration = 3;
+    [SerializeField] private float _emberFadeInDuration = 4;
     private Battle _battle;
+    private Player _player;
     private PlayerCursor _cursor;
     private Light2D _ember;
+    private Vector2 _playerPosition;
     private Color _globalLightColor;
     private float _emberIntensity;
 
     private void Awake()
     {
         _battle = GetComponentInParent<Battle>();
+        _player = _battle.GetComponentInChildren<Player>(true);
         _cursor = _battle.GetComponentInChildren<PlayerCursor>(true);
         _ember = _cursor.GetComponentInChildren<Light2D>(true);
+    }
 
+    private IEnumerator Start()
+    {
+        _playerPosition = _player.CursorPosition;
         _globalLightColor = _globalLight.color;
         _emberIntensity = _ember.intensity;
 
         _globalLight.color = Color.black;
         _ember.intensity = 0;
-    }
 
-    private IEnumerator Start()
-    {
+        yield return SoundFadeInSequence();
+
         yield return Alfred.Say("Okay, I can't see a thing.");
         yield return Gregory.Say("How much further, Hayden?");
         yield return Hayden.Say("It's just ahead. I'm sure of it.");
@@ -49,8 +59,36 @@ public class VerticalSliceIntro : MonoBehaviour
         _battle.Begin();
     }
 
+    private IEnumerator SoundFadeInSequence()
+    {
+        WaitForSeconds waitBeforeStart = new(1);
+        WaitForSeconds waitBetweenSteps = new(.07f);
+        WaitForSeconds waitBeforeEnd = new(1);
+
+        yield return waitBeforeStart;
+        Hayden.SetIsRunning(true);
+        yield return waitBetweenSteps;
+        Gregory.SetIsRunning(true);
+        yield return waitBeforeEnd;
+    }
+
     private IEnumerator LightFadeInSequence()
     {
+        yield return new WaitForSeconds(_initialEmberRevealDelay);
+        Hayden.PlayIdleAnimation();
+        Gregory.PlayIdleAnimation();
+
+        _cursor.Show();
+        _player.SetPosition(_playerPosition);
+        
+        Vector3 GetEmberIntensity() => new(_ember.intensity, 0, 0);
+        void SetEmberIntensity(Vector3 value) => _ember.intensity = value.x;
+        Vector3 emberDirection = Vector3.right * .5f;
+
+        yield return DOTween.Punch(GetEmberIntensity, SetEmberIntensity, emberDirection, _emberPulseDuration, 0).WaitForCompletion();
+        yield return DOTween.Punch(GetEmberIntensity, SetEmberIntensity, emberDirection, _emberPulseDuration, 0).WaitForCompletion();
+        yield return DOTween.To(GetEmberIntensity, SetEmberIntensity, Vector3.right, _emberFadeInDuration).WaitForCompletion();
+
         yield return new WaitForSeconds(2f);
         _globalLight.color = _globalLightColor;
         _ember.intensity = _emberIntensity;

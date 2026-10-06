@@ -7,12 +7,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public Character ActiveCharacter => _activeCharacter;
-    public int ActiveCharacterRange => _activeCharacter.TraversalRange;
     public Faction Faction => _faction;
     public Transform CommanderTransform => _faction.CommanderTransform;
     public Vector3 CommanderPosition => _faction.CommanderPosition;
     public bool IsInputAllowed => _isInputAllowed;
     public HashSet<Character> AllCharacters => _battle.AllCharacters;
+    public Vector2 CursorPosition => _cursor.Position;
 
     [SerializeField] private Faction _faction;
     [SerializeField] private AudioSource _cellHoverAudio;
