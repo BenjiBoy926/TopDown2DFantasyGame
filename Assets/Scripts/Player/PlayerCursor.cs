@@ -19,7 +19,6 @@ public class PlayerCursor : MonoBehaviour
     {
         _fire = GetComponentInChildren<PlayerCursorFire>(true);
         _aura = GetComponentInChildren<PlayerSelectionAura>(true);
-        ReflectVisibility();
     }
 
     private void Start()
