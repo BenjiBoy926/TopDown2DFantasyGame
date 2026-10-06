@@ -10,7 +10,6 @@ public class CharacterSpeechBubble : MonoBehaviour
 {
     [SerializeField] private TMP_Text _name;
     [SerializeField] private Transform _anchor;
-    [SerializeField] private Vector2 _textPadding;
     [SerializeField] private float _minWidth = 100;
     [SerializeField] private float _timeBetweenCharacters = 0.05f;
     [SerializeField] private AudioSource _audioSource;
@@ -18,6 +17,7 @@ public class CharacterSpeechBubble : MonoBehaviour
     [SerializeField] private float _resizeDuration = 0.1f;
     private RectTransform _rectTransform;
     private CharacterSpeechBodyText _body;
+    private Vector2 _textPadding;
     private Character _character;
     private bool _proceed;
     private TweenCallback _disableAction;
@@ -29,6 +29,8 @@ public class CharacterSpeechBubble : MonoBehaviour
         _character = GetComponentInParent<Character>();
         _name.text = _character.Name;
         _disableAction = () => gameObject.SetActive(false);
+
+        _textPadding = _rectTransform.sizeDelta - _body.Size;
 
         transform.localScale = Vector3.zero;
         gameObject.SetActive(false);
@@ -124,12 +126,6 @@ public class CharacterSpeechBubble : MonoBehaviour
 
     private Vector2 GetTargetWorldPosition()
     {
-        Vector2 localPosition = _anchor.localPosition;
-        if (_character.GetDirection().x < 0)
-        {
-            localPosition.x *= -1;
-        }
-        Vector2 worldPosition = _anchor.parent.TransformPoint(localPosition);
-        return worldPosition;
+        return _anchor.position;
     }
 }
