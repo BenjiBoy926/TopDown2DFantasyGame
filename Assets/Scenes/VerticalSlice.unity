@@ -4180,6 +4180,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _globalLight: {fileID: 619394801}
+  _initialEmberRevealDelay: 1
+  _emberPulseDuration: 2
+  _emberFadeInDuration: 3
+  _globalLightFadeDelay: 1
+  _globalLightFadeDuration: 3
 --- !u!1001 &1785716537
 PrefabInstance:
   m_ObjectHideFlags: 0
