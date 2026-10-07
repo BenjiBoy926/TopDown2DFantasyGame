@@ -4180,6 +4180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ambience: {fileID: 8300000, guid: 57a80abc914264b4d8513199b0d6e0ca, type: 3}
+  _ambushMusic: {fileID: 8300000, guid: 73e800617cbae8843909627cf37f3b01, type: 3}
   _globalLight: {fileID: 619394801}
   _initialEmberRevealDelay: 1
   _emberPulseDuration: 2
