@@ -10,6 +10,8 @@ public class VerticalSliceIntro : MonoBehaviour
     [SerializeField] private float _initialEmberRevealDelay = 2;
     [SerializeField] private float _emberPulseDuration = 3;
     [SerializeField] private float _emberFadeInDuration = 4;
+    [SerializeField] private float _globalLightFadeDelay = 1;
+    [SerializeField] private float _globalLightFadeDuration = 4;
     private Battle _battle;
     private Player _player;
     private PlayerCursor _cursor;
@@ -89,8 +91,10 @@ public class VerticalSliceIntro : MonoBehaviour
         yield return DOTween.Punch(GetEmberIntensity, SetEmberIntensity, emberDirection, _emberPulseDuration, 0).WaitForCompletion();
         yield return DOTween.To(GetEmberIntensity, SetEmberIntensity, Vector3.right, _emberFadeInDuration).WaitForCompletion();
 
-        yield return new WaitForSeconds(2f);
-        _globalLight.color = _globalLightColor;
-        _ember.intensity = _emberIntensity;
+        yield return new WaitForSeconds(_globalLightFadeDelay);
+
+        Color GetLightColor() => _globalLight.color;
+        void SetLightColor(Color color) => _globalLight.color = color;
+        yield return DOTween.To(GetLightColor, SetLightColor, _globalLightColor, _globalLightFadeDuration).WaitForCompletion();
     }
 }
