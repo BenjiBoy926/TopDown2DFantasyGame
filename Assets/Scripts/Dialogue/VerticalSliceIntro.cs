@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Hellmade.Sound;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -6,6 +7,7 @@ using static UniqueCharacters;
 
 public class VerticalSliceIntro : MonoBehaviour
 {
+    [SerializeField] private AudioClip _ambience;
     [SerializeField] private Light2D _globalLight;
     [SerializeField] private float _initialEmberRevealDelay = 2;
     [SerializeField] private float _emberPulseDuration = 3;
@@ -67,6 +69,7 @@ public class VerticalSliceIntro : MonoBehaviour
         WaitForSeconds waitBetweenSteps = new(.07f);
         WaitForSeconds waitBeforeEnd = new(1);
 
+        EazySoundManager.PlayMusic(_ambience);
         yield return waitBeforeStart;
         Hayden.SetIsRunning(true);
         yield return waitBetweenSteps;
