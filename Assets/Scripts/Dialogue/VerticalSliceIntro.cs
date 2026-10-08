@@ -8,6 +8,7 @@ using static UniqueCharacters;
 public class VerticalSliceIntro : MonoBehaviour
 {
     [SerializeField] private AudioClip _ambience;
+    [SerializeField] private float _ambienceVolume = 1;
     [SerializeField] private AudioClip _ambushMusic;
     [SerializeField] private float _ambushMusicVolume = .2f;
     [SerializeField] private Light2D _globalLight;
@@ -53,7 +54,7 @@ public class VerticalSliceIntro : MonoBehaviour
         yield return LightFadeInSequence();
 
         yield return Hayden.Say("There! It's the Ember! Oh, thank Arkalux!");
-        int ambushMusicID = EazySoundManager.PlayMusic(_ambushMusic, _ambushMusicVolume);
+        int ambushMusicID = EazySoundManager.PlayMusic(_ambushMusic, _ambushMusicVolume, true, true);
         yield return Robin.Say("Don't thank him just yet. It's led us into a trap.");
         yield return Hayden.Say("What?");
         yield return Robin.Say("Goblins ahead. Four. Several more behind them.");
@@ -74,7 +75,7 @@ public class VerticalSliceIntro : MonoBehaviour
         WaitForSeconds waitBetweenSteps = new(.07f);
         WaitForSeconds waitBeforeEnd = new(1);
 
-        EazySoundManager.PlayMusic(_ambience);
+        EazySoundManager.PlaySound(_ambience, _ambienceVolume, true, null);
         yield return waitBeforeStart;
         Hayden.SetIsRunning(true);
         yield return waitBetweenSteps;
