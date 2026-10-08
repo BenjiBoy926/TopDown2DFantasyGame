@@ -23,8 +23,7 @@ public class VerticalSliceIntro : MonoBehaviour
     [SerializeField] private float _globalLightFadeDuration = 4;
 
     [Space]
-    [SerializeField] private AudioClip _ambushMusic;
-    [SerializeField] private float _ambushMusicVolume = .2f;
+    [SerializeField] private Music _ambush;
 
     private Battle _battle;
     private Player _player;
@@ -58,7 +57,7 @@ public class VerticalSliceIntro : MonoBehaviour
         yield return LightFadeInSequence();
 
         yield return Hayden.Say("There! It's the Ember! Oh, thank Arkalux!");
-        int ambushMusicID = EazySoundManager.PlayMusic(_ambushMusic, _ambushMusicVolume, true, true);
+        _ambush.Play();
         yield return Robin.Say("Don't thank him just yet. It's led us into a trap.");
         yield return Hayden.Say("What?");
         yield return Robin.Say("Goblins ahead. Four. Several more behind them.");
@@ -67,8 +66,7 @@ public class VerticalSliceIntro : MonoBehaviour
         yield return Hayden.Say("No! We'll only be lost in the dark.");
         yield return Hayden.Say("We must stay near the Ember at all costs.");
         yield return Gregory.Say("He's right. If we work together, we can win. I'm sure of it.");
-        Audio ambushAudio = EazySoundManager.GetAudio(ambushMusicID);
-        ambushAudio.Stop();
+        _ambush.Stop();
 
         _battle.Begin();
     }
