@@ -395,7 +395,11 @@ public class Player : MonoBehaviour
 
     private bool ShouldInputBeAllowed()
     {
-        return !_battle.IsTurnChangeAnimationPlaying && !Character.IsAnyCharacterActing && !BattleHistory.IsAnySequencePlaying && _battle.CurrentFactionTurn == _faction;
+        return _battle.IsInProgress && 
+            !_battle.IsTurnChangeAnimationPlaying && 
+            !Character.IsAnyCharacterActing && 
+            !BattleHistory.IsAnySequencePlaying && 
+            _battle.CurrentFactionTurn == _faction;
     }
 
     private void SetIsInputAllowed(bool isInputAllowed)

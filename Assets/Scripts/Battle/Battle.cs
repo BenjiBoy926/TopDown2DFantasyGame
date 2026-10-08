@@ -8,9 +8,10 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(BattleTurn))]
 [RequireComponent(typeof(BattleHistory))]
 [RequireComponent(typeof(BattleCondition))]
+[RequireComponent(typeof(BattleOutro))]
 public class Battle : MonoBehaviour
 {
-    public bool IsInProgress => CurrentFactionTurn != null;
+    public bool IsInProgress => _isInProgress;
     public float CellWidth => _field.CellWidth;
     public float CellHeight => _field.CellHeight;
     public bool IsTurnChangeAnimationPlaying => _turn.IsAnimationPlaying;
@@ -28,11 +29,13 @@ public class Battle : MonoBehaviour
     private BattleHistory _history;
     private BattleCamera _camera;
     private BattleCondition _condition;
+    private BattleOutro _outro;
     private Player _player;
     private ComputerPlayer _computerPlayer;
     private readonly HashSet<Character> _allCharacters = new();
     private readonly HashSet<Squad> _allSquads = new();
     private readonly List<Character> _characterListScratch = new();
+    private bool _isInProgress;
 
     private void Awake()
     {
@@ -42,6 +45,7 @@ public class Battle : MonoBehaviour
         _history = GetComponent<BattleHistory>();
         _camera = GetComponentInChildren<BattleCamera>();
         _condition = GetComponent<BattleCondition>();
+        _outro = GetComponent<BattleOutro>();
         _player = GetComponentInChildren<Player>();
         _computerPlayer = GetComponentInChildren<ComputerPlayer>();
     }
@@ -49,6 +53,12 @@ public class Battle : MonoBehaviour
     public void Begin()
     {
         _setup.Begin();
+        _isInProgress = true;
+    }
+
+    public void End()
+    {
+        _isInProgress = false;
     }
 
     public void Register(Character character)
@@ -81,7 +91,8 @@ public class Battle : MonoBehaviour
         }
         else if (_condition.IsWinConditionMet())
         {
-            Debug.Log("You win!");
+            End();
+            _outro.Play();
         }
         else if (CountMoveableCharacters(CurrentFactionTurn) == 0)
         {
