@@ -9,6 +9,7 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(BattleHistory))]
 public class Battle : MonoBehaviour
 {
+    public bool IsInProgress => CurrentFactionTurn != null;
     public float CellWidth => _field.CellWidth;
     public float CellHeight => _field.CellHeight;
     public bool IsTurnChangeAnimationPlaying => _turn.IsAnimationPlaying;
@@ -25,7 +26,6 @@ public class Battle : MonoBehaviour
     private BattleTurn _turn;
     private BattleHistory _history;
     private BattleCamera _camera;
-    private BattleMusic _music;
     private Player _player;
     private ComputerPlayer _computerPlayer;
     private readonly HashSet<Character> _allCharacters = new();
@@ -39,7 +39,6 @@ public class Battle : MonoBehaviour
         _turn = GetComponent<BattleTurn>();
         _history = GetComponent<BattleHistory>();
         _camera = GetComponentInChildren<BattleCamera>();
-        _music = GetComponent<BattleMusic>();
         _player = GetComponentInChildren<Player>();
         _computerPlayer = GetComponentInChildren<ComputerPlayer>();
     }
@@ -108,19 +107,16 @@ public class Battle : MonoBehaviour
     public void StartPlayerTurn()
     {
         _turn.StartTurn(PlayerFaction);
-        _music.NotifyTurnChanged();
     }
 
     public void StartNextTurn()
     {
         _turn.StartNextTurn();
-        _music.NotifyTurnChanged();
     }
 
     public void StartTurn(Faction faction)
     {
         _turn.SetCurrentTurn(faction);
-        _music.NotifyTurnChanged();
     }
 
     public int CountMoveableCharacters(Faction faction)
