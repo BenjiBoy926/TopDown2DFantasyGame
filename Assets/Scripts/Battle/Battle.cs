@@ -7,6 +7,7 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(Battlefield))]
 [RequireComponent(typeof(BattleTurn))]
 [RequireComponent(typeof(BattleHistory))]
+[RequireComponent(typeof(BattleCondition))]
 public class Battle : MonoBehaviour
 {
     public bool IsInProgress => CurrentFactionTurn != null;
@@ -26,6 +27,7 @@ public class Battle : MonoBehaviour
     private BattleTurn _turn;
     private BattleHistory _history;
     private BattleCamera _camera;
+    private BattleCondition _condition;
     private Player _player;
     private ComputerPlayer _computerPlayer;
     private readonly HashSet<Character> _allCharacters = new();
@@ -39,6 +41,7 @@ public class Battle : MonoBehaviour
         _turn = GetComponent<BattleTurn>();
         _history = GetComponent<BattleHistory>();
         _camera = GetComponentInChildren<BattleCamera>();
+        _condition = GetComponent<BattleCondition>();
         _player = GetComponentInChildren<Player>();
         _computerPlayer = GetComponentInChildren<ComputerPlayer>();
     }
@@ -75,6 +78,10 @@ public class Battle : MonoBehaviour
         {
             _computerPlayer.Stop();
             Undo();
+        }
+        else if (_condition.IsWinConditionMet())
+        {
+            Debug.Log("You win!");
         }
         else if (CountMoveableCharacters(CurrentFactionTurn) == 0)
         {

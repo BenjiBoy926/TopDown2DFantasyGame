@@ -405,6 +405,8 @@ MonoBehaviour:
   _intro: {fileID: 8300000, guid: a8da10df85ca194498df59b56cf4ece4, type: 3}
   _loop: {fileID: 8300000, guid: 310ed522aceb44648b31343e61becb79, type: 3}
   _volume: 0.1
+  _fadeIn: 1
+  _fadeOut: 1
 --- !u!1 &390487294
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,6 +427,8 @@ GameObject:
   - component: {fileID: 390487304}
   - component: {fileID: 390487305}
   - component: {fileID: 390487306}
+  - component: {fileID: 390487308}
+  - component: {fileID: 390487307}
   m_Layer: 0
   m_Name: Battle
   m_TagString: Untagged
@@ -3194,6 +3198,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerTurn: {fileID: 294881695}
   _enemyTurn: {fileID: 473412947}
+--- !u!114 &390487307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 390487294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b65a48daa068664ea88fcb7cba62f11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &390487308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 390487294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b666ed4b073fb0b4e9ab535f8e518907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &469424232 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 861936393183678682, guid: 4193f31528d285640985726b07c27131, type: 3}
@@ -3308,6 +3336,8 @@ MonoBehaviour:
   _intro: {fileID: 0}
   _loop: {fileID: 8300000, guid: ab3c59f380e557742b00ddd5b7cd57e2, type: 3}
   _volume: 0.1
+  _fadeIn: 1
+  _fadeOut: 1
 --- !u!1001 &475287303
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4097,6 +4127,8 @@ MonoBehaviour:
   _intro: {fileID: 8300000, guid: 041f8d629f2ce0b47b05f1065c8f1be5, type: 3}
   _loop: {fileID: 8300000, guid: c02b8601e47ef7145a69acd86640c41d, type: 3}
   _volume: 0.1
+  _fadeIn: 1
+  _fadeOut: 1
 --- !u!1001 &1396293557
 PrefabInstance:
   m_ObjectHideFlags: 0
