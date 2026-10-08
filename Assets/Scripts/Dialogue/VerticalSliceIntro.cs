@@ -9,14 +9,23 @@ public class VerticalSliceIntro : MonoBehaviour
 {
     [SerializeField] private AudioClip _ambience;
     [SerializeField] private float _ambienceVolume = 1;
-    [SerializeField] private AudioClip _ambushMusic;
-    [SerializeField] private float _ambushMusicVolume = .2f;
+    [SerializeField] private float _waitBeforeFootstepStart = 2;
+    [SerializeField] private float _footstepStagger = .15f;
+    [SerializeField] private float _waitBeforeTalkingStarts = 1;
+
+    [Space]
     [SerializeField] private Light2D _globalLight;
+    [SerializeField] private float _footstepStopDelay = 1;
     [SerializeField] private float _initialEmberRevealDelay = 2;
     [SerializeField] private float _emberPulseDuration = 3;
     [SerializeField] private float _emberFadeInDuration = 4;
     [SerializeField] private float _globalLightFadeDelay = 1;
     [SerializeField] private float _globalLightFadeDuration = 4;
+
+    [Space]
+    [SerializeField] private AudioClip _ambushMusic;
+    [SerializeField] private float _ambushMusicVolume = .2f;
+
     private Battle _battle;
     private Player _player;
     private PlayerCursor _cursor;
@@ -35,12 +44,7 @@ public class VerticalSliceIntro : MonoBehaviour
 
     private IEnumerator Start()
     {
-        _playerPosition = _player.CursorPosition;
-        _globalLightColor = _globalLight.color;
-        _emberIntensity = _ember.intensity;
-
-        _globalLight.color = Color.black;
-        _ember.intensity = 0;
+        SetupInitialState();
 
         yield return SoundFadeInSequence();
 
@@ -58,7 +62,7 @@ public class VerticalSliceIntro : MonoBehaviour
         yield return Robin.Say("Don't thank him just yet. It's led us into a trap.");
         yield return Hayden.Say("What?");
         yield return Robin.Say("Goblins ahead. Four. Several more behind them.");
-        yield return Alfred.Say("We can take them!");
+        yield return Alfred.Say("FINALLY! Come on! We can take 'em!");
         yield return Robin.Say("Don't be ridiculous. We have to retreat.");
         yield return Hayden.Say("No! We'll only be lost in the dark.");
         yield return Hayden.Say("We must stay near the Ember at all costs.");
@@ -69,26 +73,36 @@ public class VerticalSliceIntro : MonoBehaviour
         _battle.Begin();
     }
 
+    private void SetupInitialState()
+    {
+        _playerPosition = _player.CursorPosition;
+        _globalLightColor = _globalLight.color;
+        _emberIntensity = _ember.intensity;
+
+        _globalLight.color = Color.black;
+        _ember.intensity = 0;
+    }
+
     private IEnumerator SoundFadeInSequence()
     {
-        WaitForSeconds waitBeforeStart = new(1);
-        WaitForSeconds waitBetweenSteps = new(.07f);
-        WaitForSeconds waitBeforeEnd = new(1);
+        int ambienceID = EazySoundManager.PlaySound(_ambience, 1, true, null);
+        yield return new WaitForSeconds(_waitBeforeFootstepStart);
+        Audio ambience = EazySoundManager.GetAudio(ambienceID);
+        ambience.SetVolume(_ambienceVolume);
 
-        EazySoundManager.PlaySound(_ambience, _ambienceVolume, true, null);
-        yield return waitBeforeStart;
         Hayden.SetIsRunning(true);
-        yield return waitBetweenSteps;
+        yield return new WaitForSeconds(_footstepStagger);
         Gregory.SetIsRunning(true);
-        yield return waitBeforeEnd;
+        yield return new WaitForSeconds(_waitBeforeTalkingStarts);
     }
 
     private IEnumerator LightFadeInSequence()
     {
-        yield return new WaitForSeconds(_initialEmberRevealDelay);
+        yield return new WaitForSeconds(_footstepStopDelay);
         Hayden.PlayIdleAnimation();
         Gregory.PlayIdleAnimation();
 
+        yield return new WaitForSeconds(_initialEmberRevealDelay);
         _cursor.Show();
         _player.SetPosition(_playerPosition);
         
@@ -98,7 +112,7 @@ public class VerticalSliceIntro : MonoBehaviour
 
         yield return DOTween.Punch(GetEmberIntensity, SetEmberIntensity, emberDirection, _emberPulseDuration, 0).WaitForCompletion();
         yield return DOTween.Punch(GetEmberIntensity, SetEmberIntensity, emberDirection, _emberPulseDuration, 0).WaitForCompletion();
-        yield return DOTween.To(GetEmberIntensity, SetEmberIntensity, Vector3.right, _emberFadeInDuration).WaitForCompletion();
+        yield return DOTween.To(GetEmberIntensity, SetEmberIntensity, Vector3.right * _emberIntensity, _emberFadeInDuration).WaitForCompletion();
 
         yield return new WaitForSeconds(_globalLightFadeDelay);
 
