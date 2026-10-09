@@ -9,7 +9,6 @@ public class VerticalSliceOutro : MonoBehaviour
     [SerializeField] private float _footstepStagger = .5f;
     private Battle _battle;
     private Player _player;
-    private Vector2 _playerPosition;
 
     private void Awake()
     {
@@ -25,26 +24,25 @@ public class VerticalSliceOutro : MonoBehaviour
 
     private void SetupInitialState()
     {
-        _playerPosition = _player.CursorPosition;
         _fadeInOverlay.SetAlpha(1);
     }
 
     private IEnumerator InitialFootstepFadeIn()
     {
         yield return new WaitForSeconds(_footstepWait);
-        Hayden.SetIsRunning(true);
-        yield return new WaitForSeconds(_footstepStagger);
-        Gregory.SetFootstepsAudible(false);
-        Gregory.SetIsRunning(true);
-        yield return new WaitForSeconds(_footstepStagger);
-        Alfred.SetFootstepsAudible(false);
-        Alfred.SetIsRunning(true);
-        yield return new WaitForSeconds(_footstepStagger);
-        Robin.SetFootstepsAudible(false);
-        Robin.SetIsRunning(true);
+        yield return StartRunning(Hayden, true);
+        yield return StartRunning(Gregory, true);
+        yield return StartRunning(Alfred, false);
+        yield return StartRunning(Robin, false);
 
-        _player.SetPosition(_playerPosition);
-        yield return _fadeInOverlay.FadeOut();
         _player.Show();
+        yield return _fadeInOverlay.FadeOut();
+    }
+
+    private YieldInstruction StartRunning(Character character, bool audible)
+    {
+        character.SetFootstepsAudible(audible);
+        character.SetIsRunning(true);
+        return new WaitForSeconds(_footstepStagger);
     }
 }

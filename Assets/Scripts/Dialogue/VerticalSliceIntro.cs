@@ -28,7 +28,6 @@ public class VerticalSliceIntro : MonoBehaviour
     private Battle _battle;
     private Player _player;
     private Light2D _ember;
-    private Vector2 _playerPosition;
     private Color _globalLightColor;
     private float _emberIntensity;
 
@@ -71,7 +70,6 @@ public class VerticalSliceIntro : MonoBehaviour
 
     private void SetupInitialState()
     {
-        _playerPosition = _player.CursorPosition;
         _globalLightColor = _globalLight.color;
         _emberIntensity = _ember.intensity;
 
@@ -100,7 +98,6 @@ public class VerticalSliceIntro : MonoBehaviour
 
         yield return new WaitForSeconds(_initialEmberRevealDelay);
         _player.Show();
-        _player.SetPosition(_playerPosition);
         
         Vector3 GetEmberIntensity() => new(_ember.intensity, 0, 0);
         void SetEmberIntensity(Vector3 value) => _ember.intensity = value.x;

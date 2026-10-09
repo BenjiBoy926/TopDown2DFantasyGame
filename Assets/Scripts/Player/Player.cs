@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
     private Character _hoveredCharacter;
     private ActionDirectionIndicator _actionDirectionIndicator;
     private Vector2Int _currentCell;
-    private bool _isInputAllowed = true;
+    private bool _isInputAllowed = false;
 
     private void Awake()
     {
