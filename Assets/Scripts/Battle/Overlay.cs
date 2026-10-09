@@ -13,7 +13,7 @@ public class Overlay : MonoBehaviour
     private void Awake()
     {
         _graphic = GetComponent<Graphic>();
-        _graphic.color = new Color(_graphic.color.r, _graphic.color.g, _graphic.color.b, 0f);
+        SetAlpha(0);
     }
 
     public YieldInstruction FadeIn()
@@ -26,6 +26,11 @@ public class Overlay : MonoBehaviour
     {
         yield return FadeTo(0f);
         gameObject.SetActive(false);
+    }
+
+    public void SetAlpha(float alpha)
+    {
+        _graphic.color = new(_graphic.color.r, _graphic.color.g, _graphic.color.b, alpha);
     }
 
     private YieldInstruction FadeTo(float alpha)

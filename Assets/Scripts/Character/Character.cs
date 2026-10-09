@@ -16,6 +16,7 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(CharacterCancelBehaviour))]
 [RequireComponent(typeof(CharacterUndoRedoBehaviour))]
 [RequireComponent(typeof(CharacterSpeech))]
+[RequireComponent(typeof(CharacterFootfallAudio))]
 public class Character : MonoBehaviour
 {
     // ── Properties ───────────────────────────────────────────────────────
@@ -93,6 +94,7 @@ public class Character : MonoBehaviour
     private CharacterCancelBehaviour _cancelBehaviour;
     private CharacterUndoRedoBehaviour _undoRedoBehaviour;
     private CharacterSpeech _speech;
+    private CharacterFootfallAudio _footfallAudio;
     private Battle _battle;
     // NOTE: static — must not carry state across scene reloads. Clear on scene unload if needed.
     private static readonly HashSet<Character> _actingCharacters = new();
@@ -117,6 +119,7 @@ public class Character : MonoBehaviour
         _cancelBehaviour = GetComponent<CharacterCancelBehaviour>();
         _undoRedoBehaviour = GetComponent<CharacterUndoRedoBehaviour>();
         _speech = GetComponent<CharacterSpeech>();
+        _footfallAudio = GetComponent<CharacterFootfallAudio>();
     }
 
     private void OnEnable()
@@ -537,6 +540,13 @@ public class Character : MonoBehaviour
     public IEnumerator Say(string text)
     {
         return _speech.Say(text);
+    }
+
+    // -- Footfall Audio -------------------------------------------------------
+
+    public void SetFootstepsAudible(bool audible)
+    {
+        _footfallAudio.enabled = audible;
     }
 
     // ── Battle ───────────────────────────────────────────────────────────

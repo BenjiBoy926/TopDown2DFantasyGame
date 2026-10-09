@@ -52,6 +52,11 @@ public class Player : MonoBehaviour
         RefreshIsInputAllowed();
     }
 
+    public void Show()
+    {
+        _cursor.Show();
+    }
+
     public void StartNextTurn()
     {
         _battle.StartNextTurn();

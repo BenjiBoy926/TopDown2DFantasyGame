@@ -27,7 +27,6 @@ public class VerticalSliceIntro : MonoBehaviour
 
     private Battle _battle;
     private Player _player;
-    private PlayerCursor _cursor;
     private Light2D _ember;
     private Vector2 _playerPosition;
     private Color _globalLightColor;
@@ -37,8 +36,7 @@ public class VerticalSliceIntro : MonoBehaviour
     {
         _battle = GetComponentInParent<Battle>();
         _player = _battle.GetComponentInChildren<Player>(true);
-        _cursor = _battle.GetComponentInChildren<PlayerCursor>(true);
-        _ember = _cursor.GetComponentInChildren<Light2D>(true);
+        _ember = _player.GetComponentInChildren<Light2D>(true);
     }
 
     private IEnumerator Start()
@@ -101,7 +99,7 @@ public class VerticalSliceIntro : MonoBehaviour
         Gregory.PlayIdleAnimation();
 
         yield return new WaitForSeconds(_initialEmberRevealDelay);
-        _cursor.Show();
+        _player.Show();
         _player.SetPosition(_playerPosition);
         
         Vector3 GetEmberIntensity() => new(_ember.intensity, 0, 0);
