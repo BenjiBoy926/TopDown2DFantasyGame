@@ -21,7 +21,7 @@ public class VerticalSliceOutro : MonoBehaviour
         _battle = GetComponentInParent<Battle>();
         _player = _battle.GetComponentInChildren<Player>(true);
         _initialWalkPosition = transform.position;
-        _finalWalkPosition = _initialWalkPosition + (Vector2.right * _walkSpeed);
+        _finalWalkPosition = _initialWalkPosition + Vector2.right;
     }
 
     private IEnumerator Start()
@@ -102,7 +102,7 @@ public class VerticalSliceOutro : MonoBehaviour
 
         while (true)
         {
-            t += Time.deltaTime;
+            t += Time.deltaTime * _walkSpeed;
             t = Mathf.Repeat(t, 1);
             Vector2 position = Vector2.LerpUnclamped(_initialWalkPosition, _finalWalkPosition, t);
             SetPosition(position);
