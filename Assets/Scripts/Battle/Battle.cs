@@ -23,6 +23,11 @@ public class Battle : MonoBehaviour
     public HashSet<Character> AllCharacters => _allCharacters;
     public HashSet<Squad> AllSquads => _allSquads;
     public bool IsCameraGrabbed => _camera.IsGrabbed;
+    public Vector2 CameraPosition
+    {
+        get => _camera.Position;
+        set => _camera.Position = value;
+    }
 
     private BattleSetup _setup;
     private Battlefield _field;
@@ -245,14 +250,6 @@ public class Battle : MonoBehaviour
     }
 
     // Camera ===
-
-    public void SetCameraTransformPosition(Vector2 position)
-    {
-        Vector3 cameraPosition = _camera.transform.position;
-        cameraPosition.x = position.x;
-        cameraPosition.y = position.y;
-        _camera.transform.position = cameraPosition;
-    }
 
     public void GrabCamera(Vector2 worldPosition)
     {

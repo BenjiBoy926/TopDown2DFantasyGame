@@ -47,7 +47,7 @@ MonoBehaviour:
   _fadeInOverlay: {fileID: 1900688311846145562}
   _footstepWait: 1
   _footstepStagger: 0.05
-  _walkSpeed: 5
+  _walkSpeed: 2
 --- !u!1001 &4263985976612648810
 PrefabInstance:
   m_ObjectHideFlags: 0

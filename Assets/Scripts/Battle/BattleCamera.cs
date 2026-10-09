@@ -18,8 +18,8 @@ public class BattleCamera : MonoBehaviour
     private float CurrentZoom => OrthoSizeToZoom(_camera.orthographicSize);
     public Vector2 Position
     {
-        get => _rigidbody.position;
-        set => _rigidbody.position = value;
+        get => transform.position;
+        set => transform.position = new(value.x, value.y, transform.position.z);
     }
     public Vector2 Velocity
     {
@@ -114,7 +114,7 @@ public class BattleCamera : MonoBehaviour
     {
         Rect rect = GetWorldRect(_viewMargin);
         Vector2 offset = OffsetOutsideEdge(rect, position);
-        _rigidbody.position += offset;
+        Position += offset;
     }
 
     public void ChangeZoom(float zoomDelta) 
@@ -158,7 +158,7 @@ public class BattleCamera : MonoBehaviour
     {
         Vector2 marginVector = new(margins, margins);
         Vector2 extents = WorldExtents - (marginVector * 2);
-        Vector2 center = _rigidbody.position;
+        Vector2 center = Position;
         Vector2 min = center - extents;
         Vector2 max = center + extents;
         return Rect.MinMaxRect(min.x, min.y, max.x, max.y);

@@ -70,12 +70,12 @@ public class VerticalSliceOutro : MonoBehaviour
 
     private void SetPosition(Vector2 position)
     {
+        _battle.CameraPosition = position;
         transform.position = position;
         _player.SetPosition(position + Vector2.right * 2);
         Hayden.Position = position;
         Gregory.Position = position + Vector2.left;
         Alfred.Position = position + Vector2.left * 2;
         Robin.Position = position + Vector2.left * 3;
-        _battle.SetCameraTransformPosition(position);
     }
 }
