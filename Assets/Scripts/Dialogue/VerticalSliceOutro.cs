@@ -60,14 +60,25 @@ public class VerticalSliceOutro : MonoBehaviour
         float startTime = Time.time;
         float elapsedTime;
         float timePerCycle = 1 / _walkSpeed;
+
         while (true)
         {
             elapsedTime = Time.time - startTime;
             float cycle = elapsedTime % timePerCycle;
             float t = Mathf.Repeat(cycle, 1);
             Vector2 position = Vector2.Lerp(_initialWalkPosition, _finalWalkPosition, t);
-            transform.position = position;
+            SetPosition(position);
             yield return null;
         }
+    }
+
+    private void SetPosition(Vector2 position)
+    {
+        transform.position = position;
+        _player.SetPosition(position + Vector2.right * 2);
+        Hayden.Position = position;
+        Gregory.Position = position + Vector2.left;
+        Alfred.Position = position + Vector2.left * 2;
+        Robin.Position = position + Vector2.left * 3;
     }
 }
