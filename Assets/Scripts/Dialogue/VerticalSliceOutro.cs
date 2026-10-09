@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 using static UniqueCharacters;
@@ -12,7 +13,6 @@ public class VerticalSliceOutro : MonoBehaviour
     [SerializeField] private float _haydenPause2 = 2;
     private Battle _battle;
     private Player _player;
-    private Coroutine _walkingRoutine;
     private Vector2 _initialWalkPosition;
     private Vector2 _finalWalkPosition;
 
@@ -65,9 +65,10 @@ public class VerticalSliceOutro : MonoBehaviour
         yield return Hayden.Say("How strange...");
         yield return new WaitForSeconds(_haydenPause2);
         yield return Hayden.Say("(Who is Ha'all? And where could the Ember be leading us?)");
-        yield return Hayden.Say("(I wonder what it all means...?)");
+        yield return Hayden.Say("(What could it all mean...?)");
 
-        // Fade out
+        transform.DOKill();
+        yield return _fadeInOverlay.FadeIn();
     }
 
     private void SetupInitialState()
@@ -84,7 +85,11 @@ public class VerticalSliceOutro : MonoBehaviour
         yield return StartRunning(Alfred, false);
         yield return StartRunning(Robin, false);
 
-        _walkingRoutine = StartCoroutine(WalkingRoutine());
+        transform.DOMove(_finalWalkPosition, _walkSpeed)
+            .SetSpeedBased()
+            .SetEase(Ease.Linear)
+            .SetLoops(-1, LoopType.Restart)
+            .OnUpdate(UpdateWalkFollowers);
         _player.ShowCursor();
         yield return _fadeInOverlay.FadeOut();
     }
@@ -96,24 +101,10 @@ public class VerticalSliceOutro : MonoBehaviour
         return new WaitForSeconds(_footstepStagger);
     }
 
-    private IEnumerator WalkingRoutine()
+    private void UpdateWalkFollowers()
     {
-        float t = 0;
-
-        while (true)
-        {
-            t += Time.deltaTime * _walkSpeed;
-            t = Mathf.Repeat(t, 1);
-            Vector2 position = Vector2.LerpUnclamped(_initialWalkPosition, _finalWalkPosition, t);
-            SetPosition(position);
-            yield return null;
-        }
-    }
-
-    private void SetPosition(Vector2 position)
-    {
+        Vector2 position = transform.position;
         _battle.CameraPosition = position;
-        transform.position = position;
         _player.SetPosition(position + Vector2.right * 2);
         Hayden.Position = position;
         Gregory.Position = position + Vector2.left;
