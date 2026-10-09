@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NaughtyAttributes.Test;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -244,6 +245,14 @@ public class Battle : MonoBehaviour
     }
 
     // Camera ===
+
+    public void SetCameraTransformPosition(Vector2 position)
+    {
+        Vector3 cameraPosition = _camera.transform.position;
+        cameraPosition.x = position.x;
+        cameraPosition.y = position.y;
+        _camera.transform.position = cameraPosition;
+    }
 
     public void GrabCamera(Vector2 worldPosition)
     {

@@ -52,14 +52,14 @@ public class Player : MonoBehaviour
         RefreshIsInputAllowed();
     }
 
-    public void Show()
+    public void ShowCursor()
     {
         _cursor.Show();
     }
 
-    public void StartNextTurn()
+    public void HideGridReticle()
     {
-        _battle.StartNextTurn();
+        _gridReticle.gameObject.SetActive(false);
     }
 
     public void BeginEndTurn()

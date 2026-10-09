@@ -19,7 +19,7 @@ public class VerticalSliceOutro : MonoBehaviour
         _battle = GetComponentInParent<Battle>();
         _player = _battle.GetComponentInChildren<Player>(true);
         _initialWalkPosition = transform.position;
-        _finalWalkPosition = _initialWalkPosition + Vector2.right;
+        _finalWalkPosition = _initialWalkPosition + (Vector2.right * _walkSpeed);
     }
 
     private IEnumerator Start()
@@ -31,6 +31,7 @@ public class VerticalSliceOutro : MonoBehaviour
     private void SetupInitialState()
     {
         _fadeInOverlay.SetAlpha(1);
+        _player.HideGridReticle();
     }
 
     private IEnumerator InitialFootstepFadeIn()
@@ -41,10 +42,8 @@ public class VerticalSliceOutro : MonoBehaviour
         yield return StartRunning(Alfred, false);
         yield return StartRunning(Robin, false);
 
-        yield return _battle.CameraFollow(transform);
-
         _walkingRoutine = StartCoroutine(WalkingRoutine());
-        _player.Show();
+        _player.ShowCursor();
         yield return _fadeInOverlay.FadeOut();
     }
 
@@ -57,16 +56,13 @@ public class VerticalSliceOutro : MonoBehaviour
 
     private IEnumerator WalkingRoutine()
     {
-        float startTime = Time.time;
-        float elapsedTime;
-        float timePerCycle = 1 / _walkSpeed;
+        float t = 0;
 
         while (true)
         {
-            elapsedTime = Time.time - startTime;
-            float cycle = elapsedTime % timePerCycle;
-            float t = Mathf.Repeat(cycle, 1);
-            Vector2 position = Vector2.Lerp(_initialWalkPosition, _finalWalkPosition, t);
+            t += Time.deltaTime;
+            t = Mathf.Repeat(t, 1);
+            Vector2 position = Vector2.LerpUnclamped(_initialWalkPosition, _finalWalkPosition, t);
             SetPosition(position);
             yield return null;
         }
@@ -80,5 +76,6 @@ public class VerticalSliceOutro : MonoBehaviour
         Gregory.Position = position + Vector2.left;
         Alfred.Position = position + Vector2.left * 2;
         Robin.Position = position + Vector2.left * 3;
+        _battle.SetCameraTransformPosition(position);
     }
 }

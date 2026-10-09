@@ -97,7 +97,7 @@ public class VerticalSliceIntro : MonoBehaviour
         Gregory.PlayIdleAnimation();
 
         yield return new WaitForSeconds(_initialEmberRevealDelay);
-        _player.Show();
+        _player.ShowCursor();
         
         Vector3 GetEmberIntensity() => new(_ember.intensity, 0, 0);
         void SetEmberIntensity(Vector3 value) => _ember.intensity = value.x;
