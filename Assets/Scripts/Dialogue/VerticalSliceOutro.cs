@@ -67,8 +67,7 @@ public class VerticalSliceOutro : MonoBehaviour
         yield return Hayden.Say("(Who is Ha'all? And where could the Ember be leading us?)");
         yield return Hayden.Say("(What could it all mean...?)");
 
-        transform.DOKill();
-        yield return _fadeInOverlay.FadeIn();
+        yield return Outro();
     }
 
     private void SetupInitialState()
@@ -85,11 +84,7 @@ public class VerticalSliceOutro : MonoBehaviour
         yield return StartRunning(Alfred, false);
         yield return StartRunning(Robin, false);
 
-        transform.DOMove(_finalWalkPosition, _walkSpeed)
-            .SetSpeedBased()
-            .SetEase(Ease.Linear)
-            .SetLoops(-1, LoopType.Restart)
-            .OnUpdate(UpdateWalkFollowers);
+        Walk(_finalWalkPosition, LoopType.Restart, UpdateObjectsAndCamera);
         _player.ShowCursor();
         yield return _fadeInOverlay.FadeOut();
     }
@@ -101,10 +96,37 @@ public class VerticalSliceOutro : MonoBehaviour
         return new WaitForSeconds(_footstepStagger);
     }
 
-    private void UpdateWalkFollowers()
+    private IEnumerator Outro()
+    {
+        transform.DOKill();
+        Walk(transform.position + Vector3.right, LoopType.Incremental, UpdateWorldObjects);
+        yield return _fadeInOverlay.FadeIn();
+    }
+
+    private void Walk(Vector2 finalPosition, LoopType loop, TweenCallback update)
+    {
+        transform.DOMove(finalPosition, _walkSpeed)
+            .SetSpeedBased()
+            .SetEase(Ease.Linear)
+            .SetLoops(-1, loop)
+            .OnUpdate(update);
+    }
+
+    private void UpdateObjectsAndCamera()
     {
         Vector2 position = transform.position;
         _battle.CameraPosition = position;
+        UpdateWorldObjects(position);
+    }
+
+    private void UpdateWorldObjects()
+    {
+        Vector2 position = transform.position;
+        UpdateWorldObjects(position);
+    }
+
+    private void UpdateWorldObjects(Vector2 position)
+    {
         _player.SetPosition(position + Vector2.right * 2);
         Hayden.Position = position;
         Gregory.Position = position + Vector2.left;
