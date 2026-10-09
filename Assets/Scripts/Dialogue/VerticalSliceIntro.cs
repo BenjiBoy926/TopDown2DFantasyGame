@@ -58,7 +58,8 @@ public class VerticalSliceIntro : MonoBehaviour
         yield return Robin.Say("Don't thank him just yet. It's led us into a trap.");
         yield return Hayden.Say("What?");
         yield return Robin.Say("Goblins ahead. Four. Several more behind them.");
-        yield return Alfred.Say("FINALLY! Come on! We can take 'em!");
+        yield return Alfred.Say("FINALLY! Some action!");
+        yield return Alfred.Say("Come on! We can take 'em!");
         yield return Robin.Say("Don't be ridiculous. We have to retreat.");
         yield return Hayden.Say("No! We'll only be lost in the dark.");
         yield return Hayden.Say("We must stay near the Ember at all costs.");
