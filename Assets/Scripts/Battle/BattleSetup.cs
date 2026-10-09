@@ -5,9 +5,9 @@ public class BattleSetup : MonoBehaviour
 {
     private Battle _battle;
 
-    private void Awake()
+    public void PerformSetupRegistration(Battle battle)
     {
-        _battle = GetComponent<Battle>();
+        _battle = battle;
         RegisterAllCharacters();
         RegisterAllSquads();
     }

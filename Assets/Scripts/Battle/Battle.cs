@@ -48,6 +48,8 @@ public class Battle : MonoBehaviour
         _outro = GetComponent<BattleOutro>();
         _player = GetComponentInChildren<Player>();
         _computerPlayer = GetComponentInChildren<ComputerPlayer>();
+
+        _setup.PerformSetupRegistration(this);
     }
 
     public void Begin()
