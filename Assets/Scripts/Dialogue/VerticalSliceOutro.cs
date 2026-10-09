@@ -7,13 +7,19 @@ public class VerticalSliceOutro : MonoBehaviour
     [SerializeField] private Overlay _fadeInOverlay;
     [SerializeField] private float _footstepWait = 1f;
     [SerializeField] private float _footstepStagger = .5f;
+    [SerializeField] private float _walkSpeed;
     private Battle _battle;
     private Player _player;
+    private Coroutine _walkingRoutine;
+    private Vector2 _initialWalkPosition;
+    private Vector2 _finalWalkPosition;
 
     private void Awake()
     {
         _battle = GetComponentInParent<Battle>();
         _player = _battle.GetComponentInChildren<Player>(true);
+        _initialWalkPosition = transform.position;
+        _finalWalkPosition = _initialWalkPosition + Vector2.right;
     }
 
     private IEnumerator Start()
@@ -35,6 +41,9 @@ public class VerticalSliceOutro : MonoBehaviour
         yield return StartRunning(Alfred, false);
         yield return StartRunning(Robin, false);
 
+        yield return _battle.CameraFollow(transform);
+
+        _walkingRoutine = StartCoroutine(WalkingRoutine());
         _player.Show();
         yield return _fadeInOverlay.FadeOut();
     }
@@ -44,5 +53,21 @@ public class VerticalSliceOutro : MonoBehaviour
         character.SetFootstepsAudible(audible);
         character.SetIsRunning(true);
         return new WaitForSeconds(_footstepStagger);
+    }
+
+    private IEnumerator WalkingRoutine()
+    {
+        float startTime = Time.time;
+        float elapsedTime;
+        float timePerCycle = 1 / _walkSpeed;
+        while (true)
+        {
+            elapsedTime = Time.time - startTime;
+            float cycle = elapsedTime % timePerCycle;
+            float t = Mathf.Repeat(cycle, 1);
+            Vector2 position = Vector2.Lerp(_initialWalkPosition, _finalWalkPosition, t);
+            transform.position = position;
+            yield return null;
+        }
     }
 }
