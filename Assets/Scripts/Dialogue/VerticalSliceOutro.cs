@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using static UniqueCharacters;
 
@@ -11,6 +12,8 @@ public class VerticalSliceOutro : MonoBehaviour
     [SerializeField] private float _walkSpeed;
     [SerializeField] private float _haydenPause = 2;
     [SerializeField] private float _haydenPause2 = 2;
+    [SerializeField] private TMP_Text _toBeContinued;
+    [SerializeField] private float _toBeContinuedFadeIn = 3;
     private Battle _battle;
     private Player _player;
     private Vector2 _initialWalkPosition;
@@ -49,17 +52,15 @@ public class VerticalSliceOutro : MonoBehaviour
         yield return Hayden.Say("Huh? Oh, sorry, I wasn't listening. What were you saying?");
         yield return Gregory.Say("Are you alright? You haven't said a word since we started marching.");
         yield return Hayden.Say("Oh, yes. I'm alright.");
-        yield return Hayden.Say("Hey, what do you think 'Ha'all' is?");
+        yield return Hayden.Say("Hey, who do you think 'Ha'all' is?");
         yield return Gregory.Say("Ha'all?");
-        yield return Robin.Say("The word the goblins were repeating during the battle.");
+        yield return Robin.Say("The name the goblins were repeating during the battle.");
         yield return Alfred.Say("You can understand their language?!");
         yield return Robin.Say("They're speaking OUR language you know, just through obnoxious grunts.");
         yield return Robin.Say("Kind of like someone else I know...");
         yield return Alfred.Say("What's that supposed to mean?!");
         yield return Hayden.Say("Aaaaaaanyways!");
-        yield return Hayden.Say("Ha'all? I'm not familiar with the word from any ancient lore.");
-        yield return Robin.Say("They said the word with reverence. I think it might be a name.");
-        yield return Hayden.Say("A name?");
+        yield return Hayden.Say("Ha'all? I'm not familiar with the name from any ancient lore.");
         yield return Robin.Say("Today marks the first Orc sighting in a thousand years.");
         yield return Robin.Say("Perhaps Ha'all is some great Orc leading them out of hiding.");
         yield return Hayden.Say("How strange...");
@@ -74,15 +75,16 @@ public class VerticalSliceOutro : MonoBehaviour
     {
         _fadeInOverlay.SetAlpha(1);
         _player.HideGridReticle();
+        _toBeContinued.color = _toBeContinued.color.SetAlpha(0);
     }
 
     private IEnumerator InitialFootstepFadeIn()
     {
         yield return new WaitForSeconds(_footstepWait);
-        yield return StartRunning(Hayden, true);
-        yield return StartRunning(Gregory, true);
-        yield return StartRunning(Alfred, false);
-        yield return StartRunning(Robin, false);
+        for (int i = 0; i < MainCharacters.Count; i++)
+        {
+            yield return StartRunning(MainCharacters[i], i <= 1);
+        }
 
         Walk(_finalWalkPosition, LoopType.Restart, UpdateObjectsAndCamera);
         _player.ShowCursor();
@@ -101,6 +103,12 @@ public class VerticalSliceOutro : MonoBehaviour
         transform.DOKill();
         Walk(transform.position + Vector3.right, LoopType.Incremental, UpdateWorldObjects);
         yield return _fadeInOverlay.FadeIn();
+        transform.DOKill();
+        for (int i = 0; i < MainCharacters.Count; i++)
+        {
+            MainCharacters[i].PlayIdleAnimation();
+        }
+        _toBeContinued.DOFade(1, _toBeContinuedFadeIn);
     }
 
     private void Walk(Vector2 finalPosition, LoopType loop, TweenCallback update)
@@ -128,9 +136,10 @@ public class VerticalSliceOutro : MonoBehaviour
     private void UpdateWorldObjects(Vector2 position)
     {
         _player.SetPosition(position + Vector2.right * 2);
-        Hayden.Position = position;
-        Gregory.Position = position + Vector2.left;
-        Alfred.Position = position + Vector2.left * 2;
-        Robin.Position = position + Vector2.left * 3;
+        for (int i = 0; i < MainCharacters.Count; i++)
+        {
+            Character character = MainCharacters[i];
+            character.Position = position + (Vector2.left * i);
+        }
     }
 }
