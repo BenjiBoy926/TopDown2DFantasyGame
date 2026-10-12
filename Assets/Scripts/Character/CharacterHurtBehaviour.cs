@@ -76,6 +76,8 @@ public class CharacterHurtBehaviour : MonoBehaviour
         EazySoundManager.PlaySound(_deathClip);
         yield return _character.PlayDieAnimation();
         yield return _afterDeathWait;
+
+        // TODO: move this to end of move sequence AFTER the battle has the chance to insert dialogue
         yield return _character.FadeAppearanceToTargetState();
     }
 

@@ -13,14 +13,18 @@ public class VerticalSliceDialogue_FirstDeath : BattleDialogueSequence
         yield return base.Play(interactor, target);
 
         Character deadPlayer = IsDeadPlayerCharacter(interactor) ? interactor : target;
-        string initialExclamation = $"{deadPlayer.Name}? {deadPlayer.Name.ToUpper()}!! NO!!";
+
+        string exclamation1 = $"{deadPlayer.Name}?";
+        string exclamation2 = $"{deadPlayer.Name.ToUpper()}!! NO!!";
         if (!Hayden.IsDead)
         {
-            yield return Hayden.Say(initialExclamation);
+            yield return Hayden.Say(exclamation1);
+            yield return Hayden.Say(exclamation2);
         }
         else
         {
-            yield return Alfred.Say(initialExclamation);
+            yield return Alfred.Say(exclamation1);
+            yield return Alfred.Say(exclamation2);
         }
     }
 
