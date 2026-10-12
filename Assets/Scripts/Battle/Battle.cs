@@ -322,8 +322,13 @@ public class Battle : MonoBehaviour
 
     // Dialogue ===
 
+    public IEnumerator GetMoveStartDialogue(Character interactor, Character target)
+    {
+        return _dialogue.GetMoveStartDialogue(interactor, target);
+    }
+
     public IEnumerator GetMoveFinishDialogue(Character interactor, Character target)
     {
-        return _dialogue.GetDialogue(interactor, target);
+        return _dialogue.GetMoveFinishDialogue(interactor, target);
     }
 }

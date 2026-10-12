@@ -13,7 +13,7 @@ public class CharacterDefendBehaviour : MonoBehaviour
 
     public IEnumerator GetSequence()
     {
-        _character.BeginMove();
+        yield return _character.BeginMoveSequence(null);
 
         Vector2 targetPosition = _character.CurrentCellCenter;
         _character.SetIsRunning(true);

@@ -22,7 +22,8 @@ public class CharacterHealBehaviour : MonoBehaviour
 
     public IEnumerator GetSequence(Character other)
     {
-        _character.BeginMove();
+        yield return _character.BeginMoveSequence(other);
+
         _character.LookAt(other.Position);
         if (!other.IsDead)
         {

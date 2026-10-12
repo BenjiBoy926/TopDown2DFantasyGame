@@ -82,7 +82,8 @@ public class CharacterAttackBehaviour : MonoBehaviour
     {
         _isAttackInitiator = true;
 
-        _character.BeginMove();
+        yield return _character.BeginMoveSequence(other);
+
         _character.LookAt(other.Position);
         other.LookAt(_character.Position);
 

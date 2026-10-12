@@ -10,12 +10,24 @@ public class BattleDialogue : MonoBehaviour
         _sequences = GetComponentsInChildren<BattleDialogueSequence>(true);
     }
 
-    public IEnumerator GetDialogue(Character interactor, Character target)
+    public IEnumerator GetMoveStartDialogue(Character interactor, Character target)
     {
         for (int i = 0; i < _sequences.Length; i++)
         {
             BattleDialogueSequence sequence = _sequences[i];
-            if (sequence.ShouldPlay(interactor, target))
+            if (sequence.ShouldPlayOnMoveStart(interactor, target))
+            {
+                yield return sequence.Play(interactor, target);
+            }
+        }
+    }
+
+    public IEnumerator GetMoveFinishDialogue(Character interactor, Character target)
+    {
+        for (int i = 0; i < _sequences.Length; i++)
+        {
+            BattleDialogueSequence sequence = _sequences[i];
+            if (sequence.ShouldPlayOnMoveFinish(interactor, target))
             {
                 yield return sequence.Play(interactor, target);
             }

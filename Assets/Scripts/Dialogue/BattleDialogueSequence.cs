@@ -14,7 +14,8 @@ public abstract class BattleDialogueSequence : MonoBehaviour
         _battle = GetComponentInParent<Battle>();
     }
 
-    public abstract bool ShouldPlay(Character interactor, Character target);
+    public abstract bool ShouldPlayOnMoveStart(Character interactor, Character target);
+    public abstract bool ShouldPlayOnMoveFinish(Character interactor, Character target);
     public virtual IEnumerator Play(Character interactor, Character target)
     {
         _timesPlayed++;

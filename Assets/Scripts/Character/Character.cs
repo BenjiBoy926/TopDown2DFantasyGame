@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(CharacterStats))]
@@ -193,10 +194,11 @@ public class Character : MonoBehaviour
         return StartCoroutine(sequence);
     }
 
-    public void BeginMove()
+    public IEnumerator BeginMoveSequence(Character other)
     {
         RefreshCell();
         SetIsActing(true);
+        yield return _battle.GetMoveStartDialogue(this, other);
     }
 
     public IEnumerator EndMoveSequence(Character other)

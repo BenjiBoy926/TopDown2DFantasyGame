@@ -3,7 +3,12 @@ using static UniqueCharacters;
 
 public class VerticalSliceDialogue_FirstDeath : BattleDialogueSequence
 {
-    public override bool ShouldPlay(Character interactor, Character target)
+    public override bool ShouldPlayOnMoveStart(Character interactor, Character target)
+    {
+        return false;
+    }
+
+    public override bool ShouldPlayOnMoveFinish(Character interactor, Character target)
     {
         return !HasPlayed && (IsDeadPlayerCharacter(interactor) || IsDeadPlayerCharacter(target));
     }
