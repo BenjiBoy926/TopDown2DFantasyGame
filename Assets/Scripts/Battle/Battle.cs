@@ -94,9 +94,8 @@ public class Battle : MonoBehaviour
         _allSquads.Add(squad);
     }
 
-    public IEnumerator NotifyCharacterMoveFinished(Character interactor, Character target)
+    public void NotifyCharacterMoveFinished(Character interactor, Character target)
     {
-        yield return _dialogue.GetDialogue(interactor, target);
         _turn.GetCharactersInFaction(PlayerFaction, _characterListScratch);
         if (AreAllCharactersDead(_characterListScratch))
         {
@@ -319,5 +318,12 @@ public class Battle : MonoBehaviour
     public void ZoomOut()
     {
         _camera.ZoomOut();
+    }
+
+    // Dialogue ===
+
+    public IEnumerator GetMoveFinishDialogue(Character interactor, Character target)
+    {
+        return _dialogue.GetDialogue(interactor, target);
     }
 }

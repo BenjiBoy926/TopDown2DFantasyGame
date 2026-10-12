@@ -201,8 +201,15 @@ public class Character : MonoBehaviour
 
     public IEnumerator EndMoveSequence(Character other)
     {
+        yield return _battle.GetMoveFinishDialogue(this, other);
+
+        if (other)
+        {
+            other.FadeAppearanceToTargetState();
+        }
         ChangeEnergy(-1);
         yield return FadeAppearanceToTargetState();
+
         SetIsActing(false);
         if (other)
         {
@@ -212,7 +219,7 @@ public class Character : MonoBehaviour
         {
             RecordMove();
         }
-        yield return _battle.NotifyCharacterMoveFinished(this, other);
+        _battle.NotifyCharacterMoveFinished(this, other);
     }
 
     public void LookAt(Vector2 position)

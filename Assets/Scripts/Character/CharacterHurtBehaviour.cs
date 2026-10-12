@@ -19,13 +19,14 @@ public class CharacterHurtBehaviour : MonoBehaviour
     [SerializeField] private float _recoilDistance = 0.49f;
 
     [Space]
-    [SerializeField] private float _afterDeathWaitDuration = 1;
-
-    [Space]
     [SerializeField] private AudioClip _deathClip;
 
     private Character _character;
-    private WaitForSeconds _afterDeathWait;
+
+    private void Awake()
+    {
+        _character = GetComponent<Character>();
+    }
 
     public YieldInstruction PlayAttackConnectShake()
     {
@@ -49,7 +50,8 @@ public class CharacterHurtBehaviour : MonoBehaviour
 
         if (_character.IsDead)
         {
-            yield return GetDeathSequence();
+            EazySoundManager.PlaySound(_deathClip);
+            yield return _character.PlayDieAnimation();
         }
         else
         {
@@ -69,21 +71,5 @@ public class CharacterHurtBehaviour : MonoBehaviour
         // To guarantee accuracy of the character's position after the recoil,
         // in case of any floating point errors during the tweening.
         _character.Position = _character.CurrentCellCenter;
-    }
-
-    private IEnumerator GetDeathSequence()
-    {
-        EazySoundManager.PlaySound(_deathClip);
-        yield return _character.PlayDieAnimation();
-        yield return _afterDeathWait;
-
-        // TODO: move this to end of move sequence AFTER the battle has the chance to insert dialogue
-        yield return _character.FadeAppearanceToTargetState();
-    }
-
-    private void Awake()
-    {
-        _character = GetComponent<Character>();
-        _afterDeathWait = new(_afterDeathWaitDuration);
     }
 }

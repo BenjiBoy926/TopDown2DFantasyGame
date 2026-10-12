@@ -29,6 +29,6 @@ public class DebugCommands : MonoBehaviour
             }
         }
         // Hayden killed them all, lol
-        StartCoroutine(battle.NotifyCharacterMoveFinished(UniqueCharacters.Hayden, null));
+        battle.NotifyCharacterMoveFinished(UniqueCharacters.Hayden, null);
     }
 }
