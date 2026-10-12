@@ -12,8 +12,12 @@ public class VerticalSliceOutro : MonoBehaviour
     [SerializeField] private float _walkSpeed;
     [SerializeField] private float _haydenPause = 2;
     [SerializeField] private float _haydenPause2 = 2;
+
+    [Space]
     [SerializeField] private TMP_Text _toBeContinued;
+    [SerializeField] private float _toBeContinuedDelay = 3;
     [SerializeField] private float _toBeContinuedFadeIn = 3;
+
     private Battle _battle;
     private Player _player;
     private Vector2 _initialWalkPosition;
@@ -108,6 +112,7 @@ public class VerticalSliceOutro : MonoBehaviour
         {
             MainCharacters[i].PlayIdleAnimation();
         }
+        yield return new WaitForSeconds(_toBeContinuedDelay);
         _toBeContinued.DOFade(1, _toBeContinuedFadeIn);
     }
 

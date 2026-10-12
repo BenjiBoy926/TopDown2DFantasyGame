@@ -251,6 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 300a6e37212faf04896116246a102e94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _skip: 1
   _ambience: {fileID: 8300000, guid: 57a80abc914264b4d8513199b0d6e0ca, type: 3}
   _ambienceVolume: 0.2
   _waitBeforeFootstepStart: 2
@@ -1664,6 +1665,7 @@ GameObject:
   - component: {fileID: 1296619431470460037}
   - component: {fileID: 7796215731882677144}
   - component: {fileID: 5570738816488575054}
+  - component: {fileID: 9197448940344639073}
   m_Layer: 0
   m_Name: Battle
   m_TagString: Untagged
@@ -5205,6 +5207,18 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &9197448940344639073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5073239919646376851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7da622bd2de87394183c1757b5a89466, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

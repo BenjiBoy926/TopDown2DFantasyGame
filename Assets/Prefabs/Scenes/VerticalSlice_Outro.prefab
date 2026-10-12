@@ -51,6 +51,7 @@ MonoBehaviour:
   _haydenPause: 2
   _haydenPause2: 2
   _toBeContinued: {fileID: 9000126750270936038}
+  _toBeContinuedDelay: 2
   _toBeContinuedFadeIn: 3
 --- !u!1 &3936526333978145307
 GameObject:

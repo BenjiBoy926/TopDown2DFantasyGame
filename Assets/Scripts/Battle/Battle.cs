@@ -1,5 +1,6 @@
 ﻿using NaughtyAttributes.Test;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -10,6 +11,7 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(BattleHistory))]
 [RequireComponent(typeof(BattleCondition))]
 [RequireComponent(typeof(BattleOutro))]
+[RequireComponent(typeof(BattleDialogue))]
 public class Battle : MonoBehaviour
 {
     public bool IsInProgress => _isInProgress;
@@ -36,6 +38,7 @@ public class Battle : MonoBehaviour
     private BattleCamera _camera;
     private BattleCondition _condition;
     private BattleOutro _outro;
+    private BattleDialogue _dialogue;
     private Player _player;
     private ComputerPlayer _computerPlayer;
     private readonly HashSet<Character> _allCharacters = new();
@@ -52,6 +55,7 @@ public class Battle : MonoBehaviour
         _camera = GetComponentInChildren<BattleCamera>();
         _condition = GetComponent<BattleCondition>();
         _outro = GetComponent<BattleOutro>();
+        _dialogue = GetComponent<BattleDialogue>();
         _player = GetComponentInChildren<Player>();
         _computerPlayer = GetComponentInChildren<ComputerPlayer>();
 
@@ -67,6 +71,7 @@ public class Battle : MonoBehaviour
     public void End()
     {
         _isInProgress = false;
+        _outro.Play();
     }
 
     public void Register(Character character)
@@ -89,18 +94,17 @@ public class Battle : MonoBehaviour
         _allSquads.Add(squad);
     }
 
-    public void NotifyCharacterMoveFinished(Character character)
+    public IEnumerator NotifyCharacterMoveFinished(Character interactor, Character target)
     {
+        yield return _dialogue.GetDialogue(interactor, target);
         _turn.GetCharactersInFaction(PlayerFaction, _characterListScratch);
         if (AreAllCharactersDead(_characterListScratch))
         {
-            _computerPlayer.Stop();
             Undo();
         }
         else if (_condition.IsWinConditionMet())
         {
             End();
-            _outro.Play();
         }
         else if (CountMoveableCharacters(CurrentFactionTurn) == 0)
         {
@@ -216,6 +220,7 @@ public class Battle : MonoBehaviour
 
     public Coroutine Undo()
     {
+        _computerPlayer.Stop();
         return _history.Undo();
     }
 

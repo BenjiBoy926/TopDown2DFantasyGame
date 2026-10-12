@@ -7,6 +7,9 @@ using static UniqueCharacters;
 
 public class VerticalSliceIntro : MonoBehaviour
 {
+    [SerializeField] private bool _skip;
+
+    [Space]
     [SerializeField] private AudioClip _ambience;
     [SerializeField] private float _ambienceVolume = 1;
     [SerializeField] private float _waitBeforeFootstepStart = 2;
@@ -40,6 +43,12 @@ public class VerticalSliceIntro : MonoBehaviour
 
     private IEnumerator Start()
     {
+        if (_skip)
+        {
+            _battle.Begin();
+            yield break;
+        }
+
         SetupInitialState();
 
         yield return SoundFadeInSequence();

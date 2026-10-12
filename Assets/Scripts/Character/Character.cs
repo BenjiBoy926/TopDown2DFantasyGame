@@ -212,7 +212,7 @@ public class Character : MonoBehaviour
         {
             RecordMove();
         }
-        _battle.NotifyCharacterMoveFinished(this);
+        yield return _battle.NotifyCharacterMoveFinished(this, other);
     }
 
     public void LookAt(Vector2 position)
