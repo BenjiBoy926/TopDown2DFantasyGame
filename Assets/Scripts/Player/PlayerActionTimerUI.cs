@@ -23,9 +23,9 @@ public class PlayerActionTimerUI : MonoBehaviour
     {
         _label = GetComponentInChildren<TMP_Text>(true);
         _iconCircle.transform.localScale = Vector3.zero;        
-        _iconCircle.color = new(_iconCircle.color.r, _iconCircle.color.g, _iconCircle.color.b, 0f);
-        _outline.color = new(_outline.color.r, _outline.color.g, _outline.color.b, 0f);
-        _label.color = new(_label.color.r, _label.color.g, _label.color.b, 0f);
+        _iconCircle.color = _iconCircle.color.SetAlpha(0f);
+        _outline.color = _outline.color.SetAlpha(0f);
+        _label.color = _label.color.SetAlpha(0f);
     }
 
     public void Begin(PlayerTimedAction action, float duration)

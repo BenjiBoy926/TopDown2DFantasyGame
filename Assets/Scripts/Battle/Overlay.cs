@@ -30,7 +30,7 @@ public class Overlay : MonoBehaviour
 
     public void SetAlpha(float alpha)
     {
-        _graphic.color = new(_graphic.color.r, _graphic.color.g, _graphic.color.b, alpha);
+        _graphic.color = _graphic.color.SetAlpha(alpha);
     }
 
     private YieldInstruction FadeTo(float alpha)
