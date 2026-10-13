@@ -41,9 +41,21 @@ public class VerticalSliceBattleDialogue_FirstReviveFinish : BattleDialogueSeque
             "What happened?");
 
         yield return Dialogue.MainCharacterSay(interactor,
-            "It was the Ember's doing. Somehow it healed you through me...",
+            "It was the Ember's doing. Somehow it used me to heal you.",
             "I'm not sure. Somehow the Ember used me to heal you.",
             "Beats me! I felt the Ember's energy coursing through me, and suddenly you were okay!",
             "I think the Ember used me to heal you.");
+
+        yield return Dialogue.MainCharacterSay(target,
+            "So it WAS the Ember!",
+            "The Ember? Remarkable...",
+            "So it was the Ember, huh?",
+            "The Ember? Well... that should help to even the odds.");
+
+        yield return Dialogue.MainCharacterSay(target,
+            "We can win now, I'm sure of it! Arkalux will uphold us with his Ember!",
+            "Using this power, we can work together and cut down this horde!",
+            "We can use this power to break through their ranks! Let's go!",
+            "Let's use this power to overcome these monsters.");
     }
 }
