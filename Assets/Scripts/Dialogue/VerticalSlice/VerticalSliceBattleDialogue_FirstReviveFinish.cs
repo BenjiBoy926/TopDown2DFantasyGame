@@ -33,5 +33,17 @@ public class VerticalSliceBattleDialogue_FirstReviveFinish : BattleDialogueSeque
             yield return interactor.Say("Alfred, Focus!");
             yield return target.Say("Right!");
         }
+
+        yield return Dialogue.MainCharacterSay(target,
+            "Was this the Ember's doing? What happened?",
+            "What happened?",
+            "Sooooo, what happened?!",
+            "What happened?");
+
+        yield return Dialogue.MainCharacterSay(interactor,
+            "It was the Ember's doing. Somehow it healed you through me...",
+            "I'm not sure. Somehow the Ember used me to heal you.",
+            "Beats me! I felt the Ember's energy coursing through me, and suddenly you were okay!",
+            "I think the Ember used me to heal you.");
     }
 }
