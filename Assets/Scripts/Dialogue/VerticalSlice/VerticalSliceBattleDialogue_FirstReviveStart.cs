@@ -14,21 +14,10 @@ public class VerticalSliceBattleDialogue_FirstReviveStart : BattleDialogueSequen
 
     public override IEnumerator GetSequence(Character interactor, Character target)
     {
-        if (interactor == Hayden)
-        {
-            yield return Hayden.Say($"Huh? The Ember... it's leading me over to {target.Name}");
-        }
-        else if (interactor == Gregory)
-        {
-            yield return Gregory.Say($"Strange. The Ember is leading me over to {target.Name}?");
-        }
-        else if (interactor == Alfred)
-        {
-            yield return Alfred.Say($"What the heck? Why is the Ember leading me over to {target.Name}?");
-        }
-        else if (interactor == Robin)
-        {
-            yield return Robin.Say($"Hm? The Ember. It's leading me over to {target.Name}.");
-        }
+        return Dialogue.MainCharacterSay(interactor,
+            $"Huh? The Ember... it's leading me over to {target.Name}",
+            $"Strange. The Ember is leading me over to {target.Name}?",
+            $"What the heck? Why is the Ember leading me over to {target.Name}?",
+            $"Hm? The Ember. It's leading me over to {target.Name}.");
     }
 }
