@@ -14,7 +14,7 @@ public class VerticalSliceBattleDialogue_FirstReviveFinish : BattleDialogueSeque
         return target && interactor.Faction == target.Faction && target.GetLastRecordedState().Health <= 0;
     }
 
-    public override IEnumerator GetSequence(Character interactor, Character target)
+    protected override IEnumerator GetSequence(Character interactor, Character target)
     {
         yield return Dialogue.MainCharacterSay(interactor,
             "Hey! Are you okay?",

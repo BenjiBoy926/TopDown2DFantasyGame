@@ -17,7 +17,7 @@ public class BattleDialogue : MonoBehaviour
             BattleDialogueSequence sequence = _sequences[i];
             if (sequence.ShouldPlayOnMoveStart(interactor, target))
             {
-                yield return sequence.GetSequence(interactor, target);
+                yield return sequence.Play(interactor, target);
             }
         }
     }
@@ -29,7 +29,7 @@ public class BattleDialogue : MonoBehaviour
             BattleDialogueSequence sequence = _sequences[i];
             if (sequence.ShouldPlayOnMoveFinish(interactor, target))
             {
-                yield return sequence.GetSequence(interactor, target);
+                yield return sequence.Play(interactor, target);
             }
         }
     }

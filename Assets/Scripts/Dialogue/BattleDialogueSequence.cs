@@ -21,5 +21,5 @@ public abstract class BattleDialogueSequence : MonoBehaviour
         _timesPlayed++;
         return GetSequence(interactor, target);
     }
-    public abstract IEnumerator GetSequence(Character interactor, Character target);
+    protected abstract IEnumerator GetSequence(Character interactor, Character target);
 }

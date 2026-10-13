@@ -12,7 +12,7 @@ public class VerticalSliceBattleDialogue_FirstReviveStart : BattleDialogueSequen
         return false;
     }
 
-    public override IEnumerator GetSequence(Character interactor, Character target)
+    protected override IEnumerator GetSequence(Character interactor, Character target)
     {
         return Dialogue.MainCharacterSay(interactor,
             $"Huh? The Ember... it's leading me over to {target.Name}",

@@ -13,7 +13,7 @@ public class VerticalSliceDialogue_FirstDeath : BattleDialogueSequence
         return !HasPlayed && (IsDeadPlayerCharacter(interactor) || IsDeadPlayerCharacter(target));
     }
 
-    public override IEnumerator GetSequence(Character interactor, Character target)
+    protected override IEnumerator GetSequence(Character interactor, Character target)
     {
         Character deadPlayer = IsDeadPlayerCharacter(interactor) ? interactor : target;
 
