@@ -13,10 +13,8 @@ public class VerticalSliceDialogue_FirstDeath : BattleDialogueSequence
         return !HasPlayed && (IsDeadPlayerCharacter(interactor) || IsDeadPlayerCharacter(target));
     }
 
-    public override IEnumerator Play(Character interactor, Character target)
+    public override IEnumerator GetSequence(Character interactor, Character target)
     {
-        yield return base.Play(interactor, target);
-
         Character deadPlayer = IsDeadPlayerCharacter(interactor) ? interactor : target;
 
         string exclamation1 = $"{deadPlayer.Name}?";
@@ -57,7 +55,7 @@ public class VerticalSliceDialogue_FirstDeath : BattleDialogueSequence
             yield return Hayden.Say(exclamation2);
             yield return Gregory.Say("Damn it...");
             yield return Alfred.Say("What do we do? We can't just leave him!");
-            yield return Gregory.Say("Yes. We must stick together. We must fight on!");
+            yield return Gregory.Say("Right. We must stick together. We must fight on!");
             yield return Hayden.Say("Arkalux help us...");
         }
     }

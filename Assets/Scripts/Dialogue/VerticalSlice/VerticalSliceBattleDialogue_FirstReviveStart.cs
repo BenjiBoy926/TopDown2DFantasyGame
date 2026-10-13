@@ -1,5 +1,5 @@
 using System.Collections;
-using UnityEngine;
+using static UniqueCharacters;
 
 public class VerticalSliceBattleDialogue_FirstReviveStart : BattleDialogueSequence
 {
@@ -12,9 +12,23 @@ public class VerticalSliceBattleDialogue_FirstReviveStart : BattleDialogueSequen
         return false;
     }
 
-    public override IEnumerator Play(Character interactor, Character target)
+    public override IEnumerator GetSequence(Character interactor, Character target)
     {
-        yield return base.Play(interactor, target);
-        Debug.Log("First revive is starting");
+        if (interactor == Hayden)
+        {
+            yield return Hayden.Say($"Huh? The Ember... it's leading me over to {target.Name}");
+        }
+        else if (interactor == Gregory)
+        {
+            yield return Gregory.Say($"Strange. The Ember is leading me over to {target.Name}?");
+        }
+        else if (interactor == Alfred)
+        {
+            yield return Alfred.Say($"What the heck? Why is the Ember leading me over to {target.Name}?");
+        }
+        else if (interactor == Robin)
+        {
+            yield return Robin.Say($"Hm? The Ember. It's leading me over to {target.Name}.");
+        }
     }
 }
