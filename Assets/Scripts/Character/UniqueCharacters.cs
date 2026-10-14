@@ -3,15 +3,17 @@ using UnityEngine;
 
 public class UniqueCharacters : MonoBehaviour
 {
-    private const string HaydenName = "Hayden";
-    private const string GregoryName = "Gregory";
-    private const string AlfredName = "Alfred";
-    private const string RobinName = "Robin";
+    private const string HaydenName = nameof(Hayden);
+    private const string GregoryName = nameof(Gregory);
+    private const string AlfredName = nameof(Alfred);
+    private const string RobinName = nameof(Robin);
+    private const string GrugName = nameof(Grug);
 
     public static Character Hayden { get; private set; }
     public static Character Gregory { get; private set; }
     public static Character Alfred { get; private set; }
     public static Character Robin { get; private set; }
+    public static Character Grug { get; private set; }
     public static List<Character> MainCharacters { get; private set; } = new() { null, null, null, null };
 
     public static void Register(Character character)
@@ -33,6 +35,9 @@ public class UniqueCharacters : MonoBehaviour
             case RobinName:
                 Robin = character;
                 MainCharacters[3] = character;
+                break;
+            case GrugName:
+                Grug = character;
                 break;
         }
     }

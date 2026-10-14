@@ -8,6 +8,7 @@ public class BattleTurnChangeAnimation : MonoBehaviour
 
     public bool IsPlaying => _isPlaying;
 
+    private Battle _battle;
     private Overlay _overlay;
     private BattleTurnChangeBanner _banner;
     private BattleTurnChangeLabel _label;
@@ -15,6 +16,7 @@ public class BattleTurnChangeAnimation : MonoBehaviour
 
     private void Awake()
     {
+        _battle = GetComponentInParent<Battle>();
         _overlay = GetComponentInChildren<Overlay>();
         _banner = GetComponentInChildren<BattleTurnChangeBanner>();
         _label = GetComponentInChildren<BattleTurnChangeLabel>();
@@ -36,6 +38,7 @@ public class BattleTurnChangeAnimation : MonoBehaviour
         yield return _label.Animate(faction);
         yield return _banner.AnimateOut();
         yield return _overlay.FadeOut();
+        yield return _battle.GetTurnStartDialogue();
 
         _isPlaying = false;
     }

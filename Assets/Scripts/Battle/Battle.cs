@@ -331,4 +331,9 @@ public class Battle : MonoBehaviour
     {
         return _dialogue.GetMoveFinishDialogue(interactor, target);
     }
+
+    public IEnumerator GetTurnStartDialogue()
+    {
+        return null;
+    }
 }
