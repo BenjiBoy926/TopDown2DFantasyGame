@@ -11,7 +11,7 @@ public class VerticalSliceBattleDialogue_FirstReviveFinish : BattleDialogueSeque
 
     public override bool ShouldPlayOnMoveFinish(Character interactor, Character target)
     {
-        return target && interactor.Faction == target.Faction && target.GetLastRecordedState().Health <= 0;
+        return !HasPlayed && target && interactor.Faction == target.Faction && target.GetLastRecordedState().Health <= 0;
     }
 
     protected override IEnumerator GetSequence(Character interactor, Character target)
