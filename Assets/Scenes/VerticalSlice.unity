@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 347644140}
   - component: {fileID: 347644141}
   - component: {fileID: 347644142}
+  - component: {fileID: 347644143}
   m_Layer: 0
   m_Name: BattleDialogues
   m_TagString: Untagged
@@ -205,6 +206,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cbce3ded6159a6d47b71648b52b22a1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &347644143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 347644138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae3f335b6cf51f440932bfd3a0ae5c2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &469424232 stripped
