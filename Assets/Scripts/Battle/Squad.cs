@@ -26,7 +26,7 @@ public class Squad : MonoBehaviour
         }
     }
 
-    private bool ShouldWakeUp()
+    public bool ShouldWakeUp()
     {
         for (int i = 0; i < _members.Count; i++)
         {

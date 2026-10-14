@@ -16,6 +16,7 @@ public abstract class BattleDialogueSequence : MonoBehaviour
 
     public abstract bool ShouldPlayOnMoveStart(Character interactor, Character target);
     public abstract bool ShouldPlayOnMoveFinish(Character interactor, Character target);
+    public abstract bool ShouldPlayOnTurnStart();
     public IEnumerator Play(Character interactor, Character target)
     {
         _timesPlayed++;

@@ -33,4 +33,16 @@ public class BattleDialogue : MonoBehaviour
             }
         }
     }
+
+    public IEnumerator GetTurnStartDialogue()
+    {
+        for (int i = 0; i < _sequences.Length; i++)
+        {
+            BattleDialogueSequence sequence = _sequences[i];
+            if (sequence.ShouldPlayOnTurnStart())
+            {
+                yield return sequence.Play(null, null);
+            }
+        }
+    }
 }

@@ -14,6 +14,11 @@ namespace VerticalSlice
             return !HasPlayed && target && interactor.Faction == target.Faction && target.GetLastRecordedState().Health > 0;
         }
 
+        public override bool ShouldPlayOnTurnStart()
+        {
+            return false;
+        }
+
         protected override IEnumerator GetSequence(Character interactor, Character target)
         {
             yield return Dialogue.MainCharacterSay(target,

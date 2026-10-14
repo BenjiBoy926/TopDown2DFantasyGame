@@ -280,9 +280,9 @@ public class Battle : MonoBehaviour
         _camera.Unfollow();
     }
 
-    public void CameraGlide(Transform target)
+    public Coroutine CameraGlide(Transform target)
     {
-        _camera.Glide(target);
+        return _camera.Glide(target);
     }
 
     public Vector2 WorldToScreen(Vector2 worldPoint)
@@ -334,6 +334,6 @@ public class Battle : MonoBehaviour
 
     public IEnumerator GetTurnStartDialogue()
     {
-        return null;
+        return _dialogue.GetTurnStartDialogue();
     }
 }

@@ -15,6 +15,11 @@ namespace VerticalSlice
             return !HasPlayed && (IsDeadPlayerCharacter(interactor) || IsDeadPlayerCharacter(target));
         }
 
+        public override bool ShouldPlayOnTurnStart()
+        {
+            return false;
+        }
+
         protected override IEnumerator GetSequence(Character interactor, Character target)
         {
             Character deadPlayer = IsDeadPlayerCharacter(interactor) ? interactor : target;

@@ -14,6 +14,11 @@ namespace VerticalSlice
             return false;
         }
 
+        public override bool ShouldPlayOnTurnStart()
+        {
+            return false;
+        }
+
         protected override IEnumerator GetSequence(Character interactor, Character target)
         {
             return Dialogue.MainCharacterSay(interactor,
