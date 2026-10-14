@@ -28,8 +28,6 @@ namespace VerticalSlice
                 "No idea! I was just following the Ember, then suddenly I felt energy race through me and into you.",
                 "...It seems like the Ember used me to heal you.");
 
-            yield return target.Say("So it was the Ember's doing?");
-
             yield return Dialogue.MainCharacterSay(target,
                 "What an incredible power! We can use this to beat back the goblins!",
                 "Working together with this power, we should be able to get the upper hand.",
