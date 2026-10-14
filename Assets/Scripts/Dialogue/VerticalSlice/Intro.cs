@@ -17,6 +17,7 @@ namespace VerticalSlice
         [SerializeField] private float _waitBeforeFootstepStart = 2;
         [SerializeField] private float _footstepStagger = .15f;
         [SerializeField] private float _waitBeforeTalkingStarts = 1;
+        [SerializeField] private float _alfredPause = 1;
 
         [Space]
         [SerializeField] private Light2D _globalLight;
@@ -58,6 +59,7 @@ namespace VerticalSlice
             yield return Alfred.Say("Okay, I can't see a thing.");
             yield return Gregory.Say("How much further, Hayden?");
             yield return Hayden.Say("It's just ahead. I'm sure of it.");
+            yield return new WaitForSeconds(_alfredPause);
             yield return Alfred.Say("I'm bored. If nothing happens soon, I'm turning back.");
             yield return Gregory.Say("Nonesense! We must stick together!");
             yield return Hayden.Say("Shh!");
