@@ -18,6 +18,7 @@ public class CharacterSpeechBubble : MonoBehaviour
     [SerializeField] private float _screenPadding = 10;
     private RectTransform _rectTransform;
     private CharacterSpeechBodyText _body;
+    private CharacterSpeechBubblePointer _pointer;
     private Vector2 _textPadding;
     private Character _character;
     private bool _proceed;
@@ -27,6 +28,7 @@ public class CharacterSpeechBubble : MonoBehaviour
     {
         _rectTransform = GetComponent<RectTransform>();
         _body = GetComponentInChildren<CharacterSpeechBodyText>();
+        _pointer = GetComponentInChildren<CharacterSpeechBubblePointer>();
         _character = GetComponentInParent<Character>();
         _name.text = _character.Name;
         _disableAction = () => gameObject.SetActive(false);
@@ -78,7 +80,8 @@ public class CharacterSpeechBubble : MonoBehaviour
         _rectTransform.DOSizeDelta(size, _repositionDuration);
         _rectTransform.DOAnchorPos(position, _repositionDuration);
 
-        // TODO: move the little tick to different corners depending on where the actual target position is
+        Vector2 pointerTarget = GetAnchorScreenPosition();
+        _pointer.PointTo(pointerTarget, new(position, size));
     }
 
     private IEnumerator ScrollText(string text)
@@ -136,7 +139,7 @@ public class CharacterSpeechBubble : MonoBehaviour
         Rect boundingRect = Rect.MinMaxRect(0, 0, Screen.width, Screen.height);
         Vector2 screenPadding = new(_screenPadding, _screenPadding);
         boundingRect.position += screenPadding;
-        boundingRect.size -= (screenPadding * 2);
+        boundingRect.size -= screenPadding * 2;
         boundingRect.size -= speechBubbleSize;
         return boundingRect;
     }

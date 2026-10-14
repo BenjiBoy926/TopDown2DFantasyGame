@@ -462,8 +462,9 @@ GameObject:
   - component: {fileID: 9136482419401323865}
   - component: {fileID: 8399900286618605420}
   - component: {fileID: 8649087472186927071}
+  - component: {fileID: 5894447558564590280}
   m_Layer: 0
-  m_Name: Tick
+  m_Name: Pointer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -526,6 +527,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5894447558564590280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338378533095801337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdf8002bc6dc51f4e8f832db8b4209ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rectPadding: 2
 --- !u!1 &1723752348641953545
 GameObject:
   m_ObjectHideFlags: 0
