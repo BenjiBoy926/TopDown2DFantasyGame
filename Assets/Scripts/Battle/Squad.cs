@@ -20,13 +20,13 @@ public class Squad : MonoBehaviour
         if (_isAwake) 
             return;
 
-        if (ShouldBeAwake())
+        if (ShouldWakeUp())
         {
             WakeUp();
         }
     }
 
-    private bool ShouldBeAwake()
+    private bool ShouldWakeUp()
     {
         for (int i = 0; i < _members.Count; i++)
         {
