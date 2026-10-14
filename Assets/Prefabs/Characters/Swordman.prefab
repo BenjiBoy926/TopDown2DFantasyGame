@@ -1394,7 +1394,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 80}
+  m_SizeDelta: {x: 200, y: 85}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &7447578318500586063
 MonoBehaviour:
@@ -1414,7 +1414,8 @@ MonoBehaviour:
   _timeBetweenCharacters: 0.025
   _audioSource: {fileID: 3085657531106816025}
   _proceedAction: {fileID: -9195287876939935047, guid: 13df5c69850f8384f961ed91b17f62b0, type: 3}
-  _resizeDuration: 0.1
+  _repositionDuration: 0.1
+  _screenPadding: 10
 --- !u!1 &4658844773822326104
 GameObject:
   m_ObjectHideFlags: 0
@@ -2822,8 +2823,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 3, y: 3}
-  m_SizeDelta: {x: -6, y: -6}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -12, y: -12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3160429519159612446
 CanvasRenderer:
