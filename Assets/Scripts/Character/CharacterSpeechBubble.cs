@@ -14,7 +14,8 @@ public class CharacterSpeechBubble : MonoBehaviour
     [SerializeField] private float _timeBetweenCharacters = 0.05f;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private InputActionReference _proceedAction;
-    [SerializeField] private float _resizeDuration = 0.1f;
+    [SerializeField] private float _repositionDuration = 0.1f;
+    [SerializeField] private float _screenPadding = 10;
     private RectTransform _rectTransform;
     private CharacterSpeechBodyText _body;
     private Vector2 _textPadding;
@@ -54,25 +55,30 @@ public class CharacterSpeechBubble : MonoBehaviour
     public IEnumerator Say(string text)
     {
         gameObject.SetActive(true);
-        _rectTransform.anchoredPosition = GetTargetScreenPosition();
 
         transform.DOKill();
-        transform.DOScale(1, _resizeDuration);
-        Resize(text);
+        transform.DOScale(1, _repositionDuration);
+        Reposition(text);
         
         yield return ScrollText(text);
         yield return WaitToProceed();
 
         transform.DOKill();
-        transform.DOScale(0, _resizeDuration).OnComplete(_disableAction);
+        transform.DOScale(0, _repositionDuration).OnComplete(_disableAction);
     }
 
-    private void Resize(string text)
+    private void Reposition(string text)
     {
         _body.Resize(text);
+
         Vector2 size = _body.Size + _textPadding;
         size.x = Mathf.Max(size.x, _minWidth);
-        _rectTransform.DOSizeDelta(size, _resizeDuration);
+        Vector2 position = GetTargetScreenPosition(size);
+
+        _rectTransform.DOSizeDelta(size, _repositionDuration);
+        _rectTransform.DOAnchorPos(position, _repositionDuration);
+
+        // TODO: move the little tick to different corners depending on where the actual target position is
     }
 
     private IEnumerator ScrollText(string text)
@@ -118,13 +124,37 @@ public class CharacterSpeechBubble : MonoBehaviour
         }
     }
 
-    private Vector2 GetTargetScreenPosition()
+    private Vector2 GetTargetScreenPosition(Vector2 speechBubbleSize)
     {
-        Vector2 worldPos = GetTargetWorldPosition();
+        Vector2 anchorScreenPos = GetAnchorScreenPosition();
+        Rect boundingRect = GetPositionRange(speechBubbleSize);
+        return Clamp(anchorScreenPos, boundingRect);
+    }
+
+    private Rect GetPositionRange(Vector2 speechBubbleSize)
+    {
+        Rect boundingRect = Rect.MinMaxRect(0, 0, Screen.width, Screen.height);
+        Vector2 screenPadding = new(_screenPadding, _screenPadding);
+        boundingRect.position += screenPadding;
+        boundingRect.size -= (screenPadding * 2);
+        boundingRect.size -= speechBubbleSize;
+        return boundingRect;
+    }
+
+    private Vector2 Clamp(Vector2 point, Rect rect)
+    {
+        point.x = Mathf.Clamp(point.x, rect.xMin, rect.xMax);
+        point.y = Mathf.Clamp(point.y, rect.yMin, rect.yMax);
+        return point;
+    }
+
+    private Vector2 GetAnchorScreenPosition()
+    {
+        Vector2 worldPos = GetAnchorWorldPosition();
         return _character.WorldToScreen(worldPos);
     }
 
-    private Vector2 GetTargetWorldPosition()
+    private Vector2 GetAnchorWorldPosition()
     {
         return _anchor.position;
     }
