@@ -18,5 +18,19 @@ public class CharacterSpeechBubblePointer : MonoBehaviour
         bubbleRect = offset.Remove(bubbleRect);
 
         gameObject.SetActive(!bubbleRect.Contains(screenPoint));
+
+        Vector2 toTarget = screenPoint - bubbleRect.center;
+        _rect.anchorMin = _rect.anchorMax = CalculateAnchor(toTarget);
+        _rect.anchoredPosition = Vector2.zero;
+    }
+
+    private Vector2 CalculateAnchor(Vector2 direction)
+    {
+        return new(CalculateAnchor(direction, 0), CalculateAnchor(direction, 1));
+    }
+
+    private float CalculateAnchor(Vector2 direction, int dimension)
+    {
+        return direction[dimension] < 0 ? 0 : 1;
     }
 }
