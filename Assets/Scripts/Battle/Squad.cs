@@ -39,6 +39,11 @@ public class Squad : MonoBehaviour
         return false;
     }
 
+    public bool Contains(Character character)
+    {
+        return _members.Contains(character);
+    }
+
     private bool IsEnemyInRange(Character member)
     {
         member.RefreshRange();

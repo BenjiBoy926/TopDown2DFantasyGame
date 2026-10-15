@@ -124,6 +124,18 @@ public class Battle : MonoBehaviour
         return true;
     }
 
+    public Squad GetSquad(Character character)
+    {
+        foreach (var squad in _allSquads)
+        {
+            if (squad.Contains(character))
+            {
+                return squad;
+            }
+        }
+        return null;
+    }
+
     // Player ===
 
     public void SetPlayerPosition(Vector3 position)
