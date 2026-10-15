@@ -30,7 +30,41 @@ public class BattleDialogue_GrugIntro : BattleDialogueSequence
         yield return Grug.Say("Onward, worms! Show yourselves worthy of Ha'all!");
 
         yield return Battle.CameraGlide(GetAveragePlayerPosition());
-        yield return new WaitForSeconds(1);
+
+        yield return Dialogue.FirstLiveCharacterSay(
+            new(Robin, "Uh-oh"),
+            new(Hayden, "...No! It can't be. Is that...?"));
+
+        yield return Dialogue.FirstLiveCharacterSay(
+            new(Hayden, "What? What is it?"),
+            new(Gregory, "What is it?"),
+            new(Alfred, "Huh? What's the matter?"));
+
+        yield return Dialogue.FirstLiveCharacterSay(
+            new(Robin, "Their leader. The brute in the center. He's not a goblin. He's an orc."),
+            new(Hayden, "It's hard to see in this light but... I don't think their leader is a goblin. I think he's an orc."));
+
+        if (Hayden.IsAlive)
+        {
+            yield return Hayden.Say("WHAT?! How can that be?!");
+        }
+
+        yield return Dialogue.FirstLiveCharacterSay(
+            new(Gregory, "Sorry... what's an orc?"),
+            new(Alfred, "Boy are we in for it! ...Wait, what's an orc?"));
+
+        yield return Dialogue.FirstLiveCharacterSay(
+            new(Hayden, "Orcs come from an ancient race of humans that Arkalux cursed for their wickedness in the distant past"),
+            new(Robin, "They descend from an ancient race of cursed humans. Or say the legends say."));
+
+        if (Hayden.IsAlive)
+        {
+            yield return Hayden.Say("But no one has seen an orc for centuries! To see one here, now, what could it mean...?!");
+        }
+
+        yield return Dialogue.FirstLiveCharacterSay(
+            new(Alfred, "Enough ancient history. How do we kill it?"),
+            new(Gregory, "Strange. How does this affect our strategy?"));
     }
 
     private Vector2 GetAveragePlayerPosition()

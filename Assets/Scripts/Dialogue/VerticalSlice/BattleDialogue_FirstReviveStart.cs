@@ -21,7 +21,7 @@ namespace VerticalSlice
 
         protected override IEnumerator GetSequence(Character interactor, Character target)
         {
-            return Dialogue.MainCharacterSay(interactor,
+            return Dialogue.FirstMatchingMainCharacterSay(interactor,
                 $"Huh? The Ember... it's leading me over to {target.Name}",
                 $"Strange. The Ember is leading me over to {target.Name}?",
                 $"What the heck? Why is the Ember leading me over to {target.Name}?",
