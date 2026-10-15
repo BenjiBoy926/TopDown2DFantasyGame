@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1881692635917527445, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
       propertyPath: m_Name
-      value: OrcCheif
+      value: Orc_Cheif
       objectReference: {fileID: 0}
     - target: {fileID: 2349978431418077769, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
       propertyPath: m_Sprite
@@ -59,6 +59,10 @@ PrefabInstance:
     - target: {fileID: 4112215730828138586, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
       propertyPath: _horizontalDirection
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4112215730828138586, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
+      propertyPath: _hurtAnimationLoopCount
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4700560474708384779, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
       propertyPath: _icon
