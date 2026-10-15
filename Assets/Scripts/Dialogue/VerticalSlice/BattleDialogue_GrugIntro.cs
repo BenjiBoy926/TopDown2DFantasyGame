@@ -65,6 +65,14 @@ public class BattleDialogue_GrugIntro : BattleDialogueSequence
         yield return Dialogue.FirstLiveCharacterSay(
             new(Alfred, "Enough ancient history. How do we kill it?"),
             new(Gregory, "Strange. How does this affect our strategy?"));
+
+        yield return Dialogue.FirstLiveCharacterSay(
+            new(Robin, "It'll take more hits, but eventually it will go down like any other goblin."),
+            new(Hayden, "Oh? Uhm... it's not immortal or anything, but it might take more hits than the average goblin."));
+
+        yield return Dialogue.FirstLiveCharacterSay(
+            new(Gregory, "Brace yourselves. Here they come!"),
+            new(Alfred, "Here they come, let's give them hell!"));
     }
 
     private Vector2 GetAveragePlayerPosition()
