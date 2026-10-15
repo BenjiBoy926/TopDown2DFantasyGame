@@ -58,6 +58,7 @@ public class Character : MonoBehaviour
     public int CurrentEnergy => _stats.CurrentEnergy;
     public int TraversalRange => _stats.TraversalRange;
     public bool IsDead => _stats.IsDead;
+    public bool IsAlive => _stats.IsAlive;
 
     // Range
     public HashSet<Vector2Int> AllCellsInRange => _range.AllCells;

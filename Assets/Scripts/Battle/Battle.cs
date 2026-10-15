@@ -297,6 +297,11 @@ public class Battle : MonoBehaviour
         return _camera.Glide(target);
     }
 
+    public Coroutine CameraGlide(Vector3 position)
+    {
+        return _camera.Glide(position);
+    }
+
     public Vector2 WorldToScreen(Vector2 worldPoint)
     {
         return _camera.WorldToScreen(worldPoint);

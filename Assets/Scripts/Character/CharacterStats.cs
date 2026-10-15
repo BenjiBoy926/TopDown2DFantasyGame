@@ -11,6 +11,7 @@ public class CharacterStats : MonoBehaviour
     public int CurrentEnergy => _currentEnergy;
     public int TraversalRange => _traversalRange;
     public bool IsDead => _currentHealth <= 0;
+    public bool IsAlive => _currentEnergy > 0;
 
     [SerializeField] private int _baseHealth = 10;
     [SerializeField] private int _basePower = 3;

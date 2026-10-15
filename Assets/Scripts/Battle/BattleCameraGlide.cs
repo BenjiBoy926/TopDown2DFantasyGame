@@ -1,5 +1,7 @@
-using UnityEngine;
+using System;
 using System.Collections;
+using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(BattleCamera))]
 public class BattleCameraGlide : MonoBehaviour
@@ -8,7 +10,6 @@ public class BattleCameraGlide : MonoBehaviour
 
     [SerializeField] private float _duration = 0.35f;
     [SerializeField] private AnimationCurve _ease;
-    private Transform _target;
     private Coroutine _coroutine;
     private BattleCamera _camera;
 
@@ -19,20 +20,38 @@ public class BattleCameraGlide : MonoBehaviour
 
     public Coroutine Begin(Transform target)
     {
-        _target = target;
-        StopAllCoroutines();
-        _coroutine = StartCoroutine(GetGlideToTargetSequence());
-        return _coroutine;
+        return Begin(GetGlideSequence(target));
+    }
+
+    public Coroutine Begin(Vector3 position)
+    {
+        return Begin(GetGlideSequence(position));
     }
 
     public void End()
     {
-        _target = null;
         StopAllCoroutines();
         _coroutine = null;
     }
 
-    private IEnumerator GetGlideToTargetSequence()
+    private Coroutine Begin(IEnumerator sequence)
+    {
+        StopAllCoroutines();
+        _coroutine = StartCoroutine(sequence);
+        return _coroutine;
+    }
+
+    private IEnumerator GetGlideSequence(Vector3 position)
+    {
+        return GetGlideSequence(() => position);
+    }
+
+    private IEnumerator GetGlideSequence(Transform target)
+    {
+        return GetGlideSequence(() => target.position);
+    }
+
+    private IEnumerator GetGlideSequence(Func<Vector3> getTargetPosition)
     {
         Vector3 startPosition = transform.position;
 
@@ -42,7 +61,7 @@ public class BattleCameraGlide : MonoBehaviour
         while (elapsedTime < _duration)
         {
             float progress = elapsedTime / _duration;
-            Vector3 endPosition = _camera.GetFramingPosition(_target);
+            Vector3 endPosition = _camera.GetFramingPosition(getTargetPosition());
             float t = _ease.Evaluate(progress);
             Vector3 currentPosition = Vector3.Lerp(startPosition, endPosition, t);
             transform.position = currentPosition;
@@ -52,7 +71,7 @@ public class BattleCameraGlide : MonoBehaviour
             elapsedTime = Time.time - startTime;
         }
 
-        transform.position = _camera.GetFramingPosition(_target);
+        transform.position = _camera.GetFramingPosition(getTargetPosition());
         End();
     }
 }

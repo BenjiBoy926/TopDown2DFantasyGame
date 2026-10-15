@@ -86,6 +86,11 @@ public class BattleCamera : MonoBehaviour
         return _glide.Begin(transform);
     }
 
+    public Coroutine Glide(Vector3 position)
+    {
+        return _glide.Begin(position);
+    }
+
     public void EndGlide()
     {
         _glide.End();
@@ -95,7 +100,12 @@ public class BattleCamera : MonoBehaviour
 
     public Vector3 GetFramingPosition(Transform target)
     {
-        Vector2 targetPosition = target.position;
+        return GetFramingPosition(target.position);
+    }
+
+    public Vector3 GetFramingPosition(Vector3 target)
+    {
+        Vector2 targetPosition = target;
         float z = transform.position.z;
         return new(targetPosition.x, targetPosition.y, z);
     }
