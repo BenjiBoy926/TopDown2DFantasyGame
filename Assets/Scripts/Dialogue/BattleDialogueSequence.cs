@@ -3,8 +3,16 @@ using UnityEngine;
 
 public abstract class BattleDialogueSequence : MonoBehaviour
 {
+    public enum TriggerType
+    {
+        MoveStart,
+        MoveEnd,
+        TurnStart
+    }
+
     protected Battle Battle => _battle;
     protected bool HasPlayed => _timesPlayed > 0;
+    public abstract TriggerType Trigger { get; }
 
     private Battle _battle;
     private int _timesPlayed = 0;
@@ -14,9 +22,7 @@ public abstract class BattleDialogueSequence : MonoBehaviour
         _battle = GetComponentInParent<Battle>();
     }
 
-    public abstract bool ShouldPlayOnMoveStart(Character interactor, Character target);
-    public abstract bool ShouldPlayOnMoveFinish(Character interactor, Character target);
-    public abstract bool ShouldPlayOnTurnStart();
+    public abstract bool ShouldPlay(Character interactor, Character target);
     public IEnumerator Play(Character interactor, Character target)
     {
         _timesPlayed++;

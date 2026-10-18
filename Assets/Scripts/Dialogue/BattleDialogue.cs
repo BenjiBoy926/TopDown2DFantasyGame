@@ -12,36 +12,26 @@ public class BattleDialogue : MonoBehaviour
 
     public IEnumerator GetMoveStartDialogue(Character interactor, Character target)
     {
-        for (int i = 0; i < _sequences.Length; i++)
-        {
-            BattleDialogueSequence sequence = _sequences[i];
-            if (sequence.ShouldPlayOnMoveStart(interactor, target))
-            {
-                yield return sequence.Play(interactor, target);
-            }
-        }
+        return GetDialogue(BattleDialogueSequence.TriggerType.MoveStart, interactor, target);
     }
 
     public IEnumerator GetMoveFinishDialogue(Character interactor, Character target)
     {
-        for (int i = 0; i < _sequences.Length; i++)
-        {
-            BattleDialogueSequence sequence = _sequences[i];
-            if (sequence.ShouldPlayOnMoveFinish(interactor, target))
-            {
-                yield return sequence.Play(interactor, target);
-            }
-        }
+        return GetDialogue(BattleDialogueSequence.TriggerType.MoveEnd, interactor, target);
     }
 
     public IEnumerator GetTurnStartDialogue()
     {
-        for (int i = 0; i < _sequences.Length; i++)
+        return GetDialogue(BattleDialogueSequence.TriggerType.TurnStart, null, null);
+    }
+
+    private IEnumerator GetDialogue(BattleDialogueSequence.TriggerType trigger, Character interactor, Character target)
+    {
+        foreach (var sequence in _sequences)
         {
-            BattleDialogueSequence sequence = _sequences[i];
-            if (sequence.ShouldPlayOnTurnStart())
+            if (sequence.Trigger == trigger && sequence.ShouldPlay(interactor, target))
             {
-                yield return sequence.Play(null, null);
+                yield return sequence.Play(interactor, target);
             }
         }
     }

@@ -4,22 +4,14 @@ using static UniqueCharacters;
 
 public class BattleDialogue_GrugIntro : BattleDialogueSequence
 {
-    public override bool ShouldPlayOnMoveStart(Character interactor, Character target)
-    {
-        return false;
-    }
+    public override TriggerType Trigger => TriggerType.TurnStart;
 
-    public override bool ShouldPlayOnMoveFinish(Character interactor, Character target)
-    {
-        return false;
-    }
-
-    public override bool ShouldPlayOnTurnStart()
+    public override bool ShouldPlay(Character interactor, Character target)
     {
         Squad grugSquad = Battle.GetSquad(Grug);
         bool isSquadAwake = grugSquad && (grugSquad.ShouldWakeUp() || grugSquad.IsAwake);
         bool areEnoughPlayersAlive = (Robin.IsAlive || Hayden.IsAlive) && (Gregory.IsAlive || Alfred.IsAlive);
-        return !HasPlayed && Battle.CurrentFactionTurn != Battle.PlayerFaction && isSquadAwake && !Grug.IsDead;
+        return !HasPlayed && Battle.CurrentFactionTurn != Battle.PlayerFaction && isSquadAwake && !Grug.IsDead && areEnoughPlayersAlive;
     }
 
     protected override IEnumerator GetSequence(Character interactor, Character target)
