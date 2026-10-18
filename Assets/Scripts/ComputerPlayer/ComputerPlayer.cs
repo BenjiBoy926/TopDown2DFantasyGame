@@ -63,6 +63,10 @@ public class ComputerPlayer : MonoBehaviour
         {
             yield return null;
         }
+        while (_battle.IsDialoguePlaying)
+        {
+            yield return null;
+        }
         yield return new WaitForSeconds(_initialStartDelay);
 
         GetMoveableCharacters(_characters);

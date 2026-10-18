@@ -77,8 +77,8 @@ public class CharacterSpeechBubble : MonoBehaviour
         size.x = Mathf.Max(size.x, _minWidth);
         Vector2 position = GetTargetScreenPosition(size);
 
+        _rectTransform.anchoredPosition = position;
         _rectTransform.DOSizeDelta(size, _repositionDuration);
-        _rectTransform.DOAnchorPos(position, _repositionDuration);
 
         Vector2 pointerTarget = GetAnchorScreenPosition();
         _pointer.PointTo(pointerTarget, new(position, size));

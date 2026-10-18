@@ -3,7 +3,10 @@ using UnityEngine;
 
 public class BattleDialogue : MonoBehaviour
 {
+    public bool IsPlaying => _isPlaying;
+
     private BattleDialogueSequence[] _sequences;
+    private bool _isPlaying;
 
     private void Awake()
     {
@@ -27,6 +30,7 @@ public class BattleDialogue : MonoBehaviour
 
     private IEnumerator GetDialogue(BattleDialogueSequence.TriggerType trigger, Character interactor, Character target)
     {
+        _isPlaying = true;
         foreach (var sequence in _sequences)
         {
             if (sequence.Trigger == trigger && sequence.ShouldPlay(interactor, target))
@@ -34,5 +38,6 @@ public class BattleDialogue : MonoBehaviour
                 yield return sequence.Play(interactor, target);
             }
         }
+        _isPlaying = false;
     }
 }

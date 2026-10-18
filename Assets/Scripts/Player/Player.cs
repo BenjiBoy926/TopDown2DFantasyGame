@@ -404,7 +404,8 @@ public class Player : MonoBehaviour
             !_battle.IsTurnChangeAnimationPlaying && 
             !Character.IsAnyCharacterActing && 
             !BattleHistory.IsAnySequencePlaying && 
-            _battle.CurrentFactionTurn == _faction;
+            _battle.CurrentFactionTurn == _faction &&
+            !_battle.IsDialoguePlaying;
     }
 
     private void SetIsInputAllowed(bool isInputAllowed)

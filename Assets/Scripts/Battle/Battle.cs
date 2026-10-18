@@ -30,6 +30,7 @@ public class Battle : MonoBehaviour
         get => _camera.Position;
         set => _camera.Position = value;
     }
+    public bool IsDialoguePlaying => _dialogue.IsPlaying;
 
     private BattleSetup _setup;
     private Battlefield _field;

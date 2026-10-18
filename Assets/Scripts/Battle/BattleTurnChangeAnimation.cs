@@ -32,14 +32,13 @@ public class BattleTurnChangeAnimation : MonoBehaviour
     private IEnumerator GetPlaySequence(Faction faction)
     {
         _isPlaying = true;
-
         yield return _overlay.FadeIn();
         yield return _banner.AnimateIn(faction);
         yield return _label.Animate(faction);
         yield return _banner.AnimateOut();
         yield return _overlay.FadeOut();
-        yield return _battle.GetTurnStartDialogue();
-
         _isPlaying = false;
+
+        yield return _battle.GetTurnStartDialogue();
     }
 }
