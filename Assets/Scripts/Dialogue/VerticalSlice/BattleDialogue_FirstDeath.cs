@@ -19,6 +19,24 @@ namespace VerticalSlice
             string exclamation1 = $"{deadPlayer.Name}?";
             string exclamation2 = $"{deadPlayer.Name.ToUpper()}!! NO!!";
 
+            yield return Dialogue.FirstLiveCharacterSay(
+                new(Hayden, exclamation1),
+                new(Alfred, exclamation1));
+
+            yield return Dialogue.FirstLiveCharacterSay(
+                new(Hayden, exclamation2),
+                new(Alfred, exclamation2));
+
+            yield return Dialogue.FirstLiveCharacterSay(
+                new(Gregory, "Damn it..."),
+                new(Robin, "Damn it..."));
+
+            yield return Dialogue.FirstLiveCharacterSay(
+                new(Robin, "We have to turn back. They are too strong for us"),
+                new(Alfred, "What do we do? We can't just leave him!"));
+
+            // TODO: finish the rest of the dialogue in this format
+
             if (Hayden.IsDead)
             {
                 yield return Alfred.Say(exclamation1);
