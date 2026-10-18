@@ -144,20 +144,9 @@ public class CharacterAnimator : MonoBehaviour
         }
     }
 
-    public YieldInstruction FadeAlpha(float alpha, float duration, Ease ease)
-    {
-        _spriteRenderer.DOKill();
-        return _spriteRenderer.DOFade(alpha, duration).SetEase(ease).WaitForCompletion();
-    }
-
-    public YieldInstruction FadeColor(Color color, float duration)
-    {
-        _spriteRenderer.DOKill();
-        return _spriteRenderer.DOColor(color, duration).WaitForCompletion();
-    }
-
     private Coroutine PlayOneShot(Actions action)
     {
+        _isRunning = false;
         if (_oneShotRoutine != null)
         {
             StopCoroutine(_oneShotRoutine);
