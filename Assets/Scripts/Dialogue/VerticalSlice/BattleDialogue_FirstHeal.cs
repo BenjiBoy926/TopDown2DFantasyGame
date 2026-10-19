@@ -1,4 +1,5 @@
 using System.Collections;
+using static UniqueCharacters;
 
 namespace VerticalSlice
 {
@@ -20,16 +21,21 @@ namespace VerticalSlice
                 "Hm? My wounds are all healed. What was that?");
 
             yield return Dialogue.FirstMatchingMainCharacterSay(interactor,
-                "I think... I think the Ember just used me to heal you!",
-                "Not sure. The Ember led me to you and suddenly energy flowed through me into you.",
+                "I think the Ember just used me to heal you!",
+                "Not exactly sure, but I think the Ember used me to heal you.",
                 "No idea! I was just following the Ember, then suddenly I felt energy race through me and into you.",
                 "...It seems like the Ember used me to heal you.");
 
             yield return Dialogue.FirstMatchingMainCharacterSay(target,
                 "What an incredible power! We can use this to beat back the goblins!",
-                "Working together with this power, we should be able to get the upper hand.",
-                "AMAZING! Now we can charge ahead without worrying so much about damage!",
+                "Interesting. Working together with this power, we should be able to get the upper hand.",
+                "AMAZING! Now we can charge ahead without worrying about taking damage!",
                 "This should give us a tactical advantage. We can use this power to beat the goblins and get out of here.");
+
+            if (target == Alfred)
+            {
+                yield return interactor.Say("(So reckless...)");
+            }
         }
     }
 }

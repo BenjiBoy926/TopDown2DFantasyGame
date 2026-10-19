@@ -11,8 +11,9 @@ public class CharacterSpeech : MonoBehaviour
         _bubble = GetComponentInChildren<CharacterSpeechBubble>(true);
     }
 
-    public IEnumerator Say(string text)
+    public Coroutine Say(string text)
     {
-        return _bubble.Say(text);
+        StopAllCoroutines();
+        return StartCoroutine(_bubble.GetDisplaySequence(text));
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using static UniqueCharacters;
 
 public class Dialogue
@@ -19,13 +20,13 @@ public class Dialogue
             _line = line;
         }
 
-        public IEnumerator Say()
+        public Coroutine Say()
         {
             return _character.Say(_line);
         }
     }
 
-    public static IEnumerator FirstMatchingMainCharacterSay(Character character, params string[] lines)
+    public static Coroutine FirstMatchingMainCharacterSay(Character character, params string[] lines)
     {
         Entry[] entries = new Entry[lines.Length];
         for (int i = 0; i < lines.Length && i < MainCharacters.Count; i++)
@@ -35,17 +36,17 @@ public class Dialogue
         return FirstMatchingCharacterSay(character, entries);
     }
 
-    public static IEnumerator FirstMatchingCharacterSay(Character character, params Entry[] entries)
+    public static Coroutine FirstMatchingCharacterSay(Character character, params Entry[] entries)
     {
         return Say(c => character == c, entries);
     }
 
-    public static IEnumerator FirstLiveCharacterSay(params Entry[] entries)
+    public static Coroutine FirstLiveCharacterSay(params Entry[] entries)
     {
         return Say(c => c.IsAlive, entries);
     }
 
-    private static IEnumerator Say(Predicate<Character> condition, Entry[] entries)
+    private static Coroutine Say(Predicate<Character> condition, Entry[] entries)
     {
         foreach (var entry in entries)
         {

@@ -547,7 +547,7 @@ public class Character : MonoBehaviour
 
     // -- Speech -------------------------------------------------------
 
-    public IEnumerator Say(string text)
+    public Coroutine Say(string text)
     {
         return _speech.Say(text);
     }

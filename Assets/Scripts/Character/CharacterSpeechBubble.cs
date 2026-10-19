@@ -54,7 +54,7 @@ public class CharacterSpeechBubble : MonoBehaviour
         _proceed = true;
     }
 
-    public IEnumerator Say(string text)
+    public IEnumerator GetDisplaySequence(string text)
     {
         gameObject.SetActive(true);
 
