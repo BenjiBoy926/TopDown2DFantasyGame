@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ public class BattleDialogue : MonoBehaviour
     private void Awake()
     {
         _sequences = GetComponentsInChildren<BattleDialogueSequence>(true);
+        Array.Sort(_sequences, BattleDialogueSequence.Comparison);
     }
 
     public IEnumerator GetMoveStartDialogue(Character interactor, Character target)

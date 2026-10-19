@@ -6,6 +6,7 @@ namespace VerticalSlice
     public class BattleDialogue_FirstDeath : BattleDialogueSequence
     {
         public override TriggerType Trigger => TriggerType.MoveEnd;
+        public override int Priority => 10;
 
         public override bool ShouldPlay(Character interactor, Character target)
         {

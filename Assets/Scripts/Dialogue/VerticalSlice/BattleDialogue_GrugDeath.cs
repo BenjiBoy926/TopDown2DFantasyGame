@@ -4,6 +4,7 @@ using static UniqueCharacters;
 public class BattleDialogue_GrugDeath : BattleDialogueSequence
 {
     public override TriggerType Trigger => TriggerType.MoveEnd;
+    public override int Priority => -1;
 
     public override bool ShouldPlay(Character interactor, Character target)
     {
