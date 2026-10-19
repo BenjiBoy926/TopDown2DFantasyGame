@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -79,6 +80,7 @@ public class Character : MonoBehaviour
     [SerializeField] private Faction _faction;
     [SerializeField] private CharacterUIStyle _uiStyle;
     [SerializeField] private bool _isRanged;
+    [SerializeField] private float _moveToCellCenterDuration = .2f;
 
     private CharacterAnimator _animator;
     private CharacterAppearance _appearance;
@@ -197,9 +199,24 @@ public class Character : MonoBehaviour
 
     public IEnumerator BeginMoveSequence(Character other)
     {
-        RefreshCell();
         SetIsActing(true);
+        RefreshCell();
+
+        if (other)
+        {
+            LookAt(other.Position);
+        }
+        if (other && other.IsAlive)
+        {
+            other.LookAt(Position);
+        }
+        yield return MoveToCellCenter();
         yield return _battle.GetMoveStartDialogue(this, other);
+    }
+
+    public YieldInstruction MoveToCellCenter()
+    {
+        return transform.DOMove(CurrentCellCenter, _moveToCellCenterDuration).WaitForCompletion();
     }
 
     public IEnumerator EndMoveSequence(Character other)

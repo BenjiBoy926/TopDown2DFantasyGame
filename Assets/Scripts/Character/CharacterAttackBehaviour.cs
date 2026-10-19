@@ -10,10 +10,6 @@ public class CharacterAttackBehaviour : MonoBehaviour
     private const int MeleeFrames = 2;
     private const int RangedFrames = 3;
 
-    [SerializeField] private float _moveToCellCenterDuration = 0.01f;
-    [SerializeField] private Ease _moveToCellCenterEase = Ease.Linear;
-
-    [Space]
     [SerializeField] private Ease _chargeEase = Ease.InBack;
     [SerializeField] private float _chargeAloneOffset = .49f;
     [SerializeField] private float _chargeClashOffset = 0.3f;
@@ -42,11 +38,12 @@ public class CharacterAttackBehaviour : MonoBehaviour
     
     private IEnumerator GetAttackAloneSequence(Character other)
     {
-        yield return BeginSequence(other);
+        _isAttackInitiator = true;
+        yield return _character.BeginMoveSequence(other);
         yield return GetMeleeSwipeSequence(other);
 
         EazySoundManager.PlaySound(_hurtClip);
-        MoveToCellCenter();
+        _character.MoveToCellCenter();
         Coroutine otherHurtRoutine = StartCoroutine(other.GetHurtSequence(_character));
         while (_character.IsOneShotAnimationPlaying)
         {
@@ -56,13 +53,15 @@ public class CharacterAttackBehaviour : MonoBehaviour
         _character.PlayIdleAnimation();
         yield return otherHurtRoutine;
 
-        yield return EndSequence(other);
+        _isAttackInitiator = false;
+        yield return _character.EndMoveSequence(other);
         RemoveDeadCombatantsFromBattlefield(other);
     }
 
     private IEnumerator GetAttackExchangeSequence(Character other)
     {
-        yield return BeginSequence(other);
+        _isAttackInitiator = true;
+        yield return _character.BeginMoveSequence(other);
 
         IEnumerator otherSwipeSequence = other.GetMeleeSwipeSequence(_character);
         Coroutine otherSwipeRoutine = StartCoroutine(otherSwipeSequence);
@@ -74,20 +73,9 @@ public class CharacterAttackBehaviour : MonoBehaviour
         yield return GetHurtSequence(other);
         yield return otherHurtRoutine;
 
-        yield return EndSequence(other);
+        _isAttackInitiator = false;
+        yield return _character.EndMoveSequence(other);
         RemoveDeadCombatantsFromBattlefield(other);
-    }
-
-    private IEnumerator BeginSequence(Character other)
-    {
-        _isAttackInitiator = true;
-
-        yield return _character.BeginMoveSequence(other);
-
-        _character.LookAt(other.Position);
-        other.LookAt(_character.Position);
-
-        yield return MoveToCellCenter();
     }
 
     public IEnumerator GetMeleeSwipeSequence(Character other)
@@ -99,14 +87,6 @@ public class CharacterAttackBehaviour : MonoBehaviour
             _arrowBlur.Play(other);
         }
         yield return AttackConnectSequence(other);
-    }
-
-    private YieldInstruction MoveToCellCenter()
-    {
-        Vector2 cellPosition = _character.CurrentCellCenter;
-        return transform.DOMove(cellPosition, _moveToCellCenterDuration)
-            .SetEase(_moveToCellCenterEase)
-            .WaitForCompletion();
     }
 
     private YieldInstruction ChargeSequence(Character other)
@@ -144,12 +124,6 @@ public class CharacterAttackBehaviour : MonoBehaviour
     {
         EazySoundManager.PlaySound(_hurtClip);
         return _character.GetHurtSequence(other);
-    }
-
-    private IEnumerator EndSequence(Character other)
-    {
-        _isAttackInitiator = false;
-        return _character.EndMoveSequence(other);
     }
 
     private void RemoveDeadCombatantsFromBattlefield(Character other)
