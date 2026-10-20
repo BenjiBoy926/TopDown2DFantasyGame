@@ -366,4 +366,9 @@ public class Battle : MonoBehaviour
     {
         return _dialogue.GetTurnStartDialogue();
     }
+
+    public IEnumerator GetUndoRedoEndDialogue()
+    {
+        return _dialogue.GetUndoRedoEndDialogue();
+    }
 }

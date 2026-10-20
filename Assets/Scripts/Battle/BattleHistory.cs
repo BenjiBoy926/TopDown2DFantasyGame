@@ -179,6 +179,7 @@ public class BattleHistory : MonoBehaviour
     private IEnumerator SequenceEnd()
     {
         yield return _overlay.FadeOut();
+        yield return _battle.GetUndoRedoEndDialogue();
         _playingHistories.Remove(this);
     }   
 

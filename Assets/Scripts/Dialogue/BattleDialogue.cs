@@ -30,6 +30,11 @@ public class BattleDialogue : MonoBehaviour
         return GetDialogue(BattleDialogueSequence.TriggerType.TurnStart, null, null);
     }
 
+    public IEnumerator GetUndoRedoEndDialogue()
+    {
+        return GetDialogue(BattleDialogueSequence.TriggerType.UndoRedoEnd, null, null);
+    }
+
     private IEnumerator GetDialogue(BattleDialogueSequence.TriggerType trigger, Character interactor, Character target)
     {
         _isPlaying = true;

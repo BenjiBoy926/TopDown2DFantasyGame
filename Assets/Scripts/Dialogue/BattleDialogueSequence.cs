@@ -8,7 +8,8 @@ public abstract class BattleDialogueSequence : MonoBehaviour
     {
         MoveStart,
         MoveEnd,
-        TurnStart
+        TurnStart,
+        UndoRedoEnd
     }
 
     protected Battle Battle => _battle;
