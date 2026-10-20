@@ -31,6 +31,8 @@ public class Battle : MonoBehaviour
         set => _camera.Position = value;
     }
     public bool IsDialoguePlaying => _dialogue.IsPlaying;
+    public int CurrentStateIndex => _history.CurrentStateIndex;
+    public int StateCount => _history.StateCount;
 
     private BattleSetup _setup;
     private Battlefield _field;
@@ -256,14 +258,9 @@ public class Battle : MonoBehaviour
         return _history.GetLastRecordedState(character);
     }
 
-    public BattleState GetUndoState()
+    public BattleState GetState(int i)
     {
-        return _history.GetUndoState();
-    }
-
-    public BattleState GetRedoState()
-    {
-        return _history.GetRedoState();
+        return _history.GetState(i);
     }
 
     // Camera ===

@@ -6,7 +6,7 @@ public class PlayerTimedAction_Undo : PlayerTimedAction
 
     public override bool IsQuickRepeatAvailable()
     {
-        BattleState stateToUndo = Battle.GetUndoState();
+        BattleState stateToUndo = Battle.GetState(Battle.CurrentStateIndex);
         return stateToUndo is not BattleState_TurnChange;
     }
     public override bool IsAvailable()

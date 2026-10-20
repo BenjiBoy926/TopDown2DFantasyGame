@@ -8,6 +8,8 @@ using UnityEngine;
 public class BattleHistory : MonoBehaviour
 {
     private int LatestStateIndex => _states.Count - 1;
+    public int CurrentStateIndex => _currentStateIndex;
+    public int StateCount => _states.Count;
     public static bool IsAnySequencePlaying => _playingHistories.Count > 0;
 
     [SerializeField] private AudioClip _undoSound;
@@ -82,16 +84,6 @@ public class BattleHistory : MonoBehaviour
     public bool IsRedoAvailable()
     {
         return _currentStateIndex < LatestStateIndex;
-    }
-
-    public BattleState GetUndoState()
-    {
-        return IsUndoAvailable() ? _states[_currentStateIndex] : null;
-    }
-
-    public BattleState GetRedoState()
-    {
-        return IsRedoAvailable() ? _states[_currentStateIndex + 1] : null;
     }
 
     private IEnumerator UndoToLastPlayerMovePoint()
@@ -197,6 +189,11 @@ public class BattleHistory : MonoBehaviour
         }
         _states.Add(state);
         _currentStateIndex++;
+    }
+
+    public BattleState GetState(int i)
+    {
+        return i >= 0 && i < _states.Count ? _states[i] : null;
     }
 
     public CharacterRecord GetLastRecordedState(Character character)
