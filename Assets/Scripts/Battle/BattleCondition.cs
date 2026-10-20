@@ -15,7 +15,7 @@ public class BattleCondition : MonoBehaviour
         return AreAllEnemiesDead() && AreAllPlayersAlive();
     }
 
-    private bool AreAllPlayersAlive()
+    public bool AreAllPlayersAlive()
     {
         foreach (var character in _battle.AllCharacters)
         {
@@ -27,7 +27,7 @@ public class BattleCondition : MonoBehaviour
         return true;
     }
 
-    private bool AreAllEnemiesDead()
+    public bool AreAllEnemiesDead()
     {
         foreach (var character in _battle.AllCharacters)
         {

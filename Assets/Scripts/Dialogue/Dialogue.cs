@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using static UniqueCharacters;
 
 public class Dialogue
@@ -39,6 +40,16 @@ public class Dialogue
     public static Coroutine FirstMatchingCharacterSay(Character character, params Entry[] entries)
     {
         return Say(c => character == c, entries);
+    }
+
+    public static Coroutine FirstLiveMainCharacterSay(params string[] lines)
+    {
+        Entry[] entries = new Entry[lines.Length];
+        for (int i = 0; i < lines.Length && i < MainCharacters.Count; i++)
+        {
+            entries[i] = new(MainCharacters[i], lines[i]);
+        }
+        return FirstLiveCharacterSay(entries);
     }
 
     public static Coroutine FirstLiveCharacterSay(params Entry[] entries)

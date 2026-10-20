@@ -338,6 +338,18 @@ public class Battle : MonoBehaviour
         _camera.ZoomOut();
     }
 
+    // Condition ===
+
+    public bool AreAllEnemiesDead()
+    {
+        return _condition.AreAllEnemiesDead();
+    }
+
+    public bool AreAllPlayersAlive()
+    {
+        return _condition.AreAllPlayersAlive();
+    }
+
     // Dialogue ===
 
     public IEnumerator GetMoveStartDialogue(Character interactor, Character target)
