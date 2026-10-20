@@ -80,6 +80,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 77dde7c2c0a5d224ca25c888498f956b, type: 2}
+    - target: {fileID: 5422275556563700369, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5960221780606168465, guid: 542580a0ea76df14eb58af1decf3516f, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.753

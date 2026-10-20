@@ -12,6 +12,23 @@ public class BattleCondition : MonoBehaviour
 
     public bool IsWinConditionMet()
     {
+        return AreAllEnemiesDead() && AreAllPlayersAlive();
+    }
+
+    private bool AreAllPlayersAlive()
+    {
+        foreach (var character in _battle.AllCharacters)
+        {
+            if (character.IsDead && character.Faction == _battle.PlayerFaction)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private bool AreAllEnemiesDead()
+    {
         foreach (var character in _battle.AllCharacters)
         {
             if (!character.IsDead && character.Faction != _battle.PlayerFaction)
