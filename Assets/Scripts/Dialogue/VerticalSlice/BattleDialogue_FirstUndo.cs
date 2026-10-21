@@ -54,9 +54,10 @@ namespace VerticalSlice
                     new(Robin, $"...{IOrWe} saw it too."));
 
                 yield return Dialogue.Say(OtherAliveCharacter,
-                    new(Hayden, $"It's good to see that you are alright! You had me worried there."),
+                    new(Hayden, $"It's good to see that you're alright! You had me worried there."),
                     new(Gregory, $"I'm glad you're alright in any case."),
-                    new(Alfred, $"I'm just thrilled that you're okay now, you looked like you were really out!"));
+                    new(Alfred, $"I'm just thrilled that you're okay now, you looked like you were really out!"),
+                    new(Robin, "Good thing you're okay now."));
 
                 yield return playerWhoWasDead.Say("How strange...");
             }
@@ -79,8 +80,41 @@ namespace VerticalSlice
             }
             else if (movedPlayer)
             {
-                Cancel();
-                yield break;
+                yield return Dialogue.FirstMatchingMainCharacterSay(movedPlayer,
+                    "What was that?",
+                    "What on earth?",
+                    "Woah, woah! What?!",
+                    "...What was that?");
+
+                yield return Dialogue.FirstMatchingMainCharacterSay(movedPlayer,
+                    "I was just over there...",
+                    "I was just over there...",
+                    "Wasn't I just over there?!",
+                    "I was just over there...");
+
+                yield return Dialogue.FirstMatchingMainCharacterSay(movedPlayer,
+                    "But now I'm back where I started!",
+                    "But now I'm back where I started...",
+                    "But now I'm back where I started!",
+                    "But now I'm back where I started...");
+
+                yield return Dialogue.FirstMatchingMainCharacterSay(movedPlayer,
+                    "It's like time just... turned back!",
+                    "It's like time turned back...",
+                    "Is this what time travel feels like?!",
+                    "It's like time turned back...");
+
+                // If these are the only two characters alive then only "I" saw you die,
+                // otherwise "we" saw you die
+                string IOrWe = aliveCharacters > 2 ? "We" : "I";
+                bool OtherAliveCharacter(Character c) => c.IsAlive && c != movedPlayer;
+                yield return Dialogue.Say(OtherAliveCharacter,
+                    new(Hayden, $"It's not just you. {IOrWe} saw it too"),
+                    new(Gregory, $"I know. {IOrWe} saw it too."),
+                    new(Alfred, $"It's not in your head! {IOrWe} saw it too!"),
+                    new(Robin, $"...{IOrWe} saw it too."));
+
+                yield return movedPlayer.Say("How strange...");
             }
             // No one was revived, enemy turn didn't undo, and no one actually moved.
             // Basically you made one character wait right where they are and then did an undo.
