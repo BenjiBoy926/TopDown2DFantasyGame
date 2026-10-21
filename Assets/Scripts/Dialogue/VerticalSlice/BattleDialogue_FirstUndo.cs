@@ -1,4 +1,5 @@
 using System.Collections;
+using static UniqueCharacters;
 
 namespace VerticalSlice
 {
@@ -8,48 +9,138 @@ namespace VerticalSlice
 
         public override bool ShouldPlay(Character interactor, Character target)
         {
-            return !HasPlayed;
+            return !HasPlayed && CountLiveMainCharacters() > 1;
         }
 
         protected override IEnumerator GetSequence(Character interactor, Character target)
         {
-            // If someone was dead and is no longer dead, then they should talk
-            // Else if someone moved to a different location, then they should talk
-            // Else if you undid a turn change, then do a prescripted dialogue where characters noticed the goblins moving
-            // Else? (no one died, no one moved, no turn change, basically the character waiting in the same space and undid, then no comment? Or maybe you do do a comment?)
-            
-            BattleState mostRecentUndoneState = Battle.GetState(Battle.CurrentStateIndex + 1);
-            if (mostRecentUndoneState is BattleState_TurnChange)
+            Character playerWhoWasDead = GetPlayerWhoWasDead();
+            Character movedPlayer = GetMovedPlayer();
+            int aliveCharacters = CountLiveMainCharacters();
+            if (playerWhoWasDead)
             {
-                
+                yield return Dialogue.FirstMatchingMainCharacterSay(playerWhoWasDead,
+                    "GAH! What was that?!",
+                    "What on earth?!",
+                    "Woah, WAOH! WHAT?!",
+                    "...What was that?");
+
+                yield return Dialogue.FirstMatchingMainCharacterSay(playerWhoWasDead,
+                    "Did I just... die?!",
+                    "I thought I had just taken a fatal blow...",
+                    "I thought for sure I was done for!",
+                    "I had just taken a fatal blow...");
+
+                yield return Dialogue.FirstMatchingMainCharacterSay(playerWhoWasDead,
+                    "I seem fine now... and I'm right back where I started...",
+                    "But now I seem fine. And I'm back where I was before...",
+                    "But now I feel great! And everything looks oddly familiar...",
+                    "But now everything is back to the way it was before I was attacked.");
+
+                yield return Dialogue.FirstMatchingMainCharacterSay(playerWhoWasDead,
+                    "It's like time just... turned back!",
+                    "It's like time turned back...",
+                    "Is this what time travel feels like?!",
+                    "It's like time turned back...");
+
+                // If these are the only two characters alive then only "I" saw you die,
+                // otherwise "we" saw you die
+                string IOrWe = aliveCharacters > 2 ? "We" : "I";
+                bool OtherAliveCharacter(Character c) => c.IsAlive && c != playerWhoWasDead;
+                yield return Dialogue.Say(OtherAliveCharacter,
+                    new(Hayden, $"It's not just you. {IOrWe} saw it too"),
+                    new(Gregory, $"I know. {IOrWe} saw it too."),
+                    new(Alfred, $"It's not in your head! {IOrWe} saw it too!"),
+                    new(Robin, $"...{IOrWe} saw it too."));
+
+                yield return Dialogue.Say(OtherAliveCharacter,
+                    new(Hayden, $"It's good to see that you are alright! You had me worried there."),
+                    new(Gregory, $"I'm glad you're alright in any case."),
+                    new(Alfred, $"I'm just thrilled that you're okay now, you looked like you were really out!"));
+
+                yield return playerWhoWasDead.Say("How strange...");
             }
+            else if (DidUndoEnemyTurn())
+            {
+
+            }
+            else if (movedPlayer)
+            {
+
+            }
+            // No one was revived, enemy turn didn't undo, and no one actually moved.
+            // Basically you made one character wait right where they are and then did an undo.
+            // The characters have no comment to make
             else
             {
-                Character player = GetPlayerCharacter(mostRecentUndoneState);
-                yield return Dialogue.FirstMatchingMainCharacterSay(player,
-                    "Woah! What was that?",
-                    "Hm? What was that?",
-                    "Woah! Woah! What? What the heck?!",
-                    "...That was strange...");
-                yield return Dialogue.FirstMatchingMainCharacterSay(player,
-                    "I was just over there, but now... I'm back where I started?",
-                    "I've come back where I started moments ago...",
-                    "Deja-vu! Wasn't I JUST here?!",
-                    "It's like time just turned back...");
+                Cancel();
+                yield break;
             }
         }
 
-        private Character GetPlayerCharacter(BattleState state)
+        private Character GetPlayerWhoWasDead()
+        {
+            for (int i = Battle.CurrentStateIndex + 1; i < Battle.StateCount; i++)
+            {
+                BattleState state = Battle.GetState(i);
+                Character character = GetPlayerWhoWasDead(state);
+                if (character)
+                {
+                    return character;
+                }
+            }
+            return null;
+        }
+
+        private Character GetPlayerWhoWasDead(BattleState state)
+        {
+            CharacterRecord playerCharacterRecord = GetPlayerRecord(state);
+            if (playerCharacterRecord.Character.IsAlive && playerCharacterRecord.State.Health <= 0)
+            {
+                return playerCharacterRecord.Character;
+            }
+            return null;
+        }
+
+        private bool DidUndoEnemyTurn()
+        {
+            return Battle.LatestStateIndex - Battle.CurrentStateIndex > 1;
+        }
+
+        private Character GetMovedPlayer()
+        {
+            BattleState undoneState = Battle.GetState(Battle.CurrentStateIndex + 1);
+            CharacterRecord record = GetPlayerRecord(undoneState);
+            bool didCellChange = record.Character.CurrentCell != record.State.Cell;
+            bool didHealthChange = record.Character.CurrentHealth != record.State.Health;
+            bool didAnythingChange = didCellChange || didHealthChange;
+            return didAnythingChange ? record.Character : null;
+        }
+
+        private CharacterRecord GetPlayerRecord(BattleState state)
         {
             for (int i = 0; i < state.RecordCount; i++)
             {
                 CharacterRecord record = state.GetRecord(i);
                 if (record.Character.Faction == Battle.PlayerFaction)
                 {
-                    return record.Character;
+                    return record;
                 }
             }
-            return null;
+            return default;
+        }
+
+        private int CountLiveMainCharacters()
+        {
+            int count = 0;
+            for (int i = 0; i < MainCharacters.Count; i++)
+            {
+                if (MainCharacters[i].IsAlive)
+                {
+                    count++;
+                }
+            }
+            return count;
         }
     }
 }

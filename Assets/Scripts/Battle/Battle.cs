@@ -33,6 +33,7 @@ public class Battle : MonoBehaviour
     public bool IsDialoguePlaying => _dialogue.IsPlaying;
     public int CurrentStateIndex => _history.CurrentStateIndex;
     public int StateCount => _history.StateCount;
+    public int LatestStateIndex => _history.LatestStateIndex;
 
     private BattleSetup _setup;
     private Battlefield _field;

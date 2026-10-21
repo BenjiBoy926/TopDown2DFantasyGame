@@ -7,7 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(Battle))]
 public class BattleHistory : MonoBehaviour
 {
-    private int LatestStateIndex => _states.Count - 1;
+    public int LatestStateIndex => _states.Count - 1;
     public int CurrentStateIndex => _currentStateIndex;
     public int StateCount => _states.Count;
     public static bool IsAnySequencePlaying => _playingHistories.Count > 0;

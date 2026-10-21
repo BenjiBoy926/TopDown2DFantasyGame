@@ -33,4 +33,9 @@ public abstract class BattleDialogueSequence : MonoBehaviour
         return GetSequence(interactor, target);
     }
     protected abstract IEnumerator GetSequence(Character interactor, Character target);
+
+    protected void Cancel()
+    {
+        _timesPlayed--;
+    }
 }

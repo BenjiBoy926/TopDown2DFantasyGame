@@ -57,7 +57,7 @@ public class Dialogue
         return Say(c => c.IsAlive, entries);
     }
 
-    private static Coroutine Say(Predicate<Character> condition, Entry[] entries)
+    public static Coroutine Say(Predicate<Character> condition, params Entry[] entries)
     {
         foreach (var entry in entries)
         {
