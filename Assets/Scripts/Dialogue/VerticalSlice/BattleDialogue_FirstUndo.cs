@@ -62,11 +62,25 @@ namespace VerticalSlice
             }
             else if (DidUndoEnemyTurn())
             {
+                yield return Dialogue.FirstLiveCharacterSay(
+                    new(Gregory, "That's strange. It looks like the goblins retreated..."),
+                    new(Alfred, "What's going on? They're running for the hills!"),
+                    new(Robin, "That makes no sense. It looks like they retreated..."));
 
+                yield return Dialogue.FirstLiveCharacterSay(
+                    new(Hayden, "I saw it too! There was a bright blue flash and suddenly they all moved back!"),
+                    new(Gregory, "I saw a blue flash and then... they all moved back."),
+                    new(Alfred, "I saw it too! There was a bright blue flash and suddenly they all moved back!"));
+
+                yield return Dialogue.FirstLiveCharacterSay(
+                    new(Gregory, "How strange..."),
+                    new(Alfred, "How bizarre!"),
+                    new(Robin, "How strange..."));
             }
             else if (movedPlayer)
             {
-
+                Cancel();
+                yield break;
             }
             // No one was revived, enemy turn didn't undo, and no one actually moved.
             // Basically you made one character wait right where they are and then did an undo.
@@ -95,7 +109,7 @@ namespace VerticalSlice
         private Character GetPlayerWhoWasDead(BattleState state)
         {
             CharacterRecord playerCharacterRecord = GetPlayerRecord(state);
-            if (playerCharacterRecord.Character.IsAlive && playerCharacterRecord.State.Health <= 0)
+            if (playerCharacterRecord.Character && playerCharacterRecord.Character.IsAlive && playerCharacterRecord.State.Health <= 0)
             {
                 return playerCharacterRecord.Character;
             }
