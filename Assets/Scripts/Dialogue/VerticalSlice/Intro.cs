@@ -60,7 +60,8 @@ namespace VerticalSlice
             yield return Gregory.Say("How much further, Hayden?");
             yield return Hayden.Say("It's just ahead. I'm sure of it.");
             yield return new WaitForSeconds(_alfredPause);
-            yield return Alfred.Say("I'm bored. If nothing happens soon, I'm turning back.");
+            yield return Alfred.Say("I'm bored.");
+            yield return Alfred.Say("If something doesn't happen soon, I'm turning back.");
             yield return Gregory.Say("Nonesense! We must stick together!");
             yield return Hayden.Say("Shh!");
 

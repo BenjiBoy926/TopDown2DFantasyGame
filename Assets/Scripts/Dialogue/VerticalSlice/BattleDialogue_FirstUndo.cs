@@ -9,7 +9,7 @@ namespace VerticalSlice
 
         public override bool ShouldPlay(Character interactor, Character target)
         {
-            return !HasPlayed && CountLiveMainCharacters() > 1;
+            return !HasPlayed;
         }
 
         protected override IEnumerator GetSequence(Character interactor, Character target)
@@ -19,64 +19,43 @@ namespace VerticalSlice
             int aliveCharacters = CountLiveMainCharacters();
             if (playerWhoWasDead)
             {
-                yield return Dialogue.FirstMatchingMainCharacterSay(playerWhoWasDead,
-                    "GAH! What was that?!",
-                    "What on earth?!",
-                    "Woah, WAOH! WHAT?!",
-                    "...What was that?");
+                yield return UndoDeathIntro(playerWhoWasDead);
 
-                yield return Dialogue.FirstMatchingMainCharacterSay(playerWhoWasDead,
-                    "Did I just... die?!",
-                    "I thought I had just taken a fatal blow...",
-                    "I thought for sure I was done for!",
-                    "I had just taken a fatal blow...");
-
-                yield return Dialogue.FirstMatchingMainCharacterSay(playerWhoWasDead,
-                    "I seem fine now... and I'm right back where I started...",
-                    "But now I seem fine. And I'm back where I was before...",
-                    "But now I feel great! And everything looks oddly familiar...",
-                    "But now everything is back to the way it was before I was attacked.");
-
-                yield return Dialogue.FirstMatchingMainCharacterSay(playerWhoWasDead,
-                    "It's like time just... turned back!",
-                    "It's like time turned back...",
-                    "Is this what time travel feels like?!",
-                    "It's like time turned back...");
-
-                // If these are the only two characters alive then only "I" saw you die,
-                // otherwise "we" saw you die
-                string IOrWe = aliveCharacters > 2 ? "We" : "I";
-                bool OtherAliveCharacter(Character c) => c.IsAlive && c != playerWhoWasDead;
-                yield return Dialogue.Say(OtherAliveCharacter,
-                    new(Hayden, $"It's not just you. {IOrWe} saw it too"),
-                    new(Gregory, $"I know. {IOrWe} saw it too."),
-                    new(Alfred, $"It's not in your head! {IOrWe} saw it too!"),
-                    new(Robin, $"...{IOrWe} saw it too."));
-
-                yield return Dialogue.Say(OtherAliveCharacter,
-                    new(Hayden, $"It's good to see that you're alright! You had me worried there."),
-                    new(Gregory, $"I'm glad you're alright in any case."),
-                    new(Alfred, $"I'm just thrilled that you're okay now, you looked like you were really out!"),
-                    new(Robin, "Good thing you're okay now."));
-
-                yield return playerWhoWasDead.Say("How strange...");
+                if (aliveCharacters > 1)
+                {
+                    yield return UndoDeathConversation(playerWhoWasDead);
+                }
             }
             else if (DidUndoEnemyTurn())
             {
                 yield return Dialogue.FirstLiveCharacterSay(
                     new(Gregory, "That's strange. It looks like the goblins retreated..."),
+                    new(Hayden, "Huh? It looks like the goblins just retreated..."),
                     new(Alfred, "What's going on? They're running for the hills!"),
                     new(Robin, "That makes no sense. It looks like they retreated..."));
 
-                yield return Dialogue.FirstLiveCharacterSay(
-                    new(Hayden, "I saw it too! There was a bright blue flash and suddenly they all moved back!"),
-                    new(Gregory, "I saw a blue flash and then... they all moved back."),
-                    new(Alfred, "I saw it too! There was a bright blue flash and suddenly they all moved back!"));
+                if (aliveCharacters > 1)
+                {
+                    yield return Dialogue.FirstLiveCharacterSay(
+                        new(Hayden, "I saw it too! There was a bright blue flash and suddenly they all moved back!"),
+                        new(Gregory, "I saw a blue flash and then... they all moved back."),
+                        new(Alfred, "I saw it too! There was a bright blue flash and suddenly they all moved back!"));
 
-                yield return Dialogue.FirstLiveCharacterSay(
-                    new(Gregory, "How strange..."),
-                    new(Alfred, "How bizarre!"),
-                    new(Robin, "How strange..."));
+                    yield return Dialogue.FirstLiveCharacterSay(
+                        new(Gregory, "Is this some goblin trick?"),
+                        new(Hayden, "I wonder if this is some kind of trap?"),
+                        new(Alfred, "Is this some stunt that the goblins are trying to pull?!"));
+
+                    yield return Dialogue.FirstLiveCharacterSay(
+                        new(Robin, "I don't think so. The blue flash looked like it came from the Ember."),
+                        new(Gregory, "No... The blue flash looked like it came from the Ember."),
+                        new(Hayden, "Maybe? But the blue flash looked like it came from the Ember..."));
+
+                    yield return Dialogue.FirstLiveCharacterSay(
+                        new(Gregory, "How strange..."),
+                        new(Alfred, "How bizarre!"),
+                        new(Robin, "How strange..."));
+                }
             }
             else if (movedPlayer)
             {
@@ -104,17 +83,30 @@ namespace VerticalSlice
                     "Is this what time travel feels like?!",
                     "It's like time turned back...");
 
-                // If these are the only two characters alive then only "I" saw you die,
-                // otherwise "we" saw you die
-                string IOrWe = aliveCharacters > 2 ? "We" : "I";
-                bool OtherAliveCharacter(Character c) => c.IsAlive && c != movedPlayer;
-                yield return Dialogue.Say(OtherAliveCharacter,
-                    new(Hayden, $"It's not just you. {IOrWe} saw it too"),
-                    new(Gregory, $"I know. {IOrWe} saw it too."),
-                    new(Alfred, $"It's not in your head! {IOrWe} saw it too!"),
-                    new(Robin, $"...{IOrWe} saw it too."));
+                if (aliveCharacters > 1)
+                {
+                    // If these are the only two characters alive then only "I" saw you die,
+                    // otherwise "we" saw you die
+                    string IOrWe = aliveCharacters > 2 ? "We" : "I";
+                    bool OtherAliveCharacter(Character c) => c.IsAlive && c != movedPlayer;
+                    yield return Dialogue.Say(OtherAliveCharacter,
+                        new(Hayden, $"It's not just you. {IOrWe} saw it too"),
+                        new(Gregory, $"I know. {IOrWe} saw it too."),
+                        new(Alfred, $"It's not in your head! {IOrWe} saw it too!"),
+                        new(Robin, $"...{IOrWe} saw it too."));
 
-                yield return movedPlayer.Say("How strange...");
+                    yield return Dialogue.FirstLiveCharacterSay(
+                        new(Gregory, "Is this some goblin trick?"),
+                        new(Hayden, "I wonder if this is some kind of trap?"),
+                        new(Alfred, "Is this some stunt that the goblins are trying to pull?!"));
+
+                    yield return Dialogue.FirstLiveCharacterSay(
+                        new(Robin, "I don't think so. The blue flash looked like it came from the Ember."),
+                        new(Gregory, "No... The blue flash looked like it came from the Ember."),
+                        new(Hayden, "No... The blue flash looked like it came from the Ember."));
+                    
+                    yield return movedPlayer.Say("How strange...");
+                }
             }
             // No one was revived, enemy turn didn't undo, and no one actually moved.
             // Basically you made one character wait right where they are and then did an undo.
@@ -124,6 +116,55 @@ namespace VerticalSlice
                 Cancel();
                 yield break;
             }
+        }
+
+        private static IEnumerator UndoDeathIntro(Character playerWhoWasDead)
+        {
+            yield return Dialogue.FirstMatchingMainCharacterSay(playerWhoWasDead,
+                "GAH! What was that?!",
+                "What on earth?!",
+                "Woah, WAOH! WHAT?!",
+                "...What was that?");
+
+            yield return Dialogue.FirstMatchingMainCharacterSay(playerWhoWasDead,
+                "Did I just... die?!",
+                "I thought I had just taken a fatal blow...",
+                "I thought for sure I was done for!",
+                "I had just taken a fatal blow...");
+
+            yield return Dialogue.FirstMatchingMainCharacterSay(playerWhoWasDead,
+                "I seem fine now... and I'm right back where I started...",
+                "But now I seem fine. And I'm back where I was before...",
+                "But now I feel great! And everything looks oddly familiar...",
+                "But now everything is back to the way it was before.");
+
+            yield return Dialogue.FirstMatchingMainCharacterSay(playerWhoWasDead,
+                "It's like time just... turned back!",
+                "It's like time just... turned back...",
+                "Is this what time travel feels like?!",
+                "It's like time just... turned back...");
+        }
+
+        private IEnumerator UndoDeathConversation(Character playerWhoWasDead)
+        {
+            // If these are the only two characters alive then only "I" saw you die,
+            // otherwise "we" saw you die
+            int aliveCharacters = CountLiveMainCharacters();
+            string IOrWe = aliveCharacters > 2 ? "We" : "I";
+            bool OtherAliveCharacter(Character c) => c.IsAlive && c != playerWhoWasDead;
+            yield return Dialogue.Say(OtherAliveCharacter,
+                new(Hayden, $"It's not just you. {IOrWe} saw it too"),
+                new(Gregory, $"I know. {IOrWe} saw it too."),
+                new(Alfred, $"It's not in your head! {IOrWe} saw it too!"),
+                new(Robin, $"...{IOrWe} saw it too."));
+
+            yield return Dialogue.Say(OtherAliveCharacter,
+                new(Hayden, $"It's good to see that you're alright! You had me worried there."),
+                new(Gregory, $"I'm glad you're alright in any case."),
+                new(Alfred, $"I'm just thrilled that you're okay now, you looked like you were really out!"),
+                new(Robin, "Good thing you're okay now."));
+
+            yield return playerWhoWasDead.Say("How strange...");
         }
 
         private Character GetPlayerWhoWasDead()
