@@ -30,11 +30,10 @@ public class CharacterSpeechBubblePointer : MonoBehaviour
 
     private void RefreshDirection(Vector2 screenPoint, Rect bubbleRect)
     {
-        RectOffset offset = new(_interiorBackgroundOffset, _interiorBackgroundOffset, _interiorBackgroundOffset, _interiorBackgroundOffset);
-        Rect backgroundRect = offset.Remove(bubbleRect);
+        Rect backgroundRect = GetBackgroundRect(bubbleRect);
         if (IsInHorizontalOrVerticalRange(screenPoint, backgroundRect))
         {
-            PointCardinally(screenPoint, backgroundRect, bubbleRect);
+            PointCardinally(screenPoint, bubbleRect);
         }
         else
         {
@@ -42,18 +41,33 @@ public class CharacterSpeechBubblePointer : MonoBehaviour
         }
     }
 
-    private void PointCardinally(Vector2 screenPoint, Rect backgroundRect, Rect fullRect)
+    private void PointCardinally(Vector2 screenPoint, Rect bubbleRect)
     {
+        Rect backgroundRect = GetBackgroundRect(bubbleRect);
         _rect.anchorMin = _rect.anchorMax = Vector2.zero;
         if (IsInRange(screenPoint, backgroundRect, 0))
         {
-            _rect.anchoredPosition = new(screenPoint.x, screenPoint.y < backgroundRect.yMin ? 0 : fullRect.height);
+            _rect.anchoredPosition = new(screenPoint.x, screenPoint.y < backgroundRect.yMin ? 0 : bubbleRect.height);
         }
         else
         {
-            _rect.anchoredPosition = new(screenPoint.x < backgroundRect.xMin ? 0 : fullRect.width, screenPoint.y);
+            _rect.anchoredPosition = new(screenPoint.x < backgroundRect.xMin ? 0 : bubbleRect.width, screenPoint.y);
         }
-        // ROTATE!
+
+        float angle = 0;
+        if (screenPoint.y < backgroundRect.yMin)
+        {
+            angle = 180;
+        }
+        else if (screenPoint.x < backgroundRect.xMin)
+        {
+            angle = 90;
+        }
+        else if (screenPoint.x > backgroundRect.xMax)
+        {
+            angle = -90;
+        }
+        _rect.localEulerAngles = new(0, 0, angle);
     }
 
     private bool IsInHorizontalOrVerticalRange(Vector2 point, Rect rect)
@@ -91,6 +105,13 @@ public class CharacterSpeechBubblePointer : MonoBehaviour
             angle = (3 * 90) + 45;
         }
         _rect.localEulerAngles = new(0, 0, angle);
+    }
+
+    private Rect GetBackgroundRect(Rect bubbleRect)
+    {
+        RectOffset offset = new(_interiorBackgroundOffset, _interiorBackgroundOffset, _interiorBackgroundOffset, _interiorBackgroundOffset);
+        Rect backgroundRect = offset.Remove(bubbleRect);
+        return backgroundRect;
     }
 
     private Vector2 CalculateAnchor(Vector2 direction)
