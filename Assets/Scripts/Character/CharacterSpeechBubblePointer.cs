@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(RectTransform))]
 public class CharacterSpeechBubblePointer : MonoBehaviour
