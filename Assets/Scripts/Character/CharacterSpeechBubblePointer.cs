@@ -47,11 +47,13 @@ public class CharacterSpeechBubblePointer : MonoBehaviour
         _rect.anchorMin = _rect.anchorMax = Vector2.zero;
         if (IsInRange(screenPoint, backgroundRect, 0))
         {
-            _rect.anchoredPosition = new(screenPoint.x, screenPoint.y < backgroundRect.yMin ? 0 : bubbleRect.height);
+            float slidePoint = screenPoint.x - backgroundRect.xMin;
+            _rect.anchoredPosition = new(slidePoint, screenPoint.y < backgroundRect.yMin ? 0 : bubbleRect.height);
         }
         else
         {
-            _rect.anchoredPosition = new(screenPoint.x < backgroundRect.xMin ? 0 : bubbleRect.width, screenPoint.y);
+            float slidePoint = screenPoint.y - backgroundRect.yMin;
+            _rect.anchoredPosition = new(screenPoint.x < backgroundRect.xMin ? 0 : bubbleRect.width, slidePoint);
         }
 
         float angle = 0;
