@@ -16,82 +16,17 @@ namespace VerticalSlice
         {
             Character playerWhoWasDead = GetPlayerWhoWasDead();
             Character movedPlayer = GetMovedPlayer();
-            int aliveCharacters = CountLiveMainCharacters();
             if (playerWhoWasDead)
             {
-                yield return UndoDeathDialogue(playerWhoWasDead, aliveCharacters);
+                yield return UndoDeathDialogue(playerWhoWasDead);
             }
             else if (DidUndoEnemyTurn())
             {
-                yield return Dialogue.FirstLiveCharacterSay(
-                    new(Gregory, "That's strange. It looks like the goblins retreated..."),
-                    new(Hayden, "Huh? It looks like the goblins just retreated..."),
-                    new(Alfred, "What's going on? They're running for the hills!"),
-                    new(Robin, "That makes no sense. It looks like they retreated..."));
-
-                if (aliveCharacters > 1)
-                {
-                    yield return Dialogue.FirstLiveCharacterSay(
-                        new(Hayden, "I saw it too! There was a bright blue flash and suddenly they all moved back!"),
-                        new(Gregory, "I saw a blue flash and then... they all moved back."),
-                        new(Alfred, "I saw it too! There was a bright blue flash and suddenly they all moved back!"));
-
-                    yield return Dialogue.FirstLiveCharacterSay(
-                        new(Gregory, "Is this some goblin trick?"),
-                        new(Hayden, "I wonder if this is some kind of trap?"),
-                        new(Alfred, "Is this some stunt that the goblins are trying to pull?!"));
-
-                    yield return Dialogue.FirstLiveCharacterSay(
-                        new(Robin, "I don't think so. The blue flash looked like it came from the Ember."),
-                        new(Gregory, "No... The blue flash looked like it came from the Ember."),
-                        new(Hayden, "Maybe? But the blue flash looked like it came from the Ember..."));
-
-                    yield return Dialogue.FirstLiveCharacterSay(
-                        new(Gregory, "How strange..."),
-                        new(Alfred, "How bizarre!"),
-                        new(Robin, "How strange..."));
-                }
+                yield return UndoEnemyTurnDialogue();
             }
             else if (movedPlayer)
             {
-                yield return Dialogue.FirstMatchingMainCharacterSay(movedPlayer,
-                    "What was that?",
-                    "What on earth?",
-                    "Woah, woah! What?!",
-                    "...What was that?");
-
-                yield return Dialogue.FirstMatchingMainCharacterSay(movedPlayer,
-                    "I was just over there...",
-                    "I was just over there...",
-                    "Wasn't I just over there?!",
-                    "I was just over there...");
-
-                yield return Dialogue.FirstMatchingMainCharacterSay(movedPlayer,
-                    "But now I'm back where I started!",
-                    "But now I'm back where I started...",
-                    "But now I'm back where I started!",
-                    "But now I'm back where I started...");
-
-                yield return Dialogue.FirstMatchingMainCharacterSay(movedPlayer,
-                    "It's like time just... turned back!",
-                    "It's like time turned back...",
-                    "Is this what time travel feels like?!",
-                    "It's like time turned back...");
-
-                if (aliveCharacters > 1)
-                {
-                    // If these are the only two characters alive then only "I" saw you die,
-                    // otherwise "we" saw you die
-                    string IOrWe = aliveCharacters > 2 ? "We" : "I";
-                    bool OtherCharacter(Character c) => c.IsAlive && c != movedPlayer;
-                    yield return Dialogue.Say(OtherCharacter,
-                        new(Hayden, $"It's not just you. {IOrWe} saw it too"),
-                        new(Gregory, $"I know. {IOrWe} saw it too."),
-                        new(Alfred, $"It's not in your head! {IOrWe} saw it too!"),
-                        new(Robin, $"...{IOrWe} saw it too."));
-                    
-                    yield return movedPlayer.Say("How strange...");
-                }
+                yield return UndoMoveDialogue(movedPlayer);
             }
             // No one was revived, enemy turn didn't undo, and no one actually moved.
             // Basically you made one character wait right where they are and then did an undo.
@@ -99,15 +34,13 @@ namespace VerticalSlice
             else
             {
                 Cancel();
-                yield break;
             }
         }
 
-        private IEnumerator UndoDeathDialogue(Character playerWhoWasDead, int aliveCharacters)
+        private IEnumerator UndoDeathDialogue(Character playerWhoWasDead)
         {
             yield return UndoDeathIntro(playerWhoWasDead);
-
-            if (aliveCharacters > 1)
+            if (CountLiveMainCharacters() > 1)
             {
                 yield return UndoDeath2PlusComments(playerWhoWasDead);
             }
@@ -159,7 +92,115 @@ namespace VerticalSlice
                 new(Alfred, $"I'm just thrilled that you're okay now, you looked like you were really out!"),
                 new(Robin, "Good thing you're okay now."));
 
+            yield return Dialogue.FirstLiveCharacterSay(
+                new(Gregory, "Is this some goblin trick?"),
+                new(Hayden, "I wonder if this is some kind of trap?"),
+                new(Alfred, "Is this some stunt that the goblins are trying to pull?!"));
+
+            yield return Dialogue.FirstLiveCharacterSay(
+                new(Robin, "I don't think so. There was a blue flash... it looked like it came from the Ember."),
+                new(Gregory, "No... There was a blue flash... did it come from the Ember?"),
+                new(Hayden, "But there was a blue flash... did it come from the Ember?"));
+
             yield return playerWhoWasDead.Say("How strange...");
+        }
+
+        private IEnumerator UndoEnemyTurnDialogue()
+        {
+            yield return Dialogue.FirstLiveCharacterSay(
+                new(Gregory, "That's strange. It looks like the goblins retreated..."),
+                new(Hayden, "Huh? It looks like the goblins just retreated..."),
+                new(Alfred, "What's going on? They're running for the hills!"),
+                new(Robin, "That makes no sense. It looks like they retreated..."));
+
+            if (CountLiveMainCharacters() > 1)
+            {
+                yield return UndoEnemyTurn2PlusComments();
+            }
+        }
+
+        private static IEnumerator UndoEnemyTurn2PlusComments()
+        {
+            yield return Dialogue.FirstLiveCharacterSay(
+                new(Hayden, "There was a bright blue flash and suddenly they all moved back!"),
+                new(Gregory, "I saw a blue flash and then... they all moved back."),
+                new(Alfred, "There was a bright blue flash and suddenly they all moved back!"));
+
+            yield return Dialogue.FirstLiveCharacterSay(
+                new(Gregory, "Is this some goblin trick?"),
+                new(Hayden, "I wonder if this is some kind of trap?"),
+                new(Alfred, "Is this some stunt that the goblins are trying to pull?!"));
+
+            yield return Dialogue.FirstLiveCharacterSay(
+                new(Robin, "I don't think so. The blue flash looked like it came from the Ember."),
+                new(Gregory, "No... The blue flash looked like it came from the Ember."),
+                new(Hayden, "But the blue flash looked like it came from the Ember..."));
+
+            yield return Dialogue.FirstLiveCharacterSay(
+                new(Gregory, "How strange..."),
+                new(Alfred, "How bizarre!"),
+                new(Robin, "How strange..."));
+        }
+
+        private IEnumerator UndoMoveDialogue(Character movedPlayer)
+        {
+            yield return UndoMoveIntro(movedPlayer);
+            if (CountLiveMainCharacters() > 1)
+            {
+                yield return UndoMove2PlusComments(movedPlayer);
+            }
+        }
+
+        private static IEnumerator UndoMoveIntro(Character movedPlayer)
+        {
+            yield return Dialogue.FirstMatchingMainCharacterSay(movedPlayer,
+                "What was that?",
+                "What on earth?",
+                "Woah, woah! What?!",
+                "...What was that?");
+
+            yield return Dialogue.FirstMatchingMainCharacterSay(movedPlayer,
+                "I was just over there...",
+                "I was just over there...",
+                "Wasn't I just over there?!",
+                "I was just over there...");
+
+            yield return Dialogue.FirstMatchingMainCharacterSay(movedPlayer,
+                "But now I'm back where I started!",
+                "But now I'm back where I started...",
+                "But now I'm back where I started!",
+                "But now I'm back where I started...");
+
+            yield return Dialogue.FirstMatchingMainCharacterSay(movedPlayer,
+                "It's like time just... turned back!",
+                "It's like time turned back...",
+                "Is this what time travel feels like?!",
+                "It's like time turned back...");
+        }
+
+        private IEnumerator UndoMove2PlusComments(Character movedPlayer)
+        {
+            // If these are the only two characters alive then only "I" saw you die,
+            // otherwise "we" saw you die
+            string IOrWe = CountLiveMainCharacters() > 2 ? "We" : "I";
+            bool OtherCharacter(Character c) => c.IsAlive && c != movedPlayer;
+            yield return Dialogue.Say(OtherCharacter,
+                new(Hayden, $"It's not just you. {IOrWe} saw it too"),
+                new(Gregory, $"I know. {IOrWe} saw it too."),
+                new(Alfred, $"It's not in your head! {IOrWe} saw it too!"),
+                new(Robin, $"...{IOrWe} saw it too."));
+
+            yield return Dialogue.FirstLiveCharacterSay(
+                new(Gregory, "Is this some goblin trick?"),
+                new(Hayden, "I wonder if this is some kind of trap?"),
+                new(Alfred, "Is this some stunt that the goblins are trying to pull?!"));
+
+            yield return Dialogue.FirstLiveCharacterSay(
+                new(Robin, "I don't think so. There was a blue flash... it looked like it came from the Ember."),
+                new(Gregory, "No... There was a blue flash... did it come from the Ember."),
+                new(Hayden, "But there was a blue flash... did it come from the Ember?"));
+
+            yield return movedPlayer.Say("How strange...");
         }
 
         private Character GetPlayerWhoWasDead()
