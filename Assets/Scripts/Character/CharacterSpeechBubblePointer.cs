@@ -44,6 +44,8 @@ public class CharacterSpeechBubblePointer : MonoBehaviour
     {
         Rect backgroundRect = GetBackgroundRect(bubbleRect);
         _rect.anchorMin = _rect.anchorMax = Vector2.zero;
+
+        // This position still looks incorrect in some cases, like the pointer sliding off the side of the bubble
         if (IsInRange(screenPoint, backgroundRect, 0))
         {
             float slidePoint = screenPoint.x - backgroundRect.xMin;
