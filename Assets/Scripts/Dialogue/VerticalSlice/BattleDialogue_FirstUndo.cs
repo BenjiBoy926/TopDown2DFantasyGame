@@ -19,12 +19,7 @@ namespace VerticalSlice
             int aliveCharacters = CountLiveMainCharacters();
             if (playerWhoWasDead)
             {
-                yield return UndoDeathIntro(playerWhoWasDead);
-
-                if (aliveCharacters > 1)
-                {
-                    yield return UndoDeathConversation(playerWhoWasDead);
-                }
+                yield return UndoDeathDialogue(playerWhoWasDead, aliveCharacters);
             }
             else if (DidUndoEnemyTurn())
             {
@@ -88,22 +83,12 @@ namespace VerticalSlice
                     // If these are the only two characters alive then only "I" saw you die,
                     // otherwise "we" saw you die
                     string IOrWe = aliveCharacters > 2 ? "We" : "I";
-                    bool OtherAliveCharacter(Character c) => c.IsAlive && c != movedPlayer;
-                    yield return Dialogue.Say(OtherAliveCharacter,
+                    bool OtherCharacter(Character c) => c.IsAlive && c != movedPlayer;
+                    yield return Dialogue.Say(OtherCharacter,
                         new(Hayden, $"It's not just you. {IOrWe} saw it too"),
                         new(Gregory, $"I know. {IOrWe} saw it too."),
                         new(Alfred, $"It's not in your head! {IOrWe} saw it too!"),
                         new(Robin, $"...{IOrWe} saw it too."));
-
-                    yield return Dialogue.FirstLiveCharacterSay(
-                        new(Gregory, "Is this some goblin trick?"),
-                        new(Hayden, "I wonder if this is some kind of trap?"),
-                        new(Alfred, "Is this some stunt that the goblins are trying to pull?!"));
-
-                    yield return Dialogue.FirstLiveCharacterSay(
-                        new(Robin, "I don't think so. The blue flash looked like it came from the Ember."),
-                        new(Gregory, "No... The blue flash looked like it came from the Ember."),
-                        new(Hayden, "No... The blue flash looked like it came from the Ember."));
                     
                     yield return movedPlayer.Say("How strange...");
                 }
@@ -115,6 +100,16 @@ namespace VerticalSlice
             {
                 Cancel();
                 yield break;
+            }
+        }
+
+        private IEnumerator UndoDeathDialogue(Character playerWhoWasDead, int aliveCharacters)
+        {
+            yield return UndoDeathIntro(playerWhoWasDead);
+
+            if (aliveCharacters > 1)
+            {
+                yield return UndoDeath2PlusComments(playerWhoWasDead);
             }
         }
 
@@ -145,7 +140,7 @@ namespace VerticalSlice
                 "It's like time just... turned back...");
         }
 
-        private IEnumerator UndoDeathConversation(Character playerWhoWasDead)
+        private IEnumerator UndoDeath2PlusComments(Character playerWhoWasDead)
         {
             // If these are the only two characters alive then only "I" saw you die,
             // otherwise "we" saw you die
