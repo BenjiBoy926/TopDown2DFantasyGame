@@ -48,8 +48,8 @@ namespace VerticalSlice
                 new(Alfred, "Boy are we in for it! ...Wait, what's an orc?"));
 
             yield return Dialogue.FirstLiveCharacterSay(
-                new(Hayden, "Orcs come from an ancient race of humans that Arkalux cursed for their wickedness in the distant past"),
-                new(Robin, "They descend from an ancient race of cursed humans. Or say the legends say."));
+                new(Hayden, "Orcs come from an ancient race of humans that Arkalux cursed for their wickedness."),
+                new(Robin, "They descend from an ancient race of cursed humans. Or so the legends say."));
 
             if (Hayden.IsAlive)
             {
