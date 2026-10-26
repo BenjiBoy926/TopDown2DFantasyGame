@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(RectTransform))]
 public class CharacterSpeechBubblePointer : MonoBehaviour
@@ -33,7 +34,7 @@ public class CharacterSpeechBubblePointer : MonoBehaviour
         Rect backgroundRect = offset.Remove(bubbleRect);
         if (IsInHorizontalOrVerticalRange(screenPoint, backgroundRect))
         {
-            PointCardinally(screenPoint, backgroundRect);
+            PointCardinally(screenPoint, backgroundRect, bubbleRect);
         }
         else
         {
@@ -41,19 +42,28 @@ public class CharacterSpeechBubblePointer : MonoBehaviour
         }
     }
 
+    private void PointCardinally(Vector2 screenPoint, Rect backgroundRect, Rect fullRect)
+    {
+        _rect.anchorMin = _rect.anchorMax = Vector2.zero;
+        if (IsInRange(screenPoint, backgroundRect, 0))
+        {
+            _rect.anchoredPosition = new(screenPoint.x, screenPoint.y < backgroundRect.yMin ? 0 : fullRect.height);
+        }
+        else
+        {
+            _rect.anchoredPosition = new(screenPoint.x < backgroundRect.xMin ? 0 : fullRect.width, screenPoint.y);
+        }
+        // ROTATE!
+    }
+
     private bool IsInHorizontalOrVerticalRange(Vector2 point, Rect rect)
     {
-        return IsInRange(point, rect, 0) || IsInRange(point, rect, 1); 
+        return IsInRange(point, rect, 0) || IsInRange(point, rect, 1);
     }
 
     private bool IsInRange(Vector2 point, Rect rect, int dimension)
     {
         return point[dimension] >= rect.min[dimension] && point[dimension] <= rect.max[dimension];
-    }
-
-    private void PointCardinally(Vector2 screenPoint, Rect bubbleRect)
-    {
-        // DO it!
     }
 
     private void PointDiagonally(Vector2 screenPoint, Rect bubbleRect)
