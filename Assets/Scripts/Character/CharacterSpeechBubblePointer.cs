@@ -43,12 +43,14 @@ public class CharacterSpeechBubblePointer : MonoBehaviour
     {
         Rect insideRoundedEdges = GetRectInsideRoundedEdges(bubbleRect);
         _rect.anchorMin = _rect.anchorMax = Vector2.zero;
-        _rect.anchoredPosition = new(
+        Vector2 positionOnScreen = new(
             Mathf.Clamp(screenPoint.x, insideRoundedEdges.xMin, insideRoundedEdges.xMax),
             Mathf.Clamp(screenPoint.y, insideRoundedEdges.yMin, insideRoundedEdges.yMax));
+        _rect.anchoredPosition = positionOnScreen - insideRoundedEdges.min;
 
-        int quadrant = GetOffsetQuadrant(screenPoint, bubbleRect);
-        float angle = quadrant * 90;
+        float quadrant = GetOffsetQuadrant(screenPoint, bubbleRect);
+        float quadrandIndex = Mathf.Round(quadrant);
+        float angle = quadrandIndex * 90;
         _rect.localEulerAngles = new(0, 0, angle);
     }
 
@@ -68,18 +70,18 @@ public class CharacterSpeechBubblePointer : MonoBehaviour
         _rect.anchorMin = _rect.anchorMax = CalculateAnchor(toTarget);
         _rect.anchoredPosition = Vector2.zero;
 
-        int quadrant = GetOffsetQuadrant(screenPoint, bubbleRect);
-        float angle = quadrant * 90 + 45;
+        float quadrant = GetOffsetQuadrant(screenPoint, bubbleRect);
+        float quadrantIndex = Mathf.Floor(quadrant);
+        float angle = quadrantIndex * 90 + 45;
         _rect.localEulerAngles = new(0, 0, angle);
     }
 
-    private static int GetOffsetQuadrant(Vector2 screenPoint, Rect bubbleRect)
+    private static float GetOffsetQuadrant(Vector2 screenPoint, Rect bubbleRect)
     {
         Vector2 toTarget = screenPoint - bubbleRect.center;
         float atan = Mathf.Atan2(toTarget.y, toTarget.x);
         const float piOver2 = Mathf.PI / 2f;
-        int quadrant = Mathf.FloorToInt(atan / piOver2);
-        return quadrant;
+        return atan / piOver2;
     }
 
     private Rect GetRectInsideRoundedEdges(Rect bubbleRect)
