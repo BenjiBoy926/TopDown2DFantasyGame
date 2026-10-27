@@ -3,11 +3,17 @@ using UnityEngine;
 
 namespace VerticalSlice
 {
+    [RequireComponent(typeof(Character))]
     public class BattleDialogue_RandomGoblinFightStart : BattleDialogueSequence
     {
         public override TriggerType Trigger => TriggerType.MoveStart;
 
-        [SerializeField] private Character _goblin;
+        private Character _goblin;
+
+        private void Awake()
+        {
+            _goblin = GetComponent<Character>();
+        }
 
         public override bool ShouldPlay(Character interactor, Character target)
         {
@@ -16,14 +22,14 @@ namespace VerticalSlice
 
         protected override IEnumerator GetSequence(Character interactor, Character target)
         {
-            Character other = interactor == _goblin ? interactor : target;
+            Character other = interactor == _goblin ? target : interactor;
             yield return _goblin.Say("Glory to Ha'all!");
             yield return Dialogue.FirstMatchingMainCharacterSay(other,
                 "Ha'all? Who's Ha'all?",
                 "Ha'all?",
                 "What are you talking about?!",
                 "Ha'all?");
-            yield return _goblin.Say("You will see him soon enough!! GRAAHA!!");
+            yield return _goblin.Say("You'll see him soon enough!! GRAAHA!!");
         }
     }
 }
