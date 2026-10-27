@@ -6,21 +6,18 @@ public class CharacterSpeechBubblePointer : MonoBehaviour
     [Tooltip("Shrink the bubble rect by this much to prevent a point right on the rect edge counting on 'inside'")]
     [SerializeField] private int _rectPadding = 2;
     [SerializeField] private int _insideRoundedEdgesOffset = 20;
-    [SerializeField] private float _diagonalOffset = 15;
     private RectTransform _rect;
-    private RectTransform _parentRect;
 
     private void Awake()
     {
         _rect = GetComponent<RectTransform>();
-        _parentRect = transform.parent.GetComponent<RectTransform>();
     }
 
     public void PointTo(Vector2 screenPoint, Rect bubbleRect)
     {
         RectOffset offset = new(_rectPadding, _rectPadding, _rectPadding, _rectPadding);
-        bubbleRect = offset.Remove(bubbleRect);
-        bool show = !bubbleRect.Contains(screenPoint);
+        Rect containsRect = offset.Remove(bubbleRect);
+        bool show = !containsRect.Contains(screenPoint);
 
         gameObject.SetActive(show);
         if (show)
