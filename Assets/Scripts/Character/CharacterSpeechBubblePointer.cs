@@ -5,13 +5,15 @@ public class CharacterSpeechBubblePointer : MonoBehaviour
 {
     [Tooltip("Shrink the bubble rect by this much to prevent a point right on the rect edge counting on 'inside'")]
     [SerializeField] private int _rectPadding = 2;
-    [SerializeField] private int _interiorBackgroundOffset = 20;
+    [SerializeField] private int _insideRoundedEdgesOffset = 20;
     [SerializeField] private float _diagonalOffset = 15;
     private RectTransform _rect;
+    private RectTransform _parentRect;
 
     private void Awake()
     {
         _rect = GetComponent<RectTransform>();
+        _parentRect = transform.parent.GetComponent<RectTransform>();
     }
 
     public void PointTo(Vector2 screenPoint, Rect bubbleRect)
@@ -29,8 +31,8 @@ public class CharacterSpeechBubblePointer : MonoBehaviour
 
     private void RefreshDirection(Vector2 screenPoint, Rect bubbleRect)
     {
-        Rect backgroundRect = GetBackgroundRect(bubbleRect);
-        if (IsInHorizontalOrVerticalRange(screenPoint, backgroundRect))
+        Rect insideRoundedEdges = GetRectInsideRoundedEdges(bubbleRect);
+        if (IsInHorizontalOrVerticalRange(screenPoint, insideRoundedEdges))
         {
             PointCardinally(screenPoint, bubbleRect);
         }
@@ -42,34 +44,14 @@ public class CharacterSpeechBubblePointer : MonoBehaviour
 
     private void PointCardinally(Vector2 screenPoint, Rect bubbleRect)
     {
-        Rect backgroundRect = GetBackgroundRect(bubbleRect);
+        Rect insideRoundedEdges = GetRectInsideRoundedEdges(bubbleRect);
         _rect.anchorMin = _rect.anchorMax = Vector2.zero;
+        _rect.anchoredPosition = new(
+            Mathf.Clamp(screenPoint.x, insideRoundedEdges.xMin, insideRoundedEdges.xMax),
+            Mathf.Clamp(screenPoint.y, insideRoundedEdges.yMin, insideRoundedEdges.yMax));
 
-        // This position still looks incorrect in some cases, like the pointer sliding off the side of the bubble
-        if (IsInRange(screenPoint, backgroundRect, 0))
-        {
-            float slidePoint = screenPoint.x - backgroundRect.xMin;
-            _rect.anchoredPosition = new(slidePoint, screenPoint.y < backgroundRect.yMin ? 0 : bubbleRect.height);
-        }
-        else
-        {
-            float slidePoint = screenPoint.y - backgroundRect.yMin;
-            _rect.anchoredPosition = new(screenPoint.x < backgroundRect.xMin ? 0 : bubbleRect.width, slidePoint);
-        }
-
-        float angle = 0;
-        if (screenPoint.y < backgroundRect.yMin)
-        {
-            angle = 180;
-        }
-        else if (screenPoint.x < backgroundRect.xMin)
-        {
-            angle = 90;
-        }
-        else if (screenPoint.x > backgroundRect.xMax)
-        {
-            angle = -90;
-        }
+        int quadrant = GetOffsetQuadrant(screenPoint, bubbleRect);
+        float angle = quadrant * 90;
         _rect.localEulerAngles = new(0, 0, angle);
     }
 
@@ -86,33 +68,26 @@ public class CharacterSpeechBubblePointer : MonoBehaviour
     private void PointDiagonally(Vector2 screenPoint, Rect bubbleRect)
     {
         Vector2 toTarget = screenPoint - bubbleRect.center;
-        Vector2 toTargetSign = new(Mathf.Sign(toTarget.x), Mathf.Sign(toTarget.y));
         _rect.anchorMin = _rect.anchorMax = CalculateAnchor(toTarget);
-        _rect.anchoredPosition = new(_diagonalOffset * toTargetSign.x * -1, _diagonalOffset * toTargetSign.y * -1);
+        _rect.anchoredPosition = Vector2.zero;
 
-        float angle;
-        if (toTarget.x < 0 && toTarget.y > 0)
-        {
-            angle = (0 * 90) + 45;
-        }
-        else if (toTarget.x < 0 && toTarget.y < 0)
-        {
-            angle = (1 * 90) + 45;
-        }
-        else if (toTarget.x > 0 && toTarget.y < 0)
-        {
-            angle = (2 * 90) + 45;
-        }
-        else
-        {
-            angle = (3 * 90) + 45;
-        }
+        int quadrant = GetOffsetQuadrant(screenPoint, bubbleRect);
+        float angle = quadrant * 90 + 45;
         _rect.localEulerAngles = new(0, 0, angle);
     }
 
-    private Rect GetBackgroundRect(Rect bubbleRect)
+    private static int GetOffsetQuadrant(Vector2 screenPoint, Rect bubbleRect)
     {
-        RectOffset offset = new(_interiorBackgroundOffset, _interiorBackgroundOffset, _interiorBackgroundOffset, _interiorBackgroundOffset);
+        Vector2 toTarget = screenPoint - bubbleRect.center;
+        float atan = Mathf.Atan2(toTarget.y, toTarget.x);
+        const float piOver2 = Mathf.PI / 2f;
+        int quadrant = Mathf.FloorToInt(atan / piOver2);
+        return quadrant;
+    }
+
+    private Rect GetRectInsideRoundedEdges(Rect bubbleRect)
+    {
+        RectOffset offset = new(_insideRoundedEdgesOffset, _insideRoundedEdgesOffset, _insideRoundedEdgesOffset, _insideRoundedEdgesOffset);
         Rect backgroundRect = offset.Remove(bubbleRect);
         return backgroundRect;
     }
