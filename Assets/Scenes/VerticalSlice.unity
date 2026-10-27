@@ -509,9 +509,9 @@ MonoBehaviour:
   _footstepStopDelay: 2
   _initialEmberRevealDelay: 1
   _emberPulseDuration: 2
-  _emberFadeInDuration: 3
-  _globalLightFadeDelay: 1
-  _globalLightFadeDuration: 2
+  _emberPulseAudio: {fileID: 8300000, guid: a1c5dd8321776ab47a74829ffc83d798, type: 3}
+  _fullFadeInDuration: 2.5
+  _emberFadeInAudio: {fileID: 8300000, guid: aa09a0e6cb7e8374f843b12265d33f2e, type: 3}
   _ambush: {fileID: 8987042472336296713}
 --- !u!4 &1785716538 stripped
 Transform:

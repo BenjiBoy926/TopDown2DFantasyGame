@@ -24,9 +24,9 @@ namespace VerticalSlice
         [SerializeField] private float _footstepStopDelay = 1;
         [SerializeField] private float _initialEmberRevealDelay = 2;
         [SerializeField] private float _emberPulseDuration = 3;
-        [SerializeField] private float _emberFadeInDuration = 4;
-        [SerializeField] private float _globalLightFadeDelay = 1;
-        [SerializeField] private float _globalLightFadeDuration = 4;
+        [SerializeField] private AudioClip _emberPulseAudio;
+        [SerializeField] private float _fullFadeInDuration = 4;
+        [SerializeField] private AudioClip _emberFadeInAudio;
 
         [Space]
         [SerializeField] private Music _ambush;
@@ -118,15 +118,16 @@ namespace VerticalSlice
             void SetEmberIntensity(Vector3 value) => _ember.intensity = value.x;
             Vector3 emberDirection = Vector3.right * .5f;
 
+            EazySoundManager.PlaySound(_emberPulseAudio);
             yield return DOTween.Punch(GetEmberIntensity, SetEmberIntensity, emberDirection, _emberPulseDuration, 0).WaitForCompletion();
+            EazySoundManager.PlaySound(_emberPulseAudio);
             yield return DOTween.Punch(GetEmberIntensity, SetEmberIntensity, emberDirection, _emberPulseDuration, 0).WaitForCompletion();
-            yield return DOTween.To(GetEmberIntensity, SetEmberIntensity, Vector3.right * _emberIntensity, _emberFadeInDuration).WaitForCompletion();
+            EazySoundManager.PlaySound(_emberFadeInAudio);
 
-            yield return new WaitForSeconds(_globalLightFadeDelay);
-
+            DOTween.To(GetEmberIntensity, SetEmberIntensity, Vector3.right * _emberIntensity, _fullFadeInDuration).WaitForCompletion();
             Color GetLightColor() => _globalLight.color;
             void SetLightColor(Color color) => _globalLight.color = color;
-            yield return DOTween.To(GetLightColor, SetLightColor, _globalLightColor, _globalLightFadeDuration).WaitForCompletion();
+            yield return DOTween.To(GetLightColor, SetLightColor, _globalLightColor, _fullFadeInDuration).WaitForCompletion();
         }
 
         private IEnumerator Test()
