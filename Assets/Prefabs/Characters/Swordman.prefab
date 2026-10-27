@@ -503,7 +503,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rectPadding: 2
   _insideRoundedEdgesOffset: 35
-  _diagonalOffset: 15
 --- !u!1 &1723752348641953545
 GameObject:
   m_ObjectHideFlags: 0
@@ -1445,7 +1444,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 110}
+  m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &7447578318500586063
 MonoBehaviour:
