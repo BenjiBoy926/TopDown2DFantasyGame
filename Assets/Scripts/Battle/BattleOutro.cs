@@ -19,7 +19,6 @@ public class BattleOutro : MonoBehaviour
     {
         yield return new WaitForSeconds(_initialDelay);
         _music.Play();
-        DontDestroyOnLoad(_music);
         yield return _fadeOutOverlay.FadeIn();
         SceneManager.LoadScene(_nextScene.name);
     }
