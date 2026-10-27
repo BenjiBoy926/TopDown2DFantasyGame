@@ -128,5 +128,30 @@ namespace VerticalSlice
             void SetLightColor(Color color) => _globalLight.color = color;
             yield return DOTween.To(GetLightColor, SetLightColor, _globalLightColor, _globalLightFadeDuration).WaitForCompletion();
         }
+
+        private IEnumerator Test()
+        {
+            Vector2 cameraExtents = new(6.6f, 3.5f);
+            Vector2 cameraPosition = _battle.CameraPosition;
+
+            yield return TestSay(cameraPosition + cameraExtents);
+            yield return TestSay(cameraPosition + new Vector2(cameraExtents.x, -cameraExtents.y));
+            yield return TestSay(cameraPosition + new Vector2(-cameraExtents.x, cameraExtents.y));
+            yield return TestSay(cameraPosition - cameraExtents);
+            // on right side of screen point right (success)
+            yield return TestSay(cameraPosition + cameraExtents + Vector2.down);
+            // on left side of screen point left
+            yield return TestSay(cameraPosition + new Vector2(-cameraExtents.x, cameraExtents.y) + Vector2.down);
+            // on top of screen point up
+            yield return TestSay(cameraPosition + cameraExtents + Vector2.left * 2);
+            // on bottom of screen point down
+            yield return TestSay(cameraPosition + new Vector2(cameraExtents.x, -cameraExtents.y - 1) + Vector2.left * 2f);
+        }
+
+        private Coroutine TestSay(Vector2 position)
+        {
+            Hayden.Position = position;
+            return Hayden.Say("Hello world!");
+        }
     }
 }
