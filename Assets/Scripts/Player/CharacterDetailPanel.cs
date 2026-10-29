@@ -16,8 +16,8 @@ public class CharacterDetailPanel : MonoBehaviour
 
     [Space]
     [SerializeField] private float _previewFadeDuration = .35f;
-    [SerializeField] private float _shownYPosition = -10;
-    [SerializeField] private float _hiddenYPosition = -130;
+    [SerializeField] private float _shownXPosition = -10;
+    [SerializeField] private float _hiddenXPosition = -130;
     [SerializeField] private float _hideShowDuration = .35f;
 
     private RectTransform _rectTransform;
@@ -34,20 +34,20 @@ public class CharacterDetailPanel : MonoBehaviour
     {
         transform.DOKill();
         Vector2 position = _rectTransform.anchoredPosition;
-        position.y = _hiddenYPosition;
+        position.x = _hiddenXPosition;
         _rectTransform.anchoredPosition = position;
     }
 
     public void Show()
     {
         _rectTransform.DOKill();
-        _rectTransform.DOAnchorPosY(_shownYPosition, _hideShowDuration);
+        _rectTransform.DOAnchorPosX(_shownXPosition, _hideShowDuration);
     }
 
     public void Hide()
     {
         _rectTransform.DOKill();
-        _rectTransform.DOAnchorPosY(_hiddenYPosition, _hideShowDuration);
+        _rectTransform.DOAnchorPosX(_hiddenXPosition, _hideShowDuration);
     }
 
     public void Populate(Character character)
