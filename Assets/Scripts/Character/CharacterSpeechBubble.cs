@@ -23,6 +23,7 @@ public class CharacterSpeechBubble : MonoBehaviour
     private Character _character;
     private bool _proceed;
     private TweenCallback _disableAction;
+    private string _fullText;
 
     private void Awake()
     {
@@ -42,11 +43,13 @@ public class CharacterSpeechBubble : MonoBehaviour
     private void OnEnable()
     {
         _proceedAction.action.started += OnProceed;
+        Fullscreen.Changed += Reposition;
     }
 
     private void OnDisable()
     {
         _proceedAction.action.started -= OnProceed;
+        Fullscreen.Changed -= Reposition;
     }
 
     private void OnProceed(InputAction.CallbackContext obj)
@@ -56,23 +59,23 @@ public class CharacterSpeechBubble : MonoBehaviour
 
     public IEnumerator GetDisplaySequence(string text)
     {
+        _fullText = text;
         gameObject.SetActive(true);
 
         transform.DOKill();
         transform.DOScale(1, _repositionDuration);
-        Reposition(text);
-        
-        yield return ScrollText(text);
+        _body.Resize(_fullText);
+
+        Reposition();
+        yield return ScrollText();
         yield return WaitToProceed();
 
         transform.DOKill();
         transform.DOScale(0, _repositionDuration).OnComplete(_disableAction);
     }
 
-    private void Reposition(string text)
+    private void Reposition()
     {
-        _body.Resize(text);
-
         Vector2 size = _body.Size + _textPadding;
         size.x = Mathf.Max(size.x, _minWidth);
         Vector2 position = GetTargetScreenPosition(size);
@@ -84,26 +87,26 @@ public class CharacterSpeechBubble : MonoBehaviour
         _pointer.PointTo(pointerTarget, new(position, size));
     }
 
-    private IEnumerator ScrollText(string text)
+    private IEnumerator ScrollText()
     {
         _body.Clear();
         _audioSource.Play();
         _proceed = false;
-        for (int i = 0; i < text.Length && !_proceed; i++)
+        for (int i = 0; i < _fullText.Length && !_proceed; i++)
         {
-            char c = text[i];
+            char c = _fullText[i];
             _body.Append(c);
-            yield return YieldToCharacter(c);
+            yield return YieldOneCharacter();
         }
         _audioSource.Stop();
 
         if (_proceed)
         {
-            _body.SetText(text);
+            _body.SetText(_fullText);
         }
     }
 
-    private IEnumerator YieldToCharacter(char c)
+    private IEnumerator YieldOneCharacter()
     {
         float startTime = Time.time;
         float elapsedTime = 0f;
