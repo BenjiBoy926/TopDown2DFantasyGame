@@ -7,13 +7,12 @@ public class CharacterSpeechBodyText : MonoBehaviour
 {
     public Vector2 Size => _rectTransform.sizeDelta;
 
+    [SerializeField] private RectTransform _rectTransform;
     [SerializeField] private float _maxWidth = 300f;
-    private RectTransform _rectTransform;
     private TMP_Text _text;
 
     private void Awake()
     {
-        _rectTransform = GetComponent<RectTransform>();
         _text = GetComponent<TMP_Text>();
     }
 

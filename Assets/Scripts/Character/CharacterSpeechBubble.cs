@@ -33,13 +33,10 @@ public class CharacterSpeechBubble : MonoBehaviour
         _name.text = _character.Name;
         _disableAction = () => gameObject.SetActive(false);
 
+        _textPadding = _rectTransform.sizeDelta - _body.Size;
+
         transform.localScale = Vector3.zero;
         gameObject.SetActive(false);
-    }
-
-    private void Start()
-    {
-        _textPadding = _rectTransform.sizeDelta - _body.Size;
     }
 
     private void OnEnable()
