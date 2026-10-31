@@ -813,7 +813,7 @@ MonoBehaviour:
   _initialDelay: 1
   _music: {fileID: 2860731443213073534}
   _fadeOutOverlay: {fileID: 2436307089721992733}
-  _nextScene: {fileID: 102900000, guid: 808fe44d9d378d24eb21e651a74712cf, type: 3}
+  _nextScene: VerticalSlice_Outro
 --- !u!1001 &1335508269378925926
 PrefabInstance:
   m_ObjectHideFlags: 0

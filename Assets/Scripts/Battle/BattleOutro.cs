@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,7 +8,7 @@ public class BattleOutro : MonoBehaviour
     [SerializeField] private float _initialDelay = 1;
     [SerializeField] private Music _music;
     [SerializeField] private Overlay _fadeOutOverlay;
-    [SerializeField] private Object _nextScene;
+    [Scene, SerializeField] private string _nextScene;
 
     public void Play()
     {
@@ -19,6 +20,6 @@ public class BattleOutro : MonoBehaviour
         yield return new WaitForSeconds(_initialDelay);
         _music.Play();
         yield return _fadeOutOverlay.FadeIn();
-        SceneManager.LoadScene(_nextScene.name);
+        SceneManager.LoadScene(_nextScene);
     }
 }

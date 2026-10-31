@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 [RequireComponent(typeof(Character))]
 public class GridSearch : MonoBehaviour
@@ -16,6 +18,14 @@ public class GridSearch : MonoBehaviour
     }
 
     public GridSearchResult Search(GridSearchStrategy strategy)
+    {
+        using (new ProfilerMarker("GridSearch.Search").Auto())
+        {
+            return SearchUnprofiled(strategy);
+        }
+    }
+
+    private GridSearchResult SearchUnprofiled(GridSearchStrategy strategy)
     {
         _visited.Clear();
         _searchQueue.Clear();
@@ -45,20 +55,24 @@ public class GridSearch : MonoBehaviour
 
     private void VisitNeighbors(Node node)
     {
+        Profiler.BeginSample("GridSearch.VisitNeighbors");
         NodeNeighbors neighbors = NodeNeighbors.Get(node);
         for (int i = 0; i < NodeNeighbors.Count; i++)
         {
             Node neighbor = _strategy.GetNeighbor(_state, neighbors, i);
             Visit(neighbor);
         }
+        Profiler.EndSample();
     }
 
     private void Visit(Node node)
     {
+        Profiler.BeginSample("GridSearch.Visit");
         if (ShouldEnqueue(node))
         {
             Enqueue(node);
         }
+        Profiler.EndSample();
     }
 
     private bool ShouldEnqueue(Node node)
@@ -68,6 +82,7 @@ public class GridSearch : MonoBehaviour
 
     private void Enqueue(Node node)
     {
+        Profiler.BeginSample("GridSearch.Enqueue");
         int existingIndex = FindNodeInNext(node.Cell);
         if (existingIndex >= 0)
         {
@@ -77,6 +92,7 @@ public class GridSearch : MonoBehaviour
         {
             _searchQueue.Add(node);
         }
+        Profiler.EndSample();
     }
 
     private void UpdateExistingNode(Node node, int existingIndex)
@@ -92,9 +108,12 @@ public class GridSearch : MonoBehaviour
         if (_searchQueue.Count == 0)
             return null;
 
+        Profiler.BeginSample("GridSearch.Dequeue");
         int index = IndexOfLowestCostNode();
         Node node = _searchQueue[index];
         _searchQueue.RemoveAt(index);
+        Profiler.EndSample();
+
         return node;
     }
 
